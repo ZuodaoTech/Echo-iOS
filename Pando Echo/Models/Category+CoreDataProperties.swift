@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 
-extension Category {
+extension Category: Identifiable {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Category> {
         return NSFetchRequest<Category>(entityName: "Category")
     }
