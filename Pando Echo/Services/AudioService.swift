@@ -31,6 +31,7 @@ class AudioService: NSObject, ObservableObject {
     @Published var isRecording = false
     @Published var isPlaying = false
     @Published var isPaused = false
+    @Published var isInPlaybackSession = false  // True during entire playback including intervals
     @Published var currentPlayingScriptId: UUID?
     @Published var playbackProgress: Double = 0
     @Published var privacyModeActive = false
@@ -50,6 +51,7 @@ class AudioService: NSObject, ObservableObject {
     private var playbackSessionID: UUID?
     private var isHandlingCompletion = false
     private var intervalStartTime: Date?
+    private var intervalPausedTime: TimeInterval = 0  // How long into the interval we paused
     
     private let audioSession = AVAudioSession.sharedInstance()
     
@@ -221,6 +223,7 @@ class AudioService: NSObject, ObservableObject {
                 DispatchQueue.main.async {
                     self.isPlaying = true
                     self.isPaused = false
+                    self.isInPlaybackSession = true  // Start of playback session
                     self.currentPlayingScriptId = script.id
                     script.incrementPlayCount()
                 }
@@ -239,41 +242,74 @@ class AudioService: NSObject, ObservableObject {
     }
     
     func pausePlayback() {
-        guard let player = audioPlayer, isPlaying else { return }
+        // Allow pausing during intervals or actual playback
+        guard isInPlaybackSession else { return }
         
-        player.pause()
-        pausedTime = player.currentTime
-        
-        // Cancel completion timer when pausing
-        completionTimer?.invalidate()
-        completionTimer = nil
+        if let player = audioPlayer, isPlaying {
+            // Pause actual audio playback
+            player.pause()
+            pausedTime = player.currentTime
+            
+            // Cancel completion timer when pausing
+            completionTimer?.invalidate()
+            completionTimer = nil
+            
+            stopProgressTimer()
+        } else if isInInterval {
+            // Pausing during interval - stop the interval timer and save progress
+            if let startTime = intervalStartTime {
+                intervalPausedTime = Date().timeIntervalSince(startTime)
+            }
+            intervalTimer?.invalidate()
+            intervalTimer = nil
+        }
         
         DispatchQueue.main.async {
             self.isPlaying = false
             self.isPaused = true
+            // Keep isInPlaybackSession true
         }
-        stopProgressTimer()
     }
     
     func resumePlayback() {
-        guard let player = audioPlayer, isPaused else { return }
+        guard isPaused && isInPlaybackSession else { return }
         
-        player.currentTime = pausedTime
-        player.play()
-        
-        DispatchQueue.main.async {
-            self.isPlaying = true
-            self.isPaused = false
-        }
-        startProgressTimer()
-        
-        // Restart completion monitor from current position
-        let remainingDuration = player.duration - pausedTime + 0.1
-        completionTimer = Timer.scheduledTimer(withTimeInterval: remainingDuration, repeats: false) { [weak self] _ in
-            guard let self = self else { return }
-            if let player = self.audioPlayer, !player.isPlaying {
-                print("Completion monitor detected playback ended after resume")
-                self.handlePlaybackCompletion()
+        if let player = audioPlayer, !isInInterval {
+            // Resume audio playback
+            player.currentTime = pausedTime
+            player.play()
+            
+            DispatchQueue.main.async {
+                self.isPlaying = true
+                self.isPaused = false
+            }
+            startProgressTimer()
+            
+            // Restart completion monitor from current position
+            let remainingDuration = player.duration - pausedTime + 0.1
+            completionTimer = Timer.scheduledTimer(withTimeInterval: remainingDuration, repeats: false) { [weak self] _ in
+                guard let self = self else { return }
+                if let player = self.audioPlayer, !player.isPlaying {
+                    print("Completion monitor detected playback ended after resume")
+                    self.handlePlaybackCompletion()
+                }
+            }
+        } else if isInInterval, let script = currentScript {
+            // Resume interval countdown
+            DispatchQueue.main.async {
+                self.isPaused = false
+                // Continue interval timer from where we left off
+                let remainingInterval = script.intervalSeconds - self.intervalPausedTime
+                
+                // Restart interval timer for remaining time
+                self.intervalStartTime = Date().addingTimeInterval(-self.intervalPausedTime)
+                self.startIntervalTimer(duration: script.intervalSeconds)
+                
+                // Schedule next repetition after remaining interval
+                DispatchQueue.main.asyncAfter(deadline: .now() + remainingInterval) { [weak self] in
+                    guard let self = self, !self.isPaused else { return }
+                    self.playNextRepetition()
+                }
             }
         }
     }
@@ -285,6 +321,7 @@ class AudioService: NSObject, ObservableObject {
         audioPlayer = nil
         currentScript = nil
         pausedTime = 0
+        intervalPausedTime = 0
         playbackSessionID = nil
         isHandlingCompletion = false
         
@@ -304,6 +341,7 @@ class AudioService: NSObject, ObservableObject {
         DispatchQueue.main.async {
             self.isPlaying = false
             self.isPaused = false
+            self.isInPlaybackSession = false  // End of playback session
             self.currentPlayingScriptId = nil
             self.playbackProgress = 0
         }
@@ -488,41 +526,48 @@ class AudioService: NSObject, ObservableObject {
             
             // Play next repetition after interval
             DispatchQueue.main.asyncAfter(deadline: .now() + script.intervalSeconds) { [weak self] in
-                guard let self = self else { 
-                    print("AudioService was deallocated")
-                    return 
-                }
-                
-                // Stop interval timer and reset interval state
-                self.stopIntervalTimer()
-                
-                // Reset the handling flag for the next playback
-                self.isHandlingCompletion = false
-                
-                print("Playing repetition \(self.currentRepetition) of \(self.totalRepetitions)")
-                
-                // Make sure we still have the player
-                guard let player = self.audioPlayer else {
-                    print("Audio player is nil, cannot continue repetitions")
-                    return
-                }
-                
-                // Reset and play
-                player.currentTime = 0
-                player.prepareToPlay()
-                
-                if player.play() {
-                    print("Successfully started repetition \(self.currentRepetition)")
-                    self.startProgressTimer()
-                    self.startCompletionMonitor()
-                } else {
-                    print("Failed to play repetition \(self.currentRepetition)")
-                    self.stopPlayback()
-                }
+                guard let self = self, !self.isPaused else { return }
+                self.playNextRepetition()
             }
         } else {
             // All repetitions completed
             print("All \(totalRepetitions) repetitions completed")
+            stopPlayback()
+        }
+    }
+    
+    private func playNextRepetition() {
+        print("Playing repetition \(currentRepetition) of \(totalRepetitions)")
+        
+        // Stop interval timer and reset interval state
+        stopIntervalTimer()
+        intervalPausedTime = 0
+        
+        // Reset the handling flag for the next playback
+        isHandlingCompletion = false
+        
+        // Make sure we still have the player
+        guard let player = audioPlayer else {
+            print("Audio player is nil, cannot continue repetitions")
+            stopPlayback()
+            return
+        }
+        
+        // Reset and play
+        player.currentTime = 0
+        player.prepareToPlay()
+        
+        if player.play() {
+            print("Successfully started repetition \(currentRepetition)")
+            DispatchQueue.main.async {
+                self.isPlaying = true
+                self.isPaused = false
+                self.isInInterval = false
+            }
+            startProgressTimer()
+            startCompletionMonitor()
+        } else {
+            print("Failed to play repetition \(currentRepetition)")
             stopPlayback()
         }
     }
