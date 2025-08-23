@@ -37,8 +37,9 @@ final class AudioCoordinator: ObservableObject {
     private let recordingService: RecordingService
     private let playbackService: PlaybackService
     
-    // MARK: - Cancellables
+    // MARK: - Private Properties
     
+    private var currentRecordingScript: SelftalkScript?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Initialization
@@ -72,16 +73,33 @@ final class AudioCoordinator: ObservableObject {
         
         try recordingService.startRecording(for: script.id)
         
-        // Update script with audio file path
+        // Update script with audio file path and track current script
         script.audioFilePath = fileManager.audioURL(for: script.id).path
+        currentRecordingScript = script
     }
     
     func stopRecording() {
-        if let result = recordingService.stopRecording() {
-            // Update script duration if we have the current script
-            if let duration = fileManager.getAudioDuration(for: result.scriptId) {
-                // Duration is captured and can be used if needed
-                _ = duration
+        guard let script = currentRecordingScript else { 
+            _ = recordingService.stopRecording() // Legacy call
+            return 
+        }
+        
+        // Use async version to ensure file is ready
+        recordingService.stopRecording { [weak self] scriptId, duration in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                // Get actual duration from file after it's written
+                if let fileDuration = self.fileManager.getAudioDuration(for: scriptId) {
+                    script.audioDuration = fileDuration
+                    print("Recording completed - Duration: \(fileDuration)s, File exists: \(self.fileManager.audioFileExists(for: scriptId))")
+                } else {
+                    // Fallback to recorder's duration
+                    script.audioDuration = duration
+                    print("Recording completed - Using recorder duration: \(duration)s")
+                }
+                
+                self.currentRecordingScript = nil
             }
         }
     }

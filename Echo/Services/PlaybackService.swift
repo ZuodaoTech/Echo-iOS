@@ -61,15 +61,21 @@ final class PlaybackService: NSObject, ObservableObject {
         intervalSeconds: TimeInterval,
         privacyModeEnabled: Bool
     ) throws {
+        print("PlaybackService: Starting playback for script \(scriptId)")
+        print("Privacy mode enabled: \(privacyModeEnabled), active: \(sessionManager.privacyModeActive)")
+        
         // Check privacy mode
         if privacyModeEnabled && sessionManager.privacyModeActive {
+            print("PlaybackService: Blocked by privacy mode")
             throw AudioServiceError.privacyModeActive
         }
         
         // Check if file exists
         guard fileManager.audioFileExists(for: scriptId) else {
+            print("PlaybackService: No recording file found")
             throw AudioServiceError.noRecording
         }
+        print("PlaybackService: Audio file exists")
         
         // If paused on same script, resume instead
         if isPaused && currentPlayingScriptId == scriptId {
@@ -86,10 +92,13 @@ final class PlaybackService: NSObject, ObservableObject {
         let audioURL = fileManager.audioURL(for: scriptId)
         
         do {
+            print("PlaybackService: Creating AVAudioPlayer with URL: \(audioURL)")
             audioPlayer = try AVAudioPlayer(contentsOf: audioURL)
             audioPlayer?.delegate = self
             audioPlayer?.prepareToPlay()
             audioPlayer?.enableRate = true
+            
+            print("PlaybackService: Player created, duration: \(audioPlayer?.duration ?? 0)")
             
             // Store script parameters
             currentScriptRepetitions = repetitions
@@ -102,8 +111,11 @@ final class PlaybackService: NSObject, ObservableObject {
             pausedTime = 0
             
             guard audioPlayer?.play() == true else {
+                print("PlaybackService: Failed to start playback")
                 throw AudioServiceError.playbackFailed
             }
+            
+            print("PlaybackService: Playback started successfully")
             
             DispatchQueue.main.async {
                 self.isPlaying = true
