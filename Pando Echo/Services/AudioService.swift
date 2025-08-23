@@ -28,6 +28,16 @@ enum AudioServiceError: LocalizedError {
 class AudioService: NSObject, ObservableObject {
     static let shared = AudioService()
     
+    // MARK: - Constants
+    private enum Constants {
+        static let progressUpdateInterval: TimeInterval = 0.1
+        static let intervalTimerUpdateInterval: TimeInterval = 0.02
+        static let completionCheckDelay: TimeInterval = 0.1
+        static let audioSampleRate: Double = 44100
+        static let audioBufferDuration: TimeInterval = 0.005
+        static let intervalDebugPrintInterval: TimeInterval = 0.5
+    }
+    
     @Published var isRecording = false
     @Published var isPlaying = false
     @Published var isPaused = false
@@ -72,13 +82,13 @@ class AudioService: NSObject, ObservableObject {
             
             // Set preferred settings to avoid warnings (only on real device)
             #if !targetEnvironment(simulator)
-            try audioSession.setPreferredSampleRate(44100)
-            try audioSession.setPreferredIOBufferDuration(0.005)
+            try audioSession.setPreferredSampleRate(Constants.audioSampleRate)
+            try audioSession.setPreferredIOBufferDuration(Constants.audioBufferDuration)
             #endif
             
             try audioSession.setActive(true)
         } catch {
-            print("Failed to setup audio session: \(error)")
+            // Failed to setup audio session
         }
     }
     
@@ -136,7 +146,7 @@ class AudioService: NSObject, ObservableObject {
         
         let settings: [String: Any] = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-            AVSampleRateKey: 44100,
+            AVSampleRateKey: Constants.audioSampleRate,
             AVNumberOfChannelsKey: 2,
             AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
         ]
@@ -201,7 +211,6 @@ class AudioService: NSObject, ObservableObject {
         do {
             // Create a new playback session
             playbackSessionID = UUID()
-            let sessionID = playbackSessionID!
             
             audioPlayer = try AVAudioPlayer(contentsOf: audioURL)
             audioPlayer?.delegate = self
@@ -215,8 +224,7 @@ class AudioService: NSObject, ObservableObject {
             totalRepetitions = Int(script.repetitions)
             pausedTime = 0
             
-            print("Starting playback session \(sessionID): repetition 1 of \(totalRepetitions)")
-            print("Audio duration: \(audioPlayer?.duration ?? 0) seconds")
+            // Starting playback session
             
             let didPlay = audioPlayer?.play() ?? false
             
@@ -234,7 +242,7 @@ class AudioService: NSObject, ObservableObject {
                 // Also start monitoring for completion in case delegate doesn't fire
                 startCompletionMonitor()
             } else {
-                print("Failed to start playback")
+                // Failed to start playback
                 throw AudioServiceError.playbackFailed
             }
         } catch {
@@ -252,7 +260,7 @@ class AudioService: NSObject, ObservableObject {
             if let startTime = intervalStartTime {
                 // Save how much time has elapsed since start (or resume)
                 intervalPausedTime = Date().timeIntervalSince(startTime)
-                print("Pausing interval at \(intervalPausedTime) seconds")
+                // Pausing interval
             }
             intervalTimer?.invalidate()
             intervalTimer = nil
@@ -298,11 +306,11 @@ class AudioService: NSObject, ObservableObject {
             startProgressTimer()
             
             // Restart completion monitor from current position
-            let remainingDuration = player.duration - pausedTime + 0.1
+            let remainingDuration = player.duration - pausedTime + Constants.completionCheckDelay
             completionTimer = Timer.scheduledTimer(withTimeInterval: remainingDuration, repeats: false) { [weak self] _ in
                 guard let self = self else { return }
                 if let player = self.audioPlayer, !player.isPlaying {
-                    print("Completion monitor detected playback ended after resume")
+                    // Completion monitor detected playback ended after resume
                     self.handlePlaybackCompletion()
                 }
             }
@@ -316,7 +324,7 @@ class AudioService: NSObject, ObservableObject {
             
             // Continue interval timer from where we left off
             let remainingInterval = script.intervalSeconds - self.intervalPausedTime
-            print("Resuming interval with \(remainingInterval) seconds remaining")
+            // Resuming interval
             
             // Set start time adjusted for the time already elapsed
             self.intervalStartTime = Date().addingTimeInterval(-self.intervalPausedTime)
@@ -337,7 +345,7 @@ class AudioService: NSObject, ObservableObject {
     }
     
     func stopPlayback() {
-        print("Stopping playback for session \(playbackSessionID?.uuidString ?? "none")")
+        // Stopping playback
         
         audioPlayer?.stop()
         audioPlayer = nil
@@ -383,9 +391,10 @@ class AudioService: NSObject, ObservableObject {
     
     private func startProgressTimer() {
         stopProgressTimer()
-        progressTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-            guard let player = self.audioPlayer else { return }
-            DispatchQueue.main.async {
+        progressTimer = Timer.scheduledTimer(withTimeInterval: Constants.progressUpdateInterval, repeats: true) { [weak self] _ in
+            guard let self = self, let player = self.audioPlayer else { return }
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.playbackProgress = player.currentTime / player.duration
             }
         }
@@ -403,7 +412,7 @@ class AudioService: NSObject, ObservableObject {
         intervalTimer?.invalidate()
         intervalTimer = nil
         
-        print("Starting interval timer for \(duration) seconds")
+        // Starting interval timer
         
         // Set the start time only if not already set (for resume case)
         if intervalStartTime == nil {
@@ -414,14 +423,14 @@ class AudioService: NSObject, ObservableObject {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
-            self.intervalTimer = Timer.scheduledTimer(withTimeInterval: 0.02, repeats: true) { [weak self] timer in
+            self.intervalTimer = Timer.scheduledTimer(withTimeInterval: Constants.intervalTimerUpdateInterval, repeats: true) { [weak self] timer in
                 guard let self = self else {
                     timer.invalidate()
                     return
                 }
                 
                 guard let startTime = self.intervalStartTime else {
-                    print("No start time set")
+                    // No start time set
                     timer.invalidate()
                     return
                 }
@@ -438,15 +447,15 @@ class AudioService: NSObject, ObservableObject {
                 }
                 
                 // Debug print first time and every 0.5 seconds
-                if elapsed < 0.05 || Int(elapsed * 2) != Int((elapsed - 0.02) * 2) {
-                    print("Interval: isInInterval=\(self.isInInterval), isPlaying=\(self.isPlaying), progress=\(intervalProg), elapsed=\(elapsed)/\(duration)")
+                if elapsed < 0.05 || Int(elapsed / Constants.intervalDebugPrintInterval) != Int((elapsed - Constants.intervalTimerUpdateInterval) / Constants.intervalDebugPrintInterval) {
+                    // Interval progress update
                 }
                 
                 // Stop timer when interval is complete
                 if progress >= 1.0 {
                     timer.invalidate()
                     self.intervalTimer = nil
-                    print("Interval timer completed")
+                    // Interval timer completed
                 }
             }
         }
@@ -471,8 +480,7 @@ class AudioService: NSObject, ObservableObject {
         completionTimer = nil
         
         guard let player = audioPlayer else { 
-            print("No audio player to monitor")
-            return 
+            return // No audio player to monitor 
         }
         
         // Capture the current session ID
@@ -480,28 +488,28 @@ class AudioService: NSObject, ObservableObject {
         
         // Set up a timer to check if playback has completed
         // Check slightly after the expected duration
-        let checkInterval = player.duration + 0.1
+        let checkInterval = player.duration + Constants.completionCheckDelay
         
-        print("Setting up completion monitor for \(checkInterval) seconds (duration: \(player.duration))")
+        // Setting up completion monitor
         
         // Use asyncAfter instead of Timer for more reliable execution
         DispatchQueue.main.asyncAfter(deadline: .now() + checkInterval) { [weak self] in
             guard let self = self else {
-                print("AudioService was deallocated during playback")
+                // AudioService was deallocated during playback
                 return
             }
             
             // Check if this is still the same playback session
             guard self.playbackSessionID == sessionID else {
-                print("Ignoring completion check from old session")
+                // Ignoring completion check from old session
                 return
             }
             
-            print("Completion check - isPlaying: \(self.audioPlayer?.isPlaying ?? false)")
+            // Completion check
             
             // Only handle completion if player exists and is not playing
             if let player = self.audioPlayer, !player.isPlaying {
-                print("Playback completed - handling completion")
+                // Playback completed - handling completion
                 self.handlePlaybackCompletion()
             }
         }
@@ -510,7 +518,7 @@ class AudioService: NSObject, ObservableObject {
     private func handlePlaybackCompletion() {
         // Prevent double handling
         guard !isHandlingCompletion else {
-            print("Already handling completion, skipping duplicate call")
+            // Already handling completion, skipping duplicate call
             return
         }
         
@@ -522,7 +530,7 @@ class AudioService: NSObject, ObservableObject {
         // Mark that we're handling completion
         isHandlingCompletion = true
         
-        print("Handling playback completion for repetition \(currentRepetition) of \(totalRepetitions)")
+        // Handling playback completion
         
         // Cancel any pending completion timer since we're handling it now
         completionTimer?.invalidate()
@@ -534,7 +542,7 @@ class AudioService: NSObject, ObservableObject {
             currentRepetition += 1
             playbackProgress = 0
             
-            print("Will play repetition \(currentRepetition) after \(script.intervalSeconds) second interval")
+            // Will play next repetition after interval
             
             // Stop the progress timer during interval
             stopProgressTimer()
@@ -546,7 +554,7 @@ class AudioService: NSObject, ObservableObject {
                 self.intervalProgress = 1.0  // Start at full
                 self.playbackProgress = 0  // Reset playback progress
                 // Don't change isPlaying - let it stay true
-                print("Interval started - isInInterval: \(self.isInInterval), intervalProgress: \(self.intervalProgress)")
+                // Interval started
                 
                 // Start interval progress timer AFTER setting the state
                 self.startIntervalTimer(duration: script.intervalSeconds)
@@ -566,13 +574,13 @@ class AudioService: NSObject, ObservableObject {
             DispatchQueue.main.asyncAfter(deadline: .now() + script.intervalSeconds, execute: workItem)
         } else {
             // All repetitions completed
-            print("All \(totalRepetitions) repetitions completed")
+            // All repetitions completed
             stopPlayback()
         }
     }
     
     private func playNextRepetition() {
-        print("Playing repetition \(currentRepetition) of \(totalRepetitions)")
+        // Playing next repetition
         
         // Stop interval timer and reset interval state
         stopIntervalTimer()
@@ -583,7 +591,7 @@ class AudioService: NSObject, ObservableObject {
         
         // Make sure we still have the player
         guard let player = audioPlayer else {
-            print("Audio player is nil, cannot continue repetitions")
+            // Audio player is nil, cannot continue repetitions
             stopPlayback()
             return
         }
@@ -593,7 +601,7 @@ class AudioService: NSObject, ObservableObject {
         player.prepareToPlay()
         
         if player.play() {
-            print("Successfully started repetition \(currentRepetition)")
+            // Successfully started repetition
             DispatchQueue.main.async {
                 self.isPlaying = true
                 self.isPaused = false
@@ -602,7 +610,7 @@ class AudioService: NSObject, ObservableObject {
             startProgressTimer()
             startCompletionMonitor()
         } else {
-            print("Failed to play repetition \(currentRepetition)")
+            // Failed to play repetition
             stopPlayback()
         }
     }
@@ -649,12 +657,11 @@ extension AudioService: AVAudioRecorderDelegate {
 
 extension AudioService: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        print("AVAudioPlayerDelegate: audioPlayerDidFinishPlaying called, successfully: \(flag)")
-        print("Current session: \(playbackSessionID?.uuidString ?? "none"), Repetition: \(currentRepetition) of \(totalRepetitions)")
+        // AVAudioPlayerDelegate: audioPlayerDidFinishPlaying called
         
         // Ignore if we don't have an active session (old delegate callback)
         guard playbackSessionID != nil else {
-            print("Ignoring delegate callback - no active session")
+            // Ignoring delegate callback - no active session
             return
         }
         

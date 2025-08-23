@@ -21,8 +21,6 @@ struct ScriptsListView: View {
     @State private var showingAddScript = false
     @State private var scriptToEdit: SelftalkScript?
     @State private var showingFilterSheet = false
-    @State private var scriptToDelete: SelftalkScript?
-    @State private var showingDeleteAlert = false
     
     private var filteredScripts: [SelftalkScript] {
         if let category = selectedCategory {
@@ -46,23 +44,13 @@ struct ScriptsListView: View {
                                     scriptToEdit = script
                                 },
                                 onDelete: {
-                                    audioService.stopPlayback()  // Stop any playing audio
-                                    deleteScript(script)
+                                    // Delete is now handled in edit view
                                 }
                             )
                             .listRowSeparator(.hidden)
                             .listRowBackground(Color.clear)
                             .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                Button(role: .destructive) {
-                                    audioService.stopPlayback()  // Stop any playing audio
-                                    scriptToDelete = script
-                                    showingDeleteAlert = true
-                                } label: {
-                                    Label("Delete", systemImage: "trash")
-                                }
-                            }
-                            .swipeActions(edge: .leading, allowsFullSwipe: false) {
                                 Button {
                                     audioService.stopPlayback()  // Stop any playing audio
                                     scriptToEdit = script
@@ -112,20 +100,6 @@ struct ScriptsListView: View {
                     categories: Array(categories),
                     selectedCategory: $selectedCategory
                 )
-            }
-            .alert("Delete Script", isPresented: $showingDeleteAlert) {
-                Button("Cancel", role: .cancel) { 
-                    scriptToDelete = nil
-                }
-                Button("Delete", role: .destructive) {
-                    if let script = scriptToDelete {
-                        audioService.stopPlayback()  // Ensure playback is stopped
-                        deleteScript(script)
-                        scriptToDelete = nil
-                    }
-                }
-            } message: {
-                Text("Are you sure you want to delete this script? This action cannot be undone.")
             }
         }
         .onAppear {
@@ -200,18 +174,6 @@ struct ScriptsListView: View {
         }
     }
     
-    private func deleteScript(_ script: SelftalkScript) {
-        withAnimation {
-            audioService.deleteRecording(for: script)
-            viewContext.delete(script)
-            
-            do {
-                try viewContext.save()
-            } catch {
-                print("Error deleting script: \(error)")
-            }
-        }
-    }
 }
 
 struct EmptyStateView: View {

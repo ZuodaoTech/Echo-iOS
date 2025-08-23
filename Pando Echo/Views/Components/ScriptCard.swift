@@ -7,6 +7,8 @@ struct ScriptCard: View {
     @State private var showingDeleteAlert = false
     @State private var showingPrivacyAlert = false
     @State private var showingNoRecordingAlert = false
+    @State private var showingErrorAlert = false
+    @State private var errorMessage = ""
     
     var onEdit: () -> Void
     var onDelete: () -> Void
@@ -83,7 +85,7 @@ struct ScriptCard: View {
                             .animation(.linear(duration: 0.02), value: progressValue)
                             .onAppear {
                                 if showingInterval {
-                                    print("ScriptCard: Showing interval progress: \(audioService.intervalProgress)")
+                                    // ScriptCard: Showing interval progress
                                 }
                             }
                         
@@ -95,7 +97,7 @@ struct ScriptCard: View {
                     }
                     
                     if audioService.totalRepetitions > 1 {
-                        Text("Repetition \(audioService.currentRepetition) of \(audioService.totalRepetitions)")
+                        Text("\(audioService.currentRepetition)/\(audioService.totalRepetitions)")
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -154,7 +156,12 @@ struct ScriptCard: View {
         .alert("No Recording", isPresented: $showingNoRecordingAlert) {
             Button("OK", role: .cancel) { }
         } message: {
-            Text("Please tap and hold the card in Edit mode to record audio first")
+            Text("Please swipe left to edit and record audio first")
+        }
+        .alert("Error", isPresented: $showingErrorAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(errorMessage)
         }
     }
     
@@ -183,7 +190,8 @@ struct ScriptCard: View {
             } catch AudioServiceError.privacyModeActive {
                 showingPrivacyAlert = true
             } catch {
-                print("Playback error: \(error)")
+                errorMessage = "Unable to play audio. Please try again."
+                showingErrorAlert = true
             }
         }
     }
