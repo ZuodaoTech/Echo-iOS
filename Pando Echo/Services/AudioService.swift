@@ -36,16 +36,20 @@ class AudioService: NSObject, ObservableObject {
     @Published var privacyModeActive = false
     @Published var currentRepetition: Int = 0
     @Published var totalRepetitions: Int = 0
+    @Published var isInInterval = false
+    @Published var intervalProgress: Double = 0
     
     private var audioRecorder: AVAudioRecorder?
     private var audioPlayer: AVAudioPlayer?
     private var progressTimer: Timer?
     private var repetitionTimer: Timer?
     private var completionTimer: Timer?
+    private var intervalTimer: Timer?
     private var currentScript: SelftalkScript?
     private var pausedTime: TimeInterval = 0
     private var playbackSessionID: UUID?
     private var isHandlingCompletion = false
+    private var intervalStartTime: Date?
     
     private let audioSession = AVAudioSession.sharedInstance()
     
@@ -290,6 +294,9 @@ class AudioService: NSObject, ObservableObject {
         completionTimer?.invalidate()
         completionTimer = nil
         
+        // Stop interval timer
+        stopIntervalTimer()
+        
         // Reset counters immediately to prevent race conditions
         currentRepetition = 0
         totalRepetitions = 0
@@ -323,6 +330,71 @@ class AudioService: NSObject, ObservableObject {
     private func stopProgressTimer() {
         progressTimer?.invalidate()
         progressTimer = nil
+    }
+    
+    // MARK: - Interval Timer
+    
+    private func startIntervalTimer(duration: TimeInterval) {
+        // Only stop the timer itself, don't reset the state
+        intervalTimer?.invalidate()
+        intervalTimer = nil
+        
+        print("Starting interval timer for \(duration) seconds")
+        
+        // Set the start time first
+        intervalStartTime = Date()
+        
+        // Create and schedule timer on main thread
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.intervalTimer = Timer.scheduledTimer(withTimeInterval: 0.02, repeats: true) { [weak self] timer in
+                guard let self = self else {
+                    timer.invalidate()
+                    return
+                }
+                
+                guard let startTime = self.intervalStartTime else {
+                    print("No start time set")
+                    timer.invalidate()
+                    return
+                }
+                
+                let elapsed = Date().timeIntervalSince(startTime)
+                let progress = min(elapsed / duration, 1.0)
+                
+                // Interval progress goes from 1.0 to 0.0 (counting down)
+                let intervalProg = max(1.0 - progress, 0.0)
+                
+                // Update on main queue
+                DispatchQueue.main.async {
+                    self.intervalProgress = intervalProg
+                }
+                
+                // Debug print first time and every 0.5 seconds
+                if elapsed < 0.05 || Int(elapsed * 2) != Int((elapsed - 0.02) * 2) {
+                    print("Interval: isInInterval=\(self.isInInterval), isPlaying=\(self.isPlaying), progress=\(intervalProg), elapsed=\(elapsed)/\(duration)")
+                }
+                
+                // Stop timer when interval is complete
+                if progress >= 1.0 {
+                    timer.invalidate()
+                    self.intervalTimer = nil
+                    print("Interval timer completed")
+                }
+            }
+        }
+    }
+    
+    private func stopIntervalTimer() {
+        intervalTimer?.invalidate()
+        intervalTimer = nil
+        intervalStartTime = nil
+        
+        DispatchQueue.main.async {
+            self.isInInterval = false
+            self.intervalProgress = 0
+        }
     }
     
     // MARK: - Completion Monitor
@@ -401,12 +473,28 @@ class AudioService: NSObject, ObservableObject {
             // Stop the progress timer during interval
             stopProgressTimer()
             
+            // Start interval countdown - keep playing state
+            // Update on main queue to ensure UI updates
+            DispatchQueue.main.async {
+                self.isInInterval = true
+                self.intervalProgress = 1.0  // Start at full
+                self.playbackProgress = 0  // Reset playback progress
+                // Don't change isPlaying - let it stay true
+                print("Interval started - isInInterval: \(self.isInInterval), intervalProgress: \(self.intervalProgress)")
+                
+                // Start interval progress timer AFTER setting the state
+                self.startIntervalTimer(duration: script.intervalSeconds)
+            }
+            
             // Play next repetition after interval
             DispatchQueue.main.asyncAfter(deadline: .now() + script.intervalSeconds) { [weak self] in
                 guard let self = self else { 
                     print("AudioService was deallocated")
                     return 
                 }
+                
+                // Stop interval timer and reset interval state
+                self.stopIntervalTimer()
                 
                 // Reset the handling flag for the next playback
                 self.isHandlingCompletion = false

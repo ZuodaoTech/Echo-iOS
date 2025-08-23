@@ -52,26 +52,22 @@ struct ScriptCard: View {
                 .lineLimit(4)
                 .multilineTextAlignment(.leading)
             
-            // Recording Status Indicator
-            if !script.hasRecording {
-                HStack {
-                    Image(systemName: "mic.slash")
-                        .font(.caption)
-                        .foregroundColor(.orange)
-                    Text("Tap and hold to record")
-                        .font(.caption)
-                        .foregroundColor(.orange)
-                }
-                .padding(.top, 4)
-            }
-            
-            // Playback Progress (if playing or paused)
-            if isPlaying || isPaused {
+            // Playback Progress (if playing or paused or in interval)
+            if isPlaying || isPaused || (audioService.isInInterval && audioService.currentPlayingScriptId == script.id) {
                 VStack(spacing: 4) {
                     HStack {
-                        ProgressView(value: audioService.playbackProgress)
+                        // Always use blue, show interval or playback progress
+                        let showingInterval = audioService.isInInterval && audioService.currentPlayingScriptId == script.id
+                        let progressValue = showingInterval ? audioService.intervalProgress : audioService.playbackProgress
+                        
+                        ProgressView(value: progressValue)
                             .tint(.blue)
-                            .animation(.linear, value: audioService.playbackProgress)
+                            .animation(.linear(duration: 0.02), value: progressValue)
+                            .onAppear {
+                                if showingInterval {
+                                    print("ScriptCard: Showing interval progress: \(audioService.intervalProgress)")
+                                }
+                            }
                         
                         if isPaused {
                             Image(systemName: "pause.circle.fill")
@@ -96,6 +92,14 @@ struct ScriptCard: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
+            } else {
+                // Show no recording indicator
+                HStack {
+                    Image(systemName: "mic.slash")
+                        .font(.caption)
+                        .foregroundColor(.secondary.opacity(0.6))
+                    Spacer()
+                }
             }
         }
         .padding()
@@ -111,19 +115,6 @@ struct ScriptCard: View {
         .contentShape(Rectangle())
         .onTapGesture {
             handleTap()
-        }
-        .contextMenu {
-            Button {
-                onEdit()
-            } label: {
-                Label("Edit", systemImage: "pencil")
-            }
-            
-            Button(role: .destructive) {
-                showingDeleteAlert = true
-            } label: {
-                Label("Delete", systemImage: "trash")
-            }
         }
         .alert("Privacy Mode", isPresented: $showingPrivacyAlert) {
             Button("OK", role: .cancel) { }
