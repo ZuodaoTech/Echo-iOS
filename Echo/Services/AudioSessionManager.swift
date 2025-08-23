@@ -90,9 +90,15 @@ final class AudioSessionManager: ObservableObject {
                 options: [.defaultToSpeaker, .allowBluetooth, .allowBluetoothA2DP]
             )
             
+            // Only set preferred properties on real device
+            // These cause error -50 on simulator even with compile-time check
             #if !targetEnvironment(simulator)
-            try audioSession.setPreferredSampleRate(Constants.audioSampleRate)
-            try audioSession.setPreferredIOBufferDuration(Constants.audioBufferDuration)
+            do {
+                try audioSession.setPreferredSampleRate(Constants.audioSampleRate)
+                try audioSession.setPreferredIOBufferDuration(Constants.audioBufferDuration)
+            } catch {
+                // Ignore preferred setting errors - not critical
+            }
             #endif
             
             try audioSession.setActive(true)
