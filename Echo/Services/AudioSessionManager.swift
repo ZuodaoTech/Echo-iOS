@@ -35,10 +35,11 @@ final class AudioSessionManager: ObservableObject {
     /// Configure audio session for recording
     func configureForRecording() throws {
         do {
-            // Only change category if needed
-            if audioSession.category != .playAndRecord {
-                try audioSession.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
-            }
+            // Use spokenAudio mode for better voice recording with noise reduction
+            // This enables: echo cancellation, noise suppression, automatic gain control
+            try audioSession.setCategory(.playAndRecord, 
+                                        mode: .spokenAudio,  // Better for self-talk recordings
+                                        options: [.defaultToSpeaker, .allowBluetooth])
             // Only activate if not already active
             if !audioSession.isOtherAudioPlaying {
                 try audioSession.setActive(true)
