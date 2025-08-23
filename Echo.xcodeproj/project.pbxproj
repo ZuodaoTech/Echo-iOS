@@ -32,17 +32,17 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F33EE2F02E5935FE007F42E6 /* Echo */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Echo";
+			path = Echo;
 			sourceTree = "<group>";
 		};
 		F33EE3032E5935FF007F42E6 /* EchoTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "EchoTests";
+			path = EchoTests;
 			sourceTree = "<group>";
 		};
 		F33EE30D2E5935FF007F42E6 /* EchoUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "EchoUITests";
+			path = EchoUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -113,7 +113,7 @@
 			name = Echo;
 			packageProductDependencies = (
 			);
-			productName = "Echo";
+			productName = Echo;
 			productReference = F33EE2EE2E5935FE007F42E6 /* Echo.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -136,7 +136,7 @@
 			name = EchoTests;
 			packageProductDependencies = (
 			);
-			productName = "EchoTests";
+			productName = EchoTests;
 			productReference = F33EE3002E5935FF007F42E6 /* EchoTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -159,7 +159,7 @@
 			name = EchoUITests;
 			packageProductDependencies = (
 			);
-			productName = "EchoUITests";
+			productName = EchoUITests;
 			productReference = F33EE30A2E5935FF007F42E6 /* EchoUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
@@ -468,14 +468,19 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YOUR_TEAM_ID;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = xiaolai.EchoTests;
+				PRODUCT_BUNDLE_IDENTIFIER = xiaolai.Echo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Echo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Echo";
 			};
 			name = Debug;
@@ -486,14 +491,19 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YOUR_TEAM_ID;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = xiaolai.EchoTests;
+				PRODUCT_BUNDLE_IDENTIFIER = xiaolai.Echo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Echo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Echo";
 			};
 			name = Release;
