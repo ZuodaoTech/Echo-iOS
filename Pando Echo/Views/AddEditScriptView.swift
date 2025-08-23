@@ -159,18 +159,17 @@ struct AddEditScriptView: View {
             .navigationTitle(isEditing ? "Edit Script" : "New Script")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-                
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
-                        saveScript()
+                    Button("Done") {
+                        handleDone()
                     }
-                    .disabled(scriptText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .font(.body.weight(.medium))
                 }
+            }
+            .interactiveDismissDisabled(false)
+            .onDisappear {
+                // Auto-save when view disappears (including swipe down)
+                autoSave()
             }
             .alert("New Category", isPresented: $showingNewCategoryAlert) {
                 TextField("Category Name", text: $newCategoryName)
@@ -226,34 +225,62 @@ struct AddEditScriptView: View {
         }
     }
     
-    private func saveScript() {
-        let trimmedText = scriptText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmedText.isEmpty else { return }
+    private func handleDone() {
+        // Save and dismiss
+        if saveScript() {
+            dismiss()
+        }
+    }
+    
+    private func autoSave() {
+        // Stop recording if in progress
+        if isRecording {
+            audioService.stopRecording()
+            isRecording = false
+        }
         
+        // Silently save changes if valid
+        _ = saveScript()
+    }
+    
+    @discardableResult
+    private func saveScript() -> Bool {
+        let trimmedText = scriptText.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // For new scripts, only save if there's content
+        if !isEditing && trimmedText.isEmpty {
+            return true // Allow dismissal but don't create empty script
+        }
+        
+        // For existing scripts, always save (even if emptied - user can delete if needed)
         if let existingScript = script {
             // Update existing script
-            existingScript.scriptText = trimmedText
+            existingScript.scriptText = trimmedText.isEmpty ? existingScript.scriptText : trimmedText
             existingScript.category = selectedCategory
             existingScript.repetitions = repetitions
             existingScript.intervalSeconds = intervalSeconds
             existingScript.privacyModeEnabled = privacyModeEnabled
             existingScript.updatedAt = Date()
-        } else {
-            // Create new script
+        } else if !trimmedText.isEmpty {
+            // Create new script only if there's content
             _ = SelftalkScript.create(
                 scriptText: trimmedText,
                 category: selectedCategory,
                 repetitions: repetitions,
+                intervalSeconds: intervalSeconds,
                 privacyMode: privacyModeEnabled,
                 in: viewContext
             )
         }
         
         do {
-            try viewContext.save()
-            dismiss()
+            if viewContext.hasChanges {
+                try viewContext.save()
+            }
+            return true
         } catch {
             print("Error saving script: \(error)")
+            return false
         }
     }
     

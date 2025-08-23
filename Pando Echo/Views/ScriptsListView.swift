@@ -21,6 +21,8 @@ struct ScriptsListView: View {
     @State private var showingAddScript = false
     @State private var scriptToEdit: SelftalkScript?
     @State private var showingFilterSheet = false
+    @State private var scriptToDelete: SelftalkScript?
+    @State private var showingDeleteAlert = false
     
     private var filteredScripts: [SelftalkScript] {
         if let category = selectedCategory {
@@ -35,23 +37,39 @@ struct ScriptsListView: View {
                 if scripts.isEmpty {
                     EmptyStateView()
                 } else {
-                    ScrollView {
-                        LazyVStack(spacing: 12) {
-                            ForEach(filteredScripts, id: \.id) { script in
-                                ScriptCard(
-                                    script: script,
-                                    onEdit: {
-                                        scriptToEdit = script
-                                    },
-                                    onDelete: {
-                                        deleteScript(script)
-                                    }
-                                )
-                                .padding(.horizontal)
+                    List {
+                        ForEach(filteredScripts, id: \.id) { script in
+                            ScriptCard(
+                                script: script,
+                                onEdit: {
+                                    scriptToEdit = script
+                                },
+                                onDelete: {
+                                    deleteScript(script)
+                                }
+                            )
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive) {
+                                    scriptToDelete = script
+                                    showingDeleteAlert = true
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                            }
+                            .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                                Button {
+                                    scriptToEdit = script
+                                } label: {
+                                    Label("Edit", systemImage: "pencil")
+                                }
+                                .tint(.blue)
                             }
                         }
-                        .padding(.vertical)
                     }
+                    .listStyle(PlainListStyle())
                 }
             }
             .navigationTitle("Scripts")
@@ -89,6 +107,19 @@ struct ScriptsListView: View {
                     categories: Array(categories),
                     selectedCategory: $selectedCategory
                 )
+            }
+            .alert("Delete Script", isPresented: $showingDeleteAlert) {
+                Button("Cancel", role: .cancel) { 
+                    scriptToDelete = nil
+                }
+                Button("Delete", role: .destructive) {
+                    if let script = scriptToDelete {
+                        deleteScript(script)
+                        scriptToDelete = nil
+                    }
+                }
+            } message: {
+                Text("Are you sure you want to delete this script? This action cannot be undone.")
             }
         }
         .onAppear {
