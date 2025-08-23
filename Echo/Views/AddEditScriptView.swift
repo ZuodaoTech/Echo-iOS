@@ -15,12 +15,14 @@ struct AddEditScriptView: View {
     @State private var repetitions: Int16 = 3
     @State private var intervalSeconds: Double = 2.0
     @State private var privacyModeEnabled = true
+    @State private var transcriptionLanguage = "auto"
     @State private var showingNewCategoryAlert = false
     @State private var newCategoryName = ""
     @State private var isRecording = false
     @State private var hasRecording = false
     @State private var isProcessingRecording = false
     @State private var originalScriptBeforeTranscript: String? = nil
+    @State private var transcriptCheckTimer: Timer? = nil
     @State private var showingMicPermissionAlert = false
     @State private var showingPrivacyAlert = false
     @State private var showingDeleteAlert = false
@@ -140,6 +142,36 @@ struct AddEditScriptView: View {
                         Text("Audio will only play when earphones are connected")
                             .font(.caption)
                             .foregroundColor(.secondary)
+                    }
+                    
+                    // Transcription Language Picker
+                    Picker("Transcription Language", selection: $transcriptionLanguage) {
+                        Text("Auto-detect").tag("auto")
+                        Text("English").tag("en-US")
+                        Text("Chinese (Simplified)").tag("zh-CN")
+                        Text("Chinese (Traditional)").tag("zh-TW")
+                        Text("Spanish").tag("es-ES")
+                        Text("French").tag("fr-FR")
+                        Text("German").tag("de-DE")
+                        Text("Japanese").tag("ja-JP")
+                        Text("Korean").tag("ko-KR")
+                        Text("Portuguese").tag("pt-BR")
+                        Text("Russian").tag("ru-RU")
+                        Text("Italian").tag("it-IT")
+                        Text("Dutch").tag("nl-NL")
+                        Text("Arabic").tag("ar-SA")
+                        Text("Hindi").tag("hi-IN")
+                    }
+                    .onChange(of: transcriptionLanguage) { newValue in
+                        // Save language preference immediately
+                        if let script = script {
+                            script.transcriptionLanguage = newValue
+                            do {
+                                try viewContext.save()
+                            } catch {
+                                print("Failed to save transcription language: \(error)")
+                            }
+                        }
                     }
                 }
                 
@@ -347,12 +379,34 @@ struct AddEditScriptView: View {
             setupInitialValues()
         }
         .onChange(of: audioService.isProcessingRecording) { isProcessing in
-            // When processing completes, update hasRecording
+            // When processing completes, update hasRecording and start checking for transcript
             if !isProcessing && !audioService.isRecording {
                 if let script = script {
                     hasRecording = script.hasRecording
+                    
+                    // Start a timer to check for transcript updates
+                    transcriptCheckTimer?.invalidate()
+                    transcriptCheckTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
+                        // Force Core Data to refresh
+                        viewContext.refresh(script, mergeChanges: true)
+                        
+                        // Stop checking after transcript appears or 10 seconds
+                        if script.transcribedText != nil && !script.transcribedText!.isEmpty {
+                            timer.invalidate()
+                            transcriptCheckTimer = nil
+                            print("Transcript detected in UI: \(script.transcribedText?.prefix(30) ?? "")")
+                        } else if timer.fireDate.timeIntervalSinceNow < -10 {
+                            timer.invalidate()
+                            transcriptCheckTimer = nil
+                            print("Transcript check timeout")
+                        }
+                    }
                 }
             }
+        }
+        .onDisappear {
+            transcriptCheckTimer?.invalidate()
+            transcriptCheckTimer = nil
         }
     }
     
@@ -363,6 +417,7 @@ struct AddEditScriptView: View {
             repetitions = script.repetitions
             intervalSeconds = script.intervalSeconds
             privacyModeEnabled = script.privacyModeEnabled
+            transcriptionLanguage = script.transcriptionLanguage ?? "auto"
             hasRecording = script.hasRecording
         }
     }
@@ -419,10 +474,11 @@ struct AddEditScriptView: View {
             existingScript.repetitions = repetitions
             existingScript.intervalSeconds = intervalSeconds
             existingScript.privacyModeEnabled = privacyModeEnabled
+            existingScript.transcriptionLanguage = transcriptionLanguage
             existingScript.updatedAt = Date()
         } else if !trimmedText.isEmpty {
             // Create new script only if there's content
-            _ = SelftalkScript.create(
+            let newScript = SelftalkScript.create(
                 scriptText: trimmedText,
                 category: selectedCategory,
                 repetitions: repetitions,
@@ -430,6 +486,7 @@ struct AddEditScriptView: View {
                 privacyMode: privacyModeEnabled,
                 in: viewContext
             )
+            newScript.transcriptionLanguage = transcriptionLanguage
         }
         
         do {

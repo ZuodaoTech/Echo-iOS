@@ -41,12 +41,27 @@ final class AudioFileManager {
         let url = audioURL(for: scriptId)
         guard FileManager.default.fileExists(atPath: url.path) else { return nil }
         
+        // Try AVAsset first (more reliable for certain formats)
+        let asset = AVAsset(url: url)
+        let assetDuration = CMTimeGetSeconds(asset.duration)
+        if assetDuration > 0 && !assetDuration.isNaN && !assetDuration.isInfinite {
+            return assetDuration
+        }
+        
+        // Fallback to AVAudioPlayer
         do {
             let player = try AVAudioPlayer(contentsOf: url)
-            return player.duration
+            player.prepareToPlay() // Ensure file is loaded
+            let duration = player.duration
+            if duration > 0 && !duration.isNaN && !duration.isInfinite {
+                return duration
+            }
         } catch {
-            return nil
+            print("Failed to get duration with AVAudioPlayer: \(error)")
         }
+        
+        // If both methods fail, return nil
+        return nil
     }
     
     /// Get all recording URLs

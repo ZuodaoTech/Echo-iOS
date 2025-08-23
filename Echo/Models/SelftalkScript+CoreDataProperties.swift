@@ -19,6 +19,7 @@ extension SelftalkScript: Identifiable {
     @NSManaged public var playCount: Int32
     @NSManaged public var category: Category?
     @NSManaged public var transcribedText: String?
+    @NSManaged public var transcriptionLanguage: String?
 }
 
 extension SelftalkScript {
