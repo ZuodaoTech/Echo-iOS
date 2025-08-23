@@ -3,7 +3,7 @@ import CoreData
 
 struct ScriptCard: View {
     @ObservedObject var script: SelftalkScript
-    @StateObject private var audioService = AudioService.shared
+    @StateObject private var audioService = AudioCoordinator.shared
     @State private var showingDeleteAlert = false
     @State private var showingPrivacyAlert = false
     @State private var showingNoRecordingAlert = false

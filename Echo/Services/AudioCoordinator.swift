@@ -1,0 +1,208 @@
+import Foundation
+import Combine
+import SwiftUI
+
+/// Coordinates all audio services and provides a unified interface
+/// This replaces the old AudioService singleton
+final class AudioCoordinator: ObservableObject {
+    
+    // MARK: - Singleton
+    
+    static let shared = AudioCoordinator()
+    
+    // MARK: - Published Properties (Combined from all services)
+    
+    // Recording state
+    @Published var isRecording = false
+    @Published var recordingDuration: TimeInterval = 0
+    
+    // Playback state
+    @Published var isPlaying = false
+    @Published var isPaused = false
+    @Published var isInPlaybackSession = false
+    @Published var currentPlayingScriptId: UUID?
+    @Published var playbackProgress: Double = 0
+    @Published var currentRepetition: Int = 0
+    @Published var totalRepetitions: Int = 0
+    @Published var isInInterval = false
+    @Published var intervalProgress: Double = 0
+    
+    // Privacy mode
+    @Published var privacyModeActive = false
+    
+    // MARK: - Services
+    
+    private let fileManager: AudioFileManager
+    private let sessionManager: AudioSessionManager
+    private let recordingService: RecordingService
+    private let playbackService: PlaybackService
+    
+    // MARK: - Cancellables
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: - Initialization
+    
+    private init() {
+        // Initialize services
+        self.fileManager = AudioFileManager()
+        self.sessionManager = AudioSessionManager()
+        self.recordingService = RecordingService(
+            fileManager: fileManager,
+            sessionManager: sessionManager
+        )
+        self.playbackService = PlaybackService(
+            fileManager: fileManager,
+            sessionManager: sessionManager
+        )
+        
+        // Bind published properties
+        bindPublishedProperties()
+    }
+    
+    // MARK: - Recording Methods
+    
+    func requestMicrophonePermission(completion: @escaping (Bool) -> Void) {
+        sessionManager.requestMicrophonePermission(completion: completion)
+    }
+    
+    func startRecording(for script: SelftalkScript) throws {
+        // Stop any playback first
+        stopPlayback()
+        
+        try recordingService.startRecording(for: script.id)
+        
+        // Update script with audio file path
+        script.audioFilePath = fileManager.audioURL(for: script.id).path
+    }
+    
+    func stopRecording() {
+        if let result = recordingService.stopRecording() {
+            // Update script duration if we have the current script
+            if let duration = fileManager.getAudioDuration(for: result.scriptId) {
+                // Duration is captured and can be used if needed
+                _ = duration
+            }
+        }
+    }
+    
+    // MARK: - Playback Methods
+    
+    func play(script: SelftalkScript) throws {
+        // Stop any recording first
+        if isRecording {
+            stopRecording()
+        }
+        
+        try playbackService.startPlayback(
+            scriptId: script.id,
+            repetitions: Int(script.repetitions),
+            intervalSeconds: script.intervalSeconds,
+            privacyModeEnabled: script.privacyModeEnabled
+        )
+        
+        // Increment play count
+        script.incrementPlayCount()
+    }
+    
+    func pausePlayback() {
+        playbackService.pausePlayback()
+    }
+    
+    func resumePlayback() {
+        playbackService.resumePlayback()
+    }
+    
+    func stopPlayback() {
+        playbackService.stopPlayback()
+    }
+    
+    func setPlaybackSpeed(_ speed: Float) {
+        playbackService.setPlaybackSpeed(speed)
+    }
+    
+    // MARK: - File Management Methods
+    
+    func deleteRecording(for script: SelftalkScript) {
+        // Stop playback if playing this script
+        if currentPlayingScriptId == script.id {
+            stopPlayback()
+        }
+        
+        // Delete the file
+        try? fileManager.deleteRecording(for: script.id)
+        
+        // Clear script properties
+        script.audioFilePath = nil
+        script.audioDuration = 0
+    }
+    
+    func checkPrivacyMode() {
+        sessionManager.checkPrivacyMode()
+    }
+    
+    // MARK: - Private Methods
+    
+    private func bindPublishedProperties() {
+        // Bind recording properties
+        recordingService.$isRecording
+            .assign(to: &$isRecording)
+        
+        recordingService.$recordingDuration
+            .assign(to: &$recordingDuration)
+        
+        // Bind playback properties
+        playbackService.$isPlaying
+            .assign(to: &$isPlaying)
+        
+        playbackService.$isPaused
+            .assign(to: &$isPaused)
+        
+        playbackService.$isInPlaybackSession
+            .assign(to: &$isInPlaybackSession)
+        
+        playbackService.$currentPlayingScriptId
+            .assign(to: &$currentPlayingScriptId)
+        
+        playbackService.$playbackProgress
+            .assign(to: &$playbackProgress)
+        
+        playbackService.$currentRepetition
+            .assign(to: &$currentRepetition)
+        
+        playbackService.$totalRepetitions
+            .assign(to: &$totalRepetitions)
+        
+        playbackService.$isInInterval
+            .assign(to: &$isInInterval)
+        
+        playbackService.$intervalProgress
+            .assign(to: &$intervalProgress)
+        
+        // Bind session manager properties
+        sessionManager.$privacyModeActive
+            .assign(to: &$privacyModeActive)
+    }
+}
+
+// MARK: - Compatibility Extension
+
+// This extension provides backward compatibility with existing code
+// that uses AudioService methods
+extension AudioCoordinator {
+    
+    /// Legacy compatibility - maps to AudioCoordinator
+    static var audioService: AudioCoordinator {
+        AudioCoordinator.shared
+    }
+    
+    /// Check if audio file exists for a script (for backward compatibility)
+    func hasRecording(for script: SelftalkScript) -> Bool {
+        fileManager.audioFileExists(for: script.id)
+    }
+    
+    /// Get audio duration for a script (for backward compatibility)
+    func getAudioDuration(for script: SelftalkScript) -> TimeInterval? {
+        fileManager.getAudioDuration(for: script.id)
+    }
+}

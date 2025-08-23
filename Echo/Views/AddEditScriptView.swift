@@ -5,7 +5,7 @@ import AVFoundation
 struct AddEditScriptView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var audioService = AudioService.shared
+    @StateObject private var audioService = AudioCoordinator.shared
     
     let script: SelftalkScript?
     
