@@ -62,9 +62,27 @@ struct ScriptCard: View {
             
             // Playback Progress (if playing)
             if isPlaying {
-                ProgressView(value: audioService.playbackProgress)
-                    .tint(.blue)
-                    .animation(.linear, value: audioService.playbackProgress)
+                VStack(spacing: 4) {
+                    ProgressView(value: audioService.playbackProgress)
+                        .tint(.blue)
+                        .animation(.linear, value: audioService.playbackProgress)
+                    
+                    if audioService.totalRepetitions > 1 {
+                        Text("Repetition \(audioService.currentRepetition) of \(audioService.totalRepetitions)")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            } else if script.hasRecording && script.audioDuration > 0 {
+                // Show total duration when not playing
+                HStack {
+                    Image(systemName: "clock")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text(script.formattedTotalDuration)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
             }
         }
         .padding()

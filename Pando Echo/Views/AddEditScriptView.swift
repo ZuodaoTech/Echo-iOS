@@ -12,6 +12,7 @@ struct AddEditScriptView: View {
     @State private var scriptText = ""
     @State private var selectedCategory: Category?
     @State private var repetitions: Int16 = 3
+    @State private var intervalSeconds: Double = 2.0
     @State private var privacyModeEnabled = true
     @State private var showingNewCategoryAlert = false
     @State private var newCategoryName = ""
@@ -109,9 +110,37 @@ struct AddEditScriptView: View {
                         RecordingButton(
                             isRecording: $isRecording,
                             hasRecording: script?.hasRecording ?? false,
+                            recordingDuration: script?.formattedDuration ?? "",
                             onRecord: handleRecording,
                             onDelete: deleteRecording
                         )
+                        
+                        if script?.hasRecording == true {
+                            VStack(alignment: .leading, spacing: 8) {
+                                // Interval slider
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("Pause between repetitions: \(String(format: "%.1f", intervalSeconds))s")
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                    
+                                    Slider(value: $intervalSeconds, in: 0...10, step: 0.5)
+                                }
+                                
+                                // Duration info
+                                HStack {
+                                    Label("Total duration", systemImage: "clock")
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                    
+                                    Spacer()
+                                    
+                                    Text(calculateTotalDuration())
+                                        .font(.subheadline)
+                                        .fontWeight(.medium)
+                                }
+                                .padding(.top, 4)
+                            }
+                        }
                     }
                 }
             }
@@ -158,7 +187,25 @@ struct AddEditScriptView: View {
             scriptText = script.scriptText
             selectedCategory = script.category
             repetitions = script.repetitions
+            intervalSeconds = script.intervalSeconds
             privacyModeEnabled = script.privacyModeEnabled
+        }
+    }
+    
+    private func calculateTotalDuration() -> String {
+        guard let script = script, script.audioDuration > 0 else { return "—" }
+        
+        let totalAudioTime = Double(repetitions) * script.audioDuration
+        let totalIntervalTime = Double(repetitions - 1) * intervalSeconds
+        let total = totalAudioTime + totalIntervalTime
+        
+        let mins = Int(total) / 60
+        let secs = Int(total) % 60
+        
+        if mins > 0 {
+            return "\(mins)m \(secs)s"
+        } else {
+            return "\(secs)s"
         }
     }
     
@@ -171,6 +218,7 @@ struct AddEditScriptView: View {
             existingScript.scriptText = trimmedText
             existingScript.category = selectedCategory
             existingScript.repetitions = repetitions
+            existingScript.intervalSeconds = intervalSeconds
             existingScript.privacyModeEnabled = privacyModeEnabled
             existingScript.updatedAt = Date()
         } else {
@@ -241,6 +289,7 @@ struct AddEditScriptView: View {
 struct RecordingButton: View {
     @Binding var isRecording: Bool
     let hasRecording: Bool
+    let recordingDuration: String
     let onRecord: () -> Void
     let onDelete: () -> Void
     
@@ -250,8 +299,15 @@ struct RecordingButton: View {
                 HStack {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundColor(.green)
-                    Text("Recording saved")
-                        .foregroundColor(.secondary)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Recording saved")
+                            .foregroundColor(.secondary)
+                        if !recordingDuration.isEmpty {
+                            Text(recordingDuration)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
                     Spacer()
                     Button {
                         onDelete()
