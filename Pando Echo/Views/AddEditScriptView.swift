@@ -17,6 +17,7 @@ struct AddEditScriptView: View {
     @State private var showingNewCategoryAlert = false
     @State private var newCategoryName = ""
     @State private var isRecording = false
+    @State private var hasRecording = false
     @State private var showingMicPermissionAlert = false
     @State private var showingPrivacyAlert = false
     
@@ -118,7 +119,7 @@ struct AddEditScriptView: View {
                     Section("Recording") {
                         RecordingButton(
                             isRecording: $isRecording,
-                            hasRecording: script?.hasRecording ?? false,
+                            hasRecording: hasRecording,
                             recordingDuration: script?.formattedDuration ?? "",
                             isPlaying: isPlaying,
                             isPaused: isPaused,
@@ -127,7 +128,7 @@ struct AddEditScriptView: View {
                             onPlay: handlePlayPreview
                         )
                         
-                        if script?.hasRecording == true {
+                        if hasRecording {
                             VStack(alignment: .leading, spacing: 8) {
                                 // Interval slider
                                 VStack(alignment: .leading, spacing: 4) {
@@ -205,6 +206,7 @@ struct AddEditScriptView: View {
             repetitions = script.repetitions
             intervalSeconds = script.intervalSeconds
             privacyModeEnabled = script.privacyModeEnabled
+            hasRecording = script.hasRecording
         }
     }
     
@@ -308,6 +310,7 @@ struct AddEditScriptView: View {
         if isRecording {
             audioService.stopRecording()
             isRecording = false
+            hasRecording = true  // Recording completed
         } else {
             audioService.requestMicrophonePermission { granted in
                 if granted {
@@ -327,6 +330,7 @@ struct AddEditScriptView: View {
     private func deleteRecording() {
         guard let script = script else { return }
         audioService.deleteRecording(for: script)
+        hasRecording = false  // Update state to reflect deletion
     }
     
     private func handlePlayPreview() {

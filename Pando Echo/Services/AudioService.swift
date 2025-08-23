@@ -628,7 +628,10 @@ class AudioService: NSObject, ObservableObject {
         }
         
         try? FileManager.default.removeItem(at: audioURL)
+        
+        // Clear recording properties to trigger UI update
         script.audioFilePath = nil
+        script.audioDuration = 0
     }
 }
 
