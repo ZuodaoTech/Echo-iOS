@@ -6,6 +6,7 @@ struct ScriptCard: View {
     @StateObject private var audioService = AudioService.shared
     @State private var showingDeleteAlert = false
     @State private var showingPrivacyAlert = false
+    @State private var showingNoRecordingAlert = false
     
     var onEdit: () -> Void
     var onDelete: () -> Void
@@ -137,10 +138,18 @@ struct ScriptCard: View {
         } message: {
             Text("Are you sure you want to delete this script? This action cannot be undone.")
         }
+        .alert("No Recording", isPresented: $showingNoRecordingAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Please tap and hold the card in Edit mode to record audio first")
+        }
     }
     
     private func handleTap() {
-        guard script.hasRecording else { return }
+        guard script.hasRecording else { 
+            showingNoRecordingAlert = true
+            return 
+        }
         
         if isPlaying {
             audioService.pausePlayback()

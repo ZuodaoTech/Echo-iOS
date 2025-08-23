@@ -18,6 +18,7 @@ struct AddEditScriptView: View {
     @State private var newCategoryName = ""
     @State private var isRecording = false
     @State private var showingMicPermissionAlert = false
+    @State private var showingPrivacyAlert = false
     
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Category.sortOrder, ascending: true)],
@@ -27,6 +28,14 @@ struct AddEditScriptView: View {
     
     private var isEditing: Bool {
         script != nil
+    }
+    
+    private var isPlaying: Bool {
+        audioService.isPlaying && audioService.currentPlayingScriptId == script?.id
+    }
+    
+    private var isPaused: Bool {
+        audioService.isPaused && audioService.currentPlayingScriptId == script?.id
     }
     
     var body: some View {
@@ -111,8 +120,11 @@ struct AddEditScriptView: View {
                             isRecording: $isRecording,
                             hasRecording: script?.hasRecording ?? false,
                             recordingDuration: script?.formattedDuration ?? "",
+                            isPlaying: isPlaying,
+                            isPaused: isPaused,
                             onRecord: handleRecording,
-                            onDelete: deleteRecording
+                            onDelete: deleteRecording,
+                            onPlay: handlePlayPreview
                         )
                         
                         if script?.hasRecording == true {
@@ -175,6 +187,11 @@ struct AddEditScriptView: View {
                 Button("OK") { }
             } message: {
                 Text("Please grant microphone access in Settings to record audio")
+            }
+            .alert("Privacy Mode", isPresented: $showingPrivacyAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Please connect earphones to play this audio")
             }
         }
         .onAppear {
@@ -284,36 +301,111 @@ struct AddEditScriptView: View {
         guard let script = script else { return }
         audioService.deleteRecording(for: script)
     }
+    
+    private func handlePlayPreview() {
+        guard let script = script else { return }
+        
+        if isPlaying {
+            audioService.pausePlayback()
+        } else if isPaused {
+            audioService.resumePlayback()
+        } else {
+            // Start new playback with single repetition for preview
+            do {
+                // Temporarily set repetitions to 1 for preview
+                let originalRepetitions = script.repetitions
+                script.repetitions = 1
+                
+                try audioService.play(script: script)
+                
+                // Restore original repetitions
+                script.repetitions = originalRepetitions
+            } catch AudioServiceError.privacyModeActive {
+                showingPrivacyAlert = true
+            } catch {
+                print("Preview playback error: \(error)")
+            }
+        }
+    }
 }
 
 struct RecordingButton: View {
     @Binding var isRecording: Bool
     let hasRecording: Bool
     let recordingDuration: String
+    let isPlaying: Bool
+    let isPaused: Bool
     let onRecord: () -> Void
     let onDelete: () -> Void
+    let onPlay: () -> Void
     
     var body: some View {
         VStack(spacing: 12) {
             if hasRecording && !isRecording {
-                HStack {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(.green)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Recording saved")
-                            .foregroundColor(.secondary)
-                        if !recordingDuration.isEmpty {
-                            Text(recordingDuration)
-                                .font(.caption)
+                VStack(spacing: 12) {
+                    // Recording info and delete button
+                    HStack {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(.green)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Recording saved")
                                 .foregroundColor(.secondary)
+                            if !recordingDuration.isEmpty {
+                                Text(recordingDuration)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        Spacer()
+                        
+                        Button {
+                            onDelete()
+                        } label: {
+                            Text("Delete")
+                                .font(.callout)
+                                .foregroundColor(.red)
                         }
                     }
-                    Spacer()
+                    
+                    // Play/Pause preview button - separate and prominent
                     Button {
-                        onDelete()
+                        onPlay()
                     } label: {
-                        Text("Delete")
-                            .foregroundColor(.red)
+                        HStack {
+                            Image(systemName: isPlaying ? "pause.circle.fill" : (isPaused ? "play.circle.fill" : "play.circle.fill"))
+                                .font(.title)
+                            
+                            Text("Preview")
+                                .fontWeight(.medium)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(isPlaying || isPaused ? Color.blue.opacity(0.15) : Color.blue.opacity(0.1))
+                        )
+                        .foregroundColor(.blue)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    
+                    // Show progress bar when playing
+                    if isPlaying || isPaused {
+                        VStack(spacing: 4) {
+                            ProgressView(value: AudioService.shared.playbackProgress)
+                                .tint(.blue)
+                            
+                            HStack {
+                                Text(isPlaying ? "Playing preview..." : "Preview paused")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                
+                                Spacer()
+                                
+                                Text("(plays once)")
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
                     }
                 }
             }
