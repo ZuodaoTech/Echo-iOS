@@ -52,6 +52,7 @@ class AudioService: NSObject, ObservableObject {
     private var isHandlingCompletion = false
     private var intervalStartTime: Date?
     private var intervalPausedTime: TimeInterval = 0  // How long into the interval we paused
+    private var nextRepetitionWorkItem: DispatchWorkItem?  // Track scheduled next repetition
     
     private let audioSession = AVAudioSession.sharedInstance()
     
@@ -245,8 +246,23 @@ class AudioService: NSObject, ObservableObject {
         // Allow pausing during intervals or actual playback
         guard isInPlaybackSession else { return }
         
-        if let player = audioPlayer, isPlaying {
-            // Pause actual audio playback
+        // Check interval first since audio might have just finished
+        if isInInterval {
+            // Pausing during interval - stop the interval timer and save progress
+            if let startTime = intervalStartTime {
+                // Save how much time has elapsed since start (or resume)
+                intervalPausedTime = Date().timeIntervalSince(startTime)
+                print("Pausing interval at \(intervalPausedTime) seconds")
+            }
+            intervalTimer?.invalidate()
+            intervalTimer = nil
+            intervalStartTime = nil  // Clear so next resume knows to set it
+            
+            // Cancel the scheduled next repetition
+            nextRepetitionWorkItem?.cancel()
+            nextRepetitionWorkItem = nil
+        } else if let player = audioPlayer, player.isPlaying {
+            // Pause actual audio playback (check player.isPlaying not our state)
             player.pause()
             pausedTime = player.currentTime
             
@@ -255,13 +271,6 @@ class AudioService: NSObject, ObservableObject {
             completionTimer = nil
             
             stopProgressTimer()
-        } else if isInInterval {
-            // Pausing during interval - stop the interval timer and save progress
-            if let startTime = intervalStartTime {
-                intervalPausedTime = Date().timeIntervalSince(startTime)
-            }
-            intervalTimer?.invalidate()
-            intervalTimer = nil
         }
         
         DispatchQueue.main.async {
@@ -274,7 +283,10 @@ class AudioService: NSObject, ObservableObject {
     func resumePlayback() {
         guard isPaused && isInPlaybackSession else { return }
         
-        if let player = audioPlayer, !isInInterval {
+        if isInInterval, let script = currentScript {
+            // Resume interval countdown first since we check it first in pause
+            resumeInterval(script: script)
+        } else if let player = audioPlayer {
             // Resume audio playback
             player.currentTime = pausedTime
             player.play()
@@ -294,23 +306,33 @@ class AudioService: NSObject, ObservableObject {
                     self.handlePlaybackCompletion()
                 }
             }
-        } else if isInInterval, let script = currentScript {
-            // Resume interval countdown
-            DispatchQueue.main.async {
-                self.isPaused = false
-                // Continue interval timer from where we left off
-                let remainingInterval = script.intervalSeconds - self.intervalPausedTime
-                
-                // Restart interval timer for remaining time
-                self.intervalStartTime = Date().addingTimeInterval(-self.intervalPausedTime)
-                self.startIntervalTimer(duration: script.intervalSeconds)
-                
-                // Schedule next repetition after remaining interval
-                DispatchQueue.main.asyncAfter(deadline: .now() + remainingInterval) { [weak self] in
-                    guard let self = self, !self.isPaused else { return }
-                    self.playNextRepetition()
-                }
+        }
+    }
+    
+    private func resumeInterval(script: SelftalkScript) {
+        // Resume interval countdown
+        DispatchQueue.main.async {
+            self.isPaused = false
+            
+            // Continue interval timer from where we left off
+            let remainingInterval = script.intervalSeconds - self.intervalPausedTime
+            print("Resuming interval with \(remainingInterval) seconds remaining")
+            
+            // Set start time adjusted for the time already elapsed
+            self.intervalStartTime = Date().addingTimeInterval(-self.intervalPausedTime)
+            self.startIntervalTimer(duration: script.intervalSeconds)
+            
+            // Cancel any existing work item
+            self.nextRepetitionWorkItem?.cancel()
+            
+            // Schedule next repetition after remaining interval
+            let workItem = DispatchWorkItem { [weak self] in
+                guard let self = self, !self.isPaused else { return }
+                self.playNextRepetition()
             }
+            self.nextRepetitionWorkItem = workItem
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + remainingInterval, execute: workItem)
         }
     }
     
@@ -330,6 +352,10 @@ class AudioService: NSObject, ObservableObject {
         
         completionTimer?.invalidate()
         completionTimer = nil
+        
+        // Cancel scheduled next repetition
+        nextRepetitionWorkItem?.cancel()
+        nextRepetitionWorkItem = nil
         
         // Stop interval timer
         stopIntervalTimer()
@@ -379,8 +405,10 @@ class AudioService: NSObject, ObservableObject {
         
         print("Starting interval timer for \(duration) seconds")
         
-        // Set the start time first
-        intervalStartTime = Date()
+        // Set the start time only if not already set (for resume case)
+        if intervalStartTime == nil {
+            intervalStartTime = Date()
+        }
         
         // Create and schedule timer on main thread
         DispatchQueue.main.async { [weak self] in
@@ -525,10 +553,17 @@ class AudioService: NSObject, ObservableObject {
             }
             
             // Play next repetition after interval
-            DispatchQueue.main.asyncAfter(deadline: .now() + script.intervalSeconds) { [weak self] in
+            // Cancel any existing work item first
+            self.nextRepetitionWorkItem?.cancel()
+            
+            // Create new work item for next repetition
+            let workItem = DispatchWorkItem { [weak self] in
                 guard let self = self, !self.isPaused else { return }
                 self.playNextRepetition()
             }
+            self.nextRepetitionWorkItem = workItem
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + script.intervalSeconds, execute: workItem)
         } else {
             // All repetitions completed
             print("All \(totalRepetitions) repetitions completed")

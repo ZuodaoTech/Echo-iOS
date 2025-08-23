@@ -42,9 +42,11 @@ struct ScriptsListView: View {
                             ScriptCard(
                                 script: script,
                                 onEdit: {
+                                    audioService.stopPlayback()  // Stop any playing audio
                                     scriptToEdit = script
                                 },
                                 onDelete: {
+                                    audioService.stopPlayback()  // Stop any playing audio
                                     deleteScript(script)
                                 }
                             )
@@ -53,6 +55,7 @@ struct ScriptsListView: View {
                             .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                 Button(role: .destructive) {
+                                    audioService.stopPlayback()  // Stop any playing audio
                                     scriptToDelete = script
                                     showingDeleteAlert = true
                                 } label: {
@@ -61,6 +64,7 @@ struct ScriptsListView: View {
                             }
                             .swipeActions(edge: .leading, allowsFullSwipe: false) {
                                 Button {
+                                    audioService.stopPlayback()  // Stop any playing audio
                                     scriptToEdit = script
                                 } label: {
                                     Label("Edit", systemImage: "pencil")
@@ -90,6 +94,7 @@ struct ScriptsListView: View {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
+                        audioService.stopPlayback()  // Stop any playing audio
                         showingAddScript = true
                     } label: {
                         Image(systemName: "plus")
@@ -114,6 +119,7 @@ struct ScriptsListView: View {
                 }
                 Button("Delete", role: .destructive) {
                     if let script = scriptToDelete {
+                        audioService.stopPlayback()  // Ensure playback is stopped
                         deleteScript(script)
                         scriptToDelete = nil
                     }
