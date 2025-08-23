@@ -80,6 +80,8 @@ final class AudioCoordinator: ObservableObject {
         
         // Update script with audio file path and track current script
         script.audioFilePath = fileManager.audioURL(for: script.id).path
+        // Clear old transcript when starting new recording
+        script.transcribedText = nil
         currentRecordingScript = script
     }
     
@@ -100,8 +102,10 @@ final class AudioCoordinator: ObservableObject {
             
             // Process the recording (trim silence, etc.)
             self.processingService.processRecording(for: scriptId) { success in
-                // After processing, transcribe the audio
-                self.processingService.transcribeRecording(for: scriptId) { transcription in
+                // After processing, transcribe the audio with selected language
+                let languageCode = script.transcriptionLanguage ?? "auto"
+                print("Starting transcription with language: \(languageCode)")
+                self.processingService.transcribeRecording(for: scriptId, languageCode: languageCode) { transcription in
                     DispatchQueue.main.async {
                         // Get actual duration from file after processing
                         if let fileDuration = self.fileManager.getAudioDuration(for: scriptId) {
@@ -116,7 +120,16 @@ final class AudioCoordinator: ObservableObject {
                         // Save transcription if available
                         if let transcription = transcription {
                             script.transcribedText = transcription
-                            print("Transcription saved")
+                            print("Transcription saved: \(transcription.prefix(50))...")
+                            // Force Core Data save
+                            do {
+                                try script.managedObjectContext?.save()
+                                print("Core Data saved with transcript")
+                            } catch {
+                                print("Failed to save transcript to Core Data: \(error)")
+                            }
+                        } else {
+                            print("No transcription received")
                         }
                         
                         self.currentRecordingScript = nil
@@ -173,9 +186,10 @@ final class AudioCoordinator: ObservableObject {
         // Delete the file
         try? fileManager.deleteRecording(for: script.id)
         
-        // Clear script properties
+        // Clear script properties including transcript
         script.audioFilePath = nil
         script.audioDuration = 0
+        script.transcribedText = nil  // Clear transcript when audio is deleted
     }
     
     func checkPrivacyMode() {
