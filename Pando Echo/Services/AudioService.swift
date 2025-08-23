@@ -33,10 +33,14 @@ class AudioService: NSObject, ObservableObject {
     @Published var currentPlayingScriptId: UUID?
     @Published var playbackProgress: Double = 0
     @Published var privacyModeActive = false
+    @Published var currentRepetition: Int = 0
+    @Published var totalRepetitions: Int = 0
     
     private var audioRecorder: AVAudioRecorder?
     private var audioPlayer: AVAudioPlayer?
     private var progressTimer: Timer?
+    private var repetitionTimer: Timer?
+    private var currentScript: SelftalkScript?
     
     private let audioSession = AVAudioSession.sharedInstance()
     
@@ -120,6 +124,8 @@ class AudioService: NSObject, ObservableObject {
             audioRecorder?.delegate = self
             audioRecorder?.record()
             
+            currentScript = script
+            
             DispatchQueue.main.async {
                 self.isRecording = true
                 script.audioFilePath = audioURL.path
@@ -130,8 +136,20 @@ class AudioService: NSObject, ObservableObject {
     }
     
     func stopRecording() {
-        audioRecorder?.stop()
+        if let recorder = audioRecorder {
+            recorder.stop()
+            
+            // Get the duration of the recording
+            if let script = currentScript {
+                let audioURL = getAudioURL(for: script.id)
+                if let player = try? AVAudioPlayer(contentsOf: audioURL) {
+                    script.audioDuration = player.duration
+                }
+            }
+        }
+        
         audioRecorder = nil
+        currentScript = nil
         
         DispatchQueue.main.async {
             self.isRecording = false
@@ -155,6 +173,11 @@ class AudioService: NSObject, ObservableObject {
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: audioURL)
             audioPlayer?.delegate = self
+            
+            currentScript = script
+            currentRepetition = 1
+            totalRepetitions = Int(script.repetitions)
+            
             audioPlayer?.play()
             
             DispatchQueue.main.async {
@@ -188,11 +211,17 @@ class AudioService: NSObject, ObservableObject {
     func stopPlayback() {
         audioPlayer?.stop()
         audioPlayer = nil
+        currentScript = nil
+        
+        repetitionTimer?.invalidate()
+        repetitionTimer = nil
         
         DispatchQueue.main.async {
             self.isPlaying = false
             self.currentPlayingScriptId = nil
             self.playbackProgress = 0
+            self.currentRepetition = 0
+            self.totalRepetitions = 0
         }
         
         stopProgressTimer()
@@ -258,6 +287,27 @@ extension AudioService: AVAudioRecorderDelegate {
 
 extension AudioService: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        stopPlayback()
+        guard let script = currentScript else {
+            stopPlayback()
+            return
+        }
+        
+        if currentRepetition < totalRepetitions {
+            // More repetitions to go
+            currentRepetition += 1
+            
+            DispatchQueue.main.async {
+                self.playbackProgress = 0
+            }
+            
+            // Wait for the interval before playing again
+            repetitionTimer = Timer.scheduledTimer(withTimeInterval: script.intervalSeconds, repeats: false) { _ in
+                self.audioPlayer?.play()
+                self.startProgressTimer()
+            }
+        } else {
+            // All repetitions completed
+            stopPlayback()
+        }
     }
 }
