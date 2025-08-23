@@ -1,8 +1,8 @@
-# CLAUDE.md - Pando Echo iOS Development Guide
+# CLAUDE.md - Echo iOS Development Guide
 
 ## Introduction & Overview
 
-**PANDO ECHO** is a self-talk app that helps users build positive habits through personalized selftalk scripts and their respective voice recordings.
+**ECHO** is a self-talk app that helps users build positive habits through personalized selftalk scripts and their respective voice recordings.
 
 ### Core Principles for iOS Development
 
@@ -106,10 +106,10 @@ Key considerations:
 ### Build & Test Commands
 ```bash
 # Build the project
-xcodebuild -scheme "Pando Echo" build
+xcodebuild -scheme "Echo" build
 
 # Run tests
-xcodebuild test -scheme "Pando Echo" -destination 'platform=iOS Simulator,name=iPhone 15'
+xcodebuild test -scheme "Echo" -destination 'platform=iOS Simulator,name=iPhone 15'
 
 # Check for SwiftLint issues (if installed)
 swiftlint
@@ -145,7 +145,7 @@ swiftlint
 Preferred method for adding dependencies:
 ```swift
 // In Xcode: File > Add Package Dependencies
-// Common packages for Pando:
+// Common packages for Echo:
 // - Lottie for animations
 // - SwiftUICharts for progress visualization
 ```
@@ -156,7 +156,7 @@ Preferred method for adding dependencies:
 platform :ios, '15.6'
 use_frameworks!
 
-target 'Pando Echo' do
+target 'Echo' do
   # Add pods here if needed
 end
 ```

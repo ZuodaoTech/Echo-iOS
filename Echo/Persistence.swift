@@ -1,6 +1,6 @@
 //
 //  Persistence.swift
-//  Pando Echo
+//  Echo
 //
 //  Created by joker on 8/23/25.
 //
@@ -63,7 +63,7 @@ struct PersistenceController {
     let container: NSPersistentContainer
 
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "Pando_Echo")
+        container = NSPersistentContainer(name: "Echo")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
