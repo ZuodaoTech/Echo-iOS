@@ -1,13 +1,13 @@
 //
-//  Pando_EchoUITestsLaunchTests.swift
-//  Pando EchoUITests
+//  EchoUITestsLaunchTests.swift
+//  EchoUITests
 //
 //  Created by joker on 8/23/25.
 //
 
 import XCTest
 
-final class Pando_EchoUITestsLaunchTests: XCTestCase {
+final class EchoUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
