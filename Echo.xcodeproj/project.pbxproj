@@ -402,6 +402,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Echo;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Echo needs access to your microphone to record your personal self-talk affirmations.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Echo uses speech recognition to transcribe your recordings, helping you create scripts quickly from your spoken words.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -439,6 +440,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Echo;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Echo needs access to your microphone to record your personal self-talk affirmations.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Echo uses speech recognition to transcribe your recordings, helping you create scripts quickly from your spoken words.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

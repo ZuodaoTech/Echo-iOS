@@ -100,19 +100,28 @@ final class AudioCoordinator: ObservableObject {
             
             // Process the recording (trim silence, etc.)
             self.processingService.processRecording(for: scriptId) { success in
-                DispatchQueue.main.async {
-                    // Get actual duration from file after processing
-                    if let fileDuration = self.fileManager.getAudioDuration(for: scriptId) {
-                        script.audioDuration = fileDuration
-                        print("Recording processed - Duration: \(fileDuration)s, Success: \(success)")
-                    } else {
-                        // Fallback to recorder's duration
-                        script.audioDuration = duration
-                        print("Recording completed - Using recorder duration: \(duration)s")
+                // After processing, transcribe the audio
+                self.processingService.transcribeRecording(for: scriptId) { transcription in
+                    DispatchQueue.main.async {
+                        // Get actual duration from file after processing
+                        if let fileDuration = self.fileManager.getAudioDuration(for: scriptId) {
+                            script.audioDuration = fileDuration
+                            print("Recording processed - Duration: \(fileDuration)s, Success: \(success)")
+                        } else {
+                            // Fallback to recorder's duration
+                            script.audioDuration = duration
+                            print("Recording completed - Using recorder duration: \(duration)s")
+                        }
+                        
+                        // Save transcription if available
+                        if let transcription = transcription {
+                            script.transcribedText = transcription
+                            print("Transcription saved")
+                        }
+                        
+                        self.currentRecordingScript = nil
+                        self.isProcessingRecording = false
                     }
-                    
-                    self.currentRecordingScript = nil
-                    self.isProcessingRecording = false
                 }
             }
         }

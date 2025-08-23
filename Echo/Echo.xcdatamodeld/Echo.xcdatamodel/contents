@@ -18,6 +18,7 @@
         <attribute name="privacyModeEnabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="repetitions" attributeType="Integer 16" defaultValueString="3" usesScalarValueType="YES"/>
         <attribute name="scriptText" attributeType="String"/>
+        <attribute name="transcribedText" optional="YES" attributeType="String"/>
         <attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="scripts" inverseEntity="Category"/>
     </entity>

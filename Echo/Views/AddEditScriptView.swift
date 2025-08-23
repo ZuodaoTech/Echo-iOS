@@ -1,6 +1,7 @@
 import SwiftUI
 import CoreData
 import AVFoundation
+import UIKit
 
 struct AddEditScriptView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -19,6 +20,7 @@ struct AddEditScriptView: View {
     @State private var isRecording = false
     @State private var hasRecording = false
     @State private var isProcessingRecording = false
+    @State private var originalScriptBeforeTranscript: String? = nil
     @State private var showingMicPermissionAlert = false
     @State private var showingPrivacyAlert = false
     @State private var showingDeleteAlert = false
@@ -154,6 +156,84 @@ struct AddEditScriptView: View {
                             onDelete: deleteRecording,
                             onPlay: handlePlayPreview
                         )
+                        
+                        // Show transcript if available
+                        if hasRecording, let transcript = script?.transcribedText, !transcript.isEmpty {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Label("Transcript", systemImage: "text.quote")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                                
+                                Text(transcript)
+                                    .font(.footnote)
+                                    .padding()
+                                    .background(Color.secondary.opacity(0.1))
+                                    .cornerRadius(8)
+                                
+                                HStack {
+                                    // Show "Use as Script" if transcript differs from current script
+                                    if scriptText != transcript {
+                                        Button {
+                                            // Save original before replacing
+                                            if originalScriptBeforeTranscript == nil {
+                                                originalScriptBeforeTranscript = scriptText
+                                            }
+                                            // Replace script text with transcript
+                                            scriptText = transcript
+                                            // Save immediately
+                                            if let script = script {
+                                                script.scriptText = transcript
+                                                script.updatedAt = Date()
+                                                do {
+                                                    try viewContext.save()
+                                                } catch {
+                                                    print("Failed to save transcript as script: \(error)")
+                                                }
+                                            }
+                                        } label: {
+                                            Label("Use as Script", systemImage: "doc.text")
+                                                .font(.footnote)
+                                        }
+                                        .buttonStyle(.borderedProminent)
+                                    }
+                                    
+                                    // Show "Undo" button if we have an original to revert to
+                                    if let original = originalScriptBeforeTranscript, scriptText == transcript {
+                                        Button {
+                                            // Revert to original
+                                            scriptText = original
+                                            // Save immediately
+                                            if let script = script {
+                                                script.scriptText = original
+                                                script.updatedAt = Date()
+                                                do {
+                                                    try viewContext.save()
+                                                } catch {
+                                                    print("Failed to revert script: \(error)")
+                                                }
+                                            }
+                                            // Clear the stored original
+                                            originalScriptBeforeTranscript = nil
+                                        } label: {
+                                            Label("Undo", systemImage: "arrow.uturn.backward")
+                                                .font(.footnote)
+                                        }
+                                        .buttonStyle(.bordered)
+                                        .tint(.orange)
+                                    }
+                                    
+                                    Button {
+                                        // Copy to clipboard
+                                        UIPasteboard.general.string = transcript
+                                    } label: {
+                                        Label("Copy", systemImage: "doc.on.doc")
+                                            .font(.footnote)
+                                    }
+                                    .buttonStyle(.bordered)
+                                }
+                            }
+                            .padding(.bottom, 8)
+                        }
                         
                         if hasRecording {
                             VStack(alignment: .leading, spacing: 8) {
@@ -389,6 +469,8 @@ struct AddEditScriptView: View {
             isRecording = false
             // Don't set hasRecording immediately - wait for processing
         } else {
+            // Clear any stored original when making a new recording
+            originalScriptBeforeTranscript = nil
             audioService.requestMicrophonePermission { granted in
                 if granted {
                     do {
