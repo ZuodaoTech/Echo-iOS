@@ -167,6 +167,7 @@ struct AddEditScriptView: View {
                                 Text(transcript)
                                     .font(.footnote)
                                     .padding()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                                     .background(Color.secondary.opacity(0.1))
                                     .cornerRadius(8)
                                 
@@ -191,8 +192,9 @@ struct AddEditScriptView: View {
                                                 }
                                             }
                                         } label: {
-                                            Label("Use as Script", systemImage: "doc.text")
+                                            Label("Use as Script", systemImage: "doc.text.fill")
                                                 .font(.footnote)
+                                                .foregroundColor(.white)
                                         }
                                         .buttonStyle(.borderedProminent)
                                     }
@@ -559,6 +561,7 @@ struct RecordingButton: View {
                     // Recording info and delete button
                     HStack {
                         Image(systemName: "checkmark.circle.fill")
+                            .font(.title2)  // Standardized size
                             .foregroundColor(.green)
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Recording saved")
@@ -586,7 +589,7 @@ struct RecordingButton: View {
                     } label: {
                         HStack {
                             Image(systemName: isPlaying ? "pause.circle.fill" : (isPaused ? "play.circle.fill" : "play.circle.fill"))
-                                .font(.title)
+                                .font(.title2)  // Standardized size
                             
                             Text("Preview")
                                 .fontWeight(.medium)
