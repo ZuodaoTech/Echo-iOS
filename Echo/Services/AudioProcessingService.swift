@@ -306,24 +306,17 @@ final class AudioProcessingService {
                 
                 // Check if we got any results despite the error
                 if let result = result {
-                    let transcription = result.bestTranscription.formattedString
+                    var transcription = result.bestTranscription.formattedString
                     if !transcription.isEmpty {
+                        // Apply punctuation even to partial results
+                        let languageUsed = languageCode ?? "en-US"
+                        transcription = self?.ensureProperPunctuation(to: transcription, languageCode: languageUsed) ?? transcription
                         print("Transcription completed despite error: \(transcription.prefix(50))...")
                         DispatchQueue.main.async {
                             completion(transcription)
                         }
                         return
                     }
-                }
-                
-                // Check if we at least got partial results before error
-                if let result = result, !result.bestTranscription.formattedString.isEmpty {
-                    let transcription = result.bestTranscription.formattedString
-                    print("Using partial transcription before error: \(transcription.prefix(50))...")
-                    DispatchQueue.main.async {
-                        completion(transcription)
-                    }
-                    return
                 }
                 
                 print("Transcription error (code: \(errorCode)): \(error.localizedDescription)")
@@ -337,12 +330,10 @@ final class AudioProcessingService {
             if let result = result, result.isFinal {
                 var transcription = result.bestTranscription.formattedString
                 
-                // Apply basic punctuation if not available from iOS 16+
-                if #available(iOS 16, *) {
-                    // iOS 16+ should have punctuation already
-                } else {
-                    transcription = self?.addBasicPunctuation(to: transcription) ?? transcription
-                }
+                // Always apply punctuation cleanup regardless of iOS version
+                // iOS 16+ adds some punctuation but may miss end punctuation
+                let languageUsed = languageCode ?? "en-US"
+                transcription = self?.ensureProperPunctuation(to: transcription, languageCode: languageUsed) ?? transcription
                 
                 print("Transcription successful: \(transcription.prefix(50))...")
                 self?.currentRecognitionTask = nil
@@ -355,33 +346,84 @@ final class AudioProcessingService {
     
     // MARK: - Private Methods
     
-    /// Add basic punctuation to transcribed text
-    private func addBasicPunctuation(to text: String) -> String {
-        var result = text
+    /// Ensure proper punctuation and formatting for transcribed text
+    private func ensureProperPunctuation(to text: String, languageCode: String?) -> String {
+        // First trim any whitespace
+        var result = text.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        // Capitalize first letter
-        if !result.isEmpty {
-            result = result.prefix(1).capitalized + result.dropFirst()
-        }
+        // If empty, return as is
+        guard !result.isEmpty else { return result }
         
-        // Add period at the end if no punctuation exists
-        let lastChar = result.last
-        if let lastChar = lastChar,
-           ![".", "!", "?", ",", ";", ":"].contains(String(lastChar)) {
-            result += "."
-        }
+        // Define punctuation sets for different languages
+        let westernPunctuation = CharacterSet(charactersIn: ".!?,;:")
+        let chinesePunctuation = CharacterSet(charactersIn: "。！？，；：、")
+        let japanesePunctuation = CharacterSet(charactersIn: "。！？、")
         
-        // Capitalize after sentence endings (basic approach)
-        result = result.replacingOccurrences(of: ". ", with: ".\n")
-            .split(separator: "\n")
-            .map { sentence in
-                let trimmed = sentence.trimmingCharacters(in: .whitespaces)
-                if !trimmed.isEmpty {
-                    return trimmed.prefix(1).capitalized + trimmed.dropFirst()
-                }
-                return String(sentence)
+        // Determine which punctuation set to use based on language
+        let punctuationSet: CharacterSet
+        let defaultEndPunctuation: String
+        
+        if let langCode = languageCode {
+            if langCode.hasPrefix("zh") {
+                // Chinese
+                punctuationSet = chinesePunctuation.union(westernPunctuation)
+                defaultEndPunctuation = "。"
+            } else if langCode.hasPrefix("ja") {
+                // Japanese
+                punctuationSet = japanesePunctuation.union(westernPunctuation)
+                defaultEndPunctuation = "。"
+            } else {
+                // Western languages
+                punctuationSet = westernPunctuation
+                defaultEndPunctuation = "."
             }
-            .joined(separator: " ")
+        } else {
+            // Default to western
+            punctuationSet = westernPunctuation
+            defaultEndPunctuation = "."
+        }
+        
+        // Check if the text ends with punctuation
+        if let lastChar = result.last {
+            // Check if last character is punctuation
+            if let lastCharScalar = lastChar.unicodeScalars.first {
+                if !punctuationSet.contains(lastCharScalar) {
+                // Add appropriate punctuation based on content
+                // If it looks like a question (contains question words), add question mark
+                let lowercased = result.lowercased()
+                if lowercased.contains("what") || lowercased.contains("when") || 
+                   lowercased.contains("where") || lowercased.contains("who") ||
+                   lowercased.contains("why") || lowercased.contains("how") ||
+                   lowercased.contains("?") || lowercased.contains("吗") ||
+                   lowercased.contains("呢") || lowercased.contains("什么") {
+                    result += defaultEndPunctuation == "。" ? "？" : "?"
+                } else {
+                    result += defaultEndPunctuation
+                }
+                }
+            }
+        }
+        
+        // Capitalize first letter for western languages
+        if languageCode == nil || (!languageCode!.hasPrefix("zh") && !languageCode!.hasPrefix("ja") && !languageCode!.hasPrefix("ko")) {
+            if let firstChar = result.first, firstChar.isLowercase {
+                result = result.prefix(1).uppercased() + result.dropFirst()
+            }
+            
+            // Capitalize after sentence endings
+            let sentences = result.replacingOccurrences(of: ". ", with: ".\n")
+                .replacingOccurrences(of: "! ", with: "!\n")
+                .replacingOccurrences(of: "? ", with: "?\n")
+                .split(separator: "\n")
+            
+            result = sentences.map { sentence in
+                let trimmed = sentence.trimmingCharacters(in: .whitespaces)
+                if !trimmed.isEmpty && trimmed.first?.isLowercase == true {
+                    return trimmed.prefix(1).uppercased() + trimmed.dropFirst()
+                }
+                return String(trimmed)
+            }.joined(separator: " ")
+        }
         
         return result
     }

@@ -255,6 +255,26 @@ let duration = CMTimeGetSeconds(asset.duration)
 - Use background contexts for heavy operations
 - Implement proper error handling
 
+## Development Workflow Automation
+
+### Auto-approval Configuration
+The project is configured to automatically approve certain commands for efficiency.
+Configuration is stored in `.claude/settings.json`.
+
+#### Automatically Approved
+- All `Bash` tool commands by default
+- Build commands: `xcodebuild`, `swift build`, `swift test`
+- Read-only git commands: `git status`, `git diff`, `git log`
+- File inspection and navigation commands
+
+#### Manual Confirmation Required
+- `git commit` - Review commit messages
+- `git push` - Confirm remote updates  
+- `git pull` - Verify incoming changes
+- `git merge` - Review merge operations
+
+This maintains a balance between efficiency and control over critical operations.
+
 ## Future Enhancements
 
 ### Planned Features
