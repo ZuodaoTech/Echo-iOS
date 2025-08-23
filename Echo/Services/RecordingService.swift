@@ -16,6 +16,7 @@ final class RecordingService: NSObject, ObservableObject {
     private let fileManager: AudioFileManager
     private let sessionManager: AudioSessionManager
     private var recordingTimer: Timer?
+    private var stopRecordingCompletion: ((UUID, TimeInterval) -> Void)?
     
     // MARK: - Constants
     
@@ -73,16 +74,42 @@ final class RecordingService: NSObject, ObservableObject {
         }
     }
     
-    /// Stop current recording
+    /// Stop current recording with completion handler
+    func stopRecording(completion: ((UUID, TimeInterval) -> Void)? = nil) {
+        guard let recorder = audioRecorder, isRecording else { 
+            completion?(UUID(), 0)
+            return 
+        }
+        
+        stopRecordingTimer()
+        
+        if let scriptId = currentRecordingScriptId {
+            let duration = recorder.currentTime
+            stopRecordingCompletion = { [weak self] _, _ in
+                completion?(scriptId, duration)
+                self?.stopRecordingCompletion = nil
+            }
+        }
+        
+        // This will trigger audioRecorderDidFinishRecording delegate
+        recorder.stop()
+        
+        DispatchQueue.main.async {
+            self.isRecording = false
+            self.recordingDuration = 0
+        }
+    }
+    
+    /// Stop current recording synchronously (legacy support)
     @discardableResult
     func stopRecording() -> (scriptId: UUID, duration: TimeInterval)? {
         guard let recorder = audioRecorder, isRecording else { return nil }
         
-        recorder.stop()
-        stopRecordingTimer()
-        
         let scriptId = currentRecordingScriptId
         let duration = recorder.currentTime
+        
+        recorder.stop()
+        stopRecordingTimer()
         
         audioRecorder = nil
         currentRecordingScriptId = nil
@@ -144,6 +171,17 @@ final class RecordingService: NSObject, ObservableObject {
 
 extension RecordingService: AVAudioRecorderDelegate {
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+        print("Recording finished successfully: \(flag)")
+        
+        // Call completion if we have one
+        if let scriptId = currentRecordingScriptId {
+            let duration = fileManager.getAudioDuration(for: scriptId) ?? 0
+            stopRecordingCompletion?(scriptId, duration)
+        }
+        
+        audioRecorder = nil
+        currentRecordingScriptId = nil
+        
         DispatchQueue.main.async {
             self.isRecording = false
             self.recordingDuration = 0
@@ -152,6 +190,7 @@ extension RecordingService: AVAudioRecorderDelegate {
     }
     
     func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder, error: Error?) {
+        print("Recording encode error: \(error?.localizedDescription ?? "unknown")")
         stopRecording()
     }
 }

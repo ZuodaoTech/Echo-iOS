@@ -34,14 +34,44 @@ final class AudioSessionManager: ObservableObject {
     
     /// Configure audio session for recording
     func configureForRecording() throws {
-        try audioSession.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
-        try audioSession.setActive(true)
+        do {
+            // Only change category if needed
+            if audioSession.category != .playAndRecord {
+                try audioSession.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
+            }
+            // Only activate if not already active
+            if !audioSession.isOtherAudioPlaying {
+                try audioSession.setActive(true)
+            }
+        } catch {
+            // On simulator, some configurations may fail - that's OK
+            #if targetEnvironment(simulator)
+            // Silently ignore on simulator
+            #else
+            throw error
+            #endif
+        }
     }
     
     /// Configure audio session for playback
     func configureForPlayback() throws {
-        try audioSession.setCategory(.playback, mode: .default, options: [.allowBluetooth, .allowBluetoothA2DP])
-        try audioSession.setActive(true)
+        do {
+            // Only change category if needed
+            if audioSession.category != .playback {
+                try audioSession.setCategory(.playback, mode: .default, options: [.allowBluetooth, .allowBluetoothA2DP])
+            }
+            // Only activate if not already active
+            if !audioSession.isOtherAudioPlaying {
+                try audioSession.setActive(true)
+            }
+        } catch {
+            // On simulator, some configurations may fail - that's OK
+            #if targetEnvironment(simulator)
+            // Silently ignore on simulator
+            #else
+            throw error
+            #endif
+        }
     }
     
     /// Request microphone permission
