@@ -198,6 +198,8 @@ class AudioService: NSObject, ObservableObject {
             totalRepetitions = Int(script.repetitions)
             pausedTime = 0
             
+            print("Starting playback: repetition 1 of \(totalRepetitions)")
+            
             audioPlayer?.play()
             
             DispatchQueue.main.async {
@@ -325,19 +327,30 @@ extension AudioService: AVAudioPlayerDelegate {
             return
         }
         
+        print("Finished playing repetition \(currentRepetition) of \(totalRepetitions)")
+        
+        // We just finished playing repetition 'currentRepetition'
+        // Check if we have more repetitions to play
         if currentRepetition < totalRepetitions {
-            // More repetitions to go
+            // We need to play more repetitions
+            // First, increment the counter for the next repetition
+            let nextRepetition = currentRepetition + 1
+            
+            print("Playing next repetition: \(nextRepetition)")
+            
             DispatchQueue.main.async {
-                self.currentRepetition += 1
+                self.currentRepetition = nextRepetition
                 self.playbackProgress = 0
             }
             
             // Stop the progress timer during interval
             stopProgressTimer()
             
-            // Wait for the interval before playing again
+            // Wait for the interval before playing the next repetition
             repetitionTimer = Timer.scheduledTimer(withTimeInterval: script.intervalSeconds, repeats: false) { [weak self] _ in
                 guard let self = self else { return }
+                
+                print("Starting repetition \(self.currentRepetition) after interval")
                 
                 // Reset the player to beginning and play again
                 self.audioPlayer?.currentTime = 0
@@ -347,11 +360,13 @@ extension AudioService: AVAudioPlayerDelegate {
                     self.startProgressTimer()
                 } else {
                     // If play fails, stop everything
+                    print("Failed to play repetition \(self.currentRepetition)")
                     self.stopPlayback()
                 }
             }
         } else {
-            // All repetitions completed
+            // All repetitions completed (currentRepetition == totalRepetitions)
+            print("All \(totalRepetitions) repetitions completed")
             stopPlayback()
         }
     }
