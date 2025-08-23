@@ -93,12 +93,38 @@ final class PlaybackService: NSObject, ObservableObject {
         
         do {
             print("PlaybackService: Creating AVAudioPlayer with URL: \(audioURL)")
+            
+            // First, validate the file
+            let fileAttributes = try FileManager.default.attributesOfItem(atPath: audioURL.path)
+            let fileSize = fileAttributes[.size] as? Int64 ?? 0
+            print("PlaybackService: File size: \(fileSize) bytes")
+            
+            // Try using AVAsset to get duration first (more reliable)
+            let asset = AVAsset(url: audioURL)
+            let duration = CMTimeGetSeconds(asset.duration)
+            print("PlaybackService: AVAsset duration: \(duration)s")
+            
+            // Create the player
             audioPlayer = try AVAudioPlayer(contentsOf: audioURL)
             audioPlayer?.delegate = self
-            audioPlayer?.prepareToPlay()
+            
+            // Important: Call prepareToPlay and wait a moment for the file to be ready
+            let prepared = audioPlayer?.prepareToPlay() ?? false
+            print("PlaybackService: Prepare to play: \(prepared)")
+            
             audioPlayer?.enableRate = true
             
-            print("PlaybackService: Player created, duration: \(audioPlayer?.duration ?? 0)")
+            // Add a small delay to ensure file is ready
+            Thread.sleep(forTimeInterval: 0.1)
+            
+            let playerDuration = audioPlayer?.duration ?? 0
+            print("PlaybackService: Player created, duration: \(playerDuration)")
+            
+            // If duration is still 0, the file might be corrupted or incompatible
+            if playerDuration <= 0 && duration <= 0 {
+                print("PlaybackService: Warning - Audio file appears to have no duration")
+                // Try to play anyway, some files might still work
+            }
             
             // Store script parameters
             currentScriptRepetitions = repetitions
@@ -110,12 +136,23 @@ final class PlaybackService: NSObject, ObservableObject {
             totalRepetitions = repetitions
             pausedTime = 0
             
-            guard audioPlayer?.play() == true else {
-                print("PlaybackService: Failed to start playback")
-                throw AudioServiceError.playbackFailed
+            if audioPlayer?.play() != true {
+                print("PlaybackService: Failed to start playback - attempting recovery")
+                
+                // Try once more after re-preparing
+                audioPlayer?.prepareToPlay()
+                Thread.sleep(forTimeInterval: 0.2)
+                
+                guard audioPlayer?.play() == true else {
+                    print("PlaybackService: Failed to start playback after recovery attempt")
+                    throw AudioServiceError.playbackFailed
+                }
+                
+                // If we reach here, recovery succeeded
+                print("PlaybackService: Playback recovered successfully")
+            } else {
+                print("PlaybackService: Playback started successfully")
             }
-            
-            print("PlaybackService: Playback started successfully")
             
             DispatchQueue.main.async {
                 self.isPlaying = true
