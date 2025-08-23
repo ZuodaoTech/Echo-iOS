@@ -1,0 +1,204 @@
+import SwiftUI
+import CoreData
+
+struct ScriptsListView: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    @StateObject private var audioService = AudioService.shared
+    
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \SelftalkScript.createdAt, ascending: false)],
+        animation: .default
+    )
+    private var scripts: FetchedResults<SelftalkScript>
+    
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Category.sortOrder, ascending: true)],
+        animation: .default
+    )
+    private var categories: FetchedResults<Category>
+    
+    @State private var selectedCategory: Category?
+    @State private var showingAddScript = false
+    @State private var showingEditScript = false
+    @State private var scriptToEdit: SelftalkScript?
+    @State private var showingFilterSheet = false
+    
+    private var filteredScripts: [SelftalkScript] {
+        if let category = selectedCategory {
+            return scripts.filter { $0.category == category }
+        }
+        return Array(scripts)
+    }
+    
+    var body: some View {
+        NavigationView {
+            ZStack {
+                if scripts.isEmpty {
+                    EmptyStateView()
+                } else {
+                    ScrollView {
+                        LazyVStack(spacing: 12) {
+                            ForEach(filteredScripts, id: \.id) { script in
+                                ScriptCard(
+                                    script: script,
+                                    onEdit: {
+                                        scriptToEdit = script
+                                        showingEditScript = true
+                                    },
+                                    onDelete: {
+                                        deleteScript(script)
+                                    }
+                                )
+                                .padding(.horizontal)
+                            }
+                        }
+                        .padding(.vertical)
+                    }
+                }
+            }
+            .navigationTitle("Scripts")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        showingFilterSheet = true
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "line.3.horizontal.decrease.circle")
+                            if let category = selectedCategory {
+                                Text(category.name)
+                                    .font(.caption)
+                            }
+                        }
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showingAddScript = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingAddScript) {
+                AddEditScriptView(script: nil)
+            }
+            .sheet(isPresented: $showingEditScript) {
+                if let script = scriptToEdit {
+                    AddEditScriptView(script: script)
+                }
+            }
+            .sheet(isPresented: $showingFilterSheet) {
+                CategoryFilterSheet(
+                    categories: Array(categories),
+                    selectedCategory: $selectedCategory
+                )
+            }
+        }
+        .onAppear {
+            setupInitialData()
+        }
+    }
+    
+    private func setupInitialData() {
+        // Create default categories if none exist
+        if categories.isEmpty {
+            Category.createDefaultCategories(context: viewContext)
+        }
+    }
+    
+    private func deleteScript(_ script: SelftalkScript) {
+        withAnimation {
+            audioService.deleteRecording(for: script)
+            viewContext.delete(script)
+            
+            do {
+                try viewContext.save()
+            } catch {
+                print("Error deleting script: \(error)")
+            }
+        }
+    }
+}
+
+struct EmptyStateView: View {
+    var body: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "text.quote")
+                .font(.system(size: 60))
+                .foregroundColor(.gray)
+            
+            Text("No Scripts Yet")
+                .font(.title2)
+                .fontWeight(.medium)
+            
+            Text("Tap the + button to create your first self-talk script")
+                .font(.body)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
+        }
+    }
+}
+
+struct CategoryFilterSheet: View {
+    let categories: [Category]
+    @Binding var selectedCategory: Category?
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationView {
+            List {
+                Section {
+                    Button {
+                        selectedCategory = nil
+                        dismiss()
+                    } label: {
+                        HStack {
+                            Text("All Scripts")
+                            Spacer()
+                            if selectedCategory == nil {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                    }
+                }
+                
+                Section("Categories") {
+                    ForEach(categories, id: \.id) { category in
+                        Button {
+                            selectedCategory = category
+                            dismiss()
+                        } label: {
+                            HStack {
+                                Text(category.name)
+                                Spacer()
+                                if selectedCategory == category {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(.blue)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Filter by Category")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct ScriptsListView_Previews: PreviewProvider {
+    static var previews: some View {
+        ScriptsListView()
+            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    }
+}
