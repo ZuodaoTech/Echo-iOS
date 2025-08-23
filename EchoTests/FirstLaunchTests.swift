@@ -1,6 +1,6 @@
 import XCTest
 import CoreData
-@testable import Pando_Echo
+@testable import Echo
 
 class FirstLaunchTests: XCTestCase {
     

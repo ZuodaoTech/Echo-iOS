@@ -1,14 +1,14 @@
 //
-//  Pando_EchoTests.swift
-//  Pando EchoTests
+//  EchoTests.swift
+//  EchoTests
 //
 //  Created by joker on 8/23/25.
 //
 
 import Testing
-@testable import Pando_Echo
+@testable import Echo
 
-struct Pando_EchoTests {
+struct EchoTests {
 
     @Test func example() async throws {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.

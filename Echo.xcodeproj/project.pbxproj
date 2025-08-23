@@ -24,25 +24,25 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F33EE2EE2E5935FE007F42E6 /* Pando Echo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pando Echo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F33EE3002E5935FF007F42E6 /* Pando EchoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Pando EchoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F33EE30A2E5935FF007F42E6 /* Pando EchoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Pando EchoUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F33EE2EE2E5935FE007F42E6 /* Echo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Echo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F33EE3002E5935FF007F42E6 /* EchoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EchoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F33EE30A2E5935FF007F42E6 /* EchoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EchoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F33EE2F02E5935FE007F42E6 /* Pando Echo */ = {
+		F33EE2F02E5935FE007F42E6 /* Echo */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Pando Echo";
+			path = "Echo";
 			sourceTree = "<group>";
 		};
-		F33EE3032E5935FF007F42E6 /* Pando EchoTests */ = {
+		F33EE3032E5935FF007F42E6 /* EchoTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Pando EchoTests";
+			path = "EchoTests";
 			sourceTree = "<group>";
 		};
-		F33EE30D2E5935FF007F42E6 /* Pando EchoUITests */ = {
+		F33EE30D2E5935FF007F42E6 /* EchoUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Pando EchoUITests";
+			path = "EchoUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -75,9 +75,9 @@
 		F33EE2E52E5935FE007F42E6 = {
 			isa = PBXGroup;
 			children = (
-				F33EE2F02E5935FE007F42E6 /* Pando Echo */,
-				F33EE3032E5935FF007F42E6 /* Pando EchoTests */,
-				F33EE30D2E5935FF007F42E6 /* Pando EchoUITests */,
+				F33EE2F02E5935FE007F42E6 /* Echo */,
+				F33EE3032E5935FF007F42E6 /* EchoTests */,
+				F33EE30D2E5935FF007F42E6 /* EchoUITests */,
 				F33EE2EF2E5935FE007F42E6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -85,9 +85,9 @@
 		F33EE2EF2E5935FE007F42E6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F33EE2EE2E5935FE007F42E6 /* Pando Echo.app */,
-				F33EE3002E5935FF007F42E6 /* Pando EchoTests.xctest */,
-				F33EE30A2E5935FF007F42E6 /* Pando EchoUITests.xctest */,
+				F33EE2EE2E5935FE007F42E6 /* Echo.app */,
+				F33EE3002E5935FF007F42E6 /* EchoTests.xctest */,
+				F33EE30A2E5935FF007F42E6 /* EchoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,9 +95,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F33EE2ED2E5935FE007F42E6 /* Pando Echo */ = {
+		F33EE2ED2E5935FE007F42E6 /* Echo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F33EE3142E5935FF007F42E6 /* Build configuration list for PBXNativeTarget "Pando Echo" */;
+			buildConfigurationList = F33EE3142E5935FF007F42E6 /* Build configuration list for PBXNativeTarget "Echo" */;
 			buildPhases = (
 				F33EE2EA2E5935FE007F42E6 /* Sources */,
 				F33EE2EB2E5935FE007F42E6 /* Frameworks */,
@@ -108,18 +108,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				F33EE2F02E5935FE007F42E6 /* Pando Echo */,
+				F33EE2F02E5935FE007F42E6 /* Echo */,
 			);
-			name = "Pando Echo";
+			name = Echo;
 			packageProductDependencies = (
 			);
-			productName = "Pando Echo";
-			productReference = F33EE2EE2E5935FE007F42E6 /* Pando Echo.app */;
+			productName = "Echo";
+			productReference = F33EE2EE2E5935FE007F42E6 /* Echo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		F33EE2FF2E5935FF007F42E6 /* Pando EchoTests */ = {
+		F33EE2FF2E5935FF007F42E6 /* EchoTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F33EE3172E5935FF007F42E6 /* Build configuration list for PBXNativeTarget "Pando EchoTests" */;
+			buildConfigurationList = F33EE3172E5935FF007F42E6 /* Build configuration list for PBXNativeTarget "EchoTests" */;
 			buildPhases = (
 				F33EE2FC2E5935FF007F42E6 /* Sources */,
 				F33EE2FD2E5935FF007F42E6 /* Frameworks */,
@@ -131,18 +131,18 @@
 				F33EE3022E5935FF007F42E6 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				F33EE3032E5935FF007F42E6 /* Pando EchoTests */,
+				F33EE3032E5935FF007F42E6 /* EchoTests */,
 			);
-			name = "Pando EchoTests";
+			name = EchoTests;
 			packageProductDependencies = (
 			);
-			productName = "Pando EchoTests";
-			productReference = F33EE3002E5935FF007F42E6 /* Pando EchoTests.xctest */;
+			productName = "EchoTests";
+			productReference = F33EE3002E5935FF007F42E6 /* EchoTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		F33EE3092E5935FF007F42E6 /* Pando EchoUITests */ = {
+		F33EE3092E5935FF007F42E6 /* EchoUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F33EE31A2E5935FF007F42E6 /* Build configuration list for PBXNativeTarget "Pando EchoUITests" */;
+			buildConfigurationList = F33EE31A2E5935FF007F42E6 /* Build configuration list for PBXNativeTarget "EchoUITests" */;
 			buildPhases = (
 				F33EE3062E5935FF007F42E6 /* Sources */,
 				F33EE3072E5935FF007F42E6 /* Frameworks */,
@@ -154,13 +154,13 @@
 				F33EE30C2E5935FF007F42E6 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				F33EE30D2E5935FF007F42E6 /* Pando EchoUITests */,
+				F33EE30D2E5935FF007F42E6 /* EchoUITests */,
 			);
-			name = "Pando EchoUITests";
+			name = EchoUITests;
 			packageProductDependencies = (
 			);
-			productName = "Pando EchoUITests";
-			productReference = F33EE30A2E5935FF007F42E6 /* Pando EchoUITests.xctest */;
+			productName = "EchoUITests";
+			productReference = F33EE30A2E5935FF007F42E6 /* EchoUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -186,7 +186,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F33EE2E92E5935FE007F42E6 /* Build configuration list for PBXProject "Pando Echo" */;
+			buildConfigurationList = F33EE2E92E5935FE007F42E6 /* Build configuration list for PBXProject "Echo" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -200,9 +200,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F33EE2ED2E5935FE007F42E6 /* Pando Echo */,
-				F33EE2FF2E5935FF007F42E6 /* Pando EchoTests */,
-				F33EE3092E5935FF007F42E6 /* Pando EchoUITests */,
+				F33EE2ED2E5935FE007F42E6 /* Echo */,
+				F33EE2FF2E5935FF007F42E6 /* EchoTests */,
+				F33EE3092E5935FF007F42E6 /* EchoUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -258,12 +258,12 @@
 /* Begin PBXTargetDependency section */
 		F33EE3022E5935FF007F42E6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F33EE2ED2E5935FE007F42E6 /* Pando Echo */;
+			target = F33EE2ED2E5935FE007F42E6 /* Echo */;
 			targetProxy = F33EE3012E5935FF007F42E6 /* PBXContainerItemProxy */;
 		};
 		F33EE30C2E5935FF007F42E6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F33EE2ED2E5935FE007F42E6 /* Pando Echo */;
+			target = F33EE2ED2E5935FE007F42E6 /* Echo */;
 			targetProxy = F33EE30B2E5935FF007F42E6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -399,9 +399,9 @@
 				DEVELOPMENT_TEAM = YOUR_TEAM_ID;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Pando Echo";
+				INFOPLIST_KEY_CFBundleDisplayName = Echo;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Pando Echo needs access to your microphone to record your personal self-talk affirmations.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Echo needs access to your microphone to record your personal self-talk affirmations.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -436,9 +436,9 @@
 				DEVELOPMENT_TEAM = YOUR_TEAM_ID;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Pando Echo";
+				INFOPLIST_KEY_CFBundleDisplayName = Echo;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Pando Echo needs access to your microphone to record your personal self-talk affirmations.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Echo needs access to your microphone to record your personal self-talk affirmations.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -471,12 +471,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "xiaolai.Pando-EchoTests";
+				PRODUCT_BUNDLE_IDENTIFIER = xiaolai.EchoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pando Echo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Pando Echo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Echo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Echo";
 			};
 			name = Debug;
 		};
@@ -489,12 +489,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "xiaolai.Pando-EchoTests";
+				PRODUCT_BUNDLE_IDENTIFIER = xiaolai.EchoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pando Echo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Pando Echo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Echo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Echo";
 			};
 			name = Release;
 		};
@@ -533,7 +533,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F33EE2E92E5935FE007F42E6 /* Build configuration list for PBXProject "Pando Echo" */ = {
+		F33EE2E92E5935FE007F42E6 /* Build configuration list for PBXProject "Echo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F33EE3122E5935FF007F42E6 /* Debug */,
@@ -542,7 +542,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F33EE3142E5935FF007F42E6 /* Build configuration list for PBXNativeTarget "Pando Echo" */ = {
+		F33EE3142E5935FF007F42E6 /* Build configuration list for PBXNativeTarget "Echo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F33EE3152E5935FF007F42E6 /* Debug */,
@@ -551,7 +551,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F33EE3172E5935FF007F42E6 /* Build configuration list for PBXNativeTarget "Pando EchoTests" */ = {
+		F33EE3172E5935FF007F42E6 /* Build configuration list for PBXNativeTarget "EchoTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F33EE3182E5935FF007F42E6 /* Debug */,
@@ -560,7 +560,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F33EE31A2E5935FF007F42E6 /* Build configuration list for PBXNativeTarget "Pando EchoUITests" */ = {
+		F33EE31A2E5935FF007F42E6 /* Build configuration list for PBXNativeTarget "EchoUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F33EE31B2E5935FF007F42E6 /* Debug */,

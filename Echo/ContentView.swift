@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  Pando Echo
+//  Echo
 //
 //  Created by joker on 8/23/25.
 //
