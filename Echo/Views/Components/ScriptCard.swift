@@ -21,6 +21,10 @@ struct ScriptCard: View {
         audioService.isPaused && audioService.currentPlayingScriptId == script.id
     }
     
+    private var isProcessing: Bool {
+        audioService.isProcessing(script: script)
+    }
+    
     // Predefined subtle color palette
     private let colorPalette: [Color] = [
         Color.blue.opacity(0.6),
@@ -102,6 +106,17 @@ struct ScriptCard: View {
                             .foregroundColor(.secondary)
                     }
                 }
+            } else if isProcessing {
+                // Show processing indicator
+                HStack {
+                    ProgressView()
+                        .scaleEffect(0.7)
+                        .frame(width: 14, height: 14)
+                    Text("Processing...")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Spacer()
+                }
             } else if script.hasRecording && script.audioDuration > 0 {
                 // Show total duration when not playing
                 HStack {
@@ -166,6 +181,11 @@ struct ScriptCard: View {
     }
     
     private func handleTap() {
+        // If processing, do nothing - wait for it to complete
+        if isProcessing {
+            return
+        }
+        
         guard script.hasRecording else { 
             showingNoRecordingAlert = true
             return 
