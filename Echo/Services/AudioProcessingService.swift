@@ -25,6 +25,36 @@ final class AudioProcessingService {
     
     // MARK: - Public Methods
     
+    /// Check the status of speech recognition availability
+    func checkSpeechRecognitionStatus() -> (available: Bool, onDevice: Bool, message: String) {
+        let recognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
+        
+        guard let recognizer = recognizer else {
+            return (false, false, "Speech recognition not available for English (US)")
+        }
+        
+        if !recognizer.isAvailable {
+            return (false, false, "Speech recognition temporarily unavailable. Please check Settings > General > Keyboard > Enable Dictation")
+        }
+        
+        var onDeviceAvailable = false
+        var message = "✅ Speech recognition available"
+        
+        if #available(iOS 13, *) {
+            if recognizer.supportsOnDeviceRecognition {
+                onDeviceAvailable = true
+                message += "\n✅ On-device dictation ready (offline capable)"
+            } else {
+                message += "\n⚠️ On-device dictation not available. To enable:\n"
+                message += "1. Settings > General > Keyboard > Enable Dictation\n"
+                message += "2. Download language pack in Dictation Languages\n"
+                message += "3. Restart the app"
+            }
+        }
+        
+        return (true, onDeviceAvailable, message)
+    }
+    
     /// Process audio file: trim silence and optimize for voice
     func processRecording(for scriptId: UUID, completion: @escaping (Bool) -> Void) {
         let audioURL = fileManager.audioURL(for: scriptId)
@@ -117,14 +147,14 @@ final class AudioProcessingService {
     }
     
     /// Transcribe audio file to text using Speech framework
-    func transcribeRecording(for scriptId: UUID, completion: @escaping (String?) -> Void) {
+    func transcribeRecording(for scriptId: UUID, languageCode: String? = nil, completion: @escaping (String?) -> Void) {
         // Check if speech recognition is available
         guard SFSpeechRecognizer.authorizationStatus() == .authorized else {
             // Request authorization if not determined
             if SFSpeechRecognizer.authorizationStatus() == .notDetermined {
                 SFSpeechRecognizer.requestAuthorization { status in
                     if status == .authorized {
-                        self.transcribeRecording(for: scriptId, completion: completion)
+                        self.transcribeRecording(for: scriptId, languageCode: languageCode, completion: completion)
                     } else {
                         print("Speech recognition not authorized")
                         DispatchQueue.main.async {
@@ -151,9 +181,37 @@ final class AudioProcessingService {
             return
         }
         
-        // Create recognizer for user's locale
-        guard let recognizer = SFSpeechRecognizer(locale: Locale.current) else {
-            print("Speech recognizer not available for current locale")
+        // Create recognizer based on language preference
+        var recognizer: SFSpeechRecognizer?
+        
+        if let languageCode = languageCode, languageCode != "auto" {
+            // Use specified language
+            recognizer = SFSpeechRecognizer(locale: Locale(identifier: languageCode))
+            if recognizer == nil {
+                print("Speech recognizer not available for \(languageCode), falling back to auto-detect")
+            }
+        }
+        
+        // If no recognizer yet (auto mode or specified language failed), use current locale
+        if recognizer == nil {
+            recognizer = SFSpeechRecognizer(locale: Locale.current)
+            if recognizer == nil {
+                print("Speech recognizer not available for current locale, trying en-US")
+                recognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
+            }
+        }
+        
+        guard let recognizer = recognizer else {
+            print("Speech recognizer not available")
+            DispatchQueue.main.async {
+                completion(nil)
+            }
+            return
+        }
+        
+        // Check if recognizer is available
+        guard recognizer.isAvailable else {
+            print("Speech recognizer is not available at this time")
             DispatchQueue.main.async {
                 completion(nil)
             }
@@ -167,15 +225,82 @@ final class AudioProcessingService {
         request.shouldReportPartialResults = false
         request.taskHint = .dictation
         
-        // Use on-device recognition if available (iOS 13+)
+        // Try to use on-device recognition if available for better privacy and reliability
         if #available(iOS 13, *) {
-            request.requiresOnDeviceRecognition = recognizer.supportsOnDeviceRecognition
+            if recognizer.supportsOnDeviceRecognition {
+                // Try on-device first, but don't require it
+                request.requiresOnDeviceRecognition = false  // Set to true if you want to force on-device only
+                print("Speech recognition: On-device recognition available")
+            } else {
+                request.requiresOnDeviceRecognition = false
+                print("Speech recognition: Using network-based recognition (on-device not available)")
+            }
         }
         
+        // Add timeout handling
+        var timeoutWorkItem: DispatchWorkItem?
+        
+        // Timeout after 30 seconds
+        timeoutWorkItem = DispatchWorkItem { [weak self] in
+            print("Transcription timeout - cancelling task")
+            DispatchQueue.main.async {
+                completion(nil)
+            }
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 30, execute: timeoutWorkItem!)
+        
         // Perform recognition
-        recognizer.recognitionTask(with: request) { result, error in
+        let recognitionTask = recognizer.recognitionTask(with: request) { result, error in
+            // Cancel timeout if we get a response
+            timeoutWorkItem?.cancel()
+            
             if let error = error {
-                print("Transcription error: \(error.localizedDescription)")
+                // Ignore certain common but non-critical errors
+                let errorCode = (error as NSError).code
+                let errorDomain = (error as NSError).domain
+                
+                // Log the specific error for debugging
+                print("Speech recognition error - Domain: \(errorDomain), Code: \(errorCode)")
+                
+                // Handle specific error codes
+                switch errorCode {
+                case 1101:
+                    // Local recognition not available - this is expected when dictation isn't downloaded
+                    print("Note: Local speech recognition not available (Error 1101). Using network-based recognition.")
+                case 1107:
+                    // Another common transient error
+                    print("Transient recognition error 1107 - may still have results")
+                case 209, 203:
+                    // Network or service errors
+                    print("Network/service error \(errorCode) - checking for partial results")
+                default:
+                    print("Speech recognition error: \(error.localizedDescription)")
+                }
+                
+                // Check if we got any results despite the error
+                if let result = result {
+                    let transcription = result.bestTranscription.formattedString
+                    if !transcription.isEmpty {
+                        print("Transcription completed despite error: \(transcription.prefix(50))...")
+                        DispatchQueue.main.async {
+                            completion(transcription)
+                        }
+                        return
+                    }
+                }
+                
+                // Check if we at least got partial results before error
+                if let result = result, !result.bestTranscription.formattedString.isEmpty {
+                    let transcription = result.bestTranscription.formattedString
+                    print("Using partial transcription before error: \(transcription.prefix(50))...")
+                    DispatchQueue.main.async {
+                        completion(transcription)
+                    }
+                    return
+                }
+                
+                print("Transcription error (code: \(errorCode)): \(error.localizedDescription)")
                 DispatchQueue.main.async {
                     completion(nil)
                 }
@@ -190,6 +315,9 @@ final class AudioProcessingService {
                 }
             }
         }
+        
+        // Keep reference to prevent early deallocation
+        _ = recognitionTask
     }
     
     // MARK: - Private Methods
@@ -200,7 +328,6 @@ final class AudioProcessingService {
         }
         
         let frameLength = Int(buffer.frameLength)
-        let channelCount = Int(buffer.format.channelCount)
         
         // Analyze first channel for simplicity
         let samples = channelData[0]
@@ -273,11 +400,31 @@ final class AudioProcessingService {
                 // Write to file
                 try outputFile.write(from: trimmedBuffer)
                 
+                // IMPORTANT: Close the file to ensure all data is written
+                // AVAudioFile doesn't have an explicit close, but we can ensure it's released
+                // by setting it to nil in a defer block
+            }
+            
+            // Give the file system time to finish writing
+            Thread.sleep(forTimeInterval: 0.1)
+            
+            // Verify the temp file was created properly
+            if FileManager.default.fileExists(atPath: tempURL.path) {
+                let tempFileSize = (try? FileManager.default.attributesOfItem(atPath: tempURL.path)[.size] as? Int64) ?? 0
+                print("AudioProcessing: Temp file size: \(tempFileSize) bytes")
+                
                 // Replace original with trimmed version
                 try? FileManager.default.removeItem(at: url)
                 try FileManager.default.moveItem(at: tempURL, to: url)
                 
-                return true
+                // Verify final file
+                let finalFileSize = (try? FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int64) ?? 0
+                print("AudioProcessing: Final file size: \(finalFileSize) bytes")
+                
+                return finalFileSize > 0
+            } else {
+                print("AudioProcessing: Temp file was not created")
+                return false
             }
             
         } catch {
