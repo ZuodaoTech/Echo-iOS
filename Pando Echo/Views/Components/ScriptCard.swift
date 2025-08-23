@@ -19,6 +19,24 @@ struct ScriptCard: View {
         audioService.isPaused && audioService.currentPlayingScriptId == script.id
     }
     
+    // Predefined subtle color palette
+    private let colorPalette: [Color] = [
+        Color.blue.opacity(0.6),
+        Color.purple.opacity(0.6),
+        Color.pink.opacity(0.6),
+        Color.orange.opacity(0.6),
+        Color.green.opacity(0.6),
+        Color.teal.opacity(0.6),
+        Color.indigo.opacity(0.6),
+        Color.mint.opacity(0.6)
+    ]
+    
+    // Get consistent color for this script
+    private var cardAccentColor: Color {
+        let index = abs(script.id.hashValue) % colorPalette.count
+        return colorPalette[index]
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             // Category and Repetitions Header
@@ -61,7 +79,7 @@ struct ScriptCard: View {
                         let progressValue = showingInterval ? audioService.intervalProgress : audioService.playbackProgress
                         
                         ProgressView(value: progressValue)
-                            .tint(.blue)
+                            .tint(cardAccentColor)
                             .animation(.linear(duration: 0.02), value: progressValue)
                             .onAppear {
                                 if showingInterval {
@@ -72,7 +90,7 @@ struct ScriptCard: View {
                         if isPaused {
                             Image(systemName: "pause.circle.fill")
                                 .font(.caption)
-                                .foregroundColor(.blue)
+                                .foregroundColor(cardAccentColor)
                         }
                     }
                     
@@ -105,13 +123,17 @@ struct ScriptCard: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(isPlaying || isPaused ? Color.blue.opacity(0.05) : Color(.systemBackground))
+                .fill(isPlaying || isPaused ? cardAccentColor.opacity(0.08) : Color(.systemBackground))
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(isPlaying || isPaused ? Color.blue.opacity(0.3) : Color(.systemGray5), lineWidth: 1)
+                        .stroke(
+                            isPlaying || isPaused ? cardAccentColor.opacity(0.5) : cardAccentColor.opacity(0.25),
+                            lineWidth: isPlaying || isPaused ? 1.5 : 1
+                        )
                 )
         )
-        .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+        .shadow(color: cardAccentColor.opacity(0.15), radius: 8, x: 0, y: 3)
+        .shadow(color: cardAccentColor.opacity(0.05), radius: 2, x: 0, y: 1)
         .contentShape(Rectangle())
         .onTapGesture {
             handleTap()
