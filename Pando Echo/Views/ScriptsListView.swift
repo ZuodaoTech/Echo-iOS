@@ -97,6 +97,9 @@ struct ScriptsListView: View {
     }
     
     private func setupInitialData() {
+        // Always remove duplicates first
+        Category.removeDuplicateCategories(context: viewContext)
+        
         // Check if this is first launch
         let hasLaunchedKey = "hasLaunchedBefore"
         let hasLaunched = UserDefaults.standard.bool(forKey: hasLaunchedKey)
