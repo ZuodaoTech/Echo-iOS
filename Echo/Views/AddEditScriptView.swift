@@ -236,7 +236,22 @@ struct AddEditScriptView: View {
                                 
                                 if let transcript = script?.transcribedText, !transcript.isEmpty {
                                     HStack {
-                                    // Show "Use as Script" if transcript differs from current script
+                                    // Copy button (first position)
+                                    Button {
+                                        // Copy to clipboard
+                                        UIPasteboard.general.string = transcript
+                                    } label: {
+                                        HStack(spacing: 4) {
+                                            Image(systemName: "doc.on.doc")
+                                                .imageScale(.small)
+                                            Text("Copy")
+                                        }
+                                        .font(.footnote)
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .controlSize(.small)
+                                    
+                                    // Use as Script button (second position)
                                     if scriptText != transcript {
                                         Button {
                                             // Save original before replacing
@@ -256,14 +271,19 @@ struct AddEditScriptView: View {
                                                 }
                                             }
                                         } label: {
-                                            Label("Use as Script", systemImage: "doc.text.fill")
-                                                .font(.footnote)
-                                                .foregroundColor(.white)
+                                            HStack(spacing: 4) {
+                                                Image(systemName: "doc.text.fill")
+                                                    .imageScale(.small)
+                                                Text("Use as Script")
+                                            }
+                                            .font(.footnote)
+                                            .foregroundColor(.white)
                                         }
                                         .buttonStyle(.borderedProminent)
+                                        .controlSize(.small)
                                     }
                                     
-                                    // Show "Undo" button if we have an original to revert to
+                                    // Undo button (third position)
                                     if let original = originalScriptBeforeTranscript, scriptText == transcript {
                                         Button {
                                             // Revert to original
@@ -281,21 +301,17 @@ struct AddEditScriptView: View {
                                             // Clear the stored original
                                             originalScriptBeforeTranscript = nil
                                         } label: {
-                                            Label("Undo", systemImage: "arrow.uturn.backward")
-                                                .font(.footnote)
+                                            HStack(spacing: 4) {
+                                                Image(systemName: "arrow.uturn.backward")
+                                                    .imageScale(.small)
+                                                Text("Undo")
+                                            }
+                                            .font(.footnote)
                                         }
                                         .buttonStyle(.bordered)
+                                        .controlSize(.small)
                                         .tint(.orange)
                                     }
-                                    
-                                    Button {
-                                        // Copy to clipboard
-                                        UIPasteboard.general.string = transcript
-                                    } label: {
-                                        Label("Copy", systemImage: "doc.on.doc")
-                                            .font(.footnote)
-                                    }
-                                    .buttonStyle(.bordered)
                                     }
                                 }
                             }
