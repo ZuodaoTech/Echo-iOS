@@ -20,6 +20,7 @@ struct AddEditScriptView: View {
     @State private var newCategoryName = ""
     @State private var isRecording = false
     @State private var hasRecording = false
+    @State private var isProcessingAudio = false
     @State private var isProcessingRecording = false
     @State private var originalScriptBeforeTranscript: String? = nil
     @State private var transcriptCheckTimer: Timer? = nil
@@ -198,7 +199,7 @@ struct AddEditScriptView: View {
                         RecordingButton(
                             isRecording: $isRecording,
                             hasRecording: hasRecording,
-                            isProcessing: audioService.isProcessingRecording,
+                            isProcessing: isProcessingAudio || audioService.isProcessingRecording,
                             recordingDuration: script?.formattedDuration ?? "",
                             isPlaying: isPlaying,
                             isPaused: isPaused,
@@ -426,6 +427,20 @@ struct AddEditScriptView: View {
         }
         .onAppear {
             setupInitialValues()
+            // Check if this script is currently being processed
+            if let script = script {
+                isProcessingAudio = audioService.isProcessing(script: script)
+            }
+        }
+        .onChange(of: audioService.processingScriptIds) { processingIds in
+            // Check if our script's processing state changed
+            if let script = script {
+                isProcessingAudio = processingIds.contains(script.id)
+                // If processing just completed for our script
+                if !isProcessingAudio && hasRecording == false {
+                    hasRecording = script.hasRecording
+                }
+            }
         }
         .onChange(of: audioService.isProcessingRecording) { isProcessing in
             // When processing completes, update hasRecording and start checking for transcript
@@ -618,6 +633,11 @@ struct AddEditScriptView: View {
     
     private func handleRecording() {
         guard let script = script else { return }
+        
+        // Don't allow recording if already processing
+        if isProcessingAudio {
+            return
+        }
         
         if isRecording {
             audioService.stopRecording()

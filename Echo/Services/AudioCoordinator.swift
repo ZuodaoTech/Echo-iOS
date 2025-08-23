@@ -16,6 +16,7 @@ final class AudioCoordinator: ObservableObject {
     @Published var isRecording = false
     @Published var isProcessingRecording = false  // New: shows processing state
     @Published var recordingDuration: TimeInterval = 0
+    @Published var processingScriptIds = Set<UUID>()  // Track which scripts are being processed
     
     // Playback state
     @Published var isPlaying = false
@@ -94,6 +95,7 @@ final class AudioCoordinator: ObservableObject {
         // Show processing state
         DispatchQueue.main.async {
             self.isProcessingRecording = true
+            self.processingScriptIds.insert(script.id)
         }
         
         // Use async version to ensure file is ready
@@ -135,6 +137,7 @@ final class AudioCoordinator: ObservableObject {
                         
                         self.currentRecordingScript = nil
                         self.isProcessingRecording = false
+                        self.processingScriptIds.remove(scriptId)
                     }
                 }
             }
@@ -263,5 +266,10 @@ extension AudioCoordinator {
     /// Get audio duration for a script (for backward compatibility)
     func getAudioDuration(for script: SelftalkScript) -> TimeInterval? {
         fileManager.getAudioDuration(for: script.id)
+    }
+    
+    /// Check if a specific script is currently being processed
+    func isProcessing(script: SelftalkScript) -> Bool {
+        processingScriptIds.contains(script.id)
     }
 }
