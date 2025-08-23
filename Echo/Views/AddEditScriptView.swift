@@ -108,9 +108,31 @@ struct AddEditScriptView: View {
                                 .foregroundColor(.secondary)
                         }
                     }
+                    .onChange(of: repetitions) { newValue in
+                        // Apply repetitions change immediately
+                        if let script = script {
+                            script.repetitions = newValue
+                            do {
+                                try viewContext.save()
+                            } catch {
+                                print("Failed to save repetitions change: \(error)")
+                            }
+                        }
+                    }
                     
                     // Privacy Mode Toggle
                     Toggle("Privacy Mode", isOn: $privacyModeEnabled)
+                        .onChange(of: privacyModeEnabled) { newValue in
+                            // Apply privacy mode change immediately
+                            if let script = script {
+                                script.privacyModeEnabled = newValue
+                                do {
+                                    try viewContext.save()
+                                } catch {
+                                    print("Failed to save privacy mode change: \(error)")
+                                }
+                            }
+                        }
                     
                     if privacyModeEnabled {
                         Text("Audio will only play when earphones are connected")
@@ -142,6 +164,17 @@ struct AddEditScriptView: View {
                                         .foregroundColor(.secondary)
                                     
                                     Slider(value: $intervalSeconds, in: 1...3, step: 1)
+                                        .onChange(of: intervalSeconds) { newValue in
+                                            // Apply interval change immediately
+                                            if let script = script {
+                                                script.intervalSeconds = newValue
+                                                do {
+                                                    try viewContext.save()
+                                                } catch {
+                                                    print("Failed to save interval change: \(error)")
+                                                }
+                                            }
+                                        }
                                 }
                                 
                                 // Duration info
