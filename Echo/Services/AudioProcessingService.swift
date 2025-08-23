@@ -1,5 +1,6 @@
 import AVFoundation
 import Accelerate
+import Speech
 
 /// Service for processing audio files (trimming silence, normalizing, etc.)
 final class AudioProcessingService {
@@ -110,6 +111,82 @@ final class AudioProcessingService {
                 print("AudioProcessing error: \(error)")
                 DispatchQueue.main.async {
                     completion(false)
+                }
+            }
+        }
+    }
+    
+    /// Transcribe audio file to text using Speech framework
+    func transcribeRecording(for scriptId: UUID, completion: @escaping (String?) -> Void) {
+        // Check if speech recognition is available
+        guard SFSpeechRecognizer.authorizationStatus() == .authorized else {
+            // Request authorization if not determined
+            if SFSpeechRecognizer.authorizationStatus() == .notDetermined {
+                SFSpeechRecognizer.requestAuthorization { status in
+                    if status == .authorized {
+                        self.transcribeRecording(for: scriptId, completion: completion)
+                    } else {
+                        print("Speech recognition not authorized")
+                        DispatchQueue.main.async {
+                            completion(nil)
+                        }
+                    }
+                }
+            } else {
+                print("Speech recognition not available")
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+            }
+            return
+        }
+        
+        let audioURL = fileManager.audioURL(for: scriptId)
+        
+        guard FileManager.default.fileExists(atPath: audioURL.path) else {
+            print("Transcription: Audio file doesn't exist")
+            DispatchQueue.main.async {
+                completion(nil)
+            }
+            return
+        }
+        
+        // Create recognizer for user's locale
+        guard let recognizer = SFSpeechRecognizer(locale: Locale.current) else {
+            print("Speech recognizer not available for current locale")
+            DispatchQueue.main.async {
+                completion(nil)
+            }
+            return
+        }
+        
+        // Create recognition request
+        let request = SFSpeechURLRecognitionRequest(url: audioURL)
+        
+        // Configure for self-talk/dictation
+        request.shouldReportPartialResults = false
+        request.taskHint = .dictation
+        
+        // Use on-device recognition if available (iOS 13+)
+        if #available(iOS 13, *) {
+            request.requiresOnDeviceRecognition = recognizer.supportsOnDeviceRecognition
+        }
+        
+        // Perform recognition
+        recognizer.recognitionTask(with: request) { result, error in
+            if let error = error {
+                print("Transcription error: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+                return
+            }
+            
+            if let result = result, result.isFinal {
+                let transcription = result.bestTranscription.formattedString
+                print("Transcription successful: \(transcription.prefix(50))...")
+                DispatchQueue.main.async {
+                    completion(transcription)
                 }
             }
         }
