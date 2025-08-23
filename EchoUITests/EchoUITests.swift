@@ -100,7 +100,7 @@ final class EchoUITests: XCTestCase {
         
         // Create a script first if needed
         if app.staticTexts["No Scripts Yet"].exists {
-            testCreateNewScript()
+            try testCreateNewScript()
         }
         
         // Look for lock icon on script cards
@@ -115,7 +115,7 @@ final class EchoUITests: XCTestCase {
         
         // Create a script if needed
         if app.staticTexts["No Scripts Yet"].exists {
-            testCreateNewScript()
+            try testCreateNewScript()
         }
         
         // Find and tap a script card
