@@ -175,6 +175,25 @@ extension RecordingService: AVAudioRecorderDelegate {
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         print("Recording finished successfully: \(flag)")
         
+        // Save a copy of the original audio file for transcription
+        if let scriptId = currentRecordingScriptId, flag {
+            let audioURL = fileManager.audioURL(for: scriptId)
+            let originalURL = fileManager.originalAudioURL(for: scriptId)
+            
+            // Copy the original recording before any processing
+            do {
+                // Remove existing original if it exists
+                if FileManager.default.fileExists(atPath: originalURL.path) {
+                    try FileManager.default.removeItem(at: originalURL)
+                }
+                // Copy the fresh recording as original
+                try FileManager.default.copyItem(at: audioURL, to: originalURL)
+                print("Saved original audio copy for transcription at: \(originalURL.lastPathComponent)")
+            } catch {
+                print("Failed to save original audio copy: \(error)")
+            }
+        }
+        
         // Call completion if we have one
         if let scriptId = currentRecordingScriptId {
             let duration = fileManager.getAudioDuration(for: scriptId) ?? 0

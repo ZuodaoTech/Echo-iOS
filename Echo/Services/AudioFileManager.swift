@@ -23,6 +23,11 @@ final class AudioFileManager {
         recordingsDirectory.appendingPathComponent("\(scriptId.uuidString).m4a")
     }
     
+    /// Get the URL for the original unprocessed recording (for transcription)
+    func originalAudioURL(for scriptId: UUID) -> URL {
+        recordingsDirectory.appendingPathComponent("\(scriptId.uuidString)_original.m4a")
+    }
+    
     /// Check if audio file exists for a script
     func audioFileExists(for scriptId: UUID) -> Bool {
         FileManager.default.fileExists(atPath: audioURL(for: scriptId).path)
@@ -30,9 +35,16 @@ final class AudioFileManager {
     
     /// Delete recording for a script
     func deleteRecording(for scriptId: UUID) throws {
+        // Delete the processed audio file
         let url = audioURL(for: scriptId)
         if FileManager.default.fileExists(atPath: url.path) {
             try FileManager.default.removeItem(at: url)
+        }
+        
+        // Delete the original audio file (used for transcription)
+        let originalUrl = originalAudioURL(for: scriptId)
+        if FileManager.default.fileExists(atPath: originalUrl.path) {
+            try FileManager.default.removeItem(at: originalUrl)
         }
     }
     
