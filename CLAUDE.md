@@ -1,285 +1,293 @@
 # CLAUDE.md - Echo iOS Development Guide
 
-## Introduction & Overview
+## Overview
 
-**ECHO** is a self-talk app that helps users build positive habits through personalized selftalk scripts and their respective voice recordings.
+**Echo** is a self-talk habit-building iOS app that helps users practice personalized affirmations through voice recordings. Built with SwiftUI and following enterprise-grade architecture patterns, it emphasizes privacy, user experience, and audio quality.
 
-### Core Principles for iOS Development
+### Key Features
+- 📝 Create and manage personalized self-talk scripts
+- 🎙️ High-quality voice recording for each script
+- 🔒 Privacy Mode: Prevents accidental public playback
+- 🌍 Multilingual transcription (15+ languages)
+- 🔄 Configurable repetitions with intervals
+- 📊 Progress tracking and statistics
 
-- **SwiftUI First**: Modern declarative UI framework
-- **Core Data**: For persistent storage (replacing SharedPreferences)
-- **AVFoundation**: For audio recording and playback
-- **UserNotifications**: For local notifications
-- **Combine**: For reactive programming and data flow
-- **MVVM Architecture**: Clear separation of concerns
+## Architecture
 
-## Key Features Implementation
+### Technology Stack
+- **UI Framework**: SwiftUI (iOS 15.6+)
+- **Data Persistence**: Core Data
+- **Audio Engine**: AVFoundation
+- **Speech Recognition**: Speech Framework
+- **Reactive Programming**: Combine
+- **Architecture Pattern**: MVVM with Service Layer
+- **Testing**: XCTest (Unit & UI Tests)
+- **No External Dependencies**: Pure Apple frameworks
 
-### 1. Selftalk Scripts Management
-- Create, edit, and delete script cards
-- Organize scripts into categories
-- Customizable script parameters:
-  - Prompts (Selftalk scripts)
-  - Repetitions (how many times to repeat)
-  - Individual audio recording per script card
+### Project Structure
+```
+Echo-iOS/
+├── Echo/
+│   ├── EchoApp.swift           # App entry point
+│   ├── ContentView.swift       # Root navigation
+│   ├── Persistence.swift       # Core Data setup
+│   ├── Models/                 # Core Data entities
+│   ├── Services/               # Service layer (7 services)
+│   ├── Views/                  # SwiftUI views
+│   └── Utilities/              # Helper functions
+└── Tests/                      # Unit and UI tests
+```
 
-### 2. Script Card Audio Features
-Each script card contains:
-- **Recording Button**: Record personal voice for this specific script
-- **Playback Button**: Play the recorded audio
-- **Privacy Mode**: Automatically prevents playback when earphones/headphones are not connected
-  - Protects users from accidental public playback
-  - Shows visual indicator when privacy mode is active
-- **Playback Controls**: 
-  - Play/Pause
-  - Speed adjustment (0.5x, 1x, 1.5x, 2x)
-  - Progress indicator
+## Service Layer Architecture
 
-### 3. Progress Tracking
-- Daily practice streaks
-- Visual progress indicators
-- Statistics and insights
-- Completion tracking per script
+The app uses a sophisticated 7-service architecture with clear separation of concerns:
 
-### 4. Notifications
-- Daily practice reminders
-- Customizable notification schedules
-- Smart reminder timing based on usage patterns
-
-## Technical Guidelines
-
-### SwiftUI Best Practices
+### AudioCoordinator (Facade Pattern)
+Central orchestrator for all audio operations:
 ```swift
-// Use @StateObject for view models
-@StateObject private var viewModel = ScriptsViewModel()
-
-// Use @EnvironmentObject for shared state
-@EnvironmentObject var audioService: AudioService
-
-// Prefer computed properties for derived state
-var isPlaybackActive: Bool {
-    audioService.isPlaying && currentScript != nil
+class AudioCoordinator: ObservableObject {
+    // Manages: Recording, Playback, Processing, File Operations
+    // Published states for UI binding
+    // Coordinates between all sub-services
 }
 ```
 
-### Core Data Setup
+### Service Responsibilities
+
+| Service | Primary Responsibility | Key Features |
+|---------|----------------------|--------------|
+| **RecordingService** | Audio capture | AAC format, 44.1kHz, mono, real-time duration |
+| **PlaybackService** | Audio playback | Repetitions, intervals, speed control, pause/resume |
+| **AudioSessionManager** | System audio session | Privacy mode, interruption handling, route changes |
+| **AudioFileManager** | File operations | CRUD operations, duration calculation, storage management |
+| **AudioProcessingService** | Post-processing | Silence trimming, transcription, format validation |
+| **AudioService** | Legacy wrapper | Backward compatibility interface |
+
+## Core Data Model
+
+### Entities
+
+**SelftalkScript**
+- `id`: UUID (primary key)
+- `scriptText`: String (the self-talk content)
+- `repetitions`: Int16 (1-10, default: 3)
+- `intervalSeconds`: Double (pause between repetitions)
+- `audioDuration`: Double (calculated from recording)
+- `audioFilePath`: String? (path to m4a file)
+- `privacyModeEnabled`: Bool (default: true)
+- `transcribedText`: String? (speech-to-text result)
+- `transcriptionLanguage`: String? (default: "auto")
+- `createdAt`, `updatedAt`: Date
+- `lastPlayedAt`: Date?
+- `playCount`: Int32
+- `category`: Relationship to Category
+
+**Category**
+- `id`: UUID
+- `name`: String
+- `sortOrder`: Int16
+- `scripts`: One-to-many relationship
+
+## Key Implementation Details
+
+### Audio Recording Pipeline
 ```swift
-// Use @FetchRequest for data queries
-@FetchRequest(
-    sortDescriptors: [NSSortDescriptor(keyPath: \Script.createdAt, ascending: false)],
-    animation: .default
-)
-private var scripts: FetchedResults<Script>
+// 1. Request microphone permission
+// 2. Configure audio session for recording
+// 3. Start recording with high quality settings
+// 4. Stop and process recording
+// 5. Trim silence automatically
+// 6. Transcribe if language is set
+// 7. Save to Core Data with metadata
 ```
 
-### Audio Handling
+### Privacy Mode Implementation
 ```swift
-// Privacy Mode Implementation
 func checkPrivacyMode() -> Bool {
     let currentRoute = AVAudioSession.sharedInstance().currentRoute
     for output in currentRoute.outputs {
-        let portType = output.portType
-        if portType == .headphones || 
-           portType == .bluetoothA2DP || 
-           portType == .bluetoothHFP {
-            return false // Earphones connected, allow playback
+        if output.portType == .headphones || 
+           output.portType == .bluetoothA2DP {
+            return false // Earphones connected
         }
     }
-    return true // No earphones, privacy mode active
+    return true // Privacy mode active
 }
 ```
 
-Key considerations:
-- Always check microphone permissions before recording
-- Handle audio session interruptions gracefully
-- Implement proper cleanup in view lifecycle
-- Check audio route before playback (privacy mode)
-- Each script maintains its own audio file reference in Core Data
+### Transcription with Language Selection
+```swift
+// User-selectable languages in UI
+// Auto-detect or specific language code
+// Graceful fallback on errors
+// Handle error 1101 without failing
+```
 
-### Error Handling
-- Use Result types for async operations
-- Provide user-friendly error messages
-- Log errors for debugging
+## Development Commands
 
-## Development Workflow
-
-### Build & Test Commands
+### Build & Test
 ```bash
-# Build the project
-xcodebuild -scheme "Echo" build
+# Build for simulator
+xcodebuild -scheme "Echo" -destination 'platform=iOS Simulator,name=iPhone 15' build
 
-# Run tests
+# Run unit tests
 xcodebuild test -scheme "Echo" -destination 'platform=iOS Simulator,name=iPhone 15'
 
-# Check for SwiftLint issues (if installed)
+# Check code quality (if SwiftLint installed)
 swiftlint
 ```
 
-### Code Quality Checks
-- SwiftLint for code style consistency
-- Unit tests for business logic
-- UI tests for critical user flows
+### Git Workflow
+```bash
+# Standard commit flow
+git add .
+git commit -m "Your descriptive message"
+git push origin main
+```
 
-## Platform-Specific Considerations
+## Common Issues & Solutions
 
-### iOS vs Android Mapping
-| Android | iOS |
-|---------|-----|
-| SharedPreferences | UserDefaults / Core Data |
-| MediaRecorder | AVAudioRecorder |
-| MediaPlayer | AVAudioPlayer |
-| AlarmManager | UNUserNotificationCenter |
-| RecyclerView | List/LazyVStack |
-| Fragment | View |
-| ViewModel | ObservableObject |
-
-### iOS-Specific Features
-- **Live Activities**: Show recording status on lock screen
-- **App Clips**: Quick access to specific scripts
-- **Widgets**: Daily Selftalk widgets
-- **Siri Shortcuts**: Voice-triggered playback
-
-## Dependencies Management
-
-### Swift Package Manager (SPM)
-Preferred method for adding dependencies:
+### Issue: AVAudioPlayer shows 0 duration
+**Solution**: The app now uses AVAsset as primary method with AVAudioPlayer fallback:
 ```swift
-// In Xcode: File > Add Package Dependencies
-// Common packages for Echo:
-// - Lottie for animations
-// - SwiftUICharts for progress visualization
+// Try AVAsset first (more reliable)
+let asset = AVAsset(url: audioURL)
+let duration = CMTimeGetSeconds(asset.duration)
+
+// Fallback to AVAudioPlayer if needed
 ```
 
-### CocoaPods (if needed)
-```ruby
-# Podfile
-platform :ios, '15.6'
-use_frameworks!
+### Issue: Speech Recognition Error 1101
+**Solution**: This error is handled gracefully - transcription often succeeds despite the error. The app:
+- Accepts partial results when available
+- Continues despite non-critical errors
+- Provides timeout protection (30 seconds)
 
-target 'Echo' do
-  # Add pods here if needed
-end
-```
+### Issue: Transcript not appearing
+**Solution**: The app implements automatic refresh:
+- Timer-based Core Data refresh after recording
+- Force save to Core Data after transcription
+- UI updates via published properties
+
+### Issue: Recording file corruption
+**Solution**: Enhanced file handling:
+- Proper file closure after writing
+- Thread.sleep for file system sync
+- File size validation
+- Temp file verification before replacement
+
+## Performance Optimizations
+
+### Memory Management
+- Weak references in closures to prevent retain cycles
+- Proper cleanup of audio resources
+- Timer invalidation on view disappear
+
+### File Operations
+- Centralized in Documents/Recordings directory
+- Automatic cleanup of orphaned files
+- Efficient duration calculation with caching
+
+### UI Responsiveness
+- Async audio operations
+- Progress indicators for long operations
+- Real-time state updates via Combine
 
 ## Testing Strategy
 
-### Unit Tests
-- Test Core Data models
-- Test audio service logic (including privacy mode)
-- Test notification scheduling
+### Unit Tests Coverage
+- ✅ Audio service operations
+- ✅ Core Data CRUD operations
+- ✅ Privacy mode detection
+- ✅ Repetition and interval logic
+- ✅ File management operations
 
-### UI Tests
-- Test script creation flow
-- Test recording and playback per script card
-- Test privacy mode behavior
-- Test settings changes
+### UI Tests Coverage
+- ✅ Script creation flow
+- ✅ Recording and playback
+- ✅ Settings changes
+- ✅ Category management
 
-### Integration Tests
-- Test data persistence
-- Test audio file management
-- Test notification delivery
-
-## Performance Optimization
-
-### Memory Management
-- Use weak references in closures
-- Clean up audio resources after each script
-- Implement proper image caching
-
-### Battery Optimization
-- Minimize background activities
-- Use efficient Core Data queries
-- Batch notification scheduling
-
-## Security & Privacy
-
-### Data Protection
-- Store audio files in app's documents directory
-- Enable file protection for sensitive data
-- Implement biometric authentication for private scripts
-
-### Privacy Compliance
-- Request permissions explicitly
-- Provide clear privacy policy
-- Handle user data deletion requests
-- Privacy mode for audio playback (earphones requirement)
+### Manual Testing Checklist
+- [ ] Test on various iOS versions (15.6+)
+- [ ] Verify privacy mode with different audio outputs
+- [ ] Test transcription in multiple languages
+- [ ] Verify Core Data migration on updates
+- [ ] Test interruption handling (calls, alarms)
 
 ## Deployment Checklist
 
 ### Before Release
-- [ ] Update version and build numbers
-- [ ] Test on multiple device sizes
-- [ ] Verify audio permissions handling
-- [ ] Check notification permissions
-- [ ] Test Core Data migrations
-- [ ] Test privacy mode with various audio outputs
-- [ ] Update App Store screenshots
-- [ ] Prepare release notes
+- [ ] Update version and build numbers in project settings
+- [ ] Test on physical devices (various models)
+- [ ] Verify all audio permissions prompts
+- [ ] Test fresh install and upgrade scenarios
+- [ ] Validate Core Data migration if schema changed
+- [ ] Update App Store metadata and screenshots
 
 ### App Store Requirements
-- iOS 15.6+ deployment target
-- Universal app (iPhone only initially)
-- App icons for all required sizes
-- Privacy policy URL
-- App description and keywords
+- **Minimum iOS**: 15.6
+- **Supported Devices**: iPhone only (initially)
+- **Permissions Required**: Microphone, Speech Recognition
+- **Privacy Policy**: Required for audio/speech data
+- **App Category**: Health & Fitness or Productivity
 
-## Common Issues & Solutions
+## Best Practices
 
-### Audio Recording Issues
-```swift
-// Always configure audio session before recording
-try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default)
-try AVAudioSession.sharedInstance().setActive(true)
-```
+### Code Style
+- Use computed properties for derived values
+- Prefer `@StateObject` for view models
+- Use `@EnvironmentObject` for shared services
+- Follow Swift naming conventions
+- Keep views focused (extract subviews)
 
-### Privacy Mode Not Working
-```swift
-// Register for route change notifications
-NotificationCenter.default.addObserver(
-    self,
-    selector: #selector(audioRouteChanged),
-    name: AVAudioSession.routeChangeNotification,
-    object: nil
-)
-```
+### Audio Handling
+- Always check permissions before operations
+- Configure audio session appropriately
+- Handle interruptions gracefully
+- Clean up resources properly
+- Validate file operations
 
-### Core Data Migration
-```swift
-// Handle model versioning properly
-// Create new model version before changing schema
-// Implement lightweight migration when possible
-```
+### Core Data
+- Use `@FetchRequest` for queries
+- Save context only when needed
+- Handle migration carefully
+- Use background contexts for heavy operations
+- Implement proper error handling
 
-### SwiftUI Performance
-```swift
-// Use lazy loading for lists
-// Implement proper view identity
-// Avoid unnecessary state updates
-```
+## Future Enhancements
+
+### Planned Features
+- [ ] iCloud sync for scripts across devices
+- [ ] Widget for quick access to favorite scripts
+- [ ] Apple Watch companion app
+- [ ] Siri Shortcuts integration
+- [ ] Export/Import scripts functionality
+- [ ] Audio effects and filters
+- [ ] Social sharing (with privacy controls)
+
+### Technical Improvements
+- [ ] Migrate to async/await throughout
+- [ ] Implement proper repository pattern
+- [ ] Add analytics (privacy-respecting)
+- [ ] Optimize for larger script collections
+- [ ] Add comprehensive accessibility features
 
 ## Resources
 
-### Documentation
-- [SwiftUI Documentation](https://developer.apple.com/documentation/swiftui)
+### Apple Documentation
+- [SwiftUI Tutorials](https://developer.apple.com/tutorials/swiftui)
 - [Core Data Programming Guide](https://developer.apple.com/documentation/coredata)
-- [AVFoundation Documentation](https://developer.apple.com/documentation/avfoundation)
+- [AVFoundation Guide](https://developer.apple.com/documentation/avfoundation)
+- [Speech Framework](https://developer.apple.com/documentation/speech)
 
-### Tools
-- Xcode 16.4+
-- Swift 5.0+
-- iOS Simulator
-- Instruments for profiling
-
-## Version History
-
-### v0.1.0 (Current)
-- Initial project setup
-- Basic UI structure
-- Core Data models
-- Audio recording foundation
-- Privacy mode implementation
+### Project Links
+- Repository: `/Users/joker/github/xiaolai/myprojects/pando/Echo-iOS`
+- Bundle ID: `xiaolai.Echo`
+- Development Team: G5AR6VCNMA
 
 ---
 
-*Last Updated: 2025-08-22*
+*Last Updated: 2025-08-23*
+*Version: 0.1.0*
 *Author: @xiaolai*

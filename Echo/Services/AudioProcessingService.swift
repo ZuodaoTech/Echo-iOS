@@ -8,6 +8,7 @@ final class AudioProcessingService {
     // MARK: - Properties
     
     private let fileManager: AudioFileManager
+    private var currentRecognitionTask: SFSpeechRecognitionTask?
     
     // MARK: - Constants
     
@@ -171,7 +172,9 @@ final class AudioProcessingService {
             return
         }
         
-        let audioURL = fileManager.audioURL(for: scriptId)
+        // Use the original unprocessed audio file for transcription
+        // This file maintains the original AAC format that Speech Recognition can read
+        let audioURL = fileManager.originalAudioURL(for: scriptId)
         
         guard FileManager.default.fileExists(atPath: audioURL.path) else {
             print("Transcription: Audio file doesn't exist")
@@ -184,21 +187,16 @@ final class AudioProcessingService {
         // Create recognizer based on language preference
         var recognizer: SFSpeechRecognizer?
         
-        if let languageCode = languageCode, languageCode != "auto" {
+        if let languageCode = languageCode {
             // Use specified language
             recognizer = SFSpeechRecognizer(locale: Locale(identifier: languageCode))
             if recognizer == nil {
-                print("Speech recognizer not available for \(languageCode), falling back to auto-detect")
-            }
-        }
-        
-        // If no recognizer yet (auto mode or specified language failed), use current locale
-        if recognizer == nil {
-            recognizer = SFSpeechRecognizer(locale: Locale.current)
-            if recognizer == nil {
-                print("Speech recognizer not available for current locale, trying en-US")
+                print("Speech recognizer not available for \(languageCode), trying en-US as fallback")
                 recognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
             }
+        } else {
+            // No language specified, default to English
+            recognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
         }
         
         guard let recognizer = recognizer else {
@@ -218,12 +216,34 @@ final class AudioProcessingService {
             return
         }
         
+        // Verify the audio file is accessible and valid before attempting transcription
+        do {
+            // Try to create an AVAudioFile to verify format compatibility
+            let audioFile = try AVAudioFile(forReading: audioURL)
+            print("Audio file validated: format=\(audioFile.fileFormat), duration=\(Double(audioFile.length) / audioFile.fileFormat.sampleRate)s")
+        } catch {
+            print("Audio file validation failed - cannot open for transcription: \(error)")
+            // This is likely error -11829 "Cannot Open"
+            DispatchQueue.main.async {
+                completion(nil)
+            }
+            return
+        }
+        
+        // Add small delay to ensure file is fully written and accessible
+        Thread.sleep(forTimeInterval: 0.2)
+        
         // Create recognition request
         let request = SFSpeechURLRecognitionRequest(url: audioURL)
         
-        // Configure for self-talk/dictation
+        // Configure for self-talk/dictation with punctuation
         request.shouldReportPartialResults = false
         request.taskHint = .dictation
+        
+        // Enable automatic punctuation and capitalization (iOS 16+)
+        if #available(iOS 16, *) {
+            request.addsPunctuation = true
+        }
         
         // Try to use on-device recognition if available for better privacy and reliability
         if #available(iOS 13, *) {
@@ -237,11 +257,17 @@ final class AudioProcessingService {
             }
         }
         
+        // Cancel any existing recognition task
+        currentRecognitionTask?.cancel()
+        currentRecognitionTask = nil
+        
         // Add timeout handling
         var timeoutWorkItem: DispatchWorkItem?
         
         // Timeout after 30 seconds
         timeoutWorkItem = DispatchWorkItem { [weak self] in
+            self?.currentRecognitionTask?.cancel()
+            self?.currentRecognitionTask = nil
             print("Transcription timeout - cancelling task")
             DispatchQueue.main.async {
                 completion(nil)
@@ -251,7 +277,7 @@ final class AudioProcessingService {
         DispatchQueue.main.asyncAfter(deadline: .now() + 30, execute: timeoutWorkItem!)
         
         // Perform recognition
-        let recognitionTask = recognizer.recognitionTask(with: request) { result, error in
+        currentRecognitionTask = recognizer.recognitionTask(with: request) { [weak self] result, error in
             // Cancel timeout if we get a response
             timeoutWorkItem?.cancel()
             
@@ -301,6 +327,7 @@ final class AudioProcessingService {
                 }
                 
                 print("Transcription error (code: \(errorCode)): \(error.localizedDescription)")
+                self?.currentRecognitionTask = nil
                 DispatchQueue.main.async {
                     completion(nil)
                 }
@@ -308,19 +335,56 @@ final class AudioProcessingService {
             }
             
             if let result = result, result.isFinal {
-                let transcription = result.bestTranscription.formattedString
+                var transcription = result.bestTranscription.formattedString
+                
+                // Apply basic punctuation if not available from iOS 16+
+                if #available(iOS 16, *) {
+                    // iOS 16+ should have punctuation already
+                } else {
+                    transcription = self?.addBasicPunctuation(to: transcription) ?? transcription
+                }
+                
                 print("Transcription successful: \(transcription.prefix(50))...")
+                self?.currentRecognitionTask = nil
                 DispatchQueue.main.async {
                     completion(transcription)
                 }
             }
         }
-        
-        // Keep reference to prevent early deallocation
-        _ = recognitionTask
     }
     
     // MARK: - Private Methods
+    
+    /// Add basic punctuation to transcribed text
+    private func addBasicPunctuation(to text: String) -> String {
+        var result = text
+        
+        // Capitalize first letter
+        if !result.isEmpty {
+            result = result.prefix(1).capitalized + result.dropFirst()
+        }
+        
+        // Add period at the end if no punctuation exists
+        let lastChar = result.last
+        if let lastChar = lastChar,
+           ![".", "!", "?", ",", ";", ":"].contains(String(lastChar)) {
+            result += "."
+        }
+        
+        // Capitalize after sentence endings (basic approach)
+        result = result.replacingOccurrences(of: ". ", with: ".\n")
+            .split(separator: "\n")
+            .map { sentence in
+                let trimmed = sentence.trimmingCharacters(in: .whitespaces)
+                if !trimmed.isEmpty {
+                    return trimmed.prefix(1).capitalized + trimmed.dropFirst()
+                }
+                return String(sentence)
+            }
+            .joined(separator: " ")
+        
+        return result
+    }
     
     private func findTrimPoints(in buffer: AVAudioPCMBuffer) -> (start: AVAudioFramePosition, end: AVAudioFramePosition) {
         guard let channelData = buffer.floatChannelData else {
@@ -370,8 +434,17 @@ final class AudioProcessingService {
         let tempURL = url.appendingPathExtension("tmp")
         
         do {
-            // Create output file
-            let outputFile = try AVAudioFile(forWriting: tempURL, settings: format.settings)
+            // IMPORTANT: Use AAC format settings for Speech Recognition compatibility
+            // This matches the original recording format
+            let outputSettings: [String: Any] = [
+                AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+                AVSampleRateKey: 44100,
+                AVNumberOfChannelsKey: 1,
+                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+            ]
+            
+            // Create output file with AAC format
+            let outputFile = try AVAudioFile(forWriting: tempURL, settings: outputSettings)
             
             // Calculate trimmed length
             let trimmedLength = AVAudioFrameCount(endFrame - startFrame)

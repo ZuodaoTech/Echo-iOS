@@ -102,8 +102,9 @@ final class AudioCoordinator: ObservableObject {
             
             // Process the recording (trim silence, etc.)
             self.processingService.processRecording(for: scriptId) { success in
-                // After processing, transcribe the audio with selected language
-                let languageCode = script.transcriptionLanguage ?? "auto"
+                // After processing, transcribe the ORIGINAL audio with selected language
+                // The original audio maintains AAC format that Speech Recognition can read
+                let languageCode = script.transcriptionLanguage ?? "en-US"
                 print("Starting transcription with language: \(languageCode)")
                 self.processingService.transcribeRecording(for: scriptId, languageCode: languageCode) { transcription in
                     DispatchQueue.main.async {

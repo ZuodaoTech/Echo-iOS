@@ -15,7 +15,7 @@ struct AddEditScriptView: View {
     @State private var repetitions: Int16 = 3
     @State private var intervalSeconds: Double = 2.0
     @State private var privacyModeEnabled = true
-    @State private var transcriptionLanguage = "auto"
+    @State private var transcriptionLanguage = "en-US"  // Default to English instead of auto
     @State private var showingNewCategoryAlert = false
     @State private var newCategoryName = ""
     @State private var isRecording = false
@@ -23,6 +23,7 @@ struct AddEditScriptView: View {
     @State private var isProcessingRecording = false
     @State private var originalScriptBeforeTranscript: String? = nil
     @State private var transcriptCheckTimer: Timer? = nil
+    @State private var isRetranscribing = false
     @State private var showingMicPermissionAlert = false
     @State private var showingPrivacyAlert = false
     @State private var showingDeleteAlert = false
@@ -145,8 +146,8 @@ struct AddEditScriptView: View {
                     }
                     
                     // Transcription Language Picker
-                    Picker("Transcription Language", selection: $transcriptionLanguage) {
-                        Text("Auto-detect").tag("auto")
+                    VStack(alignment: .leading, spacing: 4) {
+                        Picker("Transcription Language", selection: $transcriptionLanguage) {
                         Text("English").tag("en-US")
                         Text("Chinese (Simplified)").tag("zh-CN")
                         Text("Chinese (Traditional)").tag("zh-TW")
@@ -163,14 +164,31 @@ struct AddEditScriptView: View {
                         Text("Hindi").tag("hi-IN")
                     }
                     .onChange(of: transcriptionLanguage) { newValue in
-                        // Save language preference immediately
+                        // Save language preference and re-transcribe if there's an existing recording
                         if let script = script {
+                            let oldLanguage = script.transcriptionLanguage
                             script.transcriptionLanguage = newValue
+                            
                             do {
                                 try viewContext.save()
+                                
+                                // If there's a recording and language changed, re-transcribe
+                                if script.hasRecording && oldLanguage != newValue {
+                                    retranscribeWithNewLanguage(script: script, language: newValue)
+                                }
                             } catch {
                                 print("Failed to save transcription language: \(error)")
                             }
+                        }
+                    }
+                    .disabled(isRetranscribing) // Disable picker during re-transcription
+                        
+                        if #available(iOS 16, *) {
+                            // iOS 16+ has automatic punctuation
+                        } else {
+                            Text("Tip: Say 'period', 'comma', or 'question mark' for punctuation")
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
                         }
                     }
                 }
@@ -189,21 +207,35 @@ struct AddEditScriptView: View {
                             onPlay: handlePlayPreview
                         )
                         
-                        // Show transcript if available
-                        if hasRecording, let transcript = script?.transcribedText, !transcript.isEmpty {
+                        // Show transcript if available or re-transcribing
+                        if hasRecording && (isRetranscribing || (script?.transcribedText != nil && !(script?.transcribedText?.isEmpty ?? true))) {
                             VStack(alignment: .leading, spacing: 8) {
-                                Label("Transcript", systemImage: "text.quote")
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                                
-                                Text(transcript)
-                                    .font(.footnote)
-                                    .padding()
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .background(Color.secondary.opacity(0.1))
-                                    .cornerRadius(8)
-                                
                                 HStack {
+                                    Label("Transcript", systemImage: "text.quote")
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                    
+                                    if isRetranscribing {
+                                        Spacer()
+                                        ProgressView()
+                                            .scaleEffect(0.8)
+                                        Text("Re-transcribing...")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                }
+                                
+                                if let transcript = script?.transcribedText, !transcript.isEmpty {
+                                    Text(transcript)
+                                        .font(.footnote)
+                                        .padding()
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .background(Color.secondary.opacity(0.1))
+                                        .cornerRadius(8)
+                                }
+                                
+                                if let transcript = script?.transcribedText, !transcript.isEmpty {
+                                    HStack {
                                     // Show "Use as Script" if transcript differs from current script
                                     if scriptText != transcript {
                                         Button {
@@ -264,6 +296,7 @@ struct AddEditScriptView: View {
                                             .font(.footnote)
                                     }
                                     .buttonStyle(.bordered)
+                                    }
                                 }
                             }
                             .padding(.bottom, 8)
@@ -407,6 +440,8 @@ struct AddEditScriptView: View {
         .onDisappear {
             transcriptCheckTimer?.invalidate()
             transcriptCheckTimer = nil
+            // Stop any ongoing re-transcription
+            isRetranscribing = false
         }
     }
     
@@ -417,7 +452,12 @@ struct AddEditScriptView: View {
             repetitions = script.repetitions
             intervalSeconds = script.intervalSeconds
             privacyModeEnabled = script.privacyModeEnabled
-            transcriptionLanguage = script.transcriptionLanguage ?? "auto"
+            // If script has "auto" or nil, default to English
+            if let lang = script.transcriptionLanguage, lang != "auto" {
+                transcriptionLanguage = lang
+            } else {
+                transcriptionLanguage = "en-US"
+            }
             hasRecording = script.hasRecording
         }
     }
@@ -517,6 +557,46 @@ struct AddEditScriptView: View {
         } catch {
             errorMessage = "Failed to create category. Please try again."
             showingErrorAlert = true
+        }
+    }
+    
+    private func retranscribeWithNewLanguage(script: SelftalkScript, language: String) {
+        guard script.hasRecording else { return }
+        
+        // Prevent multiple concurrent re-transcriptions
+        guard !isRetranscribing else { 
+            print("Re-transcription already in progress, skipping")
+            return 
+        }
+        
+        // Clear existing transcript and start re-transcription
+        isRetranscribing = true
+        script.transcribedText = nil
+        
+        // Add a small delay to let the file system settle
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            // Get the audio processing service through the coordinator
+            let processingService = AudioProcessingService(fileManager: AudioFileManager())
+            
+            processingService.transcribeRecording(for: script.id, languageCode: language) { transcription in
+                DispatchQueue.main.async {
+                    // Ensure we're still in re-transcribing state (could have been cancelled)
+                    guard self.isRetranscribing else { return }
+                    
+                    if let transcription = transcription {
+                        script.transcribedText = transcription
+                        do {
+                            try self.viewContext.save()
+                            print("Re-transcription completed with new language: \(language)")
+                        } catch {
+                            print("Failed to save re-transcription: \(error)")
+                        }
+                    } else {
+                        print("Re-transcription failed for language: \(language)")
+                    }
+                    self.isRetranscribing = false
+                }
+            }
         }
     }
     
