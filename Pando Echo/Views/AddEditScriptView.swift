@@ -131,11 +131,11 @@ struct AddEditScriptView: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 // Interval slider
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text("Pause between repetitions: \(String(format: "%.1f", intervalSeconds))s")
+                                    Text("Pause between repetitions: \(Int(intervalSeconds)) second\(Int(intervalSeconds) == 1 ? "" : "s")")
                                         .font(.subheadline)
                                         .foregroundColor(.secondary)
                                     
-                                    Slider(value: $intervalSeconds, in: 0...10, step: 0.5)
+                                    Slider(value: $intervalSeconds, in: 1...3, step: 1)
                                 }
                                 
                                 // Duration info
