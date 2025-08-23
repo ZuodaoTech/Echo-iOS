@@ -30,6 +30,7 @@ class AudioService: NSObject, ObservableObject {
     
     @Published var isRecording = false
     @Published var isPlaying = false
+    @Published var isPaused = false
     @Published var currentPlayingScriptId: UUID?
     @Published var playbackProgress: Double = 0
     @Published var privacyModeActive = false
@@ -41,6 +42,7 @@ class AudioService: NSObject, ObservableObject {
     private var progressTimer: Timer?
     private var repetitionTimer: Timer?
     private var currentScript: SelftalkScript?
+    private var pausedTime: TimeInterval = 0
     
     private let audioSession = AVAudioSession.sharedInstance()
     
@@ -167,6 +169,12 @@ class AudioService: NSObject, ObservableObject {
     // MARK: - Playback
     
     func play(script: SelftalkScript) throws {
+        // If we're paused on the same script, resume instead
+        if isPaused && currentPlayingScriptId == script.id {
+            resumePlayback()
+            return
+        }
+        
         guard !script.privacyModeEnabled || !privacyModeActive else {
             throw AudioServiceError.privacyModeActive
         }
@@ -181,15 +189,18 @@ class AudioService: NSObject, ObservableObject {
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: audioURL)
             audioPlayer?.delegate = self
+            audioPlayer?.prepareToPlay()
             
             currentScript = script
             currentRepetition = 1
             totalRepetitions = Int(script.repetitions)
+            pausedTime = 0
             
             audioPlayer?.play()
             
             DispatchQueue.main.async {
                 self.isPlaying = true
+                self.isPaused = false
                 self.currentPlayingScriptId = script.id
                 script.incrementPlayCount()
             }
@@ -201,17 +212,27 @@ class AudioService: NSObject, ObservableObject {
     }
     
     func pausePlayback() {
-        audioPlayer?.pause()
+        guard let player = audioPlayer, isPlaying else { return }
+        
+        player.pause()
+        pausedTime = player.currentTime
+        
         DispatchQueue.main.async {
             self.isPlaying = false
+            self.isPaused = true
         }
         stopProgressTimer()
     }
     
     func resumePlayback() {
-        audioPlayer?.play()
+        guard let player = audioPlayer, isPaused else { return }
+        
+        player.currentTime = pausedTime
+        player.play()
+        
         DispatchQueue.main.async {
             self.isPlaying = true
+            self.isPaused = false
         }
         startProgressTimer()
     }
@@ -220,12 +241,14 @@ class AudioService: NSObject, ObservableObject {
         audioPlayer?.stop()
         audioPlayer = nil
         currentScript = nil
+        pausedTime = 0
         
         repetitionTimer?.invalidate()
         repetitionTimer = nil
         
         DispatchQueue.main.async {
             self.isPlaying = false
+            self.isPaused = false
             self.currentPlayingScriptId = nil
             self.playbackProgress = 0
             self.currentRepetition = 0
@@ -302,16 +325,28 @@ extension AudioService: AVAudioPlayerDelegate {
         
         if currentRepetition < totalRepetitions {
             // More repetitions to go
-            currentRepetition += 1
-            
             DispatchQueue.main.async {
+                self.currentRepetition += 1
                 self.playbackProgress = 0
             }
             
+            // Stop the progress timer during interval
+            stopProgressTimer()
+            
             // Wait for the interval before playing again
-            repetitionTimer = Timer.scheduledTimer(withTimeInterval: script.intervalSeconds, repeats: false) { _ in
-                self.audioPlayer?.play()
-                self.startProgressTimer()
+            repetitionTimer = Timer.scheduledTimer(withTimeInterval: script.intervalSeconds, repeats: false) { [weak self] _ in
+                guard let self = self else { return }
+                
+                // Reset the player to beginning and play again
+                self.audioPlayer?.currentTime = 0
+                self.audioPlayer?.prepareToPlay()
+                
+                if self.audioPlayer?.play() == true {
+                    self.startProgressTimer()
+                } else {
+                    // If play fails, stop everything
+                    self.stopPlayback()
+                }
             }
         } else {
             // All repetitions completed

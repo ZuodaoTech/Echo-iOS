@@ -14,6 +14,10 @@ struct ScriptCard: View {
         audioService.isPlaying && audioService.currentPlayingScriptId == script.id
     }
     
+    private var isPaused: Bool {
+        audioService.isPaused && audioService.currentPlayingScriptId == script.id
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             // Category and Repetitions Header
@@ -60,12 +64,20 @@ struct ScriptCard: View {
                 .padding(.top, 4)
             }
             
-            // Playback Progress (if playing)
-            if isPlaying {
+            // Playback Progress (if playing or paused)
+            if isPlaying || isPaused {
                 VStack(spacing: 4) {
-                    ProgressView(value: audioService.playbackProgress)
-                        .tint(.blue)
-                        .animation(.linear, value: audioService.playbackProgress)
+                    HStack {
+                        ProgressView(value: audioService.playbackProgress)
+                            .tint(.blue)
+                            .animation(.linear, value: audioService.playbackProgress)
+                        
+                        if isPaused {
+                            Image(systemName: "pause.circle.fill")
+                                .font(.caption)
+                                .foregroundColor(.blue)
+                        }
+                    }
                     
                     if audioService.totalRepetitions > 1 {
                         Text("Repetition \(audioService.currentRepetition) of \(audioService.totalRepetitions)")
@@ -88,10 +100,10 @@ struct ScriptCard: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(isPlaying ? Color.blue.opacity(0.05) : Color(.systemBackground))
+                .fill(isPlaying || isPaused ? Color.blue.opacity(0.05) : Color(.systemBackground))
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(isPlaying ? Color.blue.opacity(0.3) : Color(.systemGray5), lineWidth: 1)
+                        .stroke(isPlaying || isPaused ? Color.blue.opacity(0.3) : Color(.systemGray5), lineWidth: 1)
                 )
         )
         .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
@@ -132,7 +144,11 @@ struct ScriptCard: View {
         
         if isPlaying {
             audioService.pausePlayback()
+        } else if isPaused {
+            // Resume from paused position
+            audioService.resumePlayback()
         } else {
+            // Start new playback
             do {
                 try audioService.play(script: script)
             } catch AudioServiceError.privacyModeActive {
