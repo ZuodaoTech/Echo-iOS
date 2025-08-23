@@ -18,6 +18,7 @@ struct AddEditScriptView: View {
     @State private var newCategoryName = ""
     @State private var isRecording = false
     @State private var hasRecording = false
+    @State private var isProcessingRecording = false
     @State private var showingMicPermissionAlert = false
     @State private var showingPrivacyAlert = false
     @State private var showingDeleteAlert = false
@@ -123,6 +124,7 @@ struct AddEditScriptView: View {
                         RecordingButton(
                             isRecording: $isRecording,
                             hasRecording: hasRecording,
+                            isProcessing: audioService.isProcessingRecording,
                             recordingDuration: script?.formattedDuration ?? "",
                             isPlaying: isPlaying,
                             isPaused: isPaused,
@@ -228,6 +230,14 @@ struct AddEditScriptView: View {
         }
         .onAppear {
             setupInitialValues()
+        }
+        .onChange(of: audioService.isProcessingRecording) { isProcessing in
+            // When processing completes, update hasRecording
+            if !isProcessing && !audioService.isRecording {
+                if let script = script {
+                    hasRecording = script.hasRecording
+                }
+            }
         }
     }
     
@@ -344,7 +354,7 @@ struct AddEditScriptView: View {
         if isRecording {
             audioService.stopRecording()
             isRecording = false
-            hasRecording = true  // Recording completed
+            // Don't set hasRecording immediately - wait for processing
         } else {
             audioService.requestMicrophonePermission { granted in
                 if granted {
@@ -419,6 +429,7 @@ struct AddEditScriptView: View {
 struct RecordingButton: View {
     @Binding var isRecording: Bool
     let hasRecording: Bool
+    let isProcessing: Bool
     let recordingDuration: String
     let isPlaying: Bool
     let isPaused: Bool
@@ -524,6 +535,15 @@ struct RecordingButton: View {
                     Text("Recording...")
                         .foregroundColor(.secondary)
                 }
+            } else if isProcessing {
+                HStack {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                    Text("Processing audio...")
+                        .foregroundColor(.secondary)
+                        .padding(.leading, 4)
+                }
+                .padding(.vertical, 8)
             }
         }
     }

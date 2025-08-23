@@ -7,6 +7,7 @@ final class RecordingService: NSObject, ObservableObject {
     // MARK: - Published Properties
     
     @Published var isRecording = false
+    @Published var isProcessing = false  // New: indicates post-processing
     @Published var recordingDuration: TimeInterval = 0
     @Published var currentRecordingScriptId: UUID?
     
@@ -24,8 +25,9 @@ final class RecordingService: NSObject, ObservableObject {
         static let recordingSettings: [String: Any] = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
             AVSampleRateKey: 44100,
-            AVNumberOfChannelsKey: 2,
-            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+            AVNumberOfChannelsKey: 1,  // Mono is better for voice
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue,
+            AVEncoderBitRateKey: 128000  // Higher bitrate for better quality
         ]
     }
     
