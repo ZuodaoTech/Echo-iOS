@@ -142,11 +142,18 @@ struct ScriptCard: View {
             return 
         }
         
-        if isPlaying {
-            audioService.pausePlayback()
-        } else if isPaused {
-            // Resume from paused position
-            audioService.resumePlayback()
+        // Check if this script is in a playback session (including intervals)
+        let isThisScriptInSession = audioService.isInPlaybackSession && audioService.currentPlayingScriptId == script.id
+        
+        if isThisScriptInSession {
+            // We're in a playback session for this script
+            if audioService.isPaused {
+                // Resume from paused position
+                audioService.resumePlayback()
+            } else {
+                // Pause (works during playback or intervals)
+                audioService.pausePlayback()
+            }
         } else {
             // Start new playback
             do {
