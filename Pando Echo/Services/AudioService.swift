@@ -60,9 +60,11 @@ class AudioService: NSObject, ObservableObject {
                                         mode: .default, 
                                         options: [.defaultToSpeaker, .allowBluetooth, .allowBluetoothA2DP])
             
-            // Set preferred settings to avoid warnings
+            // Set preferred settings to avoid warnings (only on real device)
+            #if !targetEnvironment(simulator)
             try audioSession.setPreferredSampleRate(44100)
             try audioSession.setPreferredIOBufferDuration(0.005)
+            #endif
             
             try audioSession.setActive(true)
         } catch {
