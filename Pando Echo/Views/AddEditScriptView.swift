@@ -20,6 +20,9 @@ struct AddEditScriptView: View {
     @State private var hasRecording = false
     @State private var showingMicPermissionAlert = false
     @State private var showingPrivacyAlert = false
+    @State private var showingDeleteAlert = false
+    @State private var showingErrorAlert = false
+    @State private var errorMessage = ""
     
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Category.sortOrder, ascending: true)],
@@ -156,6 +159,22 @@ struct AddEditScriptView: View {
                         }
                     }
                 }
+                
+                // Delete button - only for existing scripts
+                if isEditing {
+                    Section {
+                        Button(role: .destructive) {
+                            showingDeleteAlert = true
+                        } label: {
+                            HStack {
+                                Spacer()
+                                Text("Delete Script")
+                                    .fontWeight(.medium)
+                                Spacer()
+                            }
+                        }
+                    }
+                }
             }
             .navigationTitle(isEditing ? "Edit Script" : "New Script")
             .navigationBarTitleDisplayMode(.inline)
@@ -192,6 +211,19 @@ struct AddEditScriptView: View {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text("Please connect earphones to play this audio")
+            }
+            .alert("Delete Script", isPresented: $showingDeleteAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Delete", role: .destructive) {
+                    deleteScript()
+                }
+            } message: {
+                Text("Are you sure you want to delete this script? This action cannot be undone.")
+            }
+            .alert("Error", isPresented: $showingErrorAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(errorMessage)
             }
         }
         .onAppear {
@@ -281,7 +313,8 @@ struct AddEditScriptView: View {
             }
             return true
         } catch {
-            print("Error saving script: \(error)")
+            errorMessage = "Failed to save script. Please try again."
+            showingErrorAlert = true
             return false
         }
     }
@@ -300,7 +333,8 @@ struct AddEditScriptView: View {
             selectedCategory = category
             newCategoryName = ""
         } catch {
-            print("Error creating category: \(error)")
+            errorMessage = "Failed to create category. Please try again."
+            showingErrorAlert = true
         }
     }
     
@@ -318,7 +352,8 @@ struct AddEditScriptView: View {
                         try audioService.startRecording(for: script)
                         isRecording = true
                     } catch {
-                        print("Recording error: \(error)")
+                        errorMessage = "Failed to start recording. Please check microphone permissions."
+                        showingErrorAlert = true
                     }
                 } else {
                     showingMicPermissionAlert = true
@@ -331,6 +366,27 @@ struct AddEditScriptView: View {
         guard let script = script else { return }
         audioService.deleteRecording(for: script)
         hasRecording = false  // Update state to reflect deletion
+    }
+    
+    private func deleteScript() {
+        guard let script = script else { return }
+        
+        // Stop any playback
+        audioService.stopPlayback()
+        
+        // Delete the recording file if it exists
+        audioService.deleteRecording(for: script)
+        
+        // Delete the script from Core Data
+        viewContext.delete(script)
+        
+        do {
+            try viewContext.save()
+            dismiss()  // Close the edit view after deletion
+        } catch {
+            errorMessage = "Failed to delete script. Please try again."
+            showingErrorAlert = true
+        }
     }
     
     private func handlePlayPreview() {
@@ -354,7 +410,7 @@ struct AddEditScriptView: View {
             } catch AudioServiceError.privacyModeActive {
                 showingPrivacyAlert = true
             } catch {
-                print("Preview playback error: \(error)")
+                // Preview playback error
             }
         }
     }
