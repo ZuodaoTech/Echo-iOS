@@ -19,7 +19,6 @@ struct ScriptsListView: View {
     
     @State private var selectedCategory: Category?
     @State private var showingAddScript = false
-    @State private var showingEditScript = false
     @State private var scriptToEdit: SelftalkScript?
     @State private var showingFilterSheet = false
     
@@ -43,7 +42,6 @@ struct ScriptsListView: View {
                                     script: script,
                                     onEdit: {
                                         scriptToEdit = script
-                                        showingEditScript = true
                                     },
                                     onDelete: {
                                         deleteScript(script)
@@ -83,10 +81,8 @@ struct ScriptsListView: View {
             .sheet(isPresented: $showingAddScript) {
                 AddEditScriptView(script: nil)
             }
-            .sheet(isPresented: $showingEditScript) {
-                if let script = scriptToEdit {
-                    AddEditScriptView(script: script)
-                }
+            .sheet(item: $scriptToEdit) { script in
+                AddEditScriptView(script: script)
             }
             .sheet(isPresented: $showingFilterSheet) {
                 CategoryFilterSheet(
@@ -101,9 +97,66 @@ struct ScriptsListView: View {
     }
     
     private func setupInitialData() {
-        // Create default categories if none exist
-        if categories.isEmpty {
+        // Check if this is first launch
+        let hasLaunchedKey = "hasLaunchedBefore"
+        let hasLaunched = UserDefaults.standard.bool(forKey: hasLaunchedKey)
+        
+        if !hasLaunched {
+            // First launch - create default categories and sample scripts
             Category.createDefaultCategories(context: viewContext)
+            createSampleScripts()
+            UserDefaults.standard.set(true, forKey: hasLaunchedKey)
+        } else if categories.isEmpty {
+            // Not first launch but no categories - just create categories
+            Category.createDefaultCategories(context: viewContext)
+        }
+    }
+    
+    private func createSampleScripts() {
+        // Wait for categories to be created
+        do {
+            try viewContext.save()
+            
+            // Fetch the newly created categories
+            let categoryRequest: NSFetchRequest<Category> = Category.fetchRequest()
+            let allCategories = try viewContext.fetch(categoryRequest)
+            
+            // Sample 1: Breaking Bad Habits
+            if let breakingBadHabits = allCategories.first(where: { $0.name == "Breaking Bad Habits" }) {
+                _ = SelftalkScript.create(
+                    scriptText: "I never smoke, because it stinks, and I hate being controlled.",
+                    category: breakingBadHabits,
+                    repetitions: 3,
+                    privacyMode: true,
+                    in: viewContext
+                )
+            }
+            
+            // Sample 2: Building Good Habits
+            if let buildingGoodHabits = allCategories.first(where: { $0.name == "Building Good Habits" }) {
+                _ = SelftalkScript.create(
+                    scriptText: "I always go to bed before 10 p.m., because it's healthier, and I love waking up with a great deal of energy.",
+                    category: buildingGoodHabits,
+                    repetitions: 3,
+                    privacyMode: true,
+                    in: viewContext
+                )
+            }
+            
+            // Sample 3: Appropriate Positivity
+            if let appropriatePositivity = allCategories.first(where: { $0.name == "Appropriate Positivity" }) {
+                _ = SelftalkScript.create(
+                    scriptText: "I made a few mistakes, but I also did several things well. Mistakes are a normal part of learning, and I can use them as an opportunity to improve. Most people are likely focused on the overall effort or result, not just the small errors.",
+                    category: appropriatePositivity,
+                    repetitions: 3,
+                    privacyMode: true,
+                    in: viewContext
+                )
+            }
+            
+            try viewContext.save()
+        } catch {
+            print("Error creating sample scripts: \(error)")
         }
     }
     

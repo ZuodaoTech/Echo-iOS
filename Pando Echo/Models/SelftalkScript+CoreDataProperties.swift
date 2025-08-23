@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 
-extension SelftalkScript {
+extension SelftalkScript: Identifiable {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<SelftalkScript> {
         return NSFetchRequest<SelftalkScript>(entityName: "SelftalkScript")
     }
