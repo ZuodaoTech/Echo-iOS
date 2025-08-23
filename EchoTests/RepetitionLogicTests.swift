@@ -1,7 +1,7 @@
 import XCTest
 import AVFoundation
 import CoreData
-@testable import Pando_Echo
+@testable import Echo
 
 class RepetitionLogicTests: XCTestCase {
     

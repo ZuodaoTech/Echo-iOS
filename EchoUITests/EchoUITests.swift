@@ -1,13 +1,13 @@
 //
-//  Pando_EchoUITests.swift
-//  Pando EchoUITests
+//  EchoUITests.swift
+//  EchoUITests
 //
 //  Created by joker on 8/23/25.
 //
 
 import XCTest
 
-final class Pando_EchoUITests: XCTestCase {
+final class EchoUITests: XCTestCase {
     
     var app: XCUIApplication!
 
