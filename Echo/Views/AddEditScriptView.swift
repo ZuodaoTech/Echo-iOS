@@ -280,9 +280,15 @@ struct AddEditScriptView: View {
                         }
                     
                     if privacyModeEnabled {
-                        Text("Audio will only play when earphones are connected")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+                        HStack {
+                            Image(systemName: "info.circle")
+                                .font(.caption)
+                                .foregroundColor(.blue)
+                            Text("Audio will only play when earphones are connected")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            Spacer()
+                        }
                     }
                     
                     // Notification Settings
