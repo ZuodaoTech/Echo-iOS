@@ -4,8 +4,10 @@ struct MeView: View {
     @AppStorage("privacyModeDefault") private var privacyModeDefault = true
     @AppStorage("defaultRepetitions") private var defaultRepetitions = 3
     @AppStorage("defaultInterval") private var defaultInterval = 2.0
-    @AppStorage("defaultTranscriptionLanguage") private var defaultTranscriptionLanguage = Locale.current.languageCode ?? "en"
+    @AppStorage("defaultTranscriptionLanguage") private var defaultTranscriptionLanguage = "en-US"
     @AppStorage("voiceEnhancementEnabled") private var voiceEnhancementEnabled = true
+    
+    @State private var showingLanguagePicker = false
     
     var body: some View {
         NavigationView {
@@ -30,12 +32,20 @@ struct MeView: View {
                 }
                 
                 Section("Transcription") {
-                    HStack {
-                        Text("Default Language")
-                        Spacer()
-                        Text(languageDisplayName(for: defaultTranscriptionLanguage))
-                            .foregroundColor(.secondary)
+                    Button {
+                        showingLanguagePicker = true
+                    } label: {
+                        HStack {
+                            Text("Default Language")
+                            Spacer()
+                            Text(languageDisplayName(for: defaultTranscriptionLanguage))
+                                .foregroundColor(.secondary)
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
                     }
+                    .foregroundColor(.primary)
                 }
                 
                 Section("Recording") {
@@ -92,11 +102,32 @@ struct MeView: View {
                 }
             }
             .navigationTitle("")
+            .sheet(isPresented: $showingLanguagePicker) {
+                LanguagePickerView(selectedLanguage: $defaultTranscriptionLanguage)
+            }
         }
     }
     
     private func languageDisplayName(for code: String) -> String {
-        return Locale.current.localizedString(forLanguageCode: code) ?? code
+        // Map language codes to display names
+        switch code {
+        case "en-US": return "English"
+        case "zh-CN": return "Chinese (Simplified)"
+        case "zh-TW": return "Chinese (Traditional)"
+        case "es-ES": return "Spanish"
+        case "fr-FR": return "French"
+        case "de-DE": return "German"
+        case "ja-JP": return "Japanese"
+        case "ko-KR": return "Korean"
+        case "it-IT": return "Italian"
+        case "pt-BR": return "Portuguese (Brazil)"
+        case "ru-RU": return "Russian"
+        case "ar-SA": return "Arabic"
+        case "hi-IN": return "Hindi"
+        case "id-ID": return "Indonesian"
+        case "nl-NL": return "Dutch"
+        default: return Locale.current.localizedString(forLanguageCode: code) ?? code
+        }
     }
 }
 
