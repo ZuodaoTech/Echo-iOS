@@ -69,6 +69,136 @@ struct AddEditScriptView: View {
                         )
                 }
                 
+                if isEditing {
+                    Section("Recording") {
+                        // Transcription Language Picker
+                        VStack(alignment: .leading, spacing: 4) {
+                            Picker("Transcription Language", selection: $transcriptionLanguage) {
+                                Text("English").tag("en-US")
+                                Text("Chinese (Simplified)").tag("zh-CN")
+                                Text("Chinese (Traditional)").tag("zh-TW")
+                                Text("Spanish").tag("es-ES")
+                                Text("French").tag("fr-FR")
+                                Text("German").tag("de-DE")
+                                Text("Japanese").tag("ja-JP")
+                                Text("Korean").tag("ko-KR")
+                                Text("Portuguese").tag("pt-BR")
+                                Text("Russian").tag("ru-RU")
+                                Text("Italian").tag("it-IT")
+                                Text("Dutch").tag("nl-NL")
+                                Text("Arabic").tag("ar-SA")
+                                Text("Hindi").tag("hi-IN")
+                            }
+                            .onChange(of: transcriptionLanguage) { newValue in
+                                // Save language preference and re-transcribe if there's an existing recording
+                                if let script = script {
+                                    let oldLanguage = script.transcriptionLanguage
+                                    script.transcriptionLanguage = newValue
+                                    
+                                    do {
+                                        try viewContext.save()
+                                        
+                                        // If there's a recording and language changed, re-transcribe
+                                        if script.hasRecording && oldLanguage != newValue {
+                                            retranscribeWithNewLanguage(script: script, language: newValue)
+                                        }
+                                    } catch {
+                                        print("Failed to save transcription language: \(error)")
+                                    }
+                                }
+                            }
+                            .disabled(isRetranscribing) // Disable picker during re-transcription
+                            
+                            if #available(iOS 16, *) {
+                                // iOS 16+ has automatic punctuation
+                            } else {
+                                Text("Tip: Say 'period', 'comma', or 'question mark' for punctuation")
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        
+                        RecordingButton(
+                            isRecording: $isRecording,
+                            hasRecording: hasRecording,
+                            isProcessing: isProcessingAudio || audioService.isProcessingRecording,
+                            recordingDuration: script?.formattedDuration ?? "",
+                            isPlaying: isPlaying,
+                            isPaused: isPaused,
+                            onRecord: handleRecording,
+                            onDelete: deleteRecording,
+                            onPlay: handlePlayPreview
+                        )
+                        
+                        // Show transcript if available or re-transcribing
+                        if hasRecording && (isRetranscribing || (script?.transcribedText != nil && !(script?.transcribedText?.isEmpty ?? true))) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    Label("Transcript", systemImage: "text.quote")
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                    
+                                    if isRetranscribing {
+                                        Spacer()
+                                        ProgressView()
+                                            .scaleEffect(0.8)
+                                        Text("Re-transcribing...")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                }
+                                
+                                if let transcript = script?.transcribedText, !transcript.isEmpty {
+                                    Text(transcript)
+                                        .font(.footnote)
+                                        .padding()
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .fill(Color(.systemGray6))
+                                        )
+                                    
+                                    HStack {
+                                        Button {
+                                            UIPasteboard.general.string = transcript
+                                        } label: {
+                                            HStack(spacing: 4) {
+                                                Image(systemName: "doc.on.doc")
+                                                    .imageScale(.small)
+                                                Text("Copy")
+                                            }
+                                            .font(.caption)
+                                            .foregroundColor(.accentColor)
+                                        }
+                                        
+                                        Spacer()
+                                        
+                                        Button {
+                                            if let script = script {
+                                                scriptText = transcript
+                                                script.scriptText = transcript
+                                                do {
+                                                    try viewContext.save()
+                                                } catch {
+                                                    print("Failed to update script text: \(error)")
+                                                }
+                                            }
+                                        } label: {
+                                            HStack(spacing: 4) {
+                                                Image(systemName: "arrow.up.doc")
+                                                    .imageScale(.small)
+                                                Text("Use as Script")
+                                            }
+                                            .font(.caption)
+                                            .foregroundColor(.accentColor)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
                 Section("Settings") {
                     // Category Picker
                     HStack {
@@ -144,218 +274,6 @@ struct AddEditScriptView: View {
                         Text("Audio will only play when earphones are connected")
                             .font(.caption)
                             .foregroundColor(.secondary)
-                    }
-                    
-                    // Transcription Language Picker
-                    VStack(alignment: .leading, spacing: 4) {
-                        Picker("Transcription Language", selection: $transcriptionLanguage) {
-                        Text("English").tag("en-US")
-                        Text("Chinese (Simplified)").tag("zh-CN")
-                        Text("Chinese (Traditional)").tag("zh-TW")
-                        Text("Spanish").tag("es-ES")
-                        Text("French").tag("fr-FR")
-                        Text("German").tag("de-DE")
-                        Text("Japanese").tag("ja-JP")
-                        Text("Korean").tag("ko-KR")
-                        Text("Portuguese").tag("pt-BR")
-                        Text("Russian").tag("ru-RU")
-                        Text("Italian").tag("it-IT")
-                        Text("Dutch").tag("nl-NL")
-                        Text("Arabic").tag("ar-SA")
-                        Text("Hindi").tag("hi-IN")
-                    }
-                    .onChange(of: transcriptionLanguage) { newValue in
-                        // Save language preference and re-transcribe if there's an existing recording
-                        if let script = script {
-                            let oldLanguage = script.transcriptionLanguage
-                            script.transcriptionLanguage = newValue
-                            
-                            do {
-                                try viewContext.save()
-                                
-                                // If there's a recording and language changed, re-transcribe
-                                if script.hasRecording && oldLanguage != newValue {
-                                    retranscribeWithNewLanguage(script: script, language: newValue)
-                                }
-                            } catch {
-                                print("Failed to save transcription language: \(error)")
-                            }
-                        }
-                    }
-                    .disabled(isRetranscribing) // Disable picker during re-transcription
-                        
-                        if #available(iOS 16, *) {
-                            // iOS 16+ has automatic punctuation
-                        } else {
-                            Text("Tip: Say 'period', 'comma', or 'question mark' for punctuation")
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                }
-                
-                if isEditing {
-                    Section("Recording") {
-                        RecordingButton(
-                            isRecording: $isRecording,
-                            hasRecording: hasRecording,
-                            isProcessing: isProcessingAudio || audioService.isProcessingRecording,
-                            recordingDuration: script?.formattedDuration ?? "",
-                            isPlaying: isPlaying,
-                            isPaused: isPaused,
-                            onRecord: handleRecording,
-                            onDelete: deleteRecording,
-                            onPlay: handlePlayPreview
-                        )
-                        
-                        // Show transcript if available or re-transcribing
-                        if hasRecording && (isRetranscribing || (script?.transcribedText != nil && !(script?.transcribedText?.isEmpty ?? true))) {
-                            VStack(alignment: .leading, spacing: 8) {
-                                HStack {
-                                    Label("Transcript", systemImage: "text.quote")
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                    
-                                    if isRetranscribing {
-                                        Spacer()
-                                        ProgressView()
-                                            .scaleEffect(0.8)
-                                        Text("Re-transcribing...")
-                                            .font(.caption)
-                                            .foregroundColor(.secondary)
-                                    }
-                                }
-                                
-                                if let transcript = script?.transcribedText, !transcript.isEmpty {
-                                    Text(transcript)
-                                        .font(.footnote)
-                                        .padding()
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .background(Color.secondary.opacity(0.1))
-                                        .cornerRadius(8)
-                                }
-                                
-                                if let transcript = script?.transcribedText, !transcript.isEmpty {
-                                    HStack {
-                                    // Copy button (first position)
-                                    Button {
-                                        // Copy to clipboard
-                                        UIPasteboard.general.string = transcript
-                                    } label: {
-                                        HStack(spacing: 4) {
-                                            Image(systemName: "doc.on.doc")
-                                                .imageScale(.small)
-                                            Text("Copy")
-                                        }
-                                        .font(.footnote)
-                                    }
-                                    .buttonStyle(.bordered)
-                                    .controlSize(.small)
-                                    
-                                    // Use as Script button (second position)
-                                    if scriptText != transcript {
-                                        Button {
-                                            // Save original before replacing
-                                            if originalScriptBeforeTranscript == nil {
-                                                originalScriptBeforeTranscript = scriptText
-                                            }
-                                            // Replace script text with transcript
-                                            scriptText = transcript
-                                            // Save immediately
-                                            if let script = script {
-                                                script.scriptText = transcript
-                                                script.updatedAt = Date()
-                                                do {
-                                                    try viewContext.save()
-                                                } catch {
-                                                    print("Failed to save transcript as script: \(error)")
-                                                }
-                                            }
-                                        } label: {
-                                            HStack(spacing: 4) {
-                                                Image(systemName: "doc.text.fill")
-                                                    .imageScale(.small)
-                                                Text("Use as Script")
-                                            }
-                                            .font(.footnote)
-                                            .foregroundColor(.white)
-                                        }
-                                        .buttonStyle(.borderedProminent)
-                                        .controlSize(.small)
-                                    }
-                                    
-                                    // Undo button (third position)
-                                    if let original = originalScriptBeforeTranscript, scriptText == transcript {
-                                        Button {
-                                            // Revert to original
-                                            scriptText = original
-                                            // Save immediately
-                                            if let script = script {
-                                                script.scriptText = original
-                                                script.updatedAt = Date()
-                                                do {
-                                                    try viewContext.save()
-                                                } catch {
-                                                    print("Failed to revert script: \(error)")
-                                                }
-                                            }
-                                            // Clear the stored original
-                                            originalScriptBeforeTranscript = nil
-                                        } label: {
-                                            HStack(spacing: 4) {
-                                                Image(systemName: "arrow.uturn.backward")
-                                                    .imageScale(.small)
-                                                Text("Undo")
-                                            }
-                                            .font(.footnote)
-                                        }
-                                        .buttonStyle(.bordered)
-                                        .controlSize(.small)
-                                        .tint(.orange)
-                                    }
-                                    }
-                                }
-                            }
-                            .padding(.bottom, 8)
-                        }
-                        
-                        if hasRecording {
-                            VStack(alignment: .leading, spacing: 8) {
-                                // Interval slider
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text("Pause between repetitions: \(Int(intervalSeconds)) second\(Int(intervalSeconds) == 1 ? "" : "s")")
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                    
-                                    Slider(value: $intervalSeconds, in: 1...3, step: 1)
-                                        .onChange(of: intervalSeconds) { newValue in
-                                            // Apply interval change immediately
-                                            if let script = script {
-                                                script.intervalSeconds = newValue
-                                                do {
-                                                    try viewContext.save()
-                                                } catch {
-                                                    print("Failed to save interval change: \(error)")
-                                                }
-                                            }
-                                        }
-                                }
-                                
-                                // Duration info
-                                HStack {
-                                    Label("Total duration", systemImage: "clock")
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                    
-                                    Spacer()
-                                    
-                                    Text(calculateTotalDuration())
-                                        .font(.subheadline)
-                                        .fontWeight(.medium)
-                                }
-                                .padding(.top, 4)
-                            }
-                        }
                     }
                 }
                 
