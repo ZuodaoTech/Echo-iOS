@@ -114,16 +114,9 @@ final class MainFlowUITests: XCTestCase {
         // Given - Create a script
         createTestScript(text: "Original text")
         
-        // When - Swipe to edit
+        // When - Tap to edit
         let scriptCell = app.cells.containing(.staticText, identifier: "Original text").element
-        scriptCell.swipeLeft()
-        
-        if app.buttons["Edit"].exists {
-            app.buttons["Edit"].tap()
-        } else {
-            // Alternative: tap the cell
-            scriptCell.tap()
-        }
+        scriptCell.tap()
         
         // Then - Edit view appears
         let textEditor = app.textViews.firstMatch
@@ -141,26 +134,7 @@ final class MainFlowUITests: XCTestCase {
         }
     }
     
-    func testDeleteScriptFlow() {
-        // Given - Create a script
-        createTestScript(text: "Script to delete")
-        
-        // When - Swipe to delete
-        let scriptCell = app.cells.containing(.staticText, identifier: "Script to delete").element
-        scriptCell.swipeLeft()
-        
-        if app.buttons["Delete"].exists {
-            app.buttons["Delete"].tap()
-            
-            // Confirm deletion if alert appears
-            if app.alerts.firstMatch.exists {
-                app.alerts.buttons["Delete"].tap()
-            }
-        }
-        
-        // Then - Script is removed
-        XCTAssertFalse(app.staticTexts["Script to delete"].exists)
-    }
+    // Delete functionality removed - no swipe-to-delete support
     
     // MARK: - Recording Flow Tests
     
