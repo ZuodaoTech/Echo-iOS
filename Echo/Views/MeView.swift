@@ -174,14 +174,14 @@ struct MeView: View {
                     HStack {
                         Text("Version")
                         Spacer()
-                        Text("0.1.0")
+                        Text("0.2.0")
                             .foregroundColor(.secondary)
                     }
                     
                     HStack {
                         Text("Build")
                         Spacer()
-                        Text("1")
+                        Text("2")
                             .foregroundColor(.secondary)
                     }
                 }

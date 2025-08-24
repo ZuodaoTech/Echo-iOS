@@ -76,7 +76,7 @@ class ExportService {
             exportDate: Date(),
             scriptCount: scripts.count,
             includesAudio: includeAudio,
-            appVersion: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.1.0"
+            appVersion: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.2.0"
         )
         
         let manifestData = try JSONEncoder().encode(manifest)
@@ -153,7 +153,7 @@ class ExportService {
                 exportDate: Date(),
                 scriptCount: scripts.count,
                 includesAudio: false, // JSON doesn't include audio files
-                appVersion: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.1.0"
+                appVersion: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.2.0"
             ),
             scripts: scripts.map { ScriptExport(from: $0) },
             categories: Set(scripts.compactMap { $0.category }).map { CategoryExport(from: $0) }
