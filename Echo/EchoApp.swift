@@ -11,7 +11,7 @@ import UserNotifications
 
 @main
 struct EchoApp: App {
-    let persistenceController = PersistenceController.shared
+    @StateObject private var persistenceController = PersistenceController.shared
 
     init() {
         // Configure audio session early to avoid warnings
@@ -24,6 +24,20 @@ struct EchoApp: App {
         #if DEBUG
         SimulatorWarningFixes.configure()
         #endif
+        
+        // Listen for iCloud sync toggle changes
+        NotificationCenter.default.addObserver(
+            forName: Notification.Name("RestartCoreDataForICloud"),
+            object: nil,
+            queue: .main
+        ) { notification in
+            // Note: In production, you might want to restart the Core Data stack
+            // For now, we'll just log the change
+            if let enabled = notification.userInfo?["enabled"] as? Bool {
+                print("iCloud sync toggled: \(enabled)")
+                // The Persistence controller already handles this in its init
+            }
+        }
     }
     
     var body: some Scene {
