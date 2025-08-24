@@ -62,7 +62,7 @@ struct ScriptsListView: View {
                     .listStyle(PlainListStyle())
                 }
             }
-            .navigationTitle("Cards")
+            .navigationTitle("")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
