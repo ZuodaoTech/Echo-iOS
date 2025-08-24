@@ -137,7 +137,7 @@ final class AudioProcessingService {
                 let (startFrame, endFrame) = self.findTrimPoints(in: buffer)
                 
                 print("AudioProcessing: Trim points found - Start: \(startFrame)/\(frameCount), End: \(endFrame)/\(frameCount)")
-                print("AudioProcessing: Will trim \(Double(startFrame)/format.sampleRate)s from start, \(Double(frameCount - endFrame)/format.sampleRate)s from end")
+                print("AudioProcessing: Will trim \(Double(startFrame)/format.sampleRate)s from start, \(Double(Int64(frameCount) - endFrame)/format.sampleRate)s from end")
                 
                 // Check if trimming is needed
                 if startFrame == 0 && endFrame == frameCount {
