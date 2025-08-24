@@ -50,15 +50,6 @@ struct ScriptsListView: View {
                             .listRowSeparator(.hidden)
                             .listRowBackground(Color.clear)
                             .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                Button {
-                                    audioService.stopPlayback()  // Stop any playing audio
-                                    scriptToEdit = script
-                                } label: {
-                                    Label("Edit", systemImage: "pencil")
-                                }
-                                .tint(.blue)
-                            }
                         }
                     }
                     .listStyle(PlainListStyle())
