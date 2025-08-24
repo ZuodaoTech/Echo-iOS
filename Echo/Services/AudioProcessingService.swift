@@ -13,9 +13,21 @@ final class AudioProcessingService {
     // MARK: - Constants
     
     private enum Constants {
-        static let silenceThreshold: Float = 0.01  // Amplitude threshold for silence
+        // Silence thresholds for different sensitivity levels
+        static let silenceThresholdHigh: Float = 0.005  // High sensitivity (more aggressive)
+        static let silenceThresholdMedium: Float = 0.01  // Medium sensitivity (default)
+        static let silenceThresholdLow: Float = 0.02  // Low sensitivity (less aggressive)
         static let minimumSilenceDuration: TimeInterval = 0.3  // Minimum silence to trim
         static let minimumAudioDuration: TimeInterval = 0.5  // Don't process very short recordings
+        
+        static func getThreshold() -> Float {
+            let sensitivity = UserDefaults.standard.string(forKey: "silenceTrimSensitivity") ?? "medium"
+            switch sensitivity {
+            case "high": return silenceThresholdHigh
+            case "low": return silenceThresholdLow
+            default: return silenceThresholdMedium
+            }
+        }
     }
     
     // MARK: - Initialization
@@ -58,7 +70,27 @@ final class AudioProcessingService {
     
     /// Process audio file: trim silence and optimize for voice
     func processRecording(for scriptId: UUID, completion: @escaping (Bool) -> Void) {
+        // Check if auto-trim is enabled
+        let autoTrimEnabled = UserDefaults.standard.bool(forKey: "autoTrimSilence")
+        if !autoTrimEnabled {
+            print("AudioProcessing: Auto-trim disabled by user")
+            completion(true)
+            return
+        }
+        
         let audioURL = fileManager.audioURL(for: scriptId)
+        let originalURL = fileManager.originalAudioURL(for: scriptId)
+        
+        // First, copy the recorded file to original (for transcription)
+        do {
+            if FileManager.default.fileExists(atPath: originalURL.path) {
+                try FileManager.default.removeItem(at: originalURL)
+            }
+            try FileManager.default.copyItem(at: audioURL, to: originalURL)
+            print("AudioProcessing: Saved original copy for transcription")
+        } catch {
+            print("AudioProcessing: Failed to save original copy: \(error)")
+        }
         
         guard FileManager.default.fileExists(atPath: audioURL.path) else {
             print("AudioProcessing: File doesn't exist")
@@ -434,6 +466,7 @@ final class AudioProcessingService {
         }
         
         let frameLength = Int(buffer.frameLength)
+        let threshold = Constants.getThreshold()
         
         // Analyze first channel for simplicity
         let samples = channelData[0]
@@ -441,7 +474,7 @@ final class AudioProcessingService {
         // Find start point (first non-silence)
         var startFrame = 0
         for i in 0..<frameLength {
-            if abs(samples[i]) > Constants.silenceThreshold {
+            if abs(samples[i]) > threshold {
                 startFrame = max(0, i - Int(buffer.format.sampleRate * 0.1)) // Keep 0.1s before speech
                 break
             }
@@ -450,7 +483,7 @@ final class AudioProcessingService {
         // Find end point (last non-silence)
         var endFrame = frameLength
         for i in stride(from: frameLength - 1, through: 0, by: -1) {
-            if abs(samples[i]) > Constants.silenceThreshold {
+            if abs(samples[i]) > threshold {
                 endFrame = min(frameLength, i + Int(buffer.format.sampleRate * 0.1)) // Keep 0.1s after speech
                 break
             }

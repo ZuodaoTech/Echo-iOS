@@ -17,6 +17,7 @@ final class AudioCoordinator: ObservableObject {
     @Published var isProcessingRecording = false  // New: shows processing state
     @Published var recordingDuration: TimeInterval = 0
     @Published var processingScriptIds = Set<UUID>()  // Track which scripts are being processed
+    @Published var voiceActivityLevel: Float = 0  // Voice activity visualization (0.0 to 1.0)
     
     // Playback state
     @Published var isPlaying = false
@@ -219,6 +220,9 @@ final class AudioCoordinator: ObservableObject {
         
         recordingService.$isProcessing
             .assign(to: &$isProcessingRecording)
+        
+        recordingService.$voiceActivityLevel
+            .assign(to: &$voiceActivityLevel)
         
         // Bind playback properties
         playbackService.$isPlaying

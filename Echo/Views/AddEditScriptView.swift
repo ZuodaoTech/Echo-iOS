@@ -133,6 +133,7 @@ struct AddEditScriptView: View {
                             recordingDuration: script?.formattedDuration ?? "",
                             isPlaying: isPlaying,
                             isPaused: isPaused,
+                            voiceActivityLevel: audioService.voiceActivityLevel,
                             onRecord: handleRecording,
                             onDelete: deleteRecording,
                             onPlay: handlePlayPreview
@@ -724,6 +725,7 @@ struct RecordingButton: View {
     let recordingDuration: String
     let isPlaying: Bool
     let isPaused: Bool
+    let voiceActivityLevel: Float
     let onRecord: () -> Void
     let onDelete: () -> Void
     let onPlay: () -> Void
@@ -821,11 +823,28 @@ struct RecordingButton: View {
             .buttonStyle(PlainButtonStyle())
             
             if isRecording {
-                HStack {
-                    Image(systemName: "dot.radiowaves.left.and.right")
-                        .foregroundColor(.red)
-                    Text("Recording...")
-                        .foregroundColor(.secondary)
+                VStack(spacing: 8) {
+                    HStack {
+                        Image(systemName: "dot.radiowaves.left.and.right")
+                            .foregroundColor(.red)
+                        Text(voiceActivityLevel > 0.1 ? "Speaking..." : "Listening...")
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    // Voice activity indicator
+                    GeometryReader { geometry in
+                        HStack(spacing: 2) {
+                            ForEach(0..<20) { index in
+                                Rectangle()
+                                    .fill(voiceActivityLevel > Float(index) / 20.0 ? Color.green : Color.gray.opacity(0.3))
+                                    .frame(width: geometry.size.width / 22, height: 4)
+                                    .cornerRadius(2)
+                            }
+                        }
+                        .frame(height: 4)
+                    }
+                    .frame(height: 4)
+                    .padding(.horizontal)
                 }
             } else if isProcessing {
                 HStack {

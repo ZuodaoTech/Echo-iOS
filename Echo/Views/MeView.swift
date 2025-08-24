@@ -6,6 +6,8 @@ struct MeView: View {
     @AppStorage("defaultInterval") private var defaultInterval = 2.0
     @AppStorage("defaultTranscriptionLanguage") private var defaultTranscriptionLanguage = "en-US"
     @AppStorage("voiceEnhancementEnabled") private var voiceEnhancementEnabled = true
+    @AppStorage("autoTrimSilence") private var autoTrimSilence = true
+    @AppStorage("silenceTrimSensitivity") private var silenceTrimSensitivity = "medium"
     
     @State private var showingLanguagePicker = false
     
@@ -57,6 +59,39 @@ struct MeView: View {
                                 .foregroundColor(.secondary)
                         }
                     }
+                    
+                    Toggle(isOn: $autoTrimSilence) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Auto-Trim Silence")
+                            Text("Remove silence at start and end")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    
+                    if autoTrimSilence {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Trim Sensitivity")
+                                .font(.subheadline)
+                            
+                            Picker("Sensitivity", selection: $silenceTrimSensitivity) {
+                                Text("Low").tag("low")
+                                Text("Medium").tag("medium")
+                                Text("High").tag("high")
+                            }
+                            .pickerStyle(SegmentedPickerStyle())
+                            
+                            HStack {
+                                Image(systemName: "info.circle")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                Text(sensitivityDescription)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        .padding(.vertical, 4)
+                    }
                 }
                 
                 Section("About") {
@@ -105,6 +140,17 @@ struct MeView: View {
             .sheet(isPresented: $showingLanguagePicker) {
                 LanguagePickerView(selectedLanguage: $defaultTranscriptionLanguage)
             }
+        }
+    }
+    
+    private var sensitivityDescription: String {
+        switch silenceTrimSensitivity {
+        case "low":
+            return "Keeps more natural pauses"
+        case "high":
+            return "Aggressive silence removal"
+        default:
+            return "Balanced trimming"
         }
     }
     
