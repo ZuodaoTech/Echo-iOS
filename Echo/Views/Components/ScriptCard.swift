@@ -1,5 +1,6 @@
 import SwiftUI
 import CoreData
+import UIKit
 
 struct ScriptCard: View {
     @ObservedObject var script: SelftalkScript
@@ -9,6 +10,7 @@ struct ScriptCard: View {
     @State private var showingNoRecordingAlert = false
     @State private var showingErrorAlert = false
     @State private var errorMessage = ""
+    @State private var isPressed = false
     
     var onEdit: () -> Void
     var onDelete: () -> Void
@@ -146,21 +148,38 @@ struct ScriptCard: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(isPlaying || isPaused ? cardAccentColor.opacity(0.08) : Color(.systemBackground))
+                .fill(isPressed ? cardAccentColor.opacity(0.12) : (isPlaying || isPaused ? cardAccentColor.opacity(0.08) : Color(.systemBackground)))
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(
-                            isPlaying || isPaused ? cardAccentColor.opacity(0.5) : cardAccentColor.opacity(0.25),
-                            lineWidth: isPlaying || isPaused ? 1.5 : 1
+                            isPressed ? cardAccentColor.opacity(0.6) : (isPlaying || isPaused ? cardAccentColor.opacity(0.5) : cardAccentColor.opacity(0.25)),
+                            lineWidth: isPressed ? 2 : (isPlaying || isPaused ? 1.5 : 1)
                         )
                 )
         )
+        .scaleEffect(isPressed ? 0.98 : 1.0)
+        .animation(.easeInOut(duration: 0.1), value: isPressed)
         .shadow(color: cardAccentColor.opacity(0.15), radius: 8, x: 0, y: 3)
         .shadow(color: cardAccentColor.opacity(0.05), radius: 2, x: 0, y: 1)
         .contentShape(Rectangle())
         .onTapGesture {
             handleTap()
         }
+        .onLongPressGesture(
+            minimumDuration: 0.5,
+            maximumDistance: .infinity,
+            pressing: { pressing in
+                isPressed = pressing
+            },
+            perform: {
+                // Provide haptic feedback
+                let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+                impactFeedback.impactOccurred()
+                
+                // Trigger edit on long press
+                onEdit()
+            }
+        )
         .alert("Privacy Mode", isPresented: $showingPrivacyAlert) {
             Button("OK", role: .cancel) { }
         } message: {
