@@ -42,9 +42,6 @@ struct ScriptsListView: View {
                                 onEdit: {
                                     audioService.stopPlayback()  // Stop any playing audio
                                     scriptToEdit = script
-                                },
-                                onDelete: {
-                                    // Delete is now handled in edit view
                                 }
                             )
                             .listRowSeparator(.hidden)
