@@ -279,14 +279,64 @@ Configuration is stored in `.claude/settings.json`.
 
 This maintains a balance between efficiency and control over critical operations.
 
+## iCloud Sync & Export/Import
+
+### iCloud Sync (Implemented)
+The app now supports CloudKit-based iCloud sync for seamless data synchronization across devices:
+
+#### Features
+- **Automatic Sync**: Script text, settings, and metadata sync automatically
+- **Audio Files Stay Local**: To conserve bandwidth, audio recordings remain device-specific
+- **Toggle Control**: Users can enable/disable iCloud sync in Settings
+- **Graceful Fallback**: If CloudKit fails, the app falls back to local storage
+
+#### Implementation
+```swift
+// Core Data configured with NSPersistentCloudKitContainer
+// CloudKit container: "iCloud.xiaolai.Echo"
+// Entitlements: Echo.entitlements with CloudKit capability
+```
+
+### Export/Import System (Implemented)
+
+#### Export Formats
+1. **Echo Bundle (.echo)**: Complete export with optional audio files
+2. **Plain Text (.txt)**: Simple text format for reading
+3. **JSON (.json)**: Developer-friendly format for processing
+
+#### Export Features
+- **Selective Export**: Choose specific scripts to export
+- **Audio Option**: Include/exclude audio recordings
+- **Share Integration**: Direct sharing via iOS share sheet
+- **Single Script Export**: Long-press context menu on script cards
+
+#### Import Features
+- **Multiple Formats**: Supports .echo, .json, and .txt files
+- **Conflict Resolution**: Skip, replace, keep both, or merge duplicates
+- **Smart Detection**: Identifies duplicates by ID or content
+- **Category Preservation**: Maintains category relationships
+
+### Export/Import Services
+
+#### ExportService
+- Creates bundles with manifest, scripts, categories, and settings
+- Handles audio file packaging
+- Supports multiple export formats
+- Generates timestamped filenames
+
+#### ImportService
+- Validates bundle integrity
+- Manages conflict resolution
+- Preserves relationships
+- Provides detailed import results
+
 ## Future Enhancements
 
 ### Planned Features
-- [ ] iCloud sync for scripts across devices
+- [ ] Full audio sync via iCloud (bandwidth-aware)
 - [ ] Widget for quick access to favorite scripts
 - [ ] Apple Watch companion app
 - [ ] Siri Shortcuts integration
-- [ ] Export/Import scripts functionality
 - [ ] Audio effects and filters
 - [ ] Social sharing (with privacy controls)
 
@@ -312,6 +362,6 @@ This maintains a balance between efficiency and control over critical operations
 
 ---
 
-*Last Updated: 2025-08-23*
-*Version: 0.1.0*
+*Last Updated: 2025-08-25*
+*Version: 0.2.0*
 *Author: @xiaolai*

@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct MeView: View {
     @AppStorage("privacyModeDefault") private var privacyModeDefault = true
@@ -8,8 +9,16 @@ struct MeView: View {
     @AppStorage("voiceEnhancementEnabled") private var voiceEnhancementEnabled = true
     @AppStorage("autoTrimSilence") private var autoTrimSilence = true
     @AppStorage("silenceTrimSensitivity") private var silenceTrimSensitivity = "medium"
+    @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = false
     
     @State private var showingLanguagePicker = false
+    @State private var showingExportOptions = false
+    @State private var showingDocumentPicker = false
+    @State private var exportProgress: String?
+    @State private var showingImportAlert = false
+    @State private var importAlertMessage = ""
+    
+    @Environment(\.managedObjectContext) private var viewContext
     
     var body: some View {
         NavigationView {
@@ -94,6 +103,60 @@ struct MeView: View {
                     }
                 }
                 
+                Section("Backup & Sync") {
+                    Toggle(isOn: $iCloudSyncEnabled) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("iCloud Sync")
+                            Text("Sync scripts across your devices")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .onChange(of: iCloudSyncEnabled) { newValue in
+                        // Restart Core Data container when toggling iCloud
+                        NotificationCenter.default.post(
+                            name: Notification.Name("RestartCoreDataForICloud"),
+                            object: nil,
+                            userInfo: ["enabled": newValue]
+                        )
+                    }
+                    
+                    if iCloudSyncEnabled {
+                        HStack {
+                            Image(systemName: "info.circle")
+                                .foregroundColor(.blue)
+                                .font(.footnote)
+                            Text("Text and settings sync automatically. Audio files remain local.")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    
+                    Button {
+                        showingExportOptions = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "square.and.arrow.up")
+                            Text("Export Scripts")
+                            Spacer()
+                            if let progress = exportProgress {
+                                Text(progress)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    
+                    Button {
+                        showingDocumentPicker = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "square.and.arrow.down")
+                            Text("Import Scripts")
+                        }
+                    }
+                }
+                
                 Section("About") {
                     HStack {
                         Text("Version")
@@ -140,6 +203,44 @@ struct MeView: View {
             .sheet(isPresented: $showingLanguagePicker) {
                 LanguagePickerView(selectedLanguage: $defaultTranscriptionLanguage)
             }
+            .sheet(isPresented: $showingExportOptions) {
+                ExportOptionsView(exportProgress: $exportProgress)
+            }
+            .sheet(isPresented: $showingDocumentPicker) {
+                DocumentPicker(
+                    allowedContentTypes: [
+                        UTType(filenameExtension: "echo") ?? .data,
+                        .json,
+                        .plainText
+                    ]
+                ) { url in
+                    Task {
+                        await handleImport(from: url)
+                    }
+                }
+            }
+            .alert("Import Complete", isPresented: $showingImportAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(importAlertMessage)
+            }
+        }
+    }
+    
+    private func handleImport(from url: URL) async {
+        let importService = ImportService()
+        let result = await importService.importBundle(
+            from: url,
+            conflictResolution: .skip,
+            context: viewContext
+        )
+        
+        await MainActor.run {
+            importAlertMessage = result.summary
+            if !result.errors.isEmpty {
+                importAlertMessage += "\n\nErrors:\n" + result.errors.joined(separator: "\n")
+            }
+            showingImportAlert = true
         }
     }
     

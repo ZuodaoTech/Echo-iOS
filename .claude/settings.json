@@ -1,0 +1,34 @@
+{
+  "autoApprove": {
+    "enabled": true,
+    "tools": {
+      "Bash": true
+    },
+    "patterns": [
+      "xcodebuild*",
+      "swift build",
+      "swift test",
+      "git status",
+      "git diff*",
+      "git log*"
+    ],
+    "exclude": [],
+    "requireConfirmation": [
+      "git commit*",
+      "git push*",
+      "git pull*",
+      "git merge*"
+    ]
+  },
+  "permissions": {
+    "allow": ["Bash(git add:*)"],
+    "deny": [],
+    "ask": []
+  },
+  "preferences": {
+    "alwaysApproveReadOnly": true,
+    "verboseOutput": false,
+    "gitWorkflow": "manual",
+    "buildBeforeCommit": true
+  }
+}

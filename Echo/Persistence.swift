@@ -6,8 +6,10 @@
 //
 
 import CoreData
+import CloudKit
+import Combine
 
-struct PersistenceController {
+class PersistenceController: ObservableObject {
     static let shared = PersistenceController()
     
     @MainActor
@@ -60,18 +62,65 @@ struct PersistenceController {
         return result
     }()
 
-    let container: NSPersistentContainer
+    let container: NSPersistentCloudKitContainer
+    
+    // Track iCloud sync status
+    @Published var iCloudSyncEnabled = UserDefaults.standard.bool(forKey: "iCloudSyncEnabled")
 
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "Echo")
+        // Use NSPersistentCloudKitContainer for CloudKit support
+        container = NSPersistentCloudKitContainer(name: "Echo")
+        
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+        } else {
+            // Configure for CloudKit if enabled
+            let iCloudEnabled = UserDefaults.standard.bool(forKey: "iCloudSyncEnabled")
+            
+            container.persistentStoreDescriptions.forEach { storeDescription in
+                if iCloudEnabled {
+                    // Enable CloudKit sync
+                    storeDescription.setOption(true as NSNumber, 
+                                              forKey: NSPersistentHistoryTrackingKey)
+                    storeDescription.setOption(true as NSNumber, 
+                                              forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+                    
+                    // Set CloudKit container options
+                    storeDescription.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(
+                        containerIdentifier: "iCloud.xiaolai.Echo"
+                    )
+                    
+                    // Allow public database for sharing (future feature)
+                    storeDescription.cloudKitContainerOptions?.databaseScope = .private
+                } else {
+                    // Disable CloudKit
+                    storeDescription.cloudKitContainerOptions = nil
+                }
+            }
         }
+        
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
+                // Don't crash the app if CloudKit fails, just log the error
+                print("Core Data error: \(error), \(error.userInfo)")
+                
+                // If CloudKit fails, fall back to local storage
+                if error.domain == CKErrorDomain {
+                    print("CloudKit error detected, falling back to local storage")
+                    UserDefaults.standard.set(false, forKey: "iCloudSyncEnabled")
+                }
             }
         })
+        
         container.viewContext.automaticallyMergesChangesFromParent = true
+        
+        // Set up CloudKit schema initialization (only needed once)
+        #if DEBUG
+        do {
+            try container.initializeCloudKitSchema()
+        } catch {
+            print("CloudKit schema initialization error: \(error)")
+        }
+        #endif
     }
 }
