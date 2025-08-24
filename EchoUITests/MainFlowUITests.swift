@@ -288,11 +288,6 @@ final class MainFlowUITests: XCTestCase {
             _ = app.staticTexts[text].waitForExistence(timeout: 5)
         }
     }
-    
-    private func selectAll() {
-        // Helper to select all text in a text view
-        app.menuItems["Select All"].tap()
-    }
 }
 
 // Extension for XCUIElement

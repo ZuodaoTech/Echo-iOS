@@ -207,7 +207,7 @@ final class AudioProcessingService {
             return
         }
         
-        // Check i 请去qf recognizer is available
+        // Check if recognizer is available
         guard recognizer.isAvailable else {
             print("Speech recognizer is not available at this time")
             DispatchQueue.main.async {

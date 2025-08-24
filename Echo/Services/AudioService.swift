@@ -147,19 +147,3 @@ class AudioService: NSObject, ObservableObject {
         coordinator.checkPrivacyMode()
     }
 }
-
-// MARK: - AVAudioRecorderDelegate (Empty for compatibility)
-
-extension AudioService: AVAudioRecorderDelegate {
-    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-        // Handled by RecordingService
-    }
-}
-
-// MARK: - AVAudioPlayerDelegate (Empty for compatibility)
-
-extension AudioService: AVAudioPlayerDelegate {
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        // Handled by PlaybackService
-    }
-}

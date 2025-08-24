@@ -23,8 +23,6 @@ struct AddEditScriptView: View {
     @State private var isRecording = false
     @State private var hasRecording = false
     @State private var isProcessingAudio = false
-    @State private var isProcessingRecording = false
-    @State private var originalScriptBeforeTranscript: String? = nil
     @State private var transcriptCheckTimer: Timer? = nil
     @State private var isRetranscribing = false
     @State private var showingMicPermissionAlert = false
@@ -444,22 +442,6 @@ struct AddEditScriptView: View {
         }
     }
     
-    private func calculateTotalDuration() -> String {
-        guard let script = script, script.audioDuration > 0 else { return "—" }
-        
-        let totalAudioTime = Double(repetitions) * script.audioDuration
-        let totalIntervalTime = Double(repetitions - 1) * intervalSeconds
-        let total = totalAudioTime + totalIntervalTime
-        
-        let mins = Int(total) / 60
-        let secs = Int(total) % 60
-        
-        if mins > 0 {
-            return "\(mins)m \(secs)s"
-        } else {
-            return "\(secs)s"
-        }
-    }
     
     private func handleDone() {
         // Save and dismiss
@@ -599,8 +581,6 @@ struct AddEditScriptView: View {
             isRecording = false
             // Don't set hasRecording immediately - wait for processing
         } else {
-            // Clear any stored original when making a new recording
-            originalScriptBeforeTranscript = nil
             audioService.requestMicrophonePermission { granted in
                 if granted {
                     do {
