@@ -10,6 +10,7 @@ final class RecordingService: NSObject, ObservableObject {
     @Published var isProcessing = false  // New: indicates post-processing
     @Published var recordingDuration: TimeInterval = 0
     @Published var currentRecordingScriptId: UUID?
+    @Published var voiceActivityLevel: Float = 0  // 0.0 to 1.0 for UI visualization
     
     // MARK: - Properties
     
@@ -59,6 +60,7 @@ final class RecordingService: NSObject, ObservableObject {
         do {
             audioRecorder = try AVAudioRecorder(url: audioURL, settings: Constants.recordingSettings)
             audioRecorder?.delegate = self
+            audioRecorder?.isMeteringEnabled = true  // Enable level monitoring
             audioRecorder?.prepareToRecord()
             
             guard audioRecorder?.record() == true else {
@@ -158,8 +160,19 @@ final class RecordingService: NSObject, ObservableObject {
         stopRecordingTimer()
         recordingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             guard let self = self, let recorder = self.audioRecorder else { return }
+            
+            // Update audio levels for voice activity monitoring
+            recorder.updateMeters()
+            let averagePower = recorder.averagePower(forChannel: 0)
+            
+            // Convert dB to linear scale (0.0 to 1.0)
+            // -160 dB (silence) to 0 dB (maximum)
+            let minDb: Float = -60
+            let normalizedPower = max(0, min(1, (averagePower - minDb) / -minDb))
+            
             DispatchQueue.main.async {
                 self.recordingDuration = recorder.currentTime
+                self.voiceActivityLevel = normalizedPower
             }
         }
     }
