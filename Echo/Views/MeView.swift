@@ -4,11 +4,23 @@ struct MeView: View {
     @AppStorage("privacyModeDefault") private var privacyModeDefault = true
     @AppStorage("defaultRepetitions") private var defaultRepetitions = 3
     @AppStorage("defaultInterval") private var defaultInterval = 2.0
-    @AppStorage("defaultTranscriptionLanguage") private var defaultTranscriptionLanguage = Locale.current.language.languageCode?.identifier ?? "en"
+    @AppStorage("defaultTranscriptionLanguage") private var defaultTranscriptionLanguage = Locale.current.languageCode ?? "en"
+    @AppStorage("voiceEnhancementEnabled") private var voiceEnhancementEnabled = true
     
     var body: some View {
         NavigationView {
             List {
+                Section("Recording") {
+                    Toggle(isOn: $voiceEnhancementEnabled) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Voice Enhancement")
+                            Text("Reduces background noise and echo")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
+                
                 Section("Default Settings") {
                     Toggle("Privacy Mode", isOn: $privacyModeDefault)
                     

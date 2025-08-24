@@ -50,8 +50,9 @@ final class RecordingService: NSObject, ObservableObject {
         // Stop any existing recording
         stopRecording()
         
-        // Configure session for recording
-        try sessionManager.configureForRecording()
+        // Configure session for recording with user's preference
+        let enhancedProcessing = UserDefaults.standard.bool(forKey: "voiceEnhancementEnabled")
+        try sessionManager.configureForRecording(enhancedProcessing: enhancedProcessing)
         
         let audioURL = fileManager.audioURL(for: scriptId)
         
