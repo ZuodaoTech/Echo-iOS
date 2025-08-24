@@ -266,28 +266,28 @@ struct AddEditScriptView: View {
                     }
                     
                     // Privacy Mode Toggle
-                    Toggle("Privacy Mode", isOn: $privacyModeEnabled)
-                        .onChange(of: privacyModeEnabled) { newValue in
-                            // Apply privacy mode change immediately
-                            if let script = script {
-                                script.privacyModeEnabled = newValue
-                                do {
-                                    try viewContext.save()
-                                } catch {
-                                    print("Failed to save privacy mode change: \(error)")
-                                }
-                            }
-                        }
-                    
-                    if privacyModeEnabled {
+                    Toggle(isOn: $privacyModeEnabled) {
                         HStack {
-                            Image(systemName: "info.circle")
-                                .font(.caption)
-                                .foregroundColor(.blue)
-                            Text("Audio will only play when earphones are connected")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            Spacer()
+                            Text("Privacy Mode")
+                            Button {
+                                showingPrivacyAlert = true
+                            } label: {
+                                Image(systemName: "info.circle")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(.blue)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                    }
+                    .onChange(of: privacyModeEnabled) { newValue in
+                        // Apply privacy mode change immediately
+                        if let script = script {
+                            script.privacyModeEnabled = newValue
+                            do {
+                                try viewContext.save()
+                            } catch {
+                                print("Failed to save privacy mode change: \(error)")
+                            }
                         }
                     }
                     
@@ -392,9 +392,9 @@ struct AddEditScriptView: View {
                 Text("Please grant microphone access in Settings to record audio")
             }
             .alert("Privacy Mode", isPresented: $showingPrivacyAlert) {
-                Button("OK", role: .cancel) { }
+                Button("Got it", role: .cancel) { }
             } message: {
-                Text("Please connect earphones to play this audio")
+                Text("When Privacy Mode is enabled, audio recordings will only play through connected earphones or headphones. This prevents accidental playback through speakers in public spaces.")
             }
             .alert("Delete Script", isPresented: $showingDeleteAlert) {
                 Button("Cancel", role: .cancel) { }
