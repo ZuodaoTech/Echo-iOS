@@ -20,6 +20,9 @@ extension SelftalkScript: Identifiable {
     @NSManaged public var category: Category?
     @NSManaged public var transcribedText: String?
     @NSManaged public var transcriptionLanguage: String?
+    @NSManaged public var notificationEnabled: Bool
+    @NSManaged public var notificationFrequency: String?
+    @NSManaged public var notificationEnabledAt: Date?
 }
 
 extension SelftalkScript {

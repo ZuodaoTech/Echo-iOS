@@ -21,6 +21,9 @@
         <attribute name="transcribedText" optional="YES" attributeType="String"/>
         <attribute name="transcriptionLanguage" optional="YES" attributeType="String" defaultValueString="en-US"/>
         <attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="notificationEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="notificationFrequency" optional="YES" attributeType="String" defaultValueString="medium"/>
+        <attribute name="notificationEnabledAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="scripts" inverseEntity="Category"/>
     </entity>
 </model>

@@ -16,6 +16,8 @@ struct AddEditScriptView: View {
     @State private var intervalSeconds: Double = 2.0
     @State private var privacyModeEnabled = true
     @State private var transcriptionLanguage = "en-US"  // Default to English instead of auto
+    @State private var notificationEnabled = false
+    @State private var notificationFrequency = "medium"
     @State private var showingNewCategoryAlert = false
     @State private var newCategoryName = ""
     @State private var isRecording = false
@@ -275,6 +277,58 @@ struct AddEditScriptView: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
+                    
+                    // Notification Settings
+                    Toggle("Enable Notifications", isOn: $notificationEnabled)
+                        .onChange(of: notificationEnabled) { newValue in
+                            if let script = script {
+                                if newValue {
+                                    // Check if we need to disable oldest notification
+                                    checkAndEnforceNotificationLimit()
+                                    script.notificationEnabledAt = Date()
+                                } else {
+                                    script.notificationEnabledAt = nil
+                                }
+                                script.notificationEnabled = newValue
+                                do {
+                                    try viewContext.save()
+                                    if newValue {
+                                        scheduleNotifications(for: script)
+                                    } else {
+                                        cancelNotifications(for: script)
+                                    }
+                                } catch {
+                                    print("Failed to save notification setting: \(error)")
+                                }
+                            }
+                        }
+                    
+                    if notificationEnabled {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Picker("Frequency", selection: $notificationFrequency) {
+                                Text("High (1-2 times/hour)").tag("high")
+                                Text("Medium (every 2 hours)").tag("medium")
+                                Text("Low (1-2 times/day)").tag("low")
+                            }
+                            .pickerStyle(.menu)
+                            .onChange(of: notificationFrequency) { newValue in
+                                if let script = script {
+                                    script.notificationFrequency = newValue
+                                    do {
+                                        try viewContext.save()
+                                        // Reschedule with new frequency
+                                        scheduleNotifications(for: script)
+                                    } catch {
+                                        print("Failed to save notification frequency: \(error)")
+                                    }
+                                }
+                            }
+                            
+                            Text("Notifications only during daytime (8 AM - 9 PM)")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
                 }
                 
                 // Delete button - only for existing scripts
@@ -401,6 +455,8 @@ struct AddEditScriptView: View {
             repetitions = script.repetitions
             intervalSeconds = script.intervalSeconds
             privacyModeEnabled = script.privacyModeEnabled
+            notificationEnabled = script.notificationEnabled
+            notificationFrequency = script.notificationFrequency ?? "medium"
             // If script has "auto" or nil, default to English
             if let lang = script.transcriptionLanguage, lang != "auto" {
                 transcriptionLanguage = lang
@@ -631,6 +687,39 @@ struct AddEditScriptView: View {
                 // Preview playback error
             }
         }
+    }
+    
+    // MARK: - Notification Helper Methods
+    
+    private func checkAndEnforceNotificationLimit() {
+        // Fetch all scripts with notifications enabled, sorted by when they were enabled
+        let request: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
+        request.predicate = NSPredicate(format: "notificationEnabled == YES AND id != %@", script?.id as CVarArg? ?? UUID() as CVarArg)
+        request.sortDescriptors = [NSSortDescriptor(key: "notificationEnabledAt", ascending: true)]
+        
+        do {
+            let scriptsWithNotifications = try viewContext.fetch(request)
+            
+            // If there are already 3 or more scripts with notifications, disable the oldest
+            if scriptsWithNotifications.count >= 3 {
+                if let oldestScript = scriptsWithNotifications.first {
+                    oldestScript.notificationEnabled = false
+                    oldestScript.notificationEnabledAt = nil
+                    cancelNotifications(for: oldestScript)
+                    print("Disabled notifications for oldest script: \(oldestScript.scriptText.prefix(20))...")
+                }
+            }
+        } catch {
+            print("Failed to check notification limit: \(error)")
+        }
+    }
+    
+    private func scheduleNotifications(for script: SelftalkScript) {
+        NotificationManager.shared.scheduleNotifications(for: script)
+    }
+    
+    private func cancelNotifications(for script: SelftalkScript) {
+        NotificationManager.shared.cancelNotifications(for: script)
     }
 }
 
