@@ -32,6 +32,7 @@ struct AddEditScriptView: View {
     @State private var showingDeleteAlert = false
     @State private var showingErrorAlert = false
     @State private var errorMessage = ""
+    @State private var hasSavedOnDismiss = false
     
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Category.sortOrder, ascending: true)],
@@ -487,6 +488,7 @@ struct AddEditScriptView: View {
     private func handleDone() {
         // Save and dismiss
         if saveScript() {
+            hasSavedOnDismiss = true
             dismiss()
         }
     }
@@ -498,8 +500,11 @@ struct AddEditScriptView: View {
             isRecording = false
         }
         
-        // Silently save changes if valid
-        _ = saveScript()
+        // Only save if we haven't already saved via Done button
+        if !hasSavedOnDismiss {
+            // Silently save changes if valid
+            _ = saveScript()
+        }
     }
     
     @discardableResult
