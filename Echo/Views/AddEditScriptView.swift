@@ -16,7 +16,7 @@ struct AddEditScriptView: View {
     @State private var repetitions: Int16 = 3
     @State private var intervalSeconds: Double = 2.0
     @State private var privacyModeEnabled = true
-    @State private var transcriptionLanguage = "en-US"  // Default to English instead of auto
+    @State private var transcriptionLanguage = UserDefaults.standard.string(forKey: "defaultTranscriptionLanguage") ?? "en-US"
     @State private var notificationEnabled = false
     @State private var notificationFrequency = "medium"
     @State private var showingNewCategoryAlert = false
@@ -467,7 +467,7 @@ struct AddEditScriptView: View {
             if let lang = script.transcriptionLanguage, lang != "auto" {
                 transcriptionLanguage = lang
             } else {
-                transcriptionLanguage = "en-US"
+                transcriptionLanguage = UserDefaults.standard.string(forKey: "defaultTranscriptionLanguage") ?? "en-US"
             }
             hasRecording = script.hasRecording
         }
