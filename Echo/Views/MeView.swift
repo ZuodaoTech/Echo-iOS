@@ -79,7 +79,7 @@ struct MeView: View {
                     Text("Support")
                 }
             }
-            .navigationTitle("Me")
+            .navigationTitle("")
         }
     }
     
