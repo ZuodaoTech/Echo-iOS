@@ -9,8 +9,22 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
+    @State private var selectedTab = 0
+    
     var body: some View {
-        ScriptsListView()
+        TabView(selection: $selectedTab) {
+            ScriptsListView()
+                .tabItem {
+                    Label("Cards", systemImage: "rectangle.stack")
+                }
+                .tag(0)
+            
+            MeView()
+                .tabItem {
+                    Label("Me", systemImage: "person.circle")
+                }
+                .tag(1)
+        }
     }
 }
 
