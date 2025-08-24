@@ -33,13 +33,21 @@ final class AudioSessionManager: ObservableObject {
     // MARK: - Public Methods
     
     /// Configure audio session for recording
-    func configureForRecording() throws {
+    func configureForRecording(enhancedProcessing: Bool = true) throws {
         do {
-            // Use spokenAudio mode for better voice recording with noise reduction
-            // This enables: echo cancellation, noise suppression, automatic gain control
+            // Choose mode based on user preference
+            let mode: AVAudioSession.Mode = enhancedProcessing ? .voiceChat : .default
+            
+            // voiceChat mode enables:
+            // ✅ Echo cancellation (AEC)
+            // ✅ Noise suppression 
+            // ✅ Automatic gain control (AGC)
+            // ✅ Voice activity detection (VAD)
             try audioSession.setCategory(.playAndRecord, 
-                                        mode: .spokenAudio,  // Better for self-talk recordings
+                                        mode: mode,
                                         options: [.defaultToSpeaker, .allowBluetooth])
+            
+            print("🎤 Recording mode: \(enhancedProcessing ? "Enhanced (noise reduction ON)" : "Natural (raw audio)")")
             // Only activate if not already active
             if !audioSession.isOtherAudioPlaying {
                 try audioSession.setActive(true)
