@@ -4,7 +4,7 @@ struct MeView: View {
     @AppStorage("privacyModeDefault") private var privacyModeDefault = true
     @AppStorage("defaultRepetitions") private var defaultRepetitions = 3
     @AppStorage("defaultInterval") private var defaultInterval = 2.0
-    @AppStorage("defaultTranscriptionLanguage") private var defaultTranscriptionLanguage = "auto"
+    @AppStorage("defaultTranscriptionLanguage") private var defaultTranscriptionLanguage = Locale.current.language.languageCode?.identifier ?? "en"
     
     var body: some View {
         NavigationView {
@@ -84,9 +84,6 @@ struct MeView: View {
     }
     
     private func languageDisplayName(for code: String) -> String {
-        if code == "auto" {
-            return "Auto-detect"
-        }
         return Locale.current.localizedString(forLanguageCode: code) ?? code
     }
 }
