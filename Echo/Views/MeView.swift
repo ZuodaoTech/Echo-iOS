@@ -25,17 +25,18 @@ struct MeView: View {
         NavigationView {
             List {
                 Section("Default Settings") {
-                    HStack {
-                        Toggle("Privacy Mode", isOn: $privacyModeDefault)
-                        
-                        Button {
-                            showingPrivacyModeInfo = true
-                        } label: {
-                            Image(systemName: "info.circle")
-                                .font(.system(size: 18))
-                                .foregroundColor(.blue)
+                    Toggle(isOn: $privacyModeDefault) {
+                        HStack {
+                            Text("Privacy Mode")
+                            Button {
+                                showingPrivacyModeInfo = true
+                            } label: {
+                                Image(systemName: "info.circle")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(.blue)
+                            }
+                            .buttonStyle(PlainButtonStyle())
                         }
-                        .buttonStyle(PlainButtonStyle())
                     }
                     
                     HStack {
