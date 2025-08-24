@@ -177,6 +177,19 @@ struct ScriptsListView: View {
         }
     }
     
+    private func cleanupAfterDeletion(_ scriptId: UUID) {
+        // Clear any lingering references to prevent crashes
+        print("  🧹 Cleaning up references for deleted script...")
+        
+        // Clear from audio service if it was playing
+        if audioService.currentPlayingScriptId == scriptId {
+            audioService.stopPlayback()  // Extra safety
+        }
+        
+        // Clear from processing IDs if present
+        audioService.processingScriptIds.remove(scriptId)
+    }
+    
     private func deleteScript(withId scriptId: UUID) {
         print("🗑️ ScriptsListView: Starting safe deletion for script ID: \(scriptId)")
         
@@ -244,8 +257,10 @@ struct ScriptsListView: View {
                 
                 print("  ✅ Successfully deleted script: \(scriptText)")
                 
-                // Step 7: Clean up - remove from deleting set
-                // (Not strictly necessary since the script is gone, but good practice)
+                // Step 7: Complete cleanup of all references
+                self.cleanupAfterDeletion(scriptId)
+                
+                // Step 8: Remove from deleting set
                 self.deletingScriptIds.remove(scriptId)
                 
             } catch {

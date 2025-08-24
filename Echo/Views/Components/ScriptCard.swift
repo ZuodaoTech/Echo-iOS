@@ -13,16 +13,24 @@ struct ScriptCard: View {
     
     var onEdit: () -> Void
     
+    // DEFENSIVE: Check validity before accessing script properties
+    private var isScriptValid: Bool {
+        !script.isDeleted && !script.isFault && script.managedObjectContext != nil
+    }
+    
     private var isPlaying: Bool {
-        audioService.isPlaying && audioService.currentPlayingScriptId == script.id
+        guard isScriptValid else { return false }
+        return audioService.isPlaying && audioService.currentPlayingScriptId == script.id
     }
     
     private var isPaused: Bool {
-        audioService.isPaused && audioService.currentPlayingScriptId == script.id
+        guard isScriptValid else { return false }
+        return audioService.isPaused && audioService.currentPlayingScriptId == script.id
     }
     
     private var isProcessing: Bool {
-        audioService.isProcessing(script: script)
+        guard isScriptValid else { return false }
+        return audioService.isProcessing(script: script)
     }
     
     // Predefined subtle color palette
@@ -39,11 +47,24 @@ struct ScriptCard: View {
     
     // Get consistent color for this script
     private var cardAccentColor: Color {
+        guard isScriptValid else { return colorPalette[0] }  // Default to first color if invalid
         let index = abs(script.id.hashValue) % colorPalette.count
         return colorPalette[index]
     }
     
     var body: some View {
+        // DEFENSIVE: Show placeholder if script is invalid/deleted
+        Group {
+            if isScriptValid {
+                validScriptCard
+            } else {
+                // Show empty card or placeholder while being deleted
+                EmptyView()
+            }
+        }
+    }
+    
+    private var validScriptCard: some View {
         VStack(alignment: .leading, spacing: 12) {
             // Category and Repetitions Header
             HStack {
@@ -196,6 +217,9 @@ struct ScriptCard: View {
     }
     
     private func handleTap() {
+        // DEFENSIVE: Check script validity first
+        guard isScriptValid else { return }
+        
         // If processing, do nothing - wait for it to complete
         if isProcessing {
             return

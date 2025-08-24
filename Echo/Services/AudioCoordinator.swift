@@ -147,6 +147,13 @@ final class AudioCoordinator: ObservableObject {
     // MARK: - Playback Methods
     
     func play(script: SelftalkScript) throws {
+        // DEFENSIVE: Check script validity
+        guard !script.isDeleted,
+              !script.isFault,
+              script.managedObjectContext != nil else {
+            throw AudioServiceError.invalidScript
+        }
+        
         // Stop any recording first
         if isRecording {
             stopRecording()
@@ -270,6 +277,13 @@ extension AudioCoordinator {
     
     /// Check if a specific script is currently being processed
     func isProcessing(script: SelftalkScript) -> Bool {
-        processingScriptIds.contains(script.id)
+        // DEFENSIVE: Check script validity before accessing properties
+        guard !script.isDeleted,
+              !script.isFault,
+              script.managedObjectContext != nil else {
+            return false
+        }
+        
+        return processingScriptIds.contains(script.id)
     }
 }
