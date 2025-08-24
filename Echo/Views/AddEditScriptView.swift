@@ -27,6 +27,7 @@ struct AddEditScriptView: View {
     @State private var isRetranscribing = false
     @State private var showingMicPermissionAlert = false
     @State private var showingPrivacyAlert = false
+    @State private var showingDeleteAlert = false
     @State private var showingErrorAlert = false
     @State private var errorMessage = ""
     @State private var hasSavedOnDismiss = false
@@ -329,6 +330,21 @@ struct AddEditScriptView: View {
                     }
                 }
                 
+                // Delete Script Section - only show for existing scripts
+                if isEditing {
+                    Section {
+                        Button(role: .destructive) {
+                            showingDeleteAlert = true
+                        } label: {
+                            HStack {
+                                Spacer()
+                                Text("Delete Script")
+                                    .fontWeight(.medium)
+                                Spacer()
+                            }
+                        }
+                    }
+                }
             }
             .navigationTitle(isEditing ? "Edit Script" : "New Script")
             .navigationBarTitleDisplayMode(.inline)
@@ -365,6 +381,14 @@ struct AddEditScriptView: View {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text("Please connect earphones to play this audio")
+            }
+            .alert("Delete Script", isPresented: $showingDeleteAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Delete", role: .destructive) {
+                    performDeletion()
+                }
+            } message: {
+                Text("Are you sure you want to delete this script? This action cannot be undone.")
             }
             .alert("Error", isPresented: $showingErrorAlert) {
                 Button("OK", role: .cancel) { }
@@ -603,6 +627,25 @@ struct AddEditScriptView: View {
         hasRecording = false  // Update state to reflect deletion
     }
     
+    private func performDeletion() {
+        guard let script = script else { return }
+        
+        // TODO: Implement the following deletion steps:
+        // 1. Stop any active playback/recording for this script
+        // 2. Delete audio files from file system
+        // 3. Cancel all scheduled notifications
+        // 4. Delete the script from Core Data
+        // 5. Dismiss the view
+        // 6. Notify parent view to update if needed
+        
+        // Placeholder implementation - just dismiss for now
+        print("Delete script placeholder - script ID: \(script.id)")
+        print("Script text: \(script.scriptText.prefix(50))...")
+        
+        // For now, just dismiss the view
+        // Actual deletion logic will be implemented later
+        dismiss()
+    }
     
     private func handlePlayPreview() {
         guard let script = script else { return }
