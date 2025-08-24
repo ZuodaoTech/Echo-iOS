@@ -70,13 +70,14 @@ final class AudioProcessingService {
     
     /// Process audio file: trim silence and optimize for voice
     func processRecording(for scriptId: UUID, completion: @escaping (Bool) -> Void) {
-        // Check if auto-trim is enabled
-        let autoTrimEnabled = UserDefaults.standard.bool(forKey: "autoTrimSilence")
+        // Check if auto-trim is enabled (default to true if not set)
+        let autoTrimEnabled = UserDefaults.standard.object(forKey: "autoTrimSilence") as? Bool ?? true
         if !autoTrimEnabled {
             print("AudioProcessing: Auto-trim disabled by user")
             completion(true)
             return
         }
+        print("AudioProcessing: Starting silence trimming (enabled: \(autoTrimEnabled), sensitivity: \(UserDefaults.standard.string(forKey: "silenceTrimSensitivity") ?? "medium"))")
         
         let audioURL = fileManager.audioURL(for: scriptId)
         let originalURL = fileManager.originalAudioURL(for: scriptId)
@@ -135,9 +136,12 @@ final class AudioProcessingService {
                 // Find trim points
                 let (startFrame, endFrame) = self.findTrimPoints(in: buffer)
                 
+                print("AudioProcessing: Trim points found - Start: \(startFrame)/\(frameCount), End: \(endFrame)/\(frameCount)")
+                print("AudioProcessing: Will trim \(Double(startFrame)/format.sampleRate)s from start, \(Double(frameCount - endFrame)/format.sampleRate)s from end")
+                
                 // Check if trimming is needed
                 if startFrame == 0 && endFrame == frameCount {
-                    print("AudioProcessing: No trimming needed")
+                    print("AudioProcessing: No trimming needed (audio starts and ends with sound)")
                     DispatchQueue.main.async {
                         completion(true)
                     }
@@ -467,6 +471,7 @@ final class AudioProcessingService {
         
         let frameLength = Int(buffer.frameLength)
         let threshold = Constants.getThreshold()
+        print("AudioProcessing: Using threshold: \(threshold) for sensitivity: \(UserDefaults.standard.string(forKey: "silenceTrimSensitivity") ?? "medium")")
         
         // Analyze first channel for simplicity
         let samples = channelData[0]
