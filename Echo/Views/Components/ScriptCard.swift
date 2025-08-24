@@ -5,7 +5,6 @@ import UIKit
 struct ScriptCard: View {
     @ObservedObject var script: SelftalkScript
     @StateObject private var audioService = AudioCoordinator.shared
-    @State private var showingDeleteAlert = false
     @State private var showingPrivacyAlert = false
     @State private var showingNoRecordingAlert = false
     @State private var showingErrorAlert = false
@@ -13,7 +12,6 @@ struct ScriptCard: View {
     @State private var isPressed = false
     
     var onEdit: () -> Void
-    var onDelete: () -> Void
     
     private var isPlaying: Bool {
         audioService.isPlaying && audioService.currentPlayingScriptId == script.id
@@ -185,14 +183,6 @@ struct ScriptCard: View {
         } message: {
             Text("Please connect earphones to play this audio")
         }
-        .alert("Delete Script", isPresented: $showingDeleteAlert) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
-                onDelete()
-            }
-        } message: {
-            Text("Are you sure you want to delete this script? This action cannot be undone.")
-        }
         .alert("No Recording", isPresented: $showingNoRecordingAlert) {
             Button("OK", role: .cancel) { }
         } message: {
@@ -270,8 +260,7 @@ struct ScriptCard_Previews: PreviewProvider {
         
         return ScriptCard(
             script: script,
-            onEdit: { },
-            onDelete: { }
+            onEdit: { }
         )
         .padding()
         .previewLayout(.sizeThatFits)
