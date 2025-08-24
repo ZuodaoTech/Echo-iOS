@@ -15,13 +15,13 @@ struct ContentView: View {
         TabView(selection: $selectedTab) {
             ScriptsListView()
                 .tabItem {
-                    Label("Cards", systemImage: "rectangle.stack")
+                    Image(systemName: "rectangle.stack")
                 }
                 .tag(0)
             
             MeView()
                 .tabItem {
-                    Label("Me", systemImage: "person.circle")
+                    Image(systemName: "person.circle")
                 }
                 .tag(1)
         }
