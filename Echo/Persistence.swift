@@ -74,8 +74,8 @@ class PersistenceController: ObservableObject {
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         } else {
-            // Configure for CloudKit if enabled
-            let iCloudEnabled = UserDefaults.standard.bool(forKey: "iCloudSyncEnabled")
+            // Configure for CloudKit if enabled (default to false for safety)
+            let iCloudEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? false
             
             container.persistentStoreDescriptions.forEach { storeDescription in
                 if iCloudEnabled {
@@ -101,25 +101,51 @@ class PersistenceController: ObservableObject {
         
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                // Don't crash the app if CloudKit fails, just log the error
                 print("Core Data error: \(error), \(error.userInfo)")
                 
-                // If CloudKit fails, fall back to local storage
-                if error.domain == CKErrorDomain {
-                    print("CloudKit error detected, falling back to local storage")
+                // If CloudKit fails or store fails to load, try local storage only
+                if error.domain == CKErrorDomain || error.code == 134060 || error.code == 134110 {
+                    print("CloudKit/Store error detected, attempting fallback to local storage")
+                    
+                    // Reset to use local storage only
                     UserDefaults.standard.set(false, forKey: "iCloudSyncEnabled")
+                    
+                    // Reconfigure for local storage only
+                    for description in self.container.persistentStoreDescriptions {
+                        description.cloudKitContainerOptions = nil
+                    }
+                    
+                    // Try loading stores again without CloudKit
+                    self.container.loadPersistentStores { (retryDescription, retryError) in
+                        if let retryError = retryError as NSError? {
+                            // If still failing, this is a critical error
+                            fatalError("Unable to load persistent stores: \(retryError), \(retryError.userInfo)")
+                        } else {
+                            print("Successfully loaded local persistent store after CloudKit failure")
+                        }
+                    }
                 }
             }
         })
         
         container.viewContext.automaticallyMergesChangesFromParent = true
         
-        // Set up CloudKit schema initialization (only needed once)
+        // Set up CloudKit schema initialization only if CloudKit is enabled and in DEBUG
         #if DEBUG
-        do {
-            try container.initializeCloudKitSchema()
-        } catch {
-            print("CloudKit schema initialization error: \(error)")
+        let cloudKitEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? false
+        if cloudKitEnabled {
+            // Delay schema initialization to ensure stores are loaded
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                do {
+                    // Only initialize if we have persistent stores
+                    if !self.container.persistentStoreCoordinator.persistentStores.isEmpty {
+                        try self.container.initializeCloudKitSchema()
+                        print("CloudKit schema initialized successfully")
+                    }
+                } catch {
+                    print("CloudKit schema initialization error: \(error)")
+                }
+            }
         }
         #endif
     }

@@ -61,11 +61,6 @@ class ImportService {
                      conflictResolution: ImportConflictResolution = .skip,
                      context: NSManagedObjectContext) async -> ImportResult {
         
-        var scriptsImported = 0
-        var scriptsSkipped = 0
-        var categoriesImported = 0
-        var errors: [String] = []
-        
         do {
             // Start accessing security-scoped resource if needed
             let accessing = url.startAccessingSecurityScopedResource()
@@ -118,12 +113,11 @@ class ImportService {
                 }
             }
         } catch {
-            errors.append(error.localizedDescription)
             return ImportResult(
-                scriptsImported: scriptsImported,
-                scriptsSkipped: scriptsSkipped,
-                categoriesImported: categoriesImported,
-                errors: errors
+                scriptsImported: 0,
+                scriptsSkipped: 0,
+                categoriesImported: 0,
+                errors: [error.localizedDescription]
             )
         }
     }
@@ -161,7 +155,7 @@ class ImportService {
                 let fetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
                 fetchRequest.predicate = NSPredicate(format: "name == %@", categoryExport.name)
                 
-                if let existing = try? context.fetch(fetchRequest).first {
+                if (try? context.fetch(fetchRequest).first) != nil {
                     // Category exists, use it
                     continue
                 } else {
