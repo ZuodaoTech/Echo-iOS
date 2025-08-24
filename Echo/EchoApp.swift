@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AVFoundation
+import UserNotifications
 
 @main
 struct EchoApp: App {
@@ -15,6 +16,9 @@ struct EchoApp: App {
     init() {
         // Configure audio session early to avoid warnings
         configureAudioSession()
+        
+        // Configure notification center
+        configureNotifications()
         
         // Apply simulator warning fixes
         #if DEBUG
@@ -39,5 +43,9 @@ struct EchoApp: App {
         } catch {
             print("Early audio session configuration failed: \(error)")
         }
+    }
+    
+    private func configureNotifications() {
+        UNUserNotificationCenter.current().delegate = NotificationManager.shared
     }
 }

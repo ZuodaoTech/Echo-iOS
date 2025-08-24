@@ -63,6 +63,12 @@ struct ScriptCard: View {
                 
                 Spacer()
                 
+                if script.notificationEnabled {
+                    Image(systemName: "bell.fill")
+                        .font(.caption)
+                        .foregroundColor(cardAccentColor)
+                }
+                
                 if script.privacyModeEnabled {
                     Image(systemName: "lock.fill")
                         .font(.caption)
