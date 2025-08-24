@@ -9,6 +9,7 @@ struct AddEditScriptView: View {
     @StateObject private var audioService = AudioCoordinator.shared
     
     let script: SelftalkScript?
+    let onDelete: ((UUID) -> Void)?  // Callback with script ID only (safer)
     
     @State private var scriptText = ""
     @State private var selectedCategory: Category?
@@ -37,6 +38,12 @@ struct AddEditScriptView: View {
         animation: .default
     )
     private var categories: FetchedResults<Category>
+    
+    // Custom initializer to make onDelete optional
+    init(script: SelftalkScript? = nil, onDelete: ((UUID) -> Void)? = nil) {
+        self.script = script
+        self.onDelete = onDelete
+    }
     
     private var isEditing: Bool {
         script != nil
@@ -630,21 +637,24 @@ struct AddEditScriptView: View {
     private func performDeletion() {
         guard let script = script else { return }
         
-        // TODO: Implement the following deletion steps:
-        // 1. Stop any active playback/recording for this script
-        // 2. Delete audio files from file system
-        // 3. Cancel all scheduled notifications
-        // 4. Delete the script from Core Data
-        // 5. Dismiss the view
-        // 6. Notify parent view to update if needed
+        // Cache the script ID before dismissing (critical for safety)
+        let scriptId = script.id
+        let scriptPreview = String(script.scriptText.prefix(50))
         
-        // Placeholder implementation - just dismiss for now
-        print("Delete script placeholder - script ID: \(script.id)")
-        print("Script text: \(script.scriptText.prefix(50))...")
+        print("🗑️ Starting deletion process for script: \(scriptPreview)...")
         
-        // For now, just dismiss the view
-        // Actual deletion logic will be implemented later
+        // CRITICAL: Dismiss the view FIRST to destroy all UI references
         dismiss()
+        
+        // Call the deletion callback after a small delay to ensure UI has settled
+        if let onDelete = onDelete {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                print("  📤 Calling deletion callback for script ID: \(scriptId)")
+                onDelete(scriptId)
+            }
+        } else {
+            print("  ⚠️ No deletion callback provided")
+        }
     }
     
     private func handlePlayPreview() {

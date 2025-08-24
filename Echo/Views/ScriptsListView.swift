@@ -81,7 +81,12 @@ struct ScriptsListView: View {
                 AddEditScriptView(script: nil)
             }
             .sheet(item: $scriptToEdit) { script in
-                AddEditScriptView(script: script)
+                AddEditScriptView(
+                    script: script,
+                    onDelete: { scriptId in
+                        deleteScript(withId: scriptId)
+                    }
+                )
             }
             .sheet(isPresented: $showingFilterSheet) {
                 CategoryFilterSheet(
@@ -159,6 +164,68 @@ struct ScriptsListView: View {
             try viewContext.save()
         } catch {
             print("Error creating sample scripts: \(error)")
+        }
+    }
+    
+    private func deleteScript(withId scriptId: UUID) {
+        print("🗑️ ScriptsListView: Starting safe deletion for script ID: \(scriptId)")
+        
+        // First, clear the edit sheet reference to ensure it's closed
+        if scriptToEdit?.id == scriptId {
+            scriptToEdit = nil
+        }
+        
+        // Fetch the script fresh from Core Data
+        let fetchRequest: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", scriptId as CVarArg)
+        fetchRequest.fetchLimit = 1
+        
+        do {
+            let scripts = try viewContext.fetch(fetchRequest)
+            guard let script = scripts.first else {
+                print("  ❌ Script not found with ID: \(scriptId)")
+                return
+            }
+            
+            // Cache necessary data before deletion
+            let scriptText = String(script.scriptText.prefix(50))
+            let hasRecording = script.hasRecording
+            let notificationEnabled = script.notificationEnabled
+            
+            print("  📝 Deleting script: \(scriptText)...")
+            
+            // Step 1: Stop any active audio operations
+            if audioService.currentPlayingScriptId == scriptId {
+                print("  ⏸️ Stopping playback...")
+                audioService.stopPlayback()
+            }
+            
+            // Step 2: Clean up external resources
+            
+            // 2a. Cancel notifications if enabled
+            if notificationEnabled {
+                print("  🔔 Cancelling notifications...")
+                NotificationManager.shared.cancelNotifications(for: script)
+            }
+            
+            // 2b. Delete audio files if they exist
+            if hasRecording {
+                print("  🎵 Deleting audio files...")
+                audioService.deleteRecording(for: script)
+            }
+            
+            // Step 3: Delete from Core Data
+            print("  💾 Deleting from database...")
+            viewContext.delete(script)
+            
+            // Step 4: Save the context
+            try viewContext.save()
+            
+            print("  ✅ Successfully deleted script: \(scriptText)")
+            
+        } catch {
+            print("  ❌ Failed to delete script: \(error.localizedDescription)")
+            // TODO: Show error alert to user
         }
     }
     
