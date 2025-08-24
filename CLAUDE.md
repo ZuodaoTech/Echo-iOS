@@ -1,5 +1,9 @@
 # CLAUDE.md - Echo iOS Development Guide
 
+## IMPORTANT: Communication Language Principle
+
+**ALWAYS respond in English regardless of the language used by the user.** Whether the user communicates in Chinese, Japanese, Spanish, or any other language, all responses must be in English. This ensures consistency in technical documentation, code comments, and development discussions.
+
 ## Overview
 
 **Echo** is a self-talk habit-building iOS app that helps users practice personalized affirmations through voice recordings. Built with SwiftUI and following enterprise-grade architecture patterns, it emphasizes privacy, user experience, and audio quality.
