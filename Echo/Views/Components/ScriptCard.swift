@@ -10,8 +10,6 @@ struct ScriptCard: View {
     @State private var showingErrorAlert = false
     @State private var errorMessage = ""
     @State private var isPressed = false
-    @State private var showingShareSheet = false
-    @State private var exportURL: URL?
     
     var onEdit: () -> Void
     
@@ -201,32 +199,6 @@ struct ScriptCard: View {
                 onEdit()
             }
         )
-        .contextMenu {
-            Button {
-                onEdit()
-            } label: {
-                Label("Edit", systemImage: "pencil")
-            }
-            
-            Button {
-                shareScript()
-            } label: {
-                Label("Share", systemImage: "square.and.arrow.up")
-            }
-            
-            if audioService.hasRecording(for: script) {
-                Button(role: .destructive) {
-                    audioService.deleteRecording(for: script)
-                } label: {
-                    Label("Delete Recording", systemImage: "mic.slash")
-                }
-            }
-        }
-        .sheet(isPresented: $showingShareSheet) {
-            if let url = exportURL {
-                ShareSheet(items: [url])
-            }
-        }
         .alert("Privacy Mode", isPresented: $showingPrivacyAlert) {
             Button("OK", role: .cancel) { }
         } message: {
@@ -295,22 +267,6 @@ struct ScriptCard: View {
                     }
                 }
             }
-        }
-    }
-    
-    private func shareScript() {
-        guard isScriptValid else { return }
-        
-        let exportService = ExportService()
-        
-        do {
-            // Export script with audio if available
-            let hasAudio = audioService.hasRecording(for: script)
-            exportURL = try exportService.exportScript(script, includeAudio: hasAudio)
-            showingShareSheet = true
-        } catch {
-            errorMessage = "Failed to export script: \(error.localizedDescription)"
-            showingErrorAlert = true
         }
     }
 }
