@@ -78,13 +78,13 @@ class PersistenceController: ObservableObject {
             let iCloudEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? false
             
             container.persistentStoreDescriptions.forEach { storeDescription in
+                // Always enable history tracking to avoid read-only mode
+                storeDescription.setOption(true as NSNumber, 
+                                          forKey: NSPersistentHistoryTrackingKey)
+                storeDescription.setOption(true as NSNumber, 
+                                          forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+                
                 if iCloudEnabled {
-                    // Enable CloudKit sync
-                    storeDescription.setOption(true as NSNumber, 
-                                              forKey: NSPersistentHistoryTrackingKey)
-                    storeDescription.setOption(true as NSNumber, 
-                                              forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-                    
                     // Set CloudKit container options
                     storeDescription.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(
                         containerIdentifier: "iCloud.xiaolai.Echo"
@@ -93,7 +93,7 @@ class PersistenceController: ObservableObject {
                     // Allow public database for sharing (future feature)
                     storeDescription.cloudKitContainerOptions?.databaseScope = .private
                 } else {
-                    // Disable CloudKit
+                    // Disable CloudKit but keep history tracking
                     storeDescription.cloudKitContainerOptions = nil
                 }
             }
@@ -110,9 +110,14 @@ class PersistenceController: ObservableObject {
                     // Reset to use local storage only
                     UserDefaults.standard.set(false, forKey: "iCloudSyncEnabled")
                     
-                    // Reconfigure for local storage only
+                    // Reconfigure for local storage only but keep history tracking
                     for description in self.container.persistentStoreDescriptions {
                         description.cloudKitContainerOptions = nil
+                        // Ensure history tracking remains enabled
+                        description.setOption(true as NSNumber, 
+                                             forKey: NSPersistentHistoryTrackingKey)
+                        description.setOption(true as NSNumber, 
+                                             forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
                     }
                     
                     // Try loading stores again without CloudKit
