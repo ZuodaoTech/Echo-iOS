@@ -21,12 +21,22 @@ struct ScriptsListView: View {
     @State private var showingAddScript = false
     @State private var scriptToEdit: SelftalkScript?
     @State private var showingFilterSheet = false
+    @State private var deletingScriptIds = Set<UUID>()  // Track scripts being deleted
     
     private var filteredScripts: [SelftalkScript] {
-        if let category = selectedCategory {
-            return scripts.filter { $0.category == category }
+        scripts.filter { script in
+            // CRITICAL: Filter out scripts that are being deleted
+            guard !deletingScriptIds.contains(script.id) else {
+                return false
+            }
+            
+            // Apply category filter if selected
+            if let category = selectedCategory {
+                return script.category == category
+            }
+            
+            return true
         }
-        return Array(scripts)
     }
     
     var body: some View {
@@ -170,62 +180,80 @@ struct ScriptsListView: View {
     private func deleteScript(withId scriptId: UUID) {
         print("🗑️ ScriptsListView: Starting safe deletion for script ID: \(scriptId)")
         
-        // First, clear the edit sheet reference to ensure it's closed
+        // CRITICAL STEP 1: Remove from UI immediately by marking as deleting
+        // This causes filteredScripts to exclude it, destroying the ScriptCard
+        print("  🎯 Removing script from UI first...")
+        deletingScriptIds.insert(scriptId)
+        
+        // Clear the edit sheet reference if it's this script
         if scriptToEdit?.id == scriptId {
             scriptToEdit = nil
         }
         
-        // Fetch the script fresh from Core Data
-        let fetchRequest: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %@", scriptId as CVarArg)
-        fetchRequest.fetchLimit = 1
-        
-        do {
-            let scripts = try viewContext.fetch(fetchRequest)
-            guard let script = scripts.first else {
-                print("  ❌ Script not found with ID: \(scriptId)")
-                return
+        // STEP 2: Wait for UI to update and destroy the ScriptCard
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            print("  ⏳ UI updated, proceeding with deletion...")
+            
+            // Fetch the script fresh from Core Data
+            let fetchRequest: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", scriptId as CVarArg)
+            fetchRequest.fetchLimit = 1
+            
+            do {
+                let scripts = try self.viewContext.fetch(fetchRequest)
+                guard let script = scripts.first else {
+                    print("  ❌ Script not found with ID: \(scriptId)")
+                    // Remove from deleting set since it doesn't exist
+                    self.deletingScriptIds.remove(scriptId)
+                    return
+                }
+                
+                // Cache necessary data before deletion
+                let scriptText = String(script.scriptText.prefix(50))
+                let hasRecording = script.hasRecording
+                let notificationEnabled = script.notificationEnabled
+                
+                print("  📝 Deleting script from database: \(scriptText)...")
+                
+                // Step 3: Stop any active audio operations
+                if self.audioService.currentPlayingScriptId == scriptId {
+                    print("  ⏸️ Stopping playback...")
+                    self.audioService.stopPlayback()
+                }
+                
+                // Step 4: Clean up external resources
+                
+                // 4a. Cancel notifications if enabled
+                if notificationEnabled {
+                    print("  🔔 Cancelling notifications...")
+                    NotificationManager.shared.cancelNotifications(for: script)
+                }
+                
+                // 4b. Delete audio files if they exist
+                if hasRecording {
+                    print("  🎵 Deleting audio files...")
+                    self.audioService.deleteRecording(for: script)
+                }
+                
+                // Step 5: Delete from Core Data
+                print("  💾 Deleting from database...")
+                self.viewContext.delete(script)
+                
+                // Step 6: Save the context
+                try self.viewContext.save()
+                
+                print("  ✅ Successfully deleted script: \(scriptText)")
+                
+                // Step 7: Clean up - remove from deleting set
+                // (Not strictly necessary since the script is gone, but good practice)
+                self.deletingScriptIds.remove(scriptId)
+                
+            } catch {
+                print("  ❌ Failed to delete script: \(error.localizedDescription)")
+                // Remove from deleting set to show the script again
+                self.deletingScriptIds.remove(scriptId)
+                // TODO: Show error alert to user
             }
-            
-            // Cache necessary data before deletion
-            let scriptText = String(script.scriptText.prefix(50))
-            let hasRecording = script.hasRecording
-            let notificationEnabled = script.notificationEnabled
-            
-            print("  📝 Deleting script: \(scriptText)...")
-            
-            // Step 1: Stop any active audio operations
-            if audioService.currentPlayingScriptId == scriptId {
-                print("  ⏸️ Stopping playback...")
-                audioService.stopPlayback()
-            }
-            
-            // Step 2: Clean up external resources
-            
-            // 2a. Cancel notifications if enabled
-            if notificationEnabled {
-                print("  🔔 Cancelling notifications...")
-                NotificationManager.shared.cancelNotifications(for: script)
-            }
-            
-            // 2b. Delete audio files if they exist
-            if hasRecording {
-                print("  🎵 Deleting audio files...")
-                audioService.deleteRecording(for: script)
-            }
-            
-            // Step 3: Delete from Core Data
-            print("  💾 Deleting from database...")
-            viewContext.delete(script)
-            
-            // Step 4: Save the context
-            try viewContext.save()
-            
-            print("  ✅ Successfully deleted script: \(scriptText)")
-            
-        } catch {
-            print("  ❌ Failed to delete script: \(error.localizedDescription)")
-            // TODO: Show error alert to user
         }
     }
     
