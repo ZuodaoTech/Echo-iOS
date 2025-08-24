@@ -196,7 +196,7 @@ struct ScriptCard: View {
         .alert("No Recording", isPresented: $showingNoRecordingAlert) {
             Button("OK", role: .cancel) { }
         } message: {
-            Text("Please swipe left to edit and record audio first")
+            Text("Please long press to edit and record audio first")
         }
         .alert("Error", isPresented: $showingErrorAlert) {
             Button("OK", role: .cancel) { }
