@@ -210,8 +210,23 @@ struct ScriptCard: View {
             } catch AudioServiceError.privacyModeActive {
                 showingPrivacyAlert = true
             } catch {
-                errorMessage = "Unable to play audio. Please try again."
-                showingErrorAlert = true
+                // Silently retry once after a brief delay instead of showing error immediately
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    do {
+                        try audioService.play(script: script)
+                    } catch AudioServiceError.privacyModeActive {
+                        showingPrivacyAlert = true
+                    } catch {
+                        // Only show error if retry also fails
+                        // Could also just ignore and let user tap again
+                        print("Playback failed after retry: \(error)")
+                        // Optionally show error only for critical failures
+                        if (error as NSError).code != -50 {
+                            errorMessage = "Unable to play audio. Please try again."
+                            showingErrorAlert = true
+                        }
+                    }
+                }
             }
         }
     }
