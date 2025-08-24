@@ -146,11 +146,11 @@ struct MeView: View {
     private var sensitivityDescription: String {
         switch silenceTrimSensitivity {
         case "low":
-            return "Keeps more natural pauses"
+            return "Needs louder voice • 0.5s buffer"
         case "high":
-            return "Aggressive silence removal"
+            return "Detects whispers • 0.15s buffer"
         default:
-            return "Balanced trimming"
+            return "Balanced detection • 0.3s buffer"
         }
     }
     
