@@ -20,6 +20,12 @@ final class RecordingService: NSObject, ObservableObject {
     private var recordingTimer: Timer?
     private var stopRecordingCompletion: ((UUID, TimeInterval) -> Void)?
     
+    // Voice activity timestamps for smart trimming
+    private var firstSpeakingTime: TimeInterval?
+    private var lastSpeakingTime: TimeInterval?
+    private var voiceDetectionThreshold: Float = 0.1  // When we consider it "speaking"
+    private let trimBufferTime: TimeInterval = 0.3  // Buffer time before/after speech
+    
     // MARK: - Constants
     
     private enum Constants {
@@ -69,6 +75,10 @@ final class RecordingService: NSObject, ObservableObject {
             
             currentRecordingScriptId = scriptId
             
+            // Reset voice activity timestamps
+            firstSpeakingTime = nil
+            lastSpeakingTime = nil
+            
             DispatchQueue.main.async {
                 self.isRecording = true
                 self.recordingDuration = 0
@@ -87,6 +97,16 @@ final class RecordingService: NSObject, ObservableObject {
         }
         
         stopRecordingTimer()
+        
+        // Log the trim points for debugging
+        if let firstTime = firstSpeakingTime, let lastTime = lastSpeakingTime {
+            print("RecordingService: Voice activity from \(firstTime)s to \(lastTime)s")
+            let trimStart = max(0, firstTime - trimBufferTime)
+            let trimEnd = lastTime + trimBufferTime
+            print("RecordingService: Will trim to \(trimStart)s - \(trimEnd)s (with \(trimBufferTime)s buffer)")
+        } else {
+            print("RecordingService: No voice activity detected - no trimming needed")
+        }
         
         if let scriptId = currentRecordingScriptId {
             let duration = recorder.currentTime
@@ -149,6 +169,20 @@ final class RecordingService: NSObject, ObservableObject {
         audioRecorder?.currentTime ?? 0
     }
     
+    /// Get the trim timestamps based on voice activity
+    func getTrimTimestamps() -> (start: TimeInterval, end: TimeInterval)? {
+        guard let firstTime = firstSpeakingTime,
+              let lastTime = lastSpeakingTime else {
+            return nil
+        }
+        
+        // Add buffer time before first speech and after last speech
+        let trimStart = max(0, firstTime - trimBufferTime)
+        let trimEnd = lastTime + trimBufferTime
+        
+        return (trimStart, trimEnd)
+    }
+    
     /// Check if currently recording a specific script
     func isRecording(scriptId: UUID) -> Bool {
         isRecording && currentRecordingScriptId == scriptId
@@ -170,8 +204,19 @@ final class RecordingService: NSObject, ObservableObject {
             let minDb: Float = -60
             let normalizedPower = max(0, min(1, (averagePower - minDb) / -minDb))
             
+            // Track speaking timestamps
+            let currentTime = recorder.currentTime
+            if normalizedPower > self.voiceDetectionThreshold {
+                // Speaking detected
+                if self.firstSpeakingTime == nil {
+                    self.firstSpeakingTime = currentTime
+                    print("RecordingService: First speaking detected at \(currentTime)s")
+                }
+                self.lastSpeakingTime = currentTime
+            }
+            
             DispatchQueue.main.async {
-                self.recordingDuration = recorder.currentTime
+                self.recordingDuration = currentTime
                 self.voiceActivityLevel = normalizedPower
             }
         }

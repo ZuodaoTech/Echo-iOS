@@ -103,8 +103,11 @@ final class AudioCoordinator: ObservableObject {
         recordingService.stopRecording { [weak self] scriptId, duration in
             guard let self = self else { return }
             
+            // Get voice activity timestamps from recording service
+            let trimTimestamps = self.recordingService.getTrimTimestamps()
+            
             // Process the recording (trim silence, etc.)
-            self.processingService.processRecording(for: scriptId) { success in
+            self.processingService.processRecording(for: scriptId, trimTimestamps: trimTimestamps) { success in
                 // After processing, transcribe the ORIGINAL audio with selected language
                 // The original audio maintains AAC format that Speech Recognition can read
                 let languageCode = script.transcriptionLanguage ?? "en-US"

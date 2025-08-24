@@ -69,7 +69,7 @@ final class AudioProcessingService {
     }
     
     /// Process audio file: trim silence and optimize for voice
-    func processRecording(for scriptId: UUID, completion: @escaping (Bool) -> Void) {
+    func processRecording(for scriptId: UUID, trimTimestamps: (start: TimeInterval, end: TimeInterval)? = nil, completion: @escaping (Bool) -> Void) {
         // Check if auto-trim is enabled (default to true if not set)
         let autoTrimEnabled = UserDefaults.standard.object(forKey: "autoTrimSilence") as? Bool ?? true
         if !autoTrimEnabled {
@@ -77,7 +77,18 @@ final class AudioProcessingService {
             completion(true)
             return
         }
-        print("AudioProcessing: Starting silence trimming (enabled: \(autoTrimEnabled), sensitivity: \(UserDefaults.standard.string(forKey: "silenceTrimSensitivity") ?? "medium"))")
+        // Check if we have trim timestamps from real-time voice detection
+        if let timestamps = trimTimestamps {
+            print("AudioProcessing: Using real-time voice detection timestamps")
+            print("AudioProcessing: Will trim from \(timestamps.start)s to \(timestamps.end)s")
+            
+            // Use the timestamp-based trimming (much simpler!)
+            trimAudioWithTimestamps(scriptId: scriptId, startTime: timestamps.start, endTime: timestamps.end, completion: completion)
+            return
+        }
+        
+        print("AudioProcessing: Starting buffer-based silence trimming (fallback method)")
+        print("AudioProcessing: Sensitivity: \(UserDefaults.standard.string(forKey: "silenceTrimSensitivity") ?? "medium")")
         
         let audioURL = fileManager.audioURL(for: scriptId)
         let originalURL = fileManager.originalAudioURL(for: scriptId)
@@ -381,6 +392,83 @@ final class AudioProcessingService {
     }
     
     // MARK: - Private Methods
+    
+    /// Trim audio using timestamps from real-time voice detection
+    private func trimAudioWithTimestamps(scriptId: UUID, startTime: TimeInterval, endTime: TimeInterval, completion: @escaping (Bool) -> Void) {
+        let audioURL = fileManager.audioURL(for: scriptId)
+        let originalURL = fileManager.originalAudioURL(for: scriptId)
+        
+        // Save original for transcription
+        do {
+            if FileManager.default.fileExists(atPath: originalURL.path) {
+                try FileManager.default.removeItem(at: originalURL)
+            }
+            try FileManager.default.copyItem(at: audioURL, to: originalURL)
+            print("AudioProcessing: Saved original copy for transcription")
+        } catch {
+            print("AudioProcessing: Failed to save original: \(error)")
+        }
+        
+        // Use AVAsset for time-based trimming
+        let asset = AVAsset(url: audioURL)
+        let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
+        
+        guard let session = exportSession else {
+            print("AudioProcessing: Failed to create export session")
+            completion(false)
+            return
+        }
+        
+        // Configure trimming time range
+        let startCMTime = CMTime(seconds: startTime, preferredTimescale: 1000)
+        let endCMTime = CMTime(seconds: endTime, preferredTimescale: 1000)
+        let timeRange = CMTimeRange(start: startCMTime, end: endCMTime)
+        
+        session.timeRange = timeRange
+        session.outputFileType = .m4a
+        
+        // Create temp file for trimmed audio
+        let tempURL = audioURL.appendingPathExtension("trimmed")
+        try? FileManager.default.removeItem(at: tempURL)
+        session.outputURL = tempURL
+        
+        // Export trimmed audio
+        session.exportAsynchronously {
+            switch session.status {
+            case .completed:
+                // Replace original with trimmed version
+                do {
+                    try FileManager.default.removeItem(at: audioURL)
+                    try FileManager.default.moveItem(at: tempURL, to: audioURL)
+                    
+                    let duration = CMTimeGetSeconds(asset.duration)
+                    let trimmedDuration = endTime - startTime
+                    print("AudioProcessing: Successfully trimmed from \(duration)s to \(trimmedDuration)s")
+                    
+                    DispatchQueue.main.async {
+                        completion(true)
+                    }
+                } catch {
+                    print("AudioProcessing: Failed to replace file: \(error)")
+                    DispatchQueue.main.async {
+                        completion(false)
+                    }
+                }
+                
+            case .failed:
+                print("AudioProcessing: Export failed: \(session.error?.localizedDescription ?? "Unknown error")")
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+                
+            default:
+                print("AudioProcessing: Export status: \(session.status)")
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+            }
+        }
+    }
     
     /// Ensure proper punctuation and formatting for transcribed text
     private func ensureProperPunctuation(to text: String, languageCode: String?) -> String {
