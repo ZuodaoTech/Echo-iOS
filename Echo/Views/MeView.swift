@@ -17,6 +17,7 @@ struct MeView: View {
     @State private var exportProgress: String?
     @State private var showingImportAlert = false
     @State private var importAlertMessage = ""
+    @State private var showingPrivacyModeInfo = false
     
     @Environment(\.managedObjectContext) private var viewContext
     
@@ -24,7 +25,18 @@ struct MeView: View {
         NavigationView {
             List {
                 Section("Default Settings") {
-                    Toggle("Privacy Mode", isOn: $privacyModeDefault)
+                    HStack {
+                        Toggle("Privacy Mode", isOn: $privacyModeDefault)
+                        
+                        Button {
+                            showingPrivacyModeInfo = true
+                        } label: {
+                            Image(systemName: "info.circle")
+                                .font(.system(size: 18))
+                                .foregroundColor(.blue)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
                     
                     HStack {
                         Text("Repetitions")
@@ -223,6 +235,11 @@ struct MeView: View {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text(importAlertMessage)
+            }
+            .alert("Privacy Mode", isPresented: $showingPrivacyModeInfo) {
+                Button("Got it", role: .cancel) { }
+            } message: {
+                Text("When Privacy Mode is enabled, audio recordings will only play through connected earphones or headphones. This prevents accidental playback through speakers in public spaces.")
             }
         }
     }
