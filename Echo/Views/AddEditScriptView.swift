@@ -536,12 +536,37 @@ struct AddEditScriptView: View {
         }
         
         do {
+            // Check if we have persistent stores
+            if viewContext.persistentStoreCoordinator?.persistentStores.isEmpty ?? true {
+                print("Warning: No persistent stores available")
+                errorMessage = "Database not ready. Please restart the app."
+                showingErrorAlert = true
+                return false
+            }
+            
             if viewContext.hasChanges {
                 try viewContext.save()
+                print("Successfully saved script to Core Data")
             }
             return true
         } catch {
-            errorMessage = "Failed to save script. Please try again."
+            print("Core Data save error: \(error)")
+            print("Error details: \(error.localizedDescription)")
+            
+            // Check if it's the persistent store error
+            let nsError = error as NSError
+            if nsError.domain == NSCocoaErrorDomain {
+                if nsError.code == 134030 { // NSManagedObjectContextSaveError
+                    errorMessage = "Unable to save. Please restart the app."
+                } else if nsError.code == 134060 { // NSPersistentStoreInvalidTypeError
+                    errorMessage = "Database error. Please restart the app."
+                } else {
+                    errorMessage = "Failed to save script: \(error.localizedDescription)"
+                }
+            } else {
+                errorMessage = "Failed to save script. Please try again."
+            }
+            
             showingErrorAlert = true
             return false
         }

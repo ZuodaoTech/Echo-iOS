@@ -124,7 +124,15 @@ class PersistenceController: ObservableObject {
                             print("Successfully loaded local persistent store after CloudKit failure")
                         }
                     }
+                } else {
+                    // For other errors, still try to continue but log the issue
+                    print("Core Data warning: Store loaded with error, app may have limited functionality")
                 }
+            } else {
+                print("Core Data: Successfully loaded persistent store")
+                print("Store type: \(storeDescription.type)")
+                print("Store URL: \(storeDescription.url?.absoluteString ?? "nil")")
+                print("CloudKit enabled: \(storeDescription.cloudKitContainerOptions != nil)")
             }
         })
         
