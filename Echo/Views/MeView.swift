@@ -10,17 +10,6 @@ struct MeView: View {
     var body: some View {
         NavigationView {
             List {
-                Section("Recording") {
-                    Toggle(isOn: $voiceEnhancementEnabled) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Voice Enhancement")
-                            Text("Reduces background noise and echo")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                }
-                
                 Section("Default Settings") {
                     Toggle("Privacy Mode", isOn: $privacyModeDefault)
                     
@@ -46,6 +35,17 @@ struct MeView: View {
                         Spacer()
                         Text(languageDisplayName(for: defaultTranscriptionLanguage))
                             .foregroundColor(.secondary)
+                    }
+                }
+                
+                Section("Recording") {
+                    Toggle(isOn: $voiceEnhancementEnabled) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Voice Enhancement")
+                            Text("Reduces background noise and echo")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
                 
