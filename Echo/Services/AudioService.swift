@@ -10,6 +10,7 @@ enum AudioServiceError: LocalizedError {
     case playbackFailed
     case noRecording
     case permissionDenied
+    case invalidScript
     
     var errorDescription: String? {
         switch self {
@@ -23,6 +24,8 @@ enum AudioServiceError: LocalizedError {
             return "No recording available"
         case .permissionDenied:
             return "Microphone permission denied"
+        case .invalidScript:
+            return "Script is no longer available"
         }
     }
 }
