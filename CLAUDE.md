@@ -142,12 +142,28 @@ swiftlint
 ```
 
 ### Git Workflow
+
+**IMPORTANT: Always create a new branch for new features or significant changes.**
+
 ```bash
-# Standard commit flow
+# Feature development workflow (PREFERRED)
+git checkout -b feature/your-feature-name
+git add .
+git commit -m "Your descriptive message"
+git push origin feature/your-feature-name
+# Then create pull request to merge into main
+
+# For small fixes or updates only (after discussion)
 git add .
 git commit -m "Your descriptive message"
 git push origin main
 ```
+
+#### Branch Naming Conventions
+- `feature/` - New features (e.g., `feature/character-limit`)
+- `fix/` - Bug fixes (e.g., `fix/core-data-crash`)
+- `refactor/` - Code refactoring (e.g., `refactor/audio-service`)
+- `docs/` - Documentation updates (e.g., `docs/update-readme`)
 
 ## Common Issues & Solutions
 
