@@ -5,7 +5,7 @@ struct BackupSyncView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.managedObjectContext) private var viewContext
     
-    @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = false
+    @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = true
     
     @State private var showingExportOptions = false
     @State private var showingDocumentPicker = false
