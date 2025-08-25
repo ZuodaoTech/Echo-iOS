@@ -66,17 +66,34 @@ struct ScriptCard: View {
     
     private var validScriptCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            // Category and Repetitions Header
+            // Tags and Repetitions Header
             HStack {
-                if let category = script.category {
-                    Text(category.name)
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundColor(.secondary)
+                // Show tags if any
+                if !script.tagsArray.isEmpty {
+                    HStack(spacing: 6) {
+                        ForEach(script.tagsArray.prefix(2), id: \.id) { tag in
+                            Text(tag.name)
+                                .font(.caption)
+                                .fontWeight(.medium)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 3)
+                                .background(cardAccentColor.opacity(0.15))
+                                .foregroundColor(cardAccentColor)
+                                .cornerRadius(10)
+                        }
+                        
+                        if script.tagsArray.count > 2 {
+                            Text("+\(script.tagsArray.count - 2)")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
                 }
                 
-                Text("•")
-                    .foregroundColor(.secondary)
+                if !script.tagsArray.isEmpty {
+                    Text("•")
+                        .foregroundColor(.secondary)
+                }
                 
                 Text("\(script.repetitions)x")
                     .font(.subheadline)

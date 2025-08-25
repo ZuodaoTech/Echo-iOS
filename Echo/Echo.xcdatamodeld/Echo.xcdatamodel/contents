@@ -26,5 +26,13 @@
         <attribute name="notificationFrequency" optional="YES" attributeType="String" defaultValueString="medium"/>
         <attribute name="notificationEnabledAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="scripts" inverseEntity="Category"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="scripts" inverseEntity="Tag"/>
+    </entity>
+    <entity name="Tag" representedClassName="Tag" syncable="YES">
+        <attribute name="color" optional="YES" attributeType="String"/>
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String"/>
+        <relationship name="scripts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SelftalkScript" inverseName="tags" inverseEntity="SelftalkScript"/>
     </entity>
 </model>

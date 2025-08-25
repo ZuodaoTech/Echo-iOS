@@ -12,12 +12,12 @@ struct ScriptsListView: View {
     private var scripts: FetchedResults<SelftalkScript>
     
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Category.sortOrder, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Tag.name, ascending: true)],
         animation: .default
     )
-    private var categories: FetchedResults<Category>
+    private var allTags: FetchedResults<Tag>
     
-    @State private var selectedCategory: Category?
+    @State private var selectedTags: Set<Tag> = []
     @State private var showingAddScript = false
     @State private var scriptToEdit: SelftalkScript?
     @State private var showingFilterSheet = false
@@ -30,9 +30,11 @@ struct ScriptsListView: View {
                 return false
             }
             
-            // Apply category filter if selected
-            if let category = selectedCategory {
-                return script.category == category
+            // Apply tag filter if any tags are selected
+            if !selectedTags.isEmpty {
+                let scriptTags = Set(script.tagsArray)
+                // Show scripts that have at least one of the selected tags
+                return !selectedTags.intersection(scriptTags).isEmpty
             }
             
             return true
@@ -70,8 +72,8 @@ struct ScriptsListView: View {
                     } label: {
                         HStack(spacing: 4) {
                             Image(systemName: "line.3.horizontal.decrease.circle")
-                            if let category = selectedCategory {
-                                Text(category.name)
+                            if !selectedTags.isEmpty {
+                                Text("\(selectedTags.count) tags")
                                     .font(.caption)
                             }
                         }
@@ -99,9 +101,9 @@ struct ScriptsListView: View {
                 )
             }
             .sheet(isPresented: $showingFilterSheet) {
-                CategoryFilterSheet(
-                    categories: Array(categories),
-                    selectedCategory: $selectedCategory
+                TagFilterSheet(
+                    allTags: Array(allTags),
+                    selectedTags: $selectedTags
                 )
             }
         }
@@ -123,9 +125,14 @@ struct ScriptsListView: View {
             Category.createDefaultCategories(context: viewContext)
             createSampleScripts()
             UserDefaults.standard.set(true, forKey: hasLaunchedKey)
-        } else if categories.isEmpty {
-            // Not first launch but no categories - just create categories
-            Category.createDefaultCategories(context: viewContext)
+        } else {
+            // Check if categories exist
+            let categoryRequest: NSFetchRequest<Category> = Category.fetchRequest()
+            let categoryCount = (try? viewContext.count(for: categoryRequest)) ?? 0
+            if categoryCount == 0 {
+                // Not first launch but no categories - just create categories
+                Category.createDefaultCategories(context: viewContext)
+            }
         }
     }
     
@@ -294,49 +301,73 @@ struct EmptyStateView: View {
     }
 }
 
-struct CategoryFilterSheet: View {
-    let categories: [Category]
-    @Binding var selectedCategory: Category?
+struct TagFilterSheet: View {
+    let allTags: [Tag]
+    @Binding var selectedTags: Set<Tag>
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationView {
-            List {
-                Section {
-                    Button {
-                        selectedCategory = nil
-                        dismiss()
-                    } label: {
+            VStack(spacing: 0) {
+                // Selected tags at top
+                if !selectedTags.isEmpty {
+                    ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
-                            Text(NSLocalizedString("filter.all_cards", comment: ""))
-                            Spacer()
-                            if selectedCategory == nil {
-                                Image(systemName: "checkmark")
-                                    .foregroundColor(.blue)
+                            ForEach(Array(selectedTags), id: \.id) { tag in
+                                TagChip(tag: tag, isSelected: true) {
+                                    selectedTags.remove(tag)
+                                }
                             }
                         }
+                        .padding()
                     }
+                    .background(Color(.systemGray6))
+                    
+                    Divider()
                 }
                 
-                Section(NSLocalizedString("category.select", comment: "")) {
-                    ForEach(categories, id: \.id) { category in
+                List {
+                    Section {
                         Button {
-                            selectedCategory = category
-                            dismiss()
+                            selectedTags.removeAll()
                         } label: {
                             HStack {
-                                Text(category.name)
+                                Text(NSLocalizedString("filter.all_cards", comment: ""))
                                 Spacer()
-                                if selectedCategory == category {
+                                if selectedTags.isEmpty {
                                     Image(systemName: "checkmark")
                                         .foregroundColor(.blue)
                                 }
                             }
                         }
                     }
+                    
+                    Section("Tags") {
+                        ForEach(allTags, id: \.id) { tag in
+                            Button {
+                                if selectedTags.contains(tag) {
+                                    selectedTags.remove(tag)
+                                } else {
+                                    selectedTags.insert(tag)
+                                }
+                            } label: {
+                                HStack {
+                                    Text(tag.name)
+                                    Spacer()
+                                    Text("\(tag.scriptCount)")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                    if selectedTags.contains(tag) {
+                                        Image(systemName: "checkmark")
+                                            .foregroundColor(.blue)
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
-            .navigationTitle(NSLocalizedString("category.select", comment: ""))
+            .navigationTitle("Filter by Tags")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {

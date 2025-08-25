@@ -23,12 +23,33 @@ extension SelftalkScript: Identifiable {
     @NSManaged public var notificationEnabled: Bool
     @NSManaged public var notificationFrequency: String?
     @NSManaged public var notificationEnabledAt: Date?
+    @NSManaged public var tags: NSSet?
+}
+
+// MARK: Generated accessors for tags
+extension SelftalkScript {
+    @objc(addTagsObject:)
+    @NSManaged public func addToTags(_ value: Tag)
+    
+    @objc(removeTagsObject:)
+    @NSManaged public func removeFromTags(_ value: Tag)
+    
+    @objc(addTags:)
+    @NSManaged public func addToTags(_ values: NSSet)
+    
+    @objc(removeTags:)
+    @NSManaged public func removeFromTags(_ values: NSSet)
 }
 
 extension SelftalkScript {
     var hasRecording: Bool {
         guard let path = audioFilePath else { return false }
         return FileManager.default.fileExists(atPath: path)
+    }
+    
+    var tagsArray: [Tag] {
+        let set = tags as? Set<Tag> ?? []
+        return set.sorted { $0.name < $1.name }
     }
     
     var scriptPreview: String {
