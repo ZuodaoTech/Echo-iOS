@@ -209,3 +209,4 @@
 "settings.about_support" = "정보 및 지원";
 "settings.sync" = "동기화";
 "settings.backup" = "백업";
+"script.label" = "스크립트";

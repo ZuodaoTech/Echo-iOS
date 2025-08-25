@@ -74,7 +74,7 @@ struct AddEditScriptView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(NSLocalizedString("navigation.cards", comment: "")) {
+                Section(NSLocalizedString("script.label", comment: "")) {
                     VStack(alignment: .leading, spacing: 8) {
                         ZStack(alignment: .topLeading) {
                             // Invisible text for height calculation

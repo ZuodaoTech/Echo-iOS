@@ -209,3 +209,4 @@
 "settings.about_support" = "Om & Support";
 "settings.sync" = "Synkronisering";
 "settings.backup" = "Säkerhetskopiering";
+"script.label" = "Skript";
