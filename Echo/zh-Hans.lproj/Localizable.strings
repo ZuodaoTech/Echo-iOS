@@ -108,6 +108,7 @@
 "notifications.daytime_only" = "仅在白天通知（上午8点 - 晚上9点）";
 
 // MARK: - Common Actions
+"chars" = "字符";
 "action.done" = "完成";
 "action.cancel" = "取消";
 "action.delete" = "删除";
