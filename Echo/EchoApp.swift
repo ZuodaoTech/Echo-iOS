@@ -11,7 +11,7 @@ import UserNotifications
 
 @main
 struct EchoApp: App {
-    @StateObject private var persistenceController = PersistenceController.shared
+    let persistenceController = PersistenceController.shared
 
     init() {
         // Apply user's language preference
@@ -51,10 +51,6 @@ struct EchoApp: App {
                 // The Persistence controller already handles this in its init
             }
         }
-        
-        // Create default categories with localization on first launch
-        let context = persistenceController.container.viewContext
-        Category.createDefaultCategories(context: context)
     }
     
     var body: some Scene {

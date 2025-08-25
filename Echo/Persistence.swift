@@ -71,8 +71,15 @@ class PersistenceController: ObservableObject {
 
     let container: NSPersistentCloudKitContainer
     
-    // Track iCloud sync status
-    @Published var iCloudSyncEnabled = UserDefaults.standard.bool(forKey: "iCloudSyncEnabled")
+    // Track iCloud sync status (default to true)
+    @Published var iCloudSyncEnabled: Bool = {
+        if UserDefaults.standard.object(forKey: "iCloudSyncEnabled") == nil {
+            // First time - set default to true
+            UserDefaults.standard.set(true, forKey: "iCloudSyncEnabled")
+            return true
+        }
+        return UserDefaults.standard.bool(forKey: "iCloudSyncEnabled")
+    }()
 
     init(inMemory: Bool = false) {
         // Use NSPersistentCloudKitContainer for CloudKit support
@@ -81,8 +88,8 @@ class PersistenceController: ObservableObject {
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         } else {
-            // Configure for CloudKit if enabled (default to false for safety)
-            let iCloudEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? false
+            // Configure for CloudKit if enabled (default to true)
+            let iCloudEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? true
             
             container.persistentStoreDescriptions.forEach { storeDescription in
                 // Always enable history tracking to avoid read-only mode
@@ -152,7 +159,7 @@ class PersistenceController: ObservableObject {
         
         // Set up CloudKit schema initialization only if CloudKit is enabled and in DEBUG
         #if DEBUG
-        let cloudKitEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? false
+        let cloudKitEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? true
         if cloudKitEnabled {
             // Delay schema initialization to ensure stores are loaded
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
