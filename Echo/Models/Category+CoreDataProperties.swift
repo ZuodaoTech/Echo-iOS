@@ -8,6 +8,7 @@ extension Category: Identifiable {
     
     @NSManaged public var id: UUID
     @NSManaged public var name: String
+    @NSManaged public var nameKey: String?
     @NSManaged public var createdAt: Date
     @NSManaged public var sortOrder: Int32
     @NSManaged public var scripts: NSSet?
@@ -70,35 +71,36 @@ extension Category {
     
     static func createDefaultCategories(context: NSManagedObjectContext) {
         let defaultCategories = [
-            "Breaking Bad Habits",
-            "Building Good Habits", 
-            "Appropriate Positivity",
-            "Personal",
-            "Work"
+            (key: "category.breaking_bad_habits", fallbackName: "Breaking Bad Habits"),
+            (key: "category.building_good_habits", fallbackName: "Building Good Habits"),
+            (key: "category.appropriate_positivity", fallbackName: "Appropriate Positivity")
         ]
         
         // First, remove any duplicates
         removeDuplicateCategories(context: context)
         
-        // Check if categories already exist
-        let request: NSFetchRequest<Category> = Category.fetchRequest()
-        let existingCount = (try? context.count(for: request)) ?? 0
-        
-        // Only create if no categories exist
-        guard existingCount == 0 else { 
-            print("Categories already exist, skipping creation")
-            return 
-        }
-        
-        for (index, name) in defaultCategories.enumerated() {
+        // Check if categories already exist based on nameKey
+        for categoryData in defaultCategories {
+            let request: NSFetchRequest<Category> = Category.fetchRequest()
+            request.predicate = NSPredicate(format: "nameKey == %@", categoryData.key)
+            
+            if let existingCategories = try? context.fetch(request), !existingCategories.isEmpty {
+                continue // Skip if already exists
+            }
+            
             let category = Category(context: context)
             category.id = UUID()
-            category.name = name
+            category.nameKey = categoryData.key
+            category.name = NSLocalizedString(categoryData.key, comment: "")
+            // Fallback to English if localization not available
+            if category.name == categoryData.key {
+                category.name = categoryData.fallbackName
+            }
             category.createdAt = Date()
-            category.sortOrder = Int32(index)
+            category.sortOrder = Int32(defaultCategories.firstIndex(where: { $0.key == categoryData.key }) ?? 0)
         }
         
         try? context.save()
-        print("Created \(defaultCategories.count) default categories")
+        print("Created default categories with localization support")
     }
 }

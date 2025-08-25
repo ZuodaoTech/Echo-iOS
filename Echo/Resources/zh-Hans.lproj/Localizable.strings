@@ -1,0 +1,146 @@
+/* 
+  Localizable.strings (Chinese Simplified)
+  Echo
+  
+  简体中文本地化文件
+*/
+
+// MARK: - Navigation & Titles
+"navigation.cards" = "卡片";
+"navigation.me" = "我";
+"navigation.new_script" = "新建脚本";
+"navigation.edit_script" = "编辑脚本";
+
+// MARK: - Categories
+"category.breaking_bad_habits" = "戒除坏习惯";
+"category.building_good_habits" = "培养好习惯";
+"category.appropriate_positivity" = "适度积极";
+"category.personal_growth" = "个人成长";
+"category.daily_affirmations" = "每日肯定";
+"category.select" = "选择分类";
+"category.add_new" = "添加新分类...";
+"category.uncategorized" = "未分类";
+
+// MARK: - Script Card
+"script.play_count" = "播放 %d 次";
+"script.transcript" = "转录文本";
+"script.recording" = "录音";
+"script.no_recording" = "无录音";
+"script.repetitions" = "重复次数";
+"script.interval" = "间隔时间";
+"script.privacy_mode" = "隐私模式";
+"script.delete" = "删除脚本";
+"script.delete.confirm.title" = "删除脚本";
+"script.delete.confirm.message" = "确定要删除这个脚本吗？此操作无法撤销。";
+
+// MARK: - Settings
+"settings.default_settings" = "默认设置";
+"settings.script_preferences" = "脚本偏好";
+"settings.transcription" = "语音转文字";
+"settings.recording" = "录音";
+"settings.backup_sync" = "备份与同步";
+"settings.about" = "关于";
+"settings.support" = "支持";
+
+"settings.privacy_mode.title" = "隐私模式";
+"settings.privacy_mode.info" = "音频仅通过耳机播放";
+"settings.privacy_mode.alert.title" = "隐私模式";
+"settings.privacy_mode.alert.message" = "启用隐私模式后，音频录音只会通过连接的耳机播放。这可以防止在公共场所意外通过扬声器播放。";
+
+"settings.character_guidance" = "字符指导";
+"settings.recommended_length" = "建议长度";
+"settings.when_exceeded" = "超出时";
+"settings.just_warn" = "仅提醒";
+"settings.show_tip_only" = "仅显示提示";
+"settings.character_guidance.info" = "简短的脚本更容易记忆，影响力更大";
+
+"settings.default_language" = "默认语言";
+"settings.voice_enhancement" = "语音增强";
+"settings.voice_enhancement.desc" = "减少背景噪音和回声";
+"settings.auto_trim_silence" = "自动裁剪静音";
+"settings.auto_trim_silence.desc" = "移除开头和结尾的静音";
+"settings.trim_sensitivity" = "裁剪敏感度";
+
+"settings.icloud_sync" = "iCloud 同步";
+"settings.icloud_sync.desc" = "在您的设备间同步脚本";
+"settings.icloud_sync.info" = "文本和设置自动同步。音频文件保留在本地。";
+"settings.export_scripts" = "导出脚本";
+"settings.import_scripts" = "导入脚本";
+
+"settings.version" = "版本";
+"settings.build" = "构建";
+"settings.rate_github" = "在 GitHub 上评分";
+"settings.contact_support" = "联系支持";
+
+// MARK: - Recording
+"recording.start" = "开始录音";
+"recording.stop" = "停止录音";
+"recording.re_record" = "重新录音";
+"recording.saved" = "录音已保存";
+"recording.delete" = "删除";
+"recording.preview" = "预览";
+"recording.playing_preview" = "正在播放预览...";
+"recording.preview_paused" = "预览已暂停";
+"recording.plays_once" = "（播放一次）";
+"recording.processing" = "处理音频中...";
+"recording.listening" = "聆听中...";
+"recording.speaking" = "说话中...";
+"recording.transcribing" = "转录中...";
+"recording.re_transcribing" = "重新转录中...";
+"recording.microphone_access" = "麦克风权限";
+"recording.microphone_access.message" = "请在设置中授予麦克风权限以录制音频";
+
+// MARK: - Character Guidance
+"guidance.trim_characters" = "建议删减 %d 个字符以便更好记忆";
+"guidance.script_over" = "脚本超出 %d 个字符。请尽量简洁";
+"guidance.script_long" = "脚本相当长。";
+"guidance.enter_script" = "在此输入您的自我对话脚本...";
+
+// MARK: - Notifications
+"notifications.enable" = "启用通知";
+"notifications.frequency" = "频率";
+"notifications.frequency.high" = "高（每小时1-2次）";
+"notifications.frequency.medium" = "中（每2小时）";
+"notifications.frequency.low" = "低（每天1-2次）";
+"notifications.daytime_only" = "仅在白天通知（上午8点 - 晚上9点）";
+
+// MARK: - Common Actions
+"action.done" = "完成";
+"action.cancel" = "取消";
+"action.delete" = "删除";
+"action.add" = "添加";
+"action.save" = "保存";
+"action.ok" = "好的";
+"action.got_it" = "知道了";
+"action.copy" = "复制";
+"action.use_as_script" = "用作脚本";
+"action.share" = "分享";
+"action.edit" = "编辑";
+
+// MARK: - Errors
+"error.title" = "错误";
+"error.save" = "保存脚本失败";
+"error.database" = "数据库错误";
+"error.restart_app" = "请重启应用";
+"error.try_again" = "请重试";
+"error.import" = "导入失败";
+"error.export" = "导出失败";
+
+// MARK: - Time Units
+"time.seconds" = "%@ 秒";
+"time.times_per_hour" = "每小时1-2次";
+"time.every_hours" = "每2小时";
+"time.times_per_day" = "每天1-2次";
+
+// MARK: - Sensitivity Levels
+"sensitivity.low" = "低";
+"sensitivity.medium" = "中";
+"sensitivity.high" = "高";
+"sensitivity.low.desc" = "需要较大音量 • 0.5秒缓冲";
+"sensitivity.medium.desc" = "平衡检测 • 0.3秒缓冲";
+"sensitivity.high.desc" = "检测细语 • 0.15秒缓冲";
+
+// MARK: - Sample Scripts
+"sample.smoking" = "我从来不吸烟，因为我珍惜健康，我也不喜欢被控制的感觉。";
+"sample.bedtime" = "我总是在晚上十点前睡觉，因为这让我更健康，早晨充满活力。";
+"sample.mistakes" = "我虽然犯了错误，但也做对了很多事。错误是学习的机会，我会从中成长。";

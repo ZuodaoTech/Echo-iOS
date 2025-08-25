@@ -4,7 +4,7 @@ struct LanguagePickerView: View {
     @Binding var selectedLanguage: String
     @Environment(\.dismiss) private var dismiss
     
-    // Available languages for transcription
+    // Available languages for transcription (17 primary + 2 additional)
     private let languages = [
         ("en-US", "English"),
         ("zh-CN", "Chinese (Simplified)"),
@@ -17,10 +17,15 @@ struct LanguagePickerView: View {
         ("it-IT", "Italian"),
         ("pt-BR", "Portuguese (Brazil)"),
         ("ru-RU", "Russian"),
+        ("nl-NL", "Dutch"),
+        ("sv-SE", "Swedish"),
+        ("nb-NO", "Norwegian"),
+        ("da-DK", "Danish"),
+        ("pl-PL", "Polish"),
+        ("tr-TR", "Turkish"),
         ("ar-SA", "Arabic"),
         ("hi-IN", "Hindi"),
-        ("id-ID", "Indonesian"),
-        ("nl-NL", "Dutch")
+        ("id-ID", "Indonesian")
     ]
     
     var body: some View {
