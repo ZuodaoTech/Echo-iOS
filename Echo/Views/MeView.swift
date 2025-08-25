@@ -29,12 +29,12 @@ struct MeView: View {
     var body: some View {
         NavigationView {
             List {
-                Section("App Language") {
+                Section(NSLocalizedString("settings.app_language", comment: "")) {
                     Button {
                         showingUILanguagePicker = true
                     } label: {
                         HStack {
-                            Text("Display Language")
+                            Text(NSLocalizedString("settings.display_language", comment: ""))
                             Spacer()
                             Text(uiLanguageDisplayName(for: appLanguage))
                                 .foregroundColor(.secondary)
@@ -50,14 +50,14 @@ struct MeView: View {
                             Image(systemName: "info.circle")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-                            Text("Restart the app to apply language change")
+                            Text(NSLocalizedString("settings.restart_to_apply", comment: ""))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
                     }
                 }
                 
-                Section("Default Settings") {
+                Section(NSLocalizedString("settings.default_settings", comment: "")) {
                     Toggle(isOn: $privacyModeDefault) {
                         HStack {
                             Text("Privacy Mode")

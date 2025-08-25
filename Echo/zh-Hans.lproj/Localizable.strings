@@ -34,6 +34,9 @@
 "script.delete.confirm.message" = "确定要删除这个脚本吗？此操作无法撤销。";
 
 // MARK: - Settings
+"settings.app_language" = "应用语言";
+"settings.display_language" = "显示语言";
+"settings.restart_to_apply" = "重启应用以应用语言更改";
 "settings.default_settings" = "默认设置";
 "settings.script_preferences" = "脚本偏好";
 "settings.transcription" = "语音转文字";
