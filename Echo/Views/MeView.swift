@@ -320,10 +320,15 @@ struct MeView: View {
         case "it-IT": return "Italian"
         case "pt-BR": return "Portuguese (Brazil)"
         case "ru-RU": return "Russian"
+        case "nl-NL": return "Dutch"
+        case "sv-SE": return "Swedish"
+        case "nb-NO": return "Norwegian"
+        case "da-DK": return "Danish"
+        case "pl-PL": return "Polish"
+        case "tr-TR": return "Turkish"
         case "ar-SA": return "Arabic"
         case "hi-IN": return "Hindi"
         case "id-ID": return "Indonesian"
-        case "nl-NL": return "Dutch"
         default: return Locale.current.localizedString(forLanguageCode: code) ?? code
         }
     }

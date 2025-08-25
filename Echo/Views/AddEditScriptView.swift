@@ -165,6 +165,11 @@ struct AddEditScriptView: View {
                                 Text("Russian").tag("ru-RU")
                                 Text("Italian").tag("it-IT")
                                 Text("Dutch").tag("nl-NL")
+                                Text("Swedish").tag("sv-SE")
+                                Text("Norwegian").tag("nb-NO")
+                                Text("Danish").tag("da-DK")
+                                Text("Polish").tag("pl-PL")
+                                Text("Turkish").tag("tr-TR")
                                 Text("Arabic").tag("ar-SA")
                                 Text("Hindi").tag("hi-IN")
                             }

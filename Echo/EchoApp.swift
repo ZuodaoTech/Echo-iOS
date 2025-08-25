@@ -14,6 +14,13 @@ struct EchoApp: App {
     @StateObject private var persistenceController = PersistenceController.shared
 
     init() {
+        // Set default language preferences on first launch
+        if UserDefaults.standard.object(forKey: "defaultTranscriptionLanguage") == nil {
+            let defaultLanguage = LocalizationHelper.shared.getDefaultTranscriptionLanguage()
+            UserDefaults.standard.set(defaultLanguage, forKey: "defaultTranscriptionLanguage")
+            print("Set default transcription language to: \(defaultLanguage)")
+        }
+        
         // Configure audio session early to avoid warnings
         configureAudioSession()
         
@@ -38,6 +45,10 @@ struct EchoApp: App {
                 // The Persistence controller already handles this in its init
             }
         }
+        
+        // Create default categories with localization on first launch
+        let context = persistenceController.container.viewContext
+        Category.createDefaultCategories(context: context)
     }
     
     var body: some Scene {

@@ -20,37 +20,44 @@ class PersistenceController: ObservableObject {
         // Create sample data for previews
         Category.createDefaultCategories(context: viewContext)
         
-        // Create sample scripts
+        // Create sample scripts with localized content
         let categories = try? viewContext.fetch(Category.fetchRequest())
+        let localizedScripts = LocalizationHelper.shared.getLocalizedSampleScripts()
         
-        if let breakingBadHabits = categories?.first(where: { $0.name == "Breaking Bad Habits" }) {
-            _ = SelftalkScript.create(
-                scriptText: "I never smoke, because it stinks, and I hate being controlled.",
-                category: breakingBadHabits,
-                repetitions: 3,
-                privacyMode: true,
-                in: viewContext
-            )
+        if let breakingBadHabits = categories?.first(where: { $0.nameKey == "category.breaking_bad_habits" }) {
+            if let scriptText = localizedScripts.first(where: { $0.category == "category.breaking_bad_habits" })?.text {
+                _ = SelftalkScript.create(
+                    scriptText: scriptText,
+                    category: breakingBadHabits,
+                    repetitions: 3,
+                    privacyMode: true,
+                    in: viewContext
+                )
+            }
         }
         
-        if let buildingGoodHabits = categories?.first(where: { $0.name == "Building Good Habits" }) {
-            _ = SelftalkScript.create(
-                scriptText: "I always go to bed before 10 p.m., because it's healthier, and I love waking up with a great deal of energy.",
-                category: buildingGoodHabits,
-                repetitions: 3,
-                privacyMode: true,
-                in: viewContext
-            )
+        if let buildingGoodHabits = categories?.first(where: { $0.nameKey == "category.building_good_habits" }) {
+            if let scriptText = localizedScripts.first(where: { $0.category == "category.building_good_habits" })?.text {
+                _ = SelftalkScript.create(
+                    scriptText: scriptText,
+                    category: buildingGoodHabits,
+                    repetitions: 3,
+                    privacyMode: true,
+                    in: viewContext
+                )
+            }
         }
         
-        if let appropriatePositivity = categories?.first(where: { $0.name == "Appropriate Positivity" }) {
-            _ = SelftalkScript.create(
-                scriptText: "I made a few mistakes, but I also did several things well. Mistakes are a normal part of learning, and I can use them as an opportunity to improve.",
-                category: appropriatePositivity,
-                repetitions: 3,
-                privacyMode: true,
-                in: viewContext
-            )
+        if let appropriatePositivity = categories?.first(where: { $0.nameKey == "category.appropriate_positivity" }) {
+            if let scriptText = localizedScripts.first(where: { $0.category == "category.appropriate_positivity" })?.text {
+                _ = SelftalkScript.create(
+                    scriptText: scriptText,
+                    category: appropriatePositivity,
+                    repetitions: 3,
+                    privacyMode: true,
+                    in: viewContext
+                )
+            }
         }
         
         do {
