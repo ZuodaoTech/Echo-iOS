@@ -157,6 +157,12 @@ class PersistenceController: ObservableObject {
         
         container.viewContext.automaticallyMergesChangesFromParent = true
         
+        // Migrate categories to tags if needed
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            guard let self = self else { return }
+            Tag.migrateFromCategories(context: self.container.viewContext)
+        }
+        
         // Set up CloudKit schema initialization only if CloudKit is enabled and in DEBUG
         #if DEBUG
         let cloudKitEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? true

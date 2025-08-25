@@ -20,15 +20,13 @@ struct AddEditScriptView: View {
     let onDelete: ((UUID) -> Void)?  // Callback with script ID only (safer)
     
     @State private var scriptText = ""
-    @State private var selectedCategory: Category?
+    @State private var selectedTags: Set<Tag> = []
     @State private var repetitions: Int16 = 3
     @State private var intervalSeconds: Double = 2.0
     @State private var privacyModeEnabled = true
     @State private var transcriptionLanguage = UserDefaults.standard.string(forKey: "defaultTranscriptionLanguage") ?? "en-US"
     @State private var notificationEnabled = false
     @State private var notificationFrequency = "medium"
-    @State private var showingNewCategoryAlert = false
-    @State private var newCategoryName = ""
     @State private var isRecording = false
     @State private var hasRecording = false
     @State private var isProcessingAudio = false
@@ -48,10 +46,10 @@ struct AddEditScriptView: View {
     @State private var textEditorHeight: CGFloat = 120
     
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Category.sortOrder, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Tag.name, ascending: true)],
         animation: .default
     )
-    private var categories: FetchedResults<Category>
+    private var allTags: FetchedResults<Tag>
     
     // Custom initializer to make onDelete optional
     init(script: SelftalkScript? = nil, onDelete: ((UUID) -> Void)? = nil) {
@@ -285,36 +283,20 @@ struct AddEditScriptView: View {
                 }
                 
                 Section(NSLocalizedString("settings.default_settings", comment: "")) {
-                    // Category Picker
-                    HStack {
-                        Text(NSLocalizedString("category.select", comment: ""))
-                        Spacer()
-                        Menu {
-                            ForEach(categories, id: \.id) { category in
-                                Button {
-                                    selectedCategory = category
-                                } label: {
-                                    if selectedCategory == category {
-                                        Label(category.name, systemImage: "checkmark")
-                                    } else {
-                                        Text(category.name)
-                                    }
-                                }
-                            }
-                            
-                            Divider()
-                            
-                            Button {
-                                showingNewCategoryAlert = true
-                            } label: {
-                                Label(NSLocalizedString("category.add_new", comment: ""), systemImage: "plus")
-                            }
-                        } label: {
-                            HStack {
-                                Text(selectedCategory?.name ?? NSLocalizedString("category.select", comment: ""))
-                                    .foregroundColor(selectedCategory == nil ? .secondary : .primary)
-                                Image(systemName: "chevron.down")
-                                    .font(.caption)
+                    // Tag Selection
+                    NavigationLink {
+                        TagSelectionView(selectedTags: $selectedTags)
+                            .navigationTitle("Select Tags")
+                            .navigationBarTitleDisplayMode(.inline)
+                    } label: {
+                        HStack {
+                            Text("Tags")
+                            Spacer()
+                            if selectedTags.isEmpty {
+                                Text("None")
+                                    .foregroundColor(.secondary)
+                            } else {
+                                Text("\(selectedTags.count) selected")
                                     .foregroundColor(.secondary)
                             }
                         }
@@ -451,17 +433,6 @@ struct AddEditScriptView: View {
                 // Auto-save when view disappears (including swipe down)
                 autoSave()
             }
-            .alert(NSLocalizedString("category.add_new", comment: ""), isPresented: $showingNewCategoryAlert) {
-                TextField(NSLocalizedString("category.name_placeholder", comment: ""), text: $newCategoryName)
-                Button(NSLocalizedString("action.cancel", comment: ""), role: .cancel) {
-                    newCategoryName = ""
-                }
-                Button(NSLocalizedString("action.add", comment: "")) {
-                    createNewCategory()
-                }
-            } message: {
-                Text(NSLocalizedString("category.new_prompt", comment: ""))
-            }
             .alert(NSLocalizedString("recording.microphone_access", comment: ""), isPresented: $showingMicPermissionAlert) {
                 Button(NSLocalizedString("action.ok", comment: "")) { }
             } message: {
@@ -540,7 +511,7 @@ struct AddEditScriptView: View {
     private func setupInitialValues() {
         if let script = script {
             scriptText = script.scriptText
-            selectedCategory = script.category
+            selectedTags = Set(script.tagsArray)
             repetitions = script.repetitions
             intervalSeconds = script.intervalSeconds
             privacyModeEnabled = script.privacyModeEnabled
@@ -592,7 +563,15 @@ struct AddEditScriptView: View {
         if let existingScript = script {
             // Update existing script
             existingScript.scriptText = trimmedText.isEmpty ? existingScript.scriptText : trimmedText
-            existingScript.category = selectedCategory
+            // Update tags
+            if let currentTags = existingScript.tags as? Set<Tag> {
+                for tag in currentTags {
+                    existingScript.removeFromTags(tag)
+                }
+            }
+            for tag in selectedTags {
+                existingScript.addToTags(tag)
+            }
             existingScript.repetitions = repetitions
             existingScript.intervalSeconds = intervalSeconds
             existingScript.privacyModeEnabled = privacyModeEnabled
@@ -602,12 +581,16 @@ struct AddEditScriptView: View {
             // Create new script only if there's content
             let newScript = SelftalkScript.create(
                 scriptText: trimmedText,
-                category: selectedCategory,
+                category: nil,  // No longer using category
                 repetitions: repetitions,
                 intervalSeconds: intervalSeconds,
                 privacyMode: privacyModeEnabled,
                 in: viewContext
             )
+            // Add selected tags
+            for tag in selectedTags {
+                newScript.addToTags(tag)
+            }
             newScript.transcriptionLanguage = transcriptionLanguage
         }
         
@@ -648,24 +631,6 @@ struct AddEditScriptView: View {
         }
     }
     
-    private func createNewCategory() {
-        guard !newCategoryName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
-        
-        let category = Category(context: viewContext)
-        category.id = UUID()
-        category.name = newCategoryName
-        category.createdAt = Date()
-        category.sortOrder = Int32(categories.count)
-        
-        do {
-            try viewContext.save()
-            selectedCategory = category
-            newCategoryName = ""
-        } catch {
-            errorMessage = "Failed to create category. Please try again."
-            showingErrorAlert = true
-        }
-    }
     
     private func retranscribeWithNewLanguage(script: SelftalkScript, language: String) {
         guard script.hasRecording else { return }
