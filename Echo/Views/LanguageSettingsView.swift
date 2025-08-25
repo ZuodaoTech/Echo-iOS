@@ -139,39 +139,37 @@ struct ImprovedLanguagePickerView: View {
     
     // Available languages for transcription with native names
     private let languages = [
-        ("en-US", "English", "🇺🇸"),
-        ("zh-CN", "简体中文", "🇨🇳"),
-        ("zh-TW", "繁體中文", "🇹🇼"),
-        ("es-ES", "Español", "🇪🇸"),
-        ("fr-FR", "Français", "🇫🇷"),
-        ("de-DE", "Deutsch", "🇩🇪"),
-        ("ja-JP", "日本語", "🇯🇵"),
-        ("ko-KR", "한국어", "🇰🇷"),
-        ("it-IT", "Italiano", "🇮🇹"),
-        ("pt-BR", "Português", "🇧🇷"),
-        ("ru-RU", "Русский", "🇷🇺"),
-        ("nl-NL", "Nederlands", "🇳🇱"),
-        ("sv-SE", "Svenska", "🇸🇪"),
-        ("nb-NO", "Norsk", "🇳🇴"),
-        ("da-DK", "Dansk", "🇩🇰"),
-        ("pl-PL", "Polski", "🇵🇱"),
-        ("tr-TR", "Türkçe", "🇹🇷"),
-        ("ar-SA", "العربية", "🇸🇦"),
-        ("hi-IN", "हिन्दी", "🇮🇳"),
-        ("id-ID", "Bahasa Indonesia", "🇮🇩")
+        ("en-US", "English"),
+        ("zh-CN", "简体中文"),
+        ("zh-TW", "繁體中文"),
+        ("es-ES", "Español"),
+        ("fr-FR", "Français"),
+        ("de-DE", "Deutsch"),
+        ("ja-JP", "日本語"),
+        ("ko-KR", "한국어"),
+        ("it-IT", "Italiano"),
+        ("pt-BR", "Português"),
+        ("ru-RU", "Русский"),
+        ("nl-NL", "Nederlands"),
+        ("sv-SE", "Svenska"),
+        ("nb-NO", "Norsk"),
+        ("da-DK", "Dansk"),
+        ("pl-PL", "Polski"),
+        ("tr-TR", "Türkçe"),
+        ("ar-SA", "العربية"),
+        ("hi-IN", "हिन्दी"),
+        ("id-ID", "Bahasa Indonesia")
     ]
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(languages, id: \.0) { code, name, flag in
+                ForEach(languages, id: \.0) { code, name in
                     Button {
                         selectedLanguage = code
                         dismiss()
                     } label: {
                         HStack {
-                            Text(flag)
-                                .font(.title2)
                             Text(name)
                                 .foregroundColor(.primary)
                             Spacer()
