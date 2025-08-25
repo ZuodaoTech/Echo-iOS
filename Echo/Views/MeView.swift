@@ -1,43 +1,24 @@
 import SwiftUI
-import UniformTypeIdentifiers
 
 struct MeView: View {
-    @AppStorage("privacyModeDefault") private var privacyModeDefault = true
-    @AppStorage("defaultRepetitions") private var defaultRepetitions = 3
-    @AppStorage("defaultInterval") private var defaultInterval = 2.0
-    @AppStorage("defaultTranscriptionLanguage") private var defaultTranscriptionLanguage = "en-US"
-    @AppStorage("voiceEnhancementEnabled") private var voiceEnhancementEnabled = true
-    @AppStorage("autoTrimSilence") private var autoTrimSilence = true
-    @AppStorage("silenceTrimSensitivity") private var silenceTrimSensitivity = "medium"
-    @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = false
-    @AppStorage("characterGuidanceEnabled") private var characterGuidanceEnabled = true
-    @AppStorage("characterLimit") private var characterLimit = 140
-    @AppStorage("limitBehavior") private var limitBehavior = "warn"
-    @AppStorage("appLanguage") private var appLanguage = "system"
-    
-    @State private var showingLanguagePicker = false
-    @State private var showingUILanguagePicker = false
-    @State private var showingExportOptions = false
-    @State private var showingDocumentPicker = false
-    @State private var exportProgress: String?
-    @State private var showingImportAlert = false
-    @State private var importAlertMessage = ""
-    @State private var showingPrivacyModeInfo = false
-    
-    @Environment(\.managedObjectContext) private var viewContext
+    @State private var showingLanguageSettings = false
+    @State private var showingCardSettings = false
+    @State private var showingBackupSync = false
+    @State private var showingAboutSupport = false
     
     var body: some View {
         NavigationView {
             List {
-                Section(NSLocalizedString("settings.app_language", comment: "")) {
+                Section {
                     Button {
-                        showingUILanguagePicker = true
+                        showingLanguageSettings = true
                     } label: {
                         HStack {
-                            Text(NSLocalizedString("settings.display_language", comment: ""))
+                            Image(systemName: "globe")
+                                .foregroundColor(.blue)
+                                .frame(width: 25)
+                            Text(NSLocalizedString("settings.language_settings", comment: ""))
                             Spacer()
-                            Text(uiLanguageDisplayName(for: appLanguage))
-                                .foregroundColor(.secondary)
                             Image(systemName: "chevron.right")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
@@ -45,348 +26,68 @@ struct MeView: View {
                     }
                     .foregroundColor(.primary)
                     
-                    if appLanguage != "system" {
-                        HStack {
-                            Image(systemName: "info.circle")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            Text(NSLocalizedString("settings.restart_to_apply", comment: ""))
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                }
-                
-                Section(NSLocalizedString("settings.default_settings", comment: "")) {
-                    Toggle(isOn: $privacyModeDefault) {
-                        HStack {
-                            Text(NSLocalizedString("settings.privacy_mode.title", comment: ""))
-                            Button {
-                                showingPrivacyModeInfo = true
-                            } label: {
-                                Image(systemName: "info.circle")
-                                    .font(.system(size: 16))
-                                    .foregroundColor(.blue)
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                        }
-                    }
-                    
-                    HStack {
-                        Text(NSLocalizedString("script.repetitions", comment: ""))
-                        Spacer()
-                        Stepper("\(defaultRepetitions)", value: $defaultRepetitions, in: 1...10)
-                    }
-                    
-                    HStack {
-                        Text(NSLocalizedString("script.interval", comment: ""))
-                        Spacer()
-                        Text("\(defaultInterval, specifier: "%.1f")s")
-                            .foregroundColor(.secondary)
-                        Stepper("", value: $defaultInterval, in: 0.5...5.0, step: 0.5)
-                            .labelsHidden()
-                    }
-                }
-                
-                Section(NSLocalizedString("settings.script_preferences", comment: "")) {
-                    Toggle(NSLocalizedString("settings.character_guidance", comment: ""), isOn: $characterGuidanceEnabled)
-                    
-                    if characterGuidanceEnabled {
-                        HStack {
-                            Text(NSLocalizedString("settings.recommended_length", comment: ""))
-                            Spacer()
-                            Text("\(characterLimit) \(NSLocalizedString("chars", comment: ""))")
-                                .foregroundColor(.secondary)
-                            Stepper("", value: $characterLimit, in: 100...300, step: 20)
-                                .labelsHidden()
-                        }
-                        
-                        Picker(NSLocalizedString("settings.when_exceeded", comment: ""), selection: $limitBehavior) {
-                            Text(NSLocalizedString("settings.just_warn", comment: "")).tag("warn")
-                            Text(NSLocalizedString("settings.show_tip_only", comment: "")).tag("tip")
-                        }
-                        .pickerStyle(SegmentedPickerStyle())
-                        
-                        HStack {
-                            Image(systemName: "info.circle")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            Text(NSLocalizedString("settings.character_guidance.info", comment: ""))
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                }
-                
-                Section(NSLocalizedString("settings.transcription", comment: "")) {
                     Button {
-                        showingLanguagePicker = true
+                        showingCardSettings = true
                     } label: {
                         HStack {
-                            Text(NSLocalizedString("settings.default_language", comment: ""))
+                            Image(systemName: "rectangle.stack")
+                                .foregroundColor(.blue)
+                                .frame(width: 25)
+                            Text(NSLocalizedString("settings.card_settings", comment: ""))
                             Spacer()
-                            Text(languageDisplayName(for: defaultTranscriptionLanguage))
-                                .foregroundColor(.secondary)
                             Image(systemName: "chevron.right")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
                     }
                     .foregroundColor(.primary)
-                }
-                
-                Section(NSLocalizedString("settings.recording", comment: "")) {
-                    Toggle(isOn: $voiceEnhancementEnabled) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(NSLocalizedString("settings.voice_enhancement", comment: ""))
-                            Text(NSLocalizedString("settings.voice_enhancement.desc", comment: ""))
+                    
+                    Button {
+                        showingBackupSync = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "icloud")
+                                .foregroundColor(.blue)
+                                .frame(width: 25)
+                            Text(NSLocalizedString("settings.backup_sync", comment: ""))
+                            Spacer()
+                            Image(systemName: "chevron.right")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
                     }
+                    .foregroundColor(.primary)
                     
-                    Toggle(isOn: $autoTrimSilence) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(NSLocalizedString("settings.auto_trim_silence", comment: ""))
-                            Text(NSLocalizedString("settings.auto_trim_silence.desc", comment: ""))
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    
-                    if autoTrimSilence {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Trim Sensitivity")
-                                .font(.subheadline)
-                            
-                            Picker("Sensitivity", selection: $silenceTrimSensitivity) {
-                                Text("Low").tag("low")
-                                Text("Medium").tag("medium")
-                                Text("High").tag("high")
-                            }
-                            .pickerStyle(SegmentedPickerStyle())
-                            
-                            HStack {
-                                Image(systemName: "info.circle")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                Text(sensitivityDescription)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                        .padding(.vertical, 4)
-                    }
-                }
-                
-                Section("Backup & Sync") {
-                    Toggle(isOn: $iCloudSyncEnabled) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("iCloud Sync")
-                            Text("Sync scripts across your devices")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    .onChange(of: iCloudSyncEnabled) { newValue in
-                        // Restart Core Data container when toggling iCloud
-                        NotificationCenter.default.post(
-                            name: Notification.Name("RestartCoreDataForICloud"),
-                            object: nil,
-                            userInfo: ["enabled": newValue]
-                        )
-                    }
-                    
-                    if iCloudSyncEnabled {
+                    Button {
+                        showingAboutSupport = true
+                    } label: {
                         HStack {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
-                                .font(.footnote)
-                            Text("Text and settings sync automatically. Audio files remain local.")
+                                .frame(width: 25)
+                            Text(NSLocalizedString("settings.about_support", comment: ""))
+                            Spacer()
+                            Image(systemName: "chevron.right")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
                     }
-                    
-                    Button {
-                        showingExportOptions = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "square.and.arrow.up")
-                            Text("Export Scripts")
-                            Spacer()
-                            if let progress = exportProgress {
-                                Text(progress)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                    }
-                    
-                    Button {
-                        showingDocumentPicker = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "square.and.arrow.down")
-                            Text("Import Scripts")
-                        }
-                    }
-                }
-                
-                Section("About") {
-                    HStack {
-                        Text("Version")
-                        Spacer()
-                        Text("0.2.0")
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    HStack {
-                        Text("Build")
-                        Spacer()
-                        Text("2")
-                            .foregroundColor(.secondary)
-                    }
-                }
-                
-                Section {
-                    Button {
-                        if let url = URL(string: "https://github.com/xiaolai/Echo-iOS") {
-                            UIApplication.shared.open(url)
-                        }
-                    } label: {
-                        HStack {
-                            Image(systemName: "star")
-                            Text("Rate on GitHub")
-                        }
-                    }
-                    
-                    Button {
-                        if let url = URL(string: "mailto:support@echo.app") {
-                            UIApplication.shared.open(url)
-                        }
-                    } label: {
-                        HStack {
-                            Image(systemName: "envelope")
-                            Text("Contact Support")
-                        }
-                    }
-                } header: {
-                    Text("Support")
+                    .foregroundColor(.primary)
                 }
             }
             .navigationTitle("")
-            .sheet(isPresented: $showingLanguagePicker) {
-                LanguagePickerView(selectedLanguage: $defaultTranscriptionLanguage)
+            .sheet(isPresented: $showingLanguageSettings) {
+                LanguageSettingsView()
             }
-            .sheet(isPresented: $showingUILanguagePicker) {
-                UILanguagePickerView(selectedLanguage: $appLanguage)
+            .sheet(isPresented: $showingCardSettings) {
+                CardSettingsView()
             }
-            .sheet(isPresented: $showingExportOptions) {
-                ExportOptionsView(exportProgress: $exportProgress)
+            .sheet(isPresented: $showingBackupSync) {
+                BackupSyncView()
             }
-            .sheet(isPresented: $showingDocumentPicker) {
-                DocumentPicker(
-                    allowedContentTypes: [
-                        UTType(filenameExtension: "echo") ?? .data,
-                        .json,
-                        .plainText
-                    ]
-                ) { url in
-                    Task {
-                        await handleImport(from: url)
-                    }
-                }
+            .sheet(isPresented: $showingAboutSupport) {
+                AboutSupportView()
             }
-            .alert("Import Complete", isPresented: $showingImportAlert) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                Text(importAlertMessage)
-            }
-            .alert("Privacy Mode", isPresented: $showingPrivacyModeInfo) {
-                Button("Got it", role: .cancel) { }
-            } message: {
-                Text("When Privacy Mode is enabled, audio recordings will only play through connected earphones or headphones. This prevents accidental playback through speakers in public spaces.")
-            }
-        }
-    }
-    
-    private func handleImport(from url: URL) async {
-        let importService = ImportService()
-        let result = await importService.importBundle(
-            from: url,
-            conflictResolution: .skip,
-            context: viewContext
-        )
-        
-        await MainActor.run {
-            importAlertMessage = result.summary
-            if !result.errors.isEmpty {
-                importAlertMessage += "\n\nErrors:\n" + result.errors.joined(separator: "\n")
-            }
-            showingImportAlert = true
-        }
-    }
-    
-    private var sensitivityDescription: String {
-        switch silenceTrimSensitivity {
-        case "low":
-            return "Needs louder voice • 0.5s buffer"
-        case "high":
-            return "Detects whispers • 0.15s buffer"
-        default:
-            return "Balanced detection • 0.3s buffer"
-        }
-    }
-    
-    private func uiLanguageDisplayName(for code: String) -> String {
-        switch code {
-        case "system": return "System Default"
-        case "en": return "English"
-        case "zh-Hans": return "简体中文"
-        case "zh-Hant": return "繁體中文"
-        case "es": return "Español"
-        case "fr": return "Français"
-        case "de": return "Deutsch"
-        case "ja": return "日本語"
-        case "ko": return "한국어"
-        case "it": return "Italiano"
-        case "pt": return "Português"
-        case "ru": return "Русский"
-        case "nl": return "Nederlands"
-        case "sv": return "Svenska"
-        case "nb": return "Norsk"
-        case "da": return "Dansk"
-        case "pl": return "Polski"
-        case "tr": return "Türkçe"
-        default: return code
-        }
-    }
-    
-    private func languageDisplayName(for code: String) -> String {
-        // Map language codes to display names
-        switch code {
-        case "en-US": return "English"
-        case "zh-CN": return "Chinese (Simplified)"
-        case "zh-TW": return "Chinese (Traditional)"
-        case "es-ES": return "Spanish"
-        case "fr-FR": return "French"
-        case "de-DE": return "German"
-        case "ja-JP": return "Japanese"
-        case "ko-KR": return "Korean"
-        case "it-IT": return "Italian"
-        case "pt-BR": return "Portuguese (Brazil)"
-        case "ru-RU": return "Russian"
-        case "nl-NL": return "Dutch"
-        case "sv-SE": return "Swedish"
-        case "nb-NO": return "Norwegian"
-        case "da-DK": return "Danish"
-        case "pl-PL": return "Polish"
-        case "tr-TR": return "Turkish"
-        case "ar-SA": return "Arabic"
-        case "hi-IN": return "Hindi"
-        case "id-ID": return "Indonesian"
-        default: return Locale.current.localizedString(forLanguageCode: code) ?? code
         }
     }
 }

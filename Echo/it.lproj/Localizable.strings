@@ -145,3 +145,67 @@
 "sample.smoking" = "Non fumo mai, perché puzza e odio essere controllato.";
 "sample.bedtime" = "Vado sempre a letto prima delle 22:00, perché è più salutare e amo svegliarmi con tanta energia.";
 "sample.mistakes" = "Ho commesso alcuni errori, ma ho anche fatto diverse cose bene. Gli errori sono una parte normale dell'apprendimento e posso usarli come opportunità per migliorare.";
+// MARK: - Languages
+"language.english" = "Inglese";
+"language.chinese_simplified" = "Cinese (Semplificato)";
+"language.chinese_traditional" = "Cinese (Tradizionale)";
+"language.spanish" = "Spagnolo";
+"language.french" = "Francese";
+"language.german" = "Tedesco";
+"language.japanese" = "Giapponese";
+"language.korean" = "Coreano";
+"language.portuguese" = "Portoghese";
+"language.russian" = "Russo";
+"language.italian" = "Italiano";
+"language.dutch" = "Olandese";
+"language.swedish" = "Svedese";
+"language.norwegian" = "Norvegese";
+"language.danish" = "Danese";
+"language.polish" = "Polacco";
+"language.turkish" = "Turco";
+"language.arabic" = "Arabo";
+"language.hindi" = "Hindi";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Pacchetto Echo";
+"export.format.text" = "Testo semplice";
+"export.format.json" = "JSON";
+"export.include_audio" = "Includi file audio";
+"export.format_label" = "Formato";
+"export.audio_size_warning" = "I file audio aumenteranno le dimensioni dell'esportazione";
+"export.options" = "Opzioni di esportazione";
+"export.select_scripts" = "Seleziona carte";
+"export.scripts_selected" = "Carte (%d selezionate)";
+"export.error_title" = "Errore di esportazione";
+"export.error_unknown" = "Si è verificato un errore sconosciuto";
+"import.complete_title" = "Importazione completata";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Suggerimento: Di' «punto», «virgola» o «punto interrogativo» per la punteggiatura";
+"recording.no_recording_message" = "Si prega di tenere premuto per modificare e registrare prima l'audio";
+
+// MARK: - Category Management
+"category.new_prompt" = "Inserisci il nome per la tua nuova categoria";
+"category.name_placeholder" = "Nome categoria";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Sincronizza le carte tra i tuoi dispositivi";
+
+// MARK: - Empty State
+"empty.no_cards" = "Ancora nessuna carta";
+"empty.tap_to_create" = "Tocca il pulsante + per creare la tua prima carta di dialogo interiore";
+
+// MARK: - Filter
+"filter.all_cards" = "Tutte le carte";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Sensibilità";
+"picker.select_language" = "Seleziona lingua";
+"picker.display_language" = "Lingua di visualizzazione";
+"settings.language_settings" = "Impostazioni lingua";
+"language.system_default" = "Predefinito di sistema";
+"settings.card_settings" = "Impostazioni carte";
+"settings.card_defaults" = "Valori predefiniti";
+"settings.about_support" = "Info e Supporto";
+"settings.sync" = "Sincronizzazione";
+"settings.backup" = "Backup";

@@ -145,3 +145,67 @@
 "sample.smoking" = "Ik rook nooit, omdat het stinkt en ik haat het om gecontroleerd te worden.";
 "sample.bedtime" = "Ik ga altijd voor 22:00 naar bed, omdat het gezonder is en ik hou ervan om wakker te worden met veel energie.";
 "sample.mistakes" = "Ik heb een paar fouten gemaakt, maar ik heb ook verschillende dingen goed gedaan. Fouten zijn een normaal onderdeel van leren, en ik kan ze gebruiken als een kans om te verbeteren.";
+// MARK: - Languages
+"language.english" = "Engels";
+"language.chinese_simplified" = "Chinees (Vereenvoudigd)";
+"language.chinese_traditional" = "Chinees (Traditioneel)";
+"language.spanish" = "Spaans";
+"language.french" = "Frans";
+"language.german" = "Duits";
+"language.japanese" = "Japans";
+"language.korean" = "Koreaans";
+"language.portuguese" = "Portugees";
+"language.russian" = "Russisch";
+"language.italian" = "Italiaans";
+"language.dutch" = "Nederlands";
+"language.swedish" = "Zweeds";
+"language.norwegian" = "Noors";
+"language.danish" = "Deens";
+"language.polish" = "Pools";
+"language.turkish" = "Turks";
+"language.arabic" = "Arabisch";
+"language.hindi" = "Hindi";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Echo-bundel";
+"export.format.text" = "Platte tekst";
+"export.format.json" = "JSON";
+"export.include_audio" = "Audiobestanden opnemen";
+"export.format_label" = "Formaat";
+"export.audio_size_warning" = "Audiobestanden vergroten de exportgrootte";
+"export.options" = "Exportopties";
+"export.select_scripts" = "Kaarten selecteren";
+"export.scripts_selected" = "Kaarten (%d geselecteerd)";
+"export.error_title" = "Exportfout";
+"export.error_unknown" = "Er is een onbekende fout opgetreden";
+"import.complete_title" = "Import voltooid";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Tip: Zeg «punt», «komma» of «vraagteken» voor interpunctie";
+"recording.no_recording_message" = "Houd lang ingedrukt om te bewerken en eerst audio op te nemen";
+
+// MARK: - Category Management
+"category.new_prompt" = "Voer de naam voor uw nieuwe categorie in";
+"category.name_placeholder" = "Categorienaam";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Kaarten synchroniseren tussen uw apparaten";
+
+// MARK: - Empty State
+"empty.no_cards" = "Nog geen kaarten";
+"empty.tap_to_create" = "Tik op de + knop om uw eerste zelfspraakkaart te maken";
+
+// MARK: - Filter
+"filter.all_cards" = "Alle kaarten";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Gevoeligheid";
+"picker.select_language" = "Taal selecteren";
+"picker.display_language" = "Weergavetaal";
+"settings.language_settings" = "Taalinstellingen";
+"language.system_default" = "Systeemstandaard";
+"settings.card_settings" = "Kaartinstellingen";
+"settings.card_defaults" = "Standaardwaarden";
+"settings.about_support" = "Over & Ondersteuning";
+"settings.sync" = "Synchronisatie";
+"settings.backup" = "Back-up";

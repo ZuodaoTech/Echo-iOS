@@ -8,8 +8,8 @@
 // MARK: - Navigation & Titles
 "navigation.cards" = "卡片";
 "navigation.me" = "我";
-"navigation.new_script" = "新建脚本";
-"navigation.edit_script" = "编辑脚本";
+"navigation.new_script" = "新建卡片";
+"navigation.edit_script" = "编辑卡片";
 
 // MARK: - Categories
 "category.breaking_bad_habits" = "戒除坏习惯";
@@ -29,8 +29,8 @@
 "script.repetitions" = "重复次数";
 "script.interval" = "间隔时间";
 "script.privacy_mode" = "隐私模式";
-"script.delete" = "删除脚本";
-"script.delete.confirm.title" = "删除脚本";
+"script.delete" = "删除卡片";
+"script.delete.confirm.title" = "删除卡片";
 "script.delete.confirm.message" = "确定要删除这个脚本吗？此操作无法撤销。";
 
 // MARK: - Settings
@@ -38,7 +38,7 @@
 "settings.display_language" = "显示语言";
 "settings.restart_to_apply" = "重启应用以应用语言更改";
 "settings.default_settings" = "默认设置";
-"settings.script_preferences" = "脚本偏好";
+"settings.script_preferences" = "卡片偏好";
 "settings.transcription" = "语音转文字";
 "settings.recording" = "录音";
 "settings.backup_sync" = "备份与同步";
@@ -65,10 +65,10 @@
 "settings.trim_sensitivity" = "裁剪敏感度";
 
 "settings.icloud_sync" = "iCloud 同步";
-"settings.icloud_sync.desc" = "在您的设备间同步脚本";
+"settings.icloud_sync.desc" = "在您的设备间同步卡片";
 "settings.icloud_sync.info" = "文本和设置自动同步。音频文件保留在本地。";
-"settings.export_scripts" = "导出脚本";
-"settings.import_scripts" = "导入脚本";
+"settings.export_scripts" = "导出卡片";
+"settings.import_scripts" = "导入卡片";
 
 "settings.version" = "版本";
 "settings.build" = "构建";
@@ -117,13 +117,13 @@
 "action.ok" = "好的";
 "action.got_it" = "知道了";
 "action.copy" = "复制";
-"action.use_as_script" = "用作脚本";
+"action.use_as_script" = "用作卡片";
 "action.share" = "分享";
 "action.edit" = "编辑";
 
 // MARK: - Errors
 "error.title" = "错误";
-"error.save" = "保存脚本失败";
+"error.save" = "保存卡片失败";
 "error.database" = "数据库错误";
 "error.restart_app" = "请重启应用";
 "error.try_again" = "请重试";
@@ -148,3 +148,68 @@
 "sample.smoking" = "我从来不吸烟，因为我珍惜健康，我也不喜欢被控制的感觉。";
 "sample.bedtime" = "我总是在晚上十点前睡觉，因为这让我更健康，早晨充满活力。";
 "sample.mistakes" = "我虽然犯了错误，但也做对了很多事。错误是学习的机会，我会从中成长。";
+
+// MARK: - Languages
+"language.english" = "英语";
+"language.chinese_simplified" = "简体中文";
+"language.chinese_traditional" = "繁体中文";
+"language.spanish" = "西班牙语";
+"language.french" = "法语";
+"language.german" = "德语";
+"language.japanese" = "日语";
+"language.korean" = "韩语";
+"language.portuguese" = "葡萄牙语";
+"language.russian" = "俄语";
+"language.italian" = "意大利语";
+"language.dutch" = "荷兰语";
+"language.swedish" = "瑞典语";
+"language.norwegian" = "挪威语";
+"language.danish" = "丹麦语";
+"language.polish" = "波兰语";
+"language.turkish" = "土耳其语";
+"language.arabic" = "阿拉伯语";
+"language.hindi" = "印地语";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Echo 数据包";
+"export.format.text" = "纯文本";
+"export.format.json" = "JSON";
+"export.include_audio" = "包含音频文件";
+"export.format_label" = "格式";
+"export.audio_size_warning" = "音频文件会增加导出大小";
+"export.options" = "导出选项";
+"export.select_scripts" = "选择卡片";
+"export.scripts_selected" = "卡片（已选择 %d 个）";
+"export.error_title" = "导出错误";
+"export.error_unknown" = "发生未知错误";
+"import.complete_title" = "导入完成";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "提示：说\"句号\"、\"逗号\"或\"问号\"来添加标点符号";
+"recording.no_recording_message" = "请长按编辑并先录制音频";
+
+// MARK: - Category Management
+"category.new_prompt" = "输入新分类的名称";
+"category.name_placeholder" = "分类名称";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "在您的设备间同步卡片";
+
+// MARK: - Empty State
+"empty.no_cards" = "还没有卡片";
+"empty.tap_to_create" = "点击 + 按钮创建您的第一张自我对话卡片";
+
+// MARK: - Filter
+"filter.all_cards" = "所有卡片";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "敏感度";
+"picker.select_language" = "选择语言";
+"picker.display_language" = "显示语言";
+"settings.language_settings" = "语言设置";
+"language.system_default" = "系统默认";
+"settings.card_settings" = "卡片设置";
+"settings.card_defaults" = "卡片默认值";
+"settings.about_support" = "关于与支持";
+"settings.sync" = "同步";
+"settings.backup" = "备份";

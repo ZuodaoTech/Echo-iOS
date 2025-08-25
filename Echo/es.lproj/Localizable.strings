@@ -8,8 +8,8 @@
 // MARK: - Navigation & Titles
 "navigation.cards" = "Tarjetas";
 "navigation.me" = "Yo";
-"navigation.new_script" = "Nuevo Guión";
-"navigation.edit_script" = "Editar Guión";
+"navigation.new_script" = "Nueva Tarjeta";
+"navigation.edit_script" = "Editar Tarjeta";
 
 // MARK: - Categories
 "category.breaking_bad_habits" = "Romper Malos Hábitos";
@@ -29,8 +29,8 @@
 "script.repetitions" = "Repeticiones";
 "script.interval" = "Intervalo";
 "script.privacy_mode" = "Modo Privado";
-"script.delete" = "Eliminar Guión";
-"script.delete.confirm.title" = "Eliminar Guión";
+"script.delete" = "Eliminar Tarjeta";
+"script.delete.confirm.title" = "Eliminar Tarjeta";
 "script.delete.confirm.message" = "¿Estás seguro de que quieres eliminar este guión? Esta acción no se puede deshacer.";
 
 // MARK: - Settings
@@ -38,7 +38,7 @@
 "settings.display_language" = "Idioma de Visualización";
 "settings.restart_to_apply" = "Reinicia la app para aplicar el cambio de idioma";
 "settings.default_settings" = "Ajustes Predeterminados";
-"settings.script_preferences" = "Preferencias de Guión";
+"settings.script_preferences" = "Preferencias de Tarjeta";
 "settings.transcription" = "Transcripción";
 "settings.recording" = "Grabación";
 "settings.backup_sync" = "Copia de Seguridad y Sincronización";
@@ -65,10 +65,10 @@
 "settings.trim_sensitivity" = "Sensibilidad de Recorte";
 
 "settings.icloud_sync" = "Sincronización iCloud";
-"settings.icloud_sync.desc" = "Sincroniza guiones entre tus dispositivos";
+"settings.icloud_sync.desc" = "Sincroniza tarjetas entre tus dispositivos";
 "settings.icloud_sync.info" = "El texto y los ajustes se sincronizan automáticamente. Los archivos de audio permanecen locales.";
-"settings.export_scripts" = "Exportar Guiones";
-"settings.import_scripts" = "Importar Guiones";
+"settings.export_scripts" = "Exportar Tarjetas";
+"settings.import_scripts" = "Importar Tarjetas";
 
 "settings.version" = "Versión";
 "settings.build" = "Compilación";
@@ -116,13 +116,13 @@
 "action.ok" = "OK";
 "action.got_it" = "Entendido";
 "action.copy" = "Copiar";
-"action.use_as_script" = "Usar como Guión";
+"action.use_as_script" = "Usar como Tarjeta";
 "action.share" = "Compartir";
 "action.edit" = "Editar";
 
 // MARK: - Errors
 "error.title" = "Error";
-"error.save" = "Error al guardar el guión";
+"error.save" = "Error al guardar la tarjeta";
 "error.database" = "Error de base de datos";
 "error.restart_app" = "Por favor, reinicia la aplicación";
 "error.try_again" = "Por favor, inténtalo de nuevo";
@@ -147,3 +147,67 @@
 "sample.smoking" = "Nunca fumo, porque apesta y odio ser controlado.";
 "sample.bedtime" = "Siempre me acuesto antes de las 10 p.m., porque es más saludable y me encanta despertar con mucha energía.";
 "sample.mistakes" = "Cometí algunos errores, pero también hice varias cosas bien. Los errores son una parte normal del aprendizaje y puedo usarlos como una oportunidad para mejorar.";
+// MARK: - Languages
+"language.english" = "Inglés";
+"language.chinese_simplified" = "Chino (Simplificado)";
+"language.chinese_traditional" = "Chino (Tradicional)";
+"language.spanish" = "Español";
+"language.french" = "Francés";
+"language.german" = "Alemán";
+"language.japanese" = "Japonés";
+"language.korean" = "Coreano";
+"language.portuguese" = "Portugués";
+"language.russian" = "Ruso";
+"language.italian" = "Italiano";
+"language.dutch" = "Neerlandés";
+"language.swedish" = "Sueco";
+"language.norwegian" = "Noruego";
+"language.danish" = "Danés";
+"language.polish" = "Polaco";
+"language.turkish" = "Turco";
+"language.arabic" = "Árabe";
+"language.hindi" = "Hindi";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Paquete Echo";
+"export.format.text" = "Texto sin formato";
+"export.format.json" = "JSON";
+"export.include_audio" = "Incluir archivos de audio";
+"export.format_label" = "Formato";
+"export.audio_size_warning" = "Los archivos de audio aumentarán el tamaño de exportación";
+"export.options" = "Opciones de exportación";
+"export.select_scripts" = "Seleccionar tarjetas";
+"export.scripts_selected" = "Tarjetas (%d seleccionadas)";
+"export.error_title" = "Error de exportación";
+"export.error_unknown" = "Ocurrió un error desconocido";
+"import.complete_title" = "Importación completa";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Consejo: Di «punto», «coma» o «signo de interrogación» para puntuación";
+"recording.no_recording_message" = "Por favor, mantén presionado para editar y grabar audio primero";
+
+// MARK: - Category Management
+"category.new_prompt" = "Ingresa el nombre para tu nueva categoría";
+"category.name_placeholder" = "Nombre de categoría";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Sincroniza tarjetas entre tus dispositivos";
+
+// MARK: - Empty State
+"empty.no_cards" = "Sin tarjetas aún";
+"empty.tap_to_create" = "Toca el botón + para crear tu primera tarjeta de diálogo interno";
+
+// MARK: - Filter
+"filter.all_cards" = "Todas las tarjetas";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Sensibilidad";
+"picker.select_language" = "Seleccionar idioma";
+"picker.display_language" = "Idioma de pantalla";
+"settings.language_settings" = "Configuración de idioma";
+"language.system_default" = "Predeterminado del sistema";
+"settings.card_settings" = "Configuración de tarjetas";
+"settings.card_defaults" = "Valores predeterminados";
+"settings.about_support" = "Acerca de y Soporte";
+"settings.sync" = "Sincronización";
+"settings.backup" = "Copia de seguridad";

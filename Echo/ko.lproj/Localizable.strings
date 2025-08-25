@@ -6,8 +6,8 @@
 // MARK: - Navigation & Titles
 "navigation.cards" = "카드";
 "navigation.me" = "나";
-"navigation.new_script" = "새 스크립트";
-"navigation.edit_script" = "스크립트 편집";
+"navigation.new_script" = "새 카드";
+"navigation.edit_script" = "카드 편집";
 
 // MARK: - Categories
 "category.breaking_bad_habits" = "나쁜 습관 끊기";
@@ -27,8 +27,8 @@
 "script.repetitions" = "반복 횟수";
 "script.interval" = "간격";
 "script.privacy_mode" = "프라이버시 모드";
-"script.delete" = "스크립트 삭제";
-"script.delete.confirm.title" = "스크립트 삭제";
+"script.delete" = "카드 삭제";
+"script.delete.confirm.title" = "카드 삭제";
 "script.delete.confirm.message" = "이 스크립트를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.";
 
 // MARK: - Settings
@@ -36,7 +36,7 @@
 "settings.display_language" = "표시 언어";
 "settings.restart_to_apply" = "언어 변경을 적용하려면 앱을 다시 시작하세요";
 "settings.default_settings" = "기본 설정";
-"settings.script_preferences" = "스크립트 설정";
+"settings.script_preferences" = "카드 설정";
 "settings.transcription" = "전사";
 "settings.recording" = "녹음";
 "settings.backup_sync" = "백업 및 동기화";
@@ -145,3 +145,67 @@
 "sample.smoking" = "나는 담배를 피우지 않습니다. 냄새가 나고 통제받는 것을 싫어하기 때문입니다.";
 "sample.bedtime" = "나는 항상 밤 10시 전에 잠자리에 듭니다. 더 건강하고, 많은 에너지로 일어나는 것을 좋아하기 때문입니다.";
 "sample.mistakes" = "몇 가지 실수를 했지만 여러 가지를 잘해내기도 했습니다. 실수는 학습의 정상적인 부분이며, 개선의 기회로 활용할 수 있습니다.";
+// MARK: - Languages
+"language.english" = "영어";
+"language.chinese_simplified" = "중국어(간체)";
+"language.chinese_traditional" = "중국어(번체)";
+"language.spanish" = "스페인어";
+"language.french" = "프랑스어";
+"language.german" = "독일어";
+"language.japanese" = "일본어";
+"language.korean" = "한국어";
+"language.portuguese" = "포르투갈어";
+"language.russian" = "러시아어";
+"language.italian" = "이탈리아어";
+"language.dutch" = "네덜란드어";
+"language.swedish" = "스웨덴어";
+"language.norwegian" = "노르웨이어";
+"language.danish" = "덴마크어";
+"language.polish" = "폴란드어";
+"language.turkish" = "터키어";
+"language.arabic" = "아랍어";
+"language.hindi" = "힌디어";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Echo 번들";
+"export.format.text" = "일반 텍스트";
+"export.format.json" = "JSON";
+"export.include_audio" = "오디오 파일 포함";
+"export.format_label" = "형식";
+"export.audio_size_warning" = "오디오 파일은 내보내기 크기를 증가시킵니다";
+"export.options" = "내보내기 옵션";
+"export.select_scripts" = "카드 선택";
+"export.scripts_selected" = "카드 (%d개 선택됨)";
+"export.error_title" = "내보내기 오류";
+"export.error_unknown" = "알 수 없는 오류가 발생했습니다";
+"import.complete_title" = "가져오기 완료";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "팁: 구두점을 위해 «마침표», «쉼표» 또는 «물음표»라고 말하세요";
+"recording.no_recording_message" = "편집하고 먼저 오디오를 녹음하려면 길게 누르세요";
+
+// MARK: - Category Management
+"category.new_prompt" = "새 카테고리의 이름을 입력하세요";
+"category.name_placeholder" = "카테고리 이름";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "기기 간 카드 동기화";
+
+// MARK: - Empty State
+"empty.no_cards" = "아직 카드가 없습니다";
+"empty.tap_to_create" = "+ 버튼을 탭하여 첫 번째 셀프토크 카드를 만드세요";
+
+// MARK: - Filter
+"filter.all_cards" = "모든 카드";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "민감도";
+"picker.select_language" = "언어 선택";
+"picker.display_language" = "표시 언어";
+"settings.language_settings" = "언어 설정";
+"language.system_default" = "시스템 기본값";
+"settings.card_settings" = "카드 설정";
+"settings.card_defaults" = "기본 설정";
+"settings.about_support" = "정보 및 지원";
+"settings.sync" = "동기화";
+"settings.backup" = "백업";

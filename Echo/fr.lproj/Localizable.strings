@@ -8,8 +8,8 @@
 // MARK: - Navigation & Titles
 "navigation.cards" = "Cartes";
 "navigation.me" = "Moi";
-"navigation.new_script" = "Nouveau Script";
-"navigation.edit_script" = "Modifier le Script";
+"navigation.new_script" = "Nouvelle Carte";
+"navigation.edit_script" = "Modifier la Carte";
 
 // MARK: - Categories
 "category.breaking_bad_habits" = "Briser les Mauvaises Habitudes";
@@ -29,8 +29,8 @@
 "script.repetitions" = "Répétitions";
 "script.interval" = "Intervalle";
 "script.privacy_mode" = "Mode Privé";
-"script.delete" = "Supprimer le Script";
-"script.delete.confirm.title" = "Supprimer le Script";
+"script.delete" = "Supprimer la Carte";
+"script.delete.confirm.title" = "Supprimer la Carte";
 "script.delete.confirm.message" = "Êtes-vous sûr de vouloir supprimer ce script ? Cette action ne peut pas être annulée.";
 
 // MARK: - Settings
@@ -38,7 +38,7 @@
 "settings.display_language" = "Langue d'Affichage";
 "settings.restart_to_apply" = "Redémarrez l'app pour appliquer le changement de langue";
 "settings.default_settings" = "Paramètres par Défaut";
-"settings.script_preferences" = "Préférences de Script";
+"settings.script_preferences" = "Préférences de Carte";
 "settings.transcription" = "Transcription";
 "settings.recording" = "Enregistrement";
 "settings.backup_sync" = "Sauvegarde et Synchronisation";
@@ -67,8 +67,8 @@
 "settings.icloud_sync" = "Synchronisation iCloud";
 "settings.icloud_sync.desc" = "Synchroniser les scripts entre vos appareils";
 "settings.icloud_sync.info" = "Le texte et les paramètres se synchronisent automatiquement. Les fichiers audio restent locaux.";
-"settings.export_scripts" = "Exporter les Scripts";
-"settings.import_scripts" = "Importer les Scripts";
+"settings.export_scripts" = "Exporter les Cartes";
+"settings.import_scripts" = "Importer les Cartes";
 
 "settings.version" = "Version";
 "settings.build" = "Build";
@@ -147,3 +147,67 @@
 "sample.smoking" = "Je ne fume jamais, car cela sent mauvais et je déteste être contrôlé.";
 "sample.bedtime" = "Je me couche toujours avant 22h, car c'est plus sain et j'adore me réveiller plein d'énergie.";
 "sample.mistakes" = "J'ai fait quelques erreurs, mais j'ai aussi bien réussi plusieurs choses. Les erreurs font partie de l'apprentissage et je peux les utiliser pour m'améliorer.";
+// MARK: - Languages
+"language.english" = "Anglais";
+"language.chinese_simplified" = "Chinois (Simplifié)";
+"language.chinese_traditional" = "Chinois (Traditionnel)";
+"language.spanish" = "Espagnol";
+"language.french" = "Français";
+"language.german" = "Allemand";
+"language.japanese" = "Japonais";
+"language.korean" = "Coréen";
+"language.portuguese" = "Portugais";
+"language.russian" = "Russe";
+"language.italian" = "Italien";
+"language.dutch" = "Néerlandais";
+"language.swedish" = "Suédois";
+"language.norwegian" = "Norvégien";
+"language.danish" = "Danois";
+"language.polish" = "Polonais";
+"language.turkish" = "Turc";
+"language.arabic" = "Arabe";
+"language.hindi" = "Hindi";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Bundle Echo";
+"export.format.text" = "Texte brut";
+"export.format.json" = "JSON";
+"export.include_audio" = "Inclure les fichiers audio";
+"export.format_label" = "Format";
+"export.audio_size_warning" = "Les fichiers audio augmenteront la taille d'exportation";
+"export.options" = "Options d'exportation";
+"export.select_scripts" = "Sélectionner des cartes";
+"export.scripts_selected" = "Cartes (%d sélectionnées)";
+"export.error_title" = "Erreur d'exportation";
+"export.error_unknown" = "Une erreur inconnue s'est produite";
+"import.complete_title" = "Importation terminée";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Conseil : Dites « point », « virgule » ou « point d'interrogation » pour la ponctuation";
+"recording.no_recording_message" = "Veuillez appuyer longuement pour éditer et enregistrer l'audio d'abord";
+
+// MARK: - Category Management
+"category.new_prompt" = "Entrez le nom de votre nouvelle catégorie";
+"category.name_placeholder" = "Nom de la catégorie";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Synchroniser les cartes entre vos appareils";
+
+// MARK: - Empty State
+"empty.no_cards" = "Pas encore de cartes";
+"empty.tap_to_create" = "Appuyez sur le bouton + pour créer votre première carte de dialogue intérieur";
+
+// MARK: - Filter
+"filter.all_cards" = "Toutes les cartes";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Sensibilité";
+"picker.select_language" = "Sélectionner la langue";
+"picker.display_language" = "Langue d'affichage";
+"settings.language_settings" = "Paramètres de langue";
+"language.system_default" = "Par défaut du système";
+"settings.card_settings" = "Paramètres des cartes";
+"settings.card_defaults" = "Valeurs par défaut";
+"settings.about_support" = "À propos et Assistance";
+"settings.sync" = "Synchronisation";
+"settings.backup" = "Sauvegarde";

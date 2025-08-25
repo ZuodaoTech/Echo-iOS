@@ -139,9 +139,9 @@ struct ScriptsListView: View {
             let allCategories = try viewContext.fetch(categoryRequest)
             
             // Sample 1: Breaking Bad Habits
-            if let breakingBadHabits = allCategories.first(where: { $0.name == "Breaking Bad Habits" }) {
+            if let breakingBadHabits = allCategories.first(where: { $0.name == NSLocalizedString("category.breaking_bad_habits", comment: "") }) {
                 _ = SelftalkScript.create(
-                    scriptText: "I never smoke, because it stinks, and I hate being controlled.",
+                    scriptText: NSLocalizedString("sample.smoking", comment: ""),
                     category: breakingBadHabits,
                     repetitions: 3,
                     privacyMode: true,
@@ -150,9 +150,9 @@ struct ScriptsListView: View {
             }
             
             // Sample 2: Building Good Habits
-            if let buildingGoodHabits = allCategories.first(where: { $0.name == "Building Good Habits" }) {
+            if let buildingGoodHabits = allCategories.first(where: { $0.name == NSLocalizedString("category.building_good_habits", comment: "") }) {
                 _ = SelftalkScript.create(
-                    scriptText: "I always go to bed before 10 p.m., because it's healthier, and I love waking up with a great deal of energy.",
+                    scriptText: NSLocalizedString("sample.bedtime", comment: ""),
                     category: buildingGoodHabits,
                     repetitions: 3,
                     privacyMode: true,
@@ -161,9 +161,9 @@ struct ScriptsListView: View {
             }
             
             // Sample 3: Appropriate Positivity
-            if let appropriatePositivity = allCategories.first(where: { $0.name == "Appropriate Positivity" }) {
+            if let appropriatePositivity = allCategories.first(where: { $0.name == NSLocalizedString("category.appropriate_positivity", comment: "") }) {
                 _ = SelftalkScript.create(
-                    scriptText: "I made a few mistakes, but I also did several things well. Mistakes are a normal part of learning, and I can use them as an opportunity to improve. Most people are likely focused on the overall effort or result, not just the small errors.",
+                    scriptText: NSLocalizedString("sample.mistakes", comment: ""),
                     category: appropriatePositivity,
                     repetitions: 3,
                     privacyMode: true,
@@ -281,11 +281,11 @@ struct EmptyStateView: View {
                 .font(.system(size: 60))
                 .foregroundColor(.gray)
             
-            Text("No Scripts Yet")
+            Text(NSLocalizedString("empty.no_cards", comment: ""))
                 .font(.title2)
                 .fontWeight(.medium)
             
-            Text("Tap the + button to create your first self-talk script")
+            Text(NSLocalizedString("empty.tap_to_create", comment: ""))
                 .font(.body)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
@@ -308,7 +308,7 @@ struct CategoryFilterSheet: View {
                         dismiss()
                     } label: {
                         HStack {
-                            Text("All Scripts")
+                            Text(NSLocalizedString("filter.all_cards", comment: ""))
                             Spacer()
                             if selectedCategory == nil {
                                 Image(systemName: "checkmark")
@@ -318,7 +318,7 @@ struct CategoryFilterSheet: View {
                     }
                 }
                 
-                Section("Categories") {
+                Section(NSLocalizedString("category.select", comment: "")) {
                     ForEach(categories, id: \.id) { category in
                         Button {
                             selectedCategory = category
@@ -336,11 +336,11 @@ struct CategoryFilterSheet: View {
                     }
                 }
             }
-            .navigationTitle("Filter by Category")
+            .navigationTitle(NSLocalizedString("category.select", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                    Button(NSLocalizedString("action.done", comment: "")) {
                         dismiss()
                     }
                 }
