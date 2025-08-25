@@ -15,9 +15,10 @@
 // MARK: - Tags
 "tag.now" = "Now";
 "tag.untagged" = "Untagged";
-"tag.edit" = "Edit Tags";
+"tag.edit" = "Edit Tag";
 "tag.delete.confirm.title" = "Delete Tag";
 "tag.delete.confirm.message" = "This tag is used by %d scripts. Deleting it will remove the tag from these scripts.";
+"tag.delete.confirm.empty" = "This tag is not used by any scripts. Are you sure you want to delete it?";
 "tag.max_now_cards" = "Max 'Now' Cards";
 "tag.now_limit_reached" = "Now Tag Limit";
 "tag.now_limit_message" = "You've reached the maximum number of 'Now' cards (%d). Please select a card to remove the 'Now' tag from:";

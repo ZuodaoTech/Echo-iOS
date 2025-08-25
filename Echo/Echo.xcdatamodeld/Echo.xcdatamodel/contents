@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24A335" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24A335" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="true" userDefinedModelVersionIdentifier="">
     <entity name="Category" representedClassName="Category" syncable="YES">
-        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="name" attributeType="String"/>
+        <attribute name="createdAt" attributeType="Date" defaultDateTimeInterval="0" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" defaultValueString="00000000-0000-0000-0000-000000000000" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String" defaultValueString=""/>
         <attribute name="nameKey" optional="YES" attributeType="String"/>
         <attribute name="sortOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="scripts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SelftalkScript" inverseName="category" inverseEntity="SelftalkScript"/>
@@ -11,17 +11,17 @@
     <entity name="SelftalkScript" representedClassName="SelftalkScript" syncable="YES">
         <attribute name="audioFilePath" optional="YES" attributeType="String"/>
         <attribute name="audioDuration" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="createdAt" attributeType="Date" defaultDateTimeInterval="0" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" defaultValueString="00000000-0000-0000-0000-000000000000" usesScalarValueType="NO"/>
         <attribute name="intervalSeconds" attributeType="Double" defaultValueString="2.0" usesScalarValueType="YES"/>
         <attribute name="lastPlayedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="playCount" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="privacyModeEnabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="repetitions" attributeType="Integer 16" defaultValueString="3" usesScalarValueType="YES"/>
-        <attribute name="scriptText" attributeType="String"/>
+        <attribute name="scriptText" attributeType="String" defaultValueString=""/>
         <attribute name="transcribedText" optional="YES" attributeType="String"/>
         <attribute name="transcriptionLanguage" optional="YES" attributeType="String" defaultValueString="en-US"/>
-        <attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="updatedAt" attributeType="Date" defaultDateTimeInterval="0" usesScalarValueType="NO"/>
         <attribute name="notificationEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="notificationFrequency" optional="YES" attributeType="String" defaultValueString="medium"/>
         <attribute name="notificationEnabledAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -30,10 +30,10 @@
     </entity>
     <entity name="Tag" representedClassName="Tag" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String"/>
-        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="createdAt" attributeType="Date" defaultDateTimeInterval="0" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" defaultValueString="00000000-0000-0000-0000-000000000000" usesScalarValueType="NO"/>
         <attribute name="isSpecial" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="name" attributeType="String"/>
+        <attribute name="name" attributeType="String" defaultValueString=""/>
         <attribute name="sortOrder" optional="YES" attributeType="Integer 16" defaultValueString="999" usesScalarValueType="YES"/>
         <relationship name="scripts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SelftalkScript" inverseName="tags" inverseEntity="SelftalkScript"/>
     </entity>
