@@ -56,7 +56,10 @@ struct CardSettingsView: View {
                     HStack {
                         Text(NSLocalizedString("script.repetitions", comment: ""))
                         Spacer()
-                        Stepper("\(defaultRepetitions)", value: $defaultRepetitions, in: 1...10)
+                        Text("\(defaultRepetitions)")
+                            .foregroundColor(.secondary)
+                        Stepper("", value: $defaultRepetitions, in: 1...10)
+                            .labelsHidden()
                     }
                     
                     HStack {
@@ -148,11 +151,10 @@ struct CardSettingsView: View {
                         HStack {
                             Text(NSLocalizedString("notifications.max_cards", comment: "Maximum cards with notifications"))
                             Spacer()
-                            Stepper(value: $maxNotificationCards, in: 1...5) {
-                                Text("\(maxNotificationCards)")
-                                    .foregroundColor(.accentColor)
-                                    .fontWeight(.semibold)
-                            }
+                            Text("\(maxNotificationCards)")
+                                .foregroundColor(.secondary)
+                            Stepper("", value: $maxNotificationCards, in: 1...5)
+                                .labelsHidden()
                         }
                         
                         if maxNotificationCards > 1 {
