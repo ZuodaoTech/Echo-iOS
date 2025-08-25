@@ -17,7 +17,6 @@
 "category.daily_affirmations" = "Günlük Olumlamalar";
 "category.select" = "Kategori Seç";
 "category.add_new" = "Yeni Kategori Ekle...";
-"category.uncategorized" = "Kategorisiz";
 
 // MARK: - Script Card
 "script.play_count" = "%d oynatma";

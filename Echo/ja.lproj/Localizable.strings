@@ -17,7 +17,6 @@
 "category.daily_affirmations" = "毎日のアファメーション";
 "category.select" = "カテゴリ選択";
 "category.add_new" = "新しいカテゴリを追加...";
-"category.uncategorized" = "未分類";
 
 // MARK: - Script Card
 "script.play_count" = "%d回再生";

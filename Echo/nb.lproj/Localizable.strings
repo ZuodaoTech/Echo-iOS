@@ -17,7 +17,6 @@
 "category.daily_affirmations" = "Daglige Bekreftelser";
 "category.select" = "Velg Kategori";
 "category.add_new" = "Legg til Ny Kategori...";
-"category.uncategorized" = "Ukategorisert";
 
 // MARK: - Script Card
 "script.play_count" = "%d avspillinger";

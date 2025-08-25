@@ -17,7 +17,6 @@
 "category.daily_affirmations" = "Dagelijkse Affirmaties";
 "category.select" = "Categorie Selecteren";
 "category.add_new" = "Nieuwe Categorie Toevoegen...";
-"category.uncategorized" = "Ongecategoriseerd";
 
 // MARK: - Script Card
 "script.play_count" = "%d keer afgespeeld";

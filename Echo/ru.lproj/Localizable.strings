@@ -17,7 +17,6 @@
 "category.daily_affirmations" = "Ежедневные аффирмации";
 "category.select" = "Выбрать категорию";
 "category.add_new" = "Добавить новую категорию...";
-"category.uncategorized" = "Без категории";
 
 // MARK: - Script Card
 "script.play_count" = "%d воспроизведений";

@@ -19,7 +19,6 @@
 "category.daily_affirmations" = "Afirmaciones Diarias";
 "category.select" = "Seleccionar Categoría";
 "category.add_new" = "Añadir Nueva Categoría...";
-"category.uncategorized" = "Sin Categoría";
 
 // MARK: - Script Card
 "script.play_count" = "%d reproducciones";

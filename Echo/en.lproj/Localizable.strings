@@ -19,7 +19,6 @@
 "category.daily_affirmations" = "Daily Affirmations";
 "category.select" = "Select Category";
 "category.add_new" = "Add New Category...";
-"category.uncategorized" = "Uncategorized";
 
 // MARK: - Script Card
 "script.play_count" = "%d plays";

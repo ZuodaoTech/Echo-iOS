@@ -20,7 +20,6 @@ enum L10n {
         static let dailyAffirmations = "category.daily_affirmations"
         static let selectCategory = "category.select"
         static let addNew = "category.add_new"
-        static let uncategorized = "category.uncategorized"
     }
     
     // MARK: - Script Card
