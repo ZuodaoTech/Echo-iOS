@@ -60,7 +60,7 @@ struct MeView: View {
                 Section(NSLocalizedString("settings.default_settings", comment: "")) {
                     Toggle(isOn: $privacyModeDefault) {
                         HStack {
-                            Text("Privacy Mode")
+                            Text(NSLocalizedString("settings.privacy_mode.title", comment: ""))
                             Button {
                                 showingPrivacyModeInfo = true
                             } label: {
@@ -73,13 +73,13 @@ struct MeView: View {
                     }
                     
                     HStack {
-                        Text("Repetitions")
+                        Text(NSLocalizedString("script.repetitions", comment: ""))
                         Spacer()
                         Stepper("\(defaultRepetitions)", value: $defaultRepetitions, in: 1...10)
                     }
                     
                     HStack {
-                        Text("Interval")
+                        Text(NSLocalizedString("script.interval", comment: ""))
                         Spacer()
                         Text("\(defaultInterval, specifier: "%.1f")s")
                             .foregroundColor(.secondary)
@@ -88,22 +88,22 @@ struct MeView: View {
                     }
                 }
                 
-                Section("Script Preferences") {
-                    Toggle("Character Guidance", isOn: $characterGuidanceEnabled)
+                Section(NSLocalizedString("settings.script_preferences", comment: "")) {
+                    Toggle(NSLocalizedString("settings.character_guidance", comment: ""), isOn: $characterGuidanceEnabled)
                     
                     if characterGuidanceEnabled {
                         HStack {
-                            Text("Recommended length")
+                            Text(NSLocalizedString("settings.recommended_length", comment: ""))
                             Spacer()
-                            Text("\(characterLimit) chars")
+                            Text("\(characterLimit) \(NSLocalizedString("chars", comment: ""))")
                                 .foregroundColor(.secondary)
                             Stepper("", value: $characterLimit, in: 100...300, step: 20)
                                 .labelsHidden()
                         }
                         
-                        Picker("When exceeded", selection: $limitBehavior) {
-                            Text("Just warn me").tag("warn")
-                            Text("Show tip only").tag("tip")
+                        Picker(NSLocalizedString("settings.when_exceeded", comment: ""), selection: $limitBehavior) {
+                            Text(NSLocalizedString("settings.just_warn", comment: "")).tag("warn")
+                            Text(NSLocalizedString("settings.show_tip_only", comment: "")).tag("tip")
                         }
                         .pickerStyle(SegmentedPickerStyle())
                         
@@ -111,19 +111,19 @@ struct MeView: View {
                             Image(systemName: "info.circle")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-                            Text("Shorter scripts are easier to remember and more impactful")
+                            Text(NSLocalizedString("settings.character_guidance.info", comment: ""))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
                     }
                 }
                 
-                Section("Transcription") {
+                Section(NSLocalizedString("settings.transcription", comment: "")) {
                     Button {
                         showingLanguagePicker = true
                     } label: {
                         HStack {
-                            Text("Default Language")
+                            Text(NSLocalizedString("settings.default_language", comment: ""))
                             Spacer()
                             Text(languageDisplayName(for: defaultTranscriptionLanguage))
                                 .foregroundColor(.secondary)
@@ -135,11 +135,11 @@ struct MeView: View {
                     .foregroundColor(.primary)
                 }
                 
-                Section("Recording") {
+                Section(NSLocalizedString("settings.recording", comment: "")) {
                     Toggle(isOn: $voiceEnhancementEnabled) {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Voice Enhancement")
-                            Text("Reduces background noise and echo")
+                            Text(NSLocalizedString("settings.voice_enhancement", comment: ""))
+                            Text(NSLocalizedString("settings.voice_enhancement.desc", comment: ""))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
@@ -147,8 +147,8 @@ struct MeView: View {
                     
                     Toggle(isOn: $autoTrimSilence) {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Auto-Trim Silence")
-                            Text("Remove silence at start and end")
+                            Text(NSLocalizedString("settings.auto_trim_silence", comment: ""))
+                            Text(NSLocalizedString("settings.auto_trim_silence.desc", comment: ""))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }

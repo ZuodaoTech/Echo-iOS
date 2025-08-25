@@ -108,6 +108,7 @@
 "notifications.daytime_only" = "Notifications only during daytime (8 AM - 9 PM)";
 
 // MARK: - Common Actions
+"chars" = "chars";
 "action.done" = "Done";
 "action.cancel" = "Cancel";
 "action.delete" = "Delete";
