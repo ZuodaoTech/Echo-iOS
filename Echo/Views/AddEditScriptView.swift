@@ -3,6 +3,14 @@ import CoreData
 import AVFoundation
 import UIKit
 
+// Preference key for dynamic height calculation
+struct ViewHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
 struct AddEditScriptView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
@@ -33,6 +41,12 @@ struct AddEditScriptView: View {
     @State private var errorMessage = ""
     @State private var hasSavedOnDismiss = false
     
+    // Character guidance
+    @AppStorage("characterGuidanceEnabled") private var characterGuidanceEnabled = true
+    @AppStorage("characterLimit") private var characterLimit = 140
+    @AppStorage("limitBehavior") private var limitBehavior = "warn"
+    @State private var textEditorHeight: CGFloat = 120
+    
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Category.sortOrder, ascending: true)],
         animation: .default
@@ -61,20 +75,77 @@ struct AddEditScriptView: View {
         NavigationView {
             Form {
                 Section("Script") {
-                    TextEditor(text: $scriptText)
-                        .frame(minHeight: 120)
-                        .overlay(
-                            Group {
-                                if scriptText.isEmpty {
-                                    Text("Enter your self-talk script here...")
-                                        .foregroundColor(.secondary)
-                                        .padding(.top, 8)
-                                        .padding(.leading, 4)
-                                        .allowsHitTesting(false)
+                    VStack(alignment: .leading, spacing: 8) {
+                        ZStack(alignment: .topLeading) {
+                            // Invisible text for height calculation
+                            Text(scriptText.isEmpty ? "Placeholder\nPlaceholder\nPlaceholder\nPlaceholder\nPlaceholder\nPlaceholder" : scriptText)
+                                .font(.body)
+                                .opacity(0)
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 8)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(
+                                    GeometryReader { geometry in
+                                        Color.clear.preference(
+                                            key: ViewHeightKey.self,
+                                            value: geometry.size.height
+                                        )
+                                    }
+                                )
+                            
+                            TextEditor(text: $scriptText)
+                                .frame(minHeight: 120, maxHeight: max(120, min(textEditorHeight, 240)))
+                                .overlay(
+                                    Group {
+                                        if scriptText.isEmpty {
+                                            Text("Enter your self-talk script here...")
+                                                .foregroundColor(.secondary)
+                                                .padding(.top, 8)
+                                                .padding(.leading, 4)
+                                                .allowsHitTesting(false)
+                                        }
+                                    },
+                                    alignment: .topLeading
+                                )
+                        }
+                        .onPreferenceChange(ViewHeightKey.self) { height in
+                            textEditorHeight = height + 16 // Add padding
+                        }
+                        
+                        // Character counter and guidance
+                        if characterGuidanceEnabled {
+                            HStack {
+                                // Visual progress indicator
+                                HStack(spacing: 2) {
+                                    ForEach(0..<10, id: \.self) { index in
+                                        Rectangle()
+                                            .fill(characterCounterColor(for: index))
+                                            .frame(width: 15, height: 4)
+                                            .cornerRadius(2)
+                                    }
                                 }
-                            },
-                            alignment: .topLeading
-                        )
+                                
+                                Spacer()
+                                
+                                // Character count
+                                Text("\(scriptText.count)/\(characterLimit)")
+                                    .font(.caption)
+                                    .foregroundColor(characterCounterTextColor)
+                            }
+                            
+                            // Tip based on character count
+                            if scriptText.count > characterLimit && limitBehavior == "warn" {
+                                HStack {
+                                    Image(systemName: "lightbulb")
+                                        .font(.caption)
+                                        .foregroundColor(.orange)
+                                    Text(characterGuidanceTip)
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                }
+                            }
+                        }
+                    }
                 }
                 
                 if isEditing {
@@ -712,6 +783,54 @@ struct AddEditScriptView: View {
             } catch {
                 // Preview playback error
             }
+        }
+    }
+    
+    // MARK: - Character Guidance Helper Methods
+    
+    private func characterCounterColor(for index: Int) -> Color {
+        let progress = Double(scriptText.count) / Double(characterLimit)
+        let segmentThreshold = Double(index + 1) / 10.0
+        
+        if progress >= segmentThreshold {
+            if scriptText.count <= characterLimit {
+                // Within limit - green to yellow gradient
+                if progress < 0.7 {
+                    return .green
+                } else if progress < 0.9 {
+                    return .yellow
+                } else {
+                    return .orange
+                }
+            } else {
+                // Over limit - red
+                return .red
+            }
+        } else {
+            // Not filled yet
+            return Color(.systemGray5)
+        }
+    }
+    
+    private var characterCounterTextColor: Color {
+        let count = scriptText.count
+        if count <= characterLimit * 70 / 100 {
+            return .secondary
+        } else if count <= characterLimit {
+            return .orange
+        } else {
+            return .red
+        }
+    }
+    
+    private var characterGuidanceTip: String {
+        let overCount = scriptText.count - characterLimit
+        if overCount <= 20 {
+            return "Consider trimming \(overCount) characters for better memorability"
+        } else if overCount <= 50 {
+            return "Script is \(overCount) characters over. Try to be more concise"
+        } else {
+            return "Script is quite long."
         }
     }
     

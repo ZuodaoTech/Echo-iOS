@@ -10,6 +10,9 @@ struct MeView: View {
     @AppStorage("autoTrimSilence") private var autoTrimSilence = true
     @AppStorage("silenceTrimSensitivity") private var silenceTrimSensitivity = "medium"
     @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = false
+    @AppStorage("characterGuidanceEnabled") private var characterGuidanceEnabled = true
+    @AppStorage("characterLimit") private var characterLimit = 140
+    @AppStorage("limitBehavior") private var limitBehavior = "warn"
     
     @State private var showingLanguagePicker = false
     @State private var showingExportOptions = false
@@ -52,6 +55,36 @@ struct MeView: View {
                             .foregroundColor(.secondary)
                         Stepper("", value: $defaultInterval, in: 0.5...5.0, step: 0.5)
                             .labelsHidden()
+                    }
+                }
+                
+                Section("Script Preferences") {
+                    Toggle("Character Guidance", isOn: $characterGuidanceEnabled)
+                    
+                    if characterGuidanceEnabled {
+                        HStack {
+                            Text("Recommended length")
+                            Spacer()
+                            Text("\(characterLimit) chars")
+                                .foregroundColor(.secondary)
+                            Stepper("", value: $characterLimit, in: 100...300, step: 20)
+                                .labelsHidden()
+                        }
+                        
+                        Picker("When exceeded", selection: $limitBehavior) {
+                            Text("Just warn me").tag("warn")
+                            Text("Show tip only").tag("tip")
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
+                        
+                        HStack {
+                            Image(systemName: "info.circle")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            Text("Shorter scripts are easier to remember and more impactful")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
                 
