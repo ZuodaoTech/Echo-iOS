@@ -9,216 +9,45 @@
 "navigation.new_script" = "Nytt Skript";
 "navigation.edit_script" = "Redigera Skript";
 
-// MARK: - Categories
-"category.breaking_bad_habits" = "Bryta Dåliga Vanor";
-"category.building_good_habits" = "Bygga Goda Vanor";
-"category.appropriate_positivity" = "Lämplig Positivitet";
-"category.personal_growth" = "Personlig Utveckling";
-"category.daily_affirmations" = "Dagliga Bekräftelser";
-"category.select" = "Välj Kategori";
-"category.add_new" = "Lägg till Ny Kategori...";
 
-// MARK: - Script Card
-"script.play_count" = "%d uppspelningar";
-"script.transcript" = "Transkription";
-"script.recording" = "Inspelning";
-"script.no_recording" = "Ingen inspelning";
-"script.repetitions" = "Upprepningar";
-"script.interval" = "Intervall";
-"script.privacy_mode" = "Integritetläge";
-"script.delete" = "Ta bort Skript";
-"script.delete.confirm.title" = "Ta bort Skript";
-"script.delete.confirm.message" = "Är du säker på att du vill ta bort detta skript? Denna åtgärd kan inte ångras.";
 
-// MARK: - Settings
-"settings.app_language" = "App-språk";
-"settings.display_language" = "Visningsspråk";
-"settings.restart_to_apply" = "Starta om appen för att tillämpa språkändring";
-"settings.default_settings" = "Standardinställningar";
-"settings.script_preferences" = "Skriptinställningar";
-"settings.transcription" = "Transkription";
-"settings.recording" = "Inspelning";
-"settings.backup_sync" = "Säkerhetskopiering och Synkronisering";
-"settings.about" = "Om";
-"settings.support" = "Support";
+// MARK: - Tags
+"tag.now" = "Nu";
+"tag.untagged" = "Otaggad";
+"tag.edit" = "Redigera Taggar";
+"tag.delete.confirm.title" = "Ta Bort Tagg";
+"tag.delete.confirm.message" = "Denna tagg används av %d skript. Att ta bort den kommer att ta bort taggen från dessa skript.";
+"tag.max_now_cards" = "Max 'Nu' Kort";
+"tag.now_limit_reached" = "Nu-tagg Gräns";
+"tag.now_limit_message" = "Du har nått det maximala antalet 'Nu' kort (%d). Välj ett kort för att ta bort 'Nu' taggen från:";
+"tag.auto_cleanup" = "Ta bort oanvända taggar automatiskt";
 
-"settings.privacy_mode.title" = "Integritetläge";
-"settings.privacy_mode.info" = "Ljud spelas endast upp via hörlurar";
-"settings.privacy_mode.alert.title" = "Integritetläge";
-"settings.privacy_mode.alert.message" = "När Integritetläge är aktiverat kommer ljudinspelningar endast att spelas upp via anslutna hörlurar eller headset. Detta förhindrar oavsiktlig uppspelning via högtalare i offentliga utrymmen.";
+/* 
+  Localizable.strings (Swedish)
+  Echo
+*/
 
-"settings.character_guidance" = "Teckenvägledning";
-"settings.recommended_length" = "Rekommenderad längd";
-"settings.when_exceeded" = "Vid överskridande";
-"settings.just_warn" = "Bara varna";
-"settings.show_tip_only" = "Visa endast tips";
-"settings.character_guidance.info" = "Kortare skript är lättare att komma ihåg och mer effektiva";
+// MARK: - Navigation & Titles
+"navigation.cards" = "Kort";
+"navigation.me" = "Jag";
+"navigation.new_script" = "Nytt Skript";
+"navigation.edit_script" = "Redigera Skript";
 
-"settings.default_language" = "Standardspråk";
-"settings.voice_enhancement" = "Röstförbättring";
-"settings.voice_enhancement.desc" = "Minskar bakgrundsljud och eko";
-"settings.auto_trim_silence" = "Trimma Tystnad Automatiskt";
-"settings.auto_trim_silence.desc" = "Ta bort tystnad i början och slutet";
-"settings.trim_sensitivity" = "Trimm Känslighet";
 
-"settings.icloud_sync" = "iCloud Synkronisering";
-"settings.icloud_sync.desc" = "Synkronisera skript mellan dina enheter";
-"settings.icloud_sync.info" = "Text och inställningar synkroniseras automatiskt. Ljudfiler förblir lokala.";
-"settings.export_scripts" = "Exportera Skript";
-"settings.import_scripts" = "Importera Skript";
 
-"settings.version" = "Version";
-"settings.build" = "Build";
-"settings.rate_github" = "Betygsätt på GitHub";
-"settings.contact_support" = "Kontakta Support";
+// MARK: - Tags
+"tag.now" = "Nu";
+"tag.untagged" = "Otaggad";
+"tag.edit" = "Redigera Taggar";
+"tag.delete.confirm.title" = "Ta Bort Tagg";
+"tag.delete.confirm.message" = "Denna tagg används av %d skript. Att ta bort den kommer att ta bort taggen från dessa skript.";
+"tag.max_now_cards" = "Max 'Nu' Kort";
+"tag.now_limit_reached" = "Nu-tagg Gräns";
+"tag.now_limit_message" = "Du har nått det maximala antalet 'Nu' kort (%d). Välj ett kort för att ta bort 'Nu' taggen från:";
+"tag.auto_cleanup" = "Ta bort oanvända taggar automatiskt";
+"tag.select" = "Välj Taggar";
+"tag.new" = "Ny Tagg";
+"tag.label" = "Taggar";
+"tag.none" = "Ingen";
+"tag.count_selected" = "%d valda";
 
-// MARK: - Recording
-"recording.start" = "Starta Inspelning";
-"recording.stop" = "Stoppa Inspelning";
-"recording.re_record" = "Spela in igen";
-"recording.saved" = "Inspelning sparad";
-"recording.delete" = "Ta bort";
-"recording.preview" = "Förhandsgranska";
-"recording.playing_preview" = "Spelar förhandsgranskning...";
-"recording.preview_paused" = "Förhandsgranskning pausad";
-"recording.plays_once" = "(spelas en gång)";
-"recording.processing" = "Bearbetar ljud...";
-"recording.listening" = "Lyssnar...";
-"recording.speaking" = "Talar...";
-"recording.transcribing" = "Transkriberar...";
-"recording.re_transcribing" = "Omtranskriberar...";
-"recording.microphone_access" = "Mikrofonåtkomst";
-"recording.microphone_access.message" = "Vänligen ge mikrofonåtkomst i Inställningar för att spela in ljud";
-
-// MARK: - Character Guidance
-"guidance.trim_characters" = "Överväg att trimma %d tecken för bättre ihågkomst";
-"guidance.script_over" = "Skriptet överskrider med %d tecken. Försök att vara mer koncis";
-"guidance.script_long" = "Skriptet är ganska långt.";
-"guidance.enter_script" = "Ange ditt självsamtalsskript här...";
-
-// MARK: - Notifications
-"notifications.enable" = "Aktivera Meddelanden";
-"notifications.frequency" = "Frekvens";
-"notifications.frequency.high" = "Hög (1-2 gånger/timme)";
-"notifications.frequency.medium" = "Medium (varannan timme)";
-"notifications.frequency.low" = "Låg (1-2 gånger/dag)";
-"notifications.daytime_only" = "Meddelanden endast dagtid (8:00 - 21:00)";
-"notifications.settings_title" = "Notification Settings";
-"notifications.max_cards" = "Maximum cards with notifications";
-"notifications.burden_warning" = "Too many notifications can become burdensome";
-"notifications.global_settings" = "Global Settings";
-"notifications.max_cards_footer" = "Limit how many cards can send notifications";
-"notifications.no_cards_enabled" = "No cards have notifications enabled";
-"notifications.enabled_cards" = "Enabled Cards (%d)";
-"notifications.request_permission" = "Enable Notifications";
-"notifications.select_to_disable" = "Select %d cards to disable notifications";
-"notifications.select_cards" = "Select Cards";
-"notifications.reminder_title" = "Time for Self-Talk";
-"notifications.action_play" = "Play Audio";
-"notifications.action_done" = "Mark as Done";
-
-// MARK: - Common Actions
-"action.done" = "Klar";
-"action.cancel" = "Avbryt";
-"action.delete" = "Ta bort";
-"action.add" = "Lägg till";
-"action.save" = "Spara";
-"action.ok" = "OK";
-"action.got_it" = "Förstått";
-"action.copy" = "Kopiera";
-"action.use_as_script" = "Använd som Skript";
-"action.share" = "Dela";
-"action.edit" = "Redigera";
-
-// MARK: - Errors
-"error.title" = "Fel";
-"error.save" = "Misslyckades spara skript";
-"error.database" = "Databasfel";
-"error.restart_app" = "Vänligen starta om appen";
-"error.try_again" = "Vänligen försök igen";
-"error.import" = "Import misslyckades";
-"error.export" = "Export misslyckades";
-
-// MARK: - Time Units
-"time.seconds" = "%@ sekunder";
-"time.times_per_hour" = "1-2 gånger/timme";
-"time.every_hours" = "varannan timme";
-"time.times_per_day" = "1-2 gånger/dag";
-
-// MARK: - Sensitivity Levels
-"sensitivity.low" = "Låg";
-"sensitivity.medium" = "Medium";
-"sensitivity.high" = "Hög";
-"sensitivity.low.desc" = "Behöver högre röst • 0.5s buffert";
-"sensitivity.medium.desc" = "Balanserad detektering • 0.3s buffert";
-"sensitivity.high.desc" = "Upptäcker viskning • 0.15s buffert";
-
-// MARK: - Sample Scripts
-"sample.smoking" = "Jag röker aldrig, för det stinker och jag hatar att bli kontrollerad.";
-"sample.bedtime" = "Jag går alltid till sängs före 22:00, för det är hälsosammare och jag älskar att vakna med mycket energi.";
-"sample.mistakes" = "Jag gjorde några misstag, men jag gjorde också flera saker bra. Misstag är en normal del av lärande, och jag kan använda dem som en möjlighet att förbättra mig.";
-// MARK: - Languages
-"language.english" = "Engelska";
-"language.chinese_simplified" = "Kinesiska (förenklad)";
-"language.chinese_traditional" = "Kinesiska (traditionell)";
-"language.spanish" = "Spanska";
-"language.french" = "Franska";
-"language.german" = "Tyska";
-"language.japanese" = "Japanska";
-"language.korean" = "Koreanska";
-"language.portuguese" = "Portugisiska";
-"language.russian" = "Ryska";
-"language.italian" = "Italienska";
-"language.dutch" = "Nederländska";
-"language.swedish" = "Svenska";
-"language.norwegian" = "Norska";
-"language.danish" = "Danska";
-"language.polish" = "Polska";
-"language.turkish" = "Turkiska";
-"language.arabic" = "Arabiska";
-"language.hindi" = "Hindi";
-
-// MARK: - Export/Import
-"export.format.bundle" = "Echo-paket";
-"export.format.text" = "Vanlig text";
-"export.format.json" = "JSON";
-"export.include_audio" = "Inkludera ljudfiler";
-"export.format_label" = "Format";
-"export.audio_size_warning" = "Ljudfiler ökar exportstorleken";
-"export.options" = "Exportalternativ";
-"export.select_scripts" = "Välj kort";
-"export.scripts_selected" = "Kort (%d valda)";
-"export.error_title" = "Exportfel";
-"export.error_unknown" = "Ett okänt fel uppstod";
-"import.complete_title" = "Import slutförd";
-
-// MARK: - Recording Tips
-"recording.punctuation_tip" = "Tips: Säg «punkt», «komma» eller «frågetecken» för skiljetecken";
-"recording.no_recording_message" = "Tryck länge för att redigera och spela in ljud först";
-
-// MARK: - Category Management
-"category.new_prompt" = "Ange namnet för din nya kategori";
-"category.name_placeholder" = "Kategorinamn";
-
-// MARK: - iCloud & Sync
-"settings.icloud_sync_desc" = "Synkronisera kort mellan dina enheter";
-
-// MARK: - Empty State
-"empty.no_cards" = "Inga kort än";
-"empty.tap_to_create" = "Tryck på + knappen för att skapa ditt första självsamtalskort";
-
-// MARK: - Filter
-"filter.all_cards" = "Alla kort";
-
-// MARK: - Picker Labels
-"picker.sensitivity" = "Känslighet";
-"picker.select_language" = "Välj språk";
-"picker.display_language" = "Visningsspråk";
-"settings.language_settings" = "Språkinställningar";
-"language.system_default" = "Systemstandard";
-"settings.card_settings" = "Kortinställningar";
-"settings.card_defaults" = "Standardvärden";
-"settings.about_support" = "Om & Support";
-"settings.sync" = "Synkronisering";
-"settings.backup" = "Säkerhetskopiering";
-"script.label" = "Skript";

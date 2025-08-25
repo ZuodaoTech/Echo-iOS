@@ -24,6 +24,10 @@ struct CardSettingsView: View {
     @AppStorage("maxNotificationCards") private var maxNotificationCards = 1
     @AppStorage("notificationPermissionRequested") private var notificationPermissionRequested = false
     
+    // Tag Settings
+    @AppStorage("maxNowCards") private var maxNowCards = 3
+    @AppStorage("autoCleanupUnusedTags") private var autoCleanupUnusedTags = false
+    
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \SelftalkScript.createdAt, ascending: false)],
         predicate: NSPredicate(format: "notificationEnabled == YES")
@@ -178,6 +182,24 @@ struct CardSettingsView: View {
                     Text(NSLocalizedString("notifications.settings_title", comment: ""))
                 } footer: {
                     Text(NSLocalizedString("notifications.max_cards_footer", comment: ""))
+                }
+                
+                // Tag Settings Section
+                Section {
+                    HStack {
+                        Text(NSLocalizedString("tag.max_now_cards", comment: ""))
+                        Spacer()
+                        Text("\(maxNowCards)")
+                            .foregroundColor(.secondary)
+                        Stepper("", value: $maxNowCards, in: 1...5)
+                            .labelsHidden()
+                    }
+                    
+                    Toggle(NSLocalizedString("tag.auto_cleanup", comment: ""), isOn: $autoCleanupUnusedTags)
+                } header: {
+                    Text("Tags")
+                } footer: {
+                    Text("The 'Now' tag helps you focus on your current priorities. Limiting the number of cards with this tag ensures focus.")
                 }
             }
             .navigationTitle(NSLocalizedString("settings.card_settings", comment: ""))

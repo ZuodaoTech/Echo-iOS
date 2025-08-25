@@ -32,7 +32,9 @@
         <attribute name="color" optional="YES" attributeType="String"/>
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isSpecial" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
+        <attribute name="sortOrder" optional="YES" attributeType="Integer 16" defaultValueString="999" usesScalarValueType="YES"/>
         <relationship name="scripts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SelftalkScript" inverseName="tags" inverseEntity="SelftalkScript"/>
     </entity>
 </model>

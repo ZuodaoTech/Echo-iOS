@@ -9,216 +9,50 @@
 "navigation.new_script" = "Nuovo Script";
 "navigation.edit_script" = "Modifica Script";
 
-// MARK: - Categories
-"category.breaking_bad_habits" = "Rompere le Cattive Abitudini";
-"category.building_good_habits" = "Costruire Buone Abitudini";
-"category.appropriate_positivity" = "Positività Appropriata";
-"category.personal_growth" = "Crescita Personale";
-"category.daily_affirmations" = "Affermazioni Quotidiane";
-"category.select" = "Seleziona Categoria";
-"category.add_new" = "Aggiungi Nuova Categoria...";
 
-// MARK: - Script Card
-"script.play_count" = "%d riproduzioni";
-"script.transcript" = "Trascrizione";
-"script.recording" = "Registrazione";
-"script.no_recording" = "Nessuna registrazione";
-"script.repetitions" = "Ripetizioni";
-"script.interval" = "Intervallo";
-"script.privacy_mode" = "Modalità Privacy";
-"script.delete" = "Elimina Script";
-"script.delete.confirm.title" = "Elimina Script";
-"script.delete.confirm.message" = "Sei sicuro di voler eliminare questo script? Questa azione non può essere annullata.";
 
-// MARK: - Settings
-"settings.app_language" = "Lingua App";
-"settings.display_language" = "Lingua di Visualizzazione";
-"settings.restart_to_apply" = "Riavvia l'app per applicare il cambio di lingua";
-"settings.default_settings" = "Impostazioni Predefinite";
-"settings.script_preferences" = "Preferenze Script";
-"settings.transcription" = "Trascrizione";
-"settings.recording" = "Registrazione";
-"settings.backup_sync" = "Backup e Sincronizzazione";
-"settings.about" = "Informazioni";
-"settings.support" = "Supporto";
+// MARK: - Tags
+"tag.now" = "Ora";
+"tag.untagged" = "Senza tag";
+"tag.edit" = "Modifica Tag";
+"tag.delete.confirm.title" = "Elimina Tag";
+"tag.delete.confirm.message" = "Questo tag è utilizzato da %d script. Eliminarlo rimuoverà il tag da questi script.";
+"tag.max_now_cards" = "Massime Carte 'Ora'";
+"tag.now_limit_reached" = "Limite Tag Ora";
+"tag.now_limit_message" = "Hai raggiunto il numero massimo di carte 'Ora' (%d). Seleziona una carta per rimuovere il tag 'Ora':";
+"tag.auto_cleanup" = "Rimuovi automaticamente i tag inutilizzati";
+"tag.select" = "Seleziona Tag";
+"tag.new" = "Nuovo Tag";
+"tag.label" = "Tag";
+"tag.none" = "Nessuno";
+"tag.count_selected" = "%d selezionati";
 
-"settings.privacy_mode.title" = "Modalità Privacy";
-"settings.privacy_mode.info" = "Audio riprodotto solo tramite auricolari";
-"settings.privacy_mode.alert.title" = "Modalità Privacy";
-"settings.privacy_mode.alert.message" = "Quando la Modalità Privacy è abilitata, le registrazioni audio verranno riprodotte solo tramite auricolari o cuffie collegate. Questo previene la riproduzione accidentale tramite altoparlanti in spazi pubblici.";
+/* 
+  Localizable.strings (Italian)
+  Echo
+*/
 
-"settings.character_guidance" = "Guida Caratteri";
-"settings.recommended_length" = "Lunghezza consigliata";
-"settings.when_exceeded" = "Quando superata";
-"settings.just_warn" = "Solo avvertimento";
-"settings.show_tip_only" = "Mostra solo suggerimento";
-"settings.character_guidance.info" = "Script più brevi sono più facili da ricordare e più efficaci";
+// MARK: - Navigation & Titles
+"navigation.cards" = "Carte";
+"navigation.me" = "Io";
+"navigation.new_script" = "Nuovo Script";
+"navigation.edit_script" = "Modifica Script";
 
-"settings.default_language" = "Lingua Predefinita";
-"settings.voice_enhancement" = "Miglioramento Vocale";
-"settings.voice_enhancement.desc" = "Riduce rumore di fondo ed eco";
-"settings.auto_trim_silence" = "Rimozione Automatica Silenzio";
-"settings.auto_trim_silence.desc" = "Rimuovi silenzio all'inizio e alla fine";
-"settings.trim_sensitivity" = "Sensibilità Rimozione";
 
-"settings.icloud_sync" = "Sincronizzazione iCloud";
-"settings.icloud_sync.desc" = "Sincronizza script tra i tuoi dispositivi";
-"settings.icloud_sync.info" = "Testo e impostazioni si sincronizzano automaticamente. I file audio rimangono locali.";
-"settings.export_scripts" = "Esporta Script";
-"settings.import_scripts" = "Importa Script";
 
-"settings.version" = "Versione";
-"settings.build" = "Build";
-"settings.rate_github" = "Valuta su GitHub";
-"settings.contact_support" = "Contatta Supporto";
+// MARK: - Tags
+"tag.now" = "Ora";
+"tag.untagged" = "Senza tag";
+"tag.edit" = "Modifica Tag";
+"tag.delete.confirm.title" = "Elimina Tag";
+"tag.delete.confirm.message" = "Questo tag è utilizzato da %d script. Eliminarlo rimuoverà il tag da questi script.";
+"tag.max_now_cards" = "Massime Carte 'Ora'";
+"tag.now_limit_reached" = "Limite Tag Ora";
+"tag.now_limit_message" = "Hai raggiunto il numero massimo di carte 'Ora' (%d). Seleziona una carta per rimuovere il tag 'Ora':";
+"tag.auto_cleanup" = "Rimuovi automaticamente i tag inutilizzati";
+"tag.select" = "Select Tags";
+"tag.new" = "New Tag";
+"tag.label" = "Tags";
+"tag.none" = "None";
+"tag.count_selected" = "%d selected";
 
-// MARK: - Recording
-"recording.start" = "Avvia Registrazione";
-"recording.stop" = "Ferma Registrazione";
-"recording.re_record" = "Registra di Nuovo";
-"recording.saved" = "Registrazione salvata";
-"recording.delete" = "Elimina";
-"recording.preview" = "Anteprima";
-"recording.playing_preview" = "Riproduzione anteprima...";
-"recording.preview_paused" = "Anteprima in pausa";
-"recording.plays_once" = "(riproduzione singola)";
-"recording.processing" = "Elaborazione audio...";
-"recording.listening" = "In ascolto...";
-"recording.speaking" = "Parlando...";
-"recording.transcribing" = "Trascrizione in corso...";
-"recording.re_transcribing" = "Ritrascrizione in corso...";
-"recording.microphone_access" = "Accesso Microfono";
-"recording.microphone_access.message" = "Concedi l'accesso al microfono nelle Impostazioni per registrare audio";
-
-// MARK: - Character Guidance
-"guidance.trim_characters" = "Considera di ridurre di %d caratteri per una migliore memorizzazione";
-"guidance.script_over" = "Lo script supera di %d caratteri. Prova ad essere più conciso";
-"guidance.script_long" = "Lo script è piuttosto lungo.";
-"guidance.enter_script" = "Inserisci qui il tuo script di dialogo interno...";
-
-// MARK: - Notifications
-"notifications.enable" = "Abilita Notifiche";
-"notifications.frequency" = "Frequenza";
-"notifications.frequency.high" = "Alta (1-2 volte/ora)";
-"notifications.frequency.medium" = "Media (ogni 2 ore)";
-"notifications.frequency.low" = "Bassa (1-2 volte/giorno)";
-"notifications.daytime_only" = "Notifiche solo durante il giorno (8:00 - 21:00)";
-"notifications.settings_title" = "Notification Settings";
-"notifications.max_cards" = "Maximum cards with notifications";
-"notifications.burden_warning" = "Too many notifications can become burdensome";
-"notifications.global_settings" = "Global Settings";
-"notifications.max_cards_footer" = "Limit how many cards can send notifications";
-"notifications.no_cards_enabled" = "No cards have notifications enabled";
-"notifications.enabled_cards" = "Enabled Cards (%d)";
-"notifications.request_permission" = "Enable Notifications";
-"notifications.select_to_disable" = "Select %d cards to disable notifications";
-"notifications.select_cards" = "Select Cards";
-"notifications.reminder_title" = "Time for Self-Talk";
-"notifications.action_play" = "Play Audio";
-"notifications.action_done" = "Mark as Done";
-
-// MARK: - Common Actions
-"action.done" = "Fatto";
-"action.cancel" = "Annulla";
-"action.delete" = "Elimina";
-"action.add" = "Aggiungi";
-"action.save" = "Salva";
-"action.ok" = "OK";
-"action.got_it" = "Capito";
-"action.copy" = "Copia";
-"action.use_as_script" = "Usa come Script";
-"action.share" = "Condividi";
-"action.edit" = "Modifica";
-
-// MARK: - Errors
-"error.title" = "Errore";
-"error.save" = "Salvataggio script fallito";
-"error.database" = "Errore database";
-"error.restart_app" = "Riavvia l'app";
-"error.try_again" = "Riprova";
-"error.import" = "Importazione fallita";
-"error.export" = "Esportazione fallita";
-
-// MARK: - Time Units
-"time.seconds" = "%@ secondi";
-"time.times_per_hour" = "1-2 volte/ora";
-"time.every_hours" = "ogni 2 ore";
-"time.times_per_day" = "1-2 volte/giorno";
-
-// MARK: - Sensitivity Levels
-"sensitivity.low" = "Bassa";
-"sensitivity.medium" = "Media";
-"sensitivity.high" = "Alta";
-"sensitivity.low.desc" = "Richiede voce più forte • buffer 0.5s";
-"sensitivity.medium.desc" = "Rilevamento bilanciato • buffer 0.3s";
-"sensitivity.high.desc" = "Rileva sussurri • buffer 0.15s";
-
-// MARK: - Sample Scripts
-"sample.smoking" = "Non fumo mai, perché puzza e odio essere controllato.";
-"sample.bedtime" = "Vado sempre a letto prima delle 22:00, perché è più salutare e amo svegliarmi con tanta energia.";
-"sample.mistakes" = "Ho commesso alcuni errori, ma ho anche fatto diverse cose bene. Gli errori sono una parte normale dell'apprendimento e posso usarli come opportunità per migliorare.";
-// MARK: - Languages
-"language.english" = "Inglese";
-"language.chinese_simplified" = "Cinese (Semplificato)";
-"language.chinese_traditional" = "Cinese (Tradizionale)";
-"language.spanish" = "Spagnolo";
-"language.french" = "Francese";
-"language.german" = "Tedesco";
-"language.japanese" = "Giapponese";
-"language.korean" = "Coreano";
-"language.portuguese" = "Portoghese";
-"language.russian" = "Russo";
-"language.italian" = "Italiano";
-"language.dutch" = "Olandese";
-"language.swedish" = "Svedese";
-"language.norwegian" = "Norvegese";
-"language.danish" = "Danese";
-"language.polish" = "Polacco";
-"language.turkish" = "Turco";
-"language.arabic" = "Arabo";
-"language.hindi" = "Hindi";
-
-// MARK: - Export/Import
-"export.format.bundle" = "Pacchetto Echo";
-"export.format.text" = "Testo semplice";
-"export.format.json" = "JSON";
-"export.include_audio" = "Includi file audio";
-"export.format_label" = "Formato";
-"export.audio_size_warning" = "I file audio aumenteranno le dimensioni dell'esportazione";
-"export.options" = "Opzioni di esportazione";
-"export.select_scripts" = "Seleziona carte";
-"export.scripts_selected" = "Carte (%d selezionate)";
-"export.error_title" = "Errore di esportazione";
-"export.error_unknown" = "Si è verificato un errore sconosciuto";
-"import.complete_title" = "Importazione completata";
-
-// MARK: - Recording Tips
-"recording.punctuation_tip" = "Suggerimento: Di' «punto», «virgola» o «punto interrogativo» per la punteggiatura";
-"recording.no_recording_message" = "Si prega di tenere premuto per modificare e registrare prima l'audio";
-
-// MARK: - Category Management
-"category.new_prompt" = "Inserisci il nome per la tua nuova categoria";
-"category.name_placeholder" = "Nome categoria";
-
-// MARK: - iCloud & Sync
-"settings.icloud_sync_desc" = "Sincronizza le carte tra i tuoi dispositivi";
-
-// MARK: - Empty State
-"empty.no_cards" = "Ancora nessuna carta";
-"empty.tap_to_create" = "Tocca il pulsante + per creare la tua prima carta di dialogo interiore";
-
-// MARK: - Filter
-"filter.all_cards" = "Tutte le carte";
-
-// MARK: - Picker Labels
-"picker.sensitivity" = "Sensibilità";
-"picker.select_language" = "Seleziona lingua";
-"picker.display_language" = "Lingua di visualizzazione";
-"settings.language_settings" = "Impostazioni lingua";
-"language.system_default" = "Predefinito di sistema";
-"settings.card_settings" = "Impostazioni carte";
-"settings.card_defaults" = "Valori predefiniti";
-"settings.about_support" = "Info e Supporto";
-"settings.sync" = "Sincronizzazione";
-"settings.backup" = "Backup";
-"script.label" = "Script";

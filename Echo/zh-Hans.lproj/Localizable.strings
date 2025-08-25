@@ -11,14 +11,22 @@
 "navigation.new_script" = "新建卡片";
 "navigation.edit_script" = "编辑卡片";
 
-// MARK: - Categories
-"category.breaking_bad_habits" = "戒除坏习惯";
-"category.building_good_habits" = "培养好习惯";
-"category.appropriate_positivity" = "适度积极";
-"category.personal_growth" = "个人成长";
-"category.daily_affirmations" = "每日肯定";
-"category.select" = "选择分类";
-"category.add_new" = "添加新分类...";
+
+// MARK: - Tags
+"tag.now" = "当下";
+"tag.untagged" = "无标签";
+"tag.edit" = "编辑标签";
+"tag.delete.confirm.title" = "删除标签";
+"tag.delete.confirm.message" = "此标签被 %d 个卡片使用。删除后将从这些卡片中移除此标签。";
+"tag.max_now_cards" = "最多「当下」卡片数";
+"tag.now_limit_reached" = "当下标签达到上限";
+"tag.now_limit_message" = "您已达到「当下」卡片的最大数量（%d）。请选择一个卡片以移除其「当下」标签：";
+"tag.auto_cleanup" = "自动删除未使用的标签";
+"tag.select" = "选择标签";
+"tag.new" = "新建标签";
+"tag.label" = "标签";
+"tag.none" = "无";
+"tag.count_selected" = "已选 %d 个";
 
 // MARK: - Script Card
 "script.play_count" = "播放 %d 次";
@@ -200,9 +208,6 @@
 "recording.punctuation_tip" = "提示：说\"句号\"、\"逗号\"或\"问号\"来添加标点符号";
 "recording.no_recording_message" = "请长按编辑并先录制音频";
 
-// MARK: - Category Management
-"category.new_prompt" = "输入新分类的名称";
-"category.name_placeholder" = "分类名称";
 
 // MARK: - iCloud & Sync
 "settings.icloud_sync_desc" = "在您的设备间同步卡片";

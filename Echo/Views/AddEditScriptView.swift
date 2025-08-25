@@ -285,18 +285,18 @@ struct AddEditScriptView: View {
                 Section(NSLocalizedString("settings.default_settings", comment: "")) {
                     // Tag Selection
                     NavigationLink {
-                        TagSelectionView(selectedTags: $selectedTags)
-                            .navigationTitle("Select Tags")
+                        TagSelectionView(selectedTags: $selectedTags, currentScript: script)
+                            .navigationTitle(NSLocalizedString("tag.select", comment: ""))
                             .navigationBarTitleDisplayMode(.inline)
                     } label: {
                         HStack {
-                            Text("Tags")
+                            Text(NSLocalizedString("tag.label", comment: ""))
                             Spacer()
                             if selectedTags.isEmpty {
-                                Text("None")
+                                Text(NSLocalizedString("tag.none", comment: ""))
                                     .foregroundColor(.secondary)
                             } else {
-                                Text("\(selectedTags.count) selected")
+                                Text(String(format: NSLocalizedString("tag.count_selected", comment: ""), selectedTags.count))
                                     .foregroundColor(.secondary)
                             }
                         }

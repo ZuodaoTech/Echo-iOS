@@ -68,32 +68,48 @@ struct ScriptCard: View {
         VStack(alignment: .leading, spacing: 12) {
             // Tags and Repetitions Header
             HStack {
-                // Show tags if any
-                if !script.tagsArray.isEmpty {
+                // Show tags or "Untagged"
+                if script.tagsArray.isEmpty {
+                    Text(NSLocalizedString("tag.untagged", comment: ""))
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(Color.gray.opacity(0.15))
+                        .foregroundColor(.gray)
+                        .cornerRadius(10)
+                } else {
+                    // Filter out "Now" tag if there are other tags
+                    let tagsToDisplay = script.tagsArray.filter { tag in
+                        // If there are other tags besides "Now", hide "Now"
+                        if tag.isNowTag && script.tagsArray.count > 1 {
+                            return false
+                        }
+                        return true
+                    }
+                    
                     HStack(spacing: 6) {
-                        ForEach(script.tagsArray.prefix(2), id: \.id) { tag in
+                        ForEach(tagsToDisplay.prefix(2), id: \.id) { tag in
                             Text(tag.name)
                                 .font(.caption)
                                 .fontWeight(.medium)
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 3)
-                                .background(cardAccentColor.opacity(0.15))
-                                .foregroundColor(cardAccentColor)
+                                .background(tag.isNowTag ? Color.yellow.opacity(0.25) : cardAccentColor.opacity(0.15))
+                                .foregroundColor(tag.isNowTag ? Color.orange : cardAccentColor)
                                 .cornerRadius(10)
                         }
                         
-                        if script.tagsArray.count > 2 {
-                            Text("+\(script.tagsArray.count - 2)")
+                        if tagsToDisplay.count > 2 {
+                            Text("+\(tagsToDisplay.count - 2)")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
                     }
                 }
                 
-                if !script.tagsArray.isEmpty {
-                    Text("•")
-                        .foregroundColor(.secondary)
-                }
+                Text("•")
+                    .foregroundColor(.secondary)
                 
                 Text("\(script.repetitions)x")
                     .font(.subheadline)

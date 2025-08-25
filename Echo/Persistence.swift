@@ -161,6 +161,8 @@ class PersistenceController: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             guard let self = self else { return }
             Tag.migrateFromCategories(context: self.container.viewContext)
+            // Create the special "Now" tag if it doesn't exist
+            _ = Tag.createOrGetNowTag(context: self.container.viewContext)
         }
         
         // Set up CloudKit schema initialization only if CloudKit is enabled and in DEBUG
