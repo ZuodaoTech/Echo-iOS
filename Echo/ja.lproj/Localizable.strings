@@ -7,7 +7,7 @@
 "navigation.cards" = "カード";
 "navigation.me" = "私";
 "navigation.new_script" = "新しいスクリプト";
-"navigation.edit_script" = "スクリプト編集";
+"navigation.edit_script" = "カード編集";
 
 // MARK: - Categories
 "category.breaking_bad_habits" = "悪い習慣を断つ";
@@ -27,8 +27,8 @@
 "script.repetitions" = "繰り返し回数";
 "script.interval" = "間隔";
 "script.privacy_mode" = "プライバシーモード";
-"script.delete" = "スクリプトを削除";
-"script.delete.confirm.title" = "スクリプトを削除";
+"script.delete" = "カードを削除";
+"script.delete.confirm.title" = "カードを削除";
 "script.delete.confirm.message" = "このスクリプトを削除してもよろしいですか？この操作は元に戻せません。";
 
 // MARK: - Settings
@@ -36,7 +36,7 @@
 "settings.display_language" = "表示言語";
 "settings.restart_to_apply" = "言語変更を適用するにはアプリを再起動してください";
 "settings.default_settings" = "デフォルト設定";
-"settings.script_preferences" = "スクリプト設定";
+"settings.script_preferences" = "カード設定";
 "settings.transcription" = "文字起こし";
 "settings.recording" = "録音";
 "settings.backup_sync" = "バックアップ・同期";
@@ -145,3 +145,67 @@
 "sample.smoking" = "私はタバコを吸いません。臭いし、コントロールされるのが嫌いだからです。";
 "sample.bedtime" = "私は毎晩10時前に寝ます。健康的だし、エネルギーに満ちて目覚めるのが大好きだからです。";
 "sample.mistakes" = "いくつか間違いをしましたが、うまくできたこともいくつかあります。間違いは学習の正常な一部で、改善の機会として活用できます。";
+// MARK: - Languages
+"language.english" = "英語";
+"language.chinese_simplified" = "中国語（簡体字）";
+"language.chinese_traditional" = "中国語（繁体字）";
+"language.spanish" = "スペイン語";
+"language.french" = "フランス語";
+"language.german" = "ドイツ語";
+"language.japanese" = "日本語";
+"language.korean" = "韓国語";
+"language.portuguese" = "ポルトガル語";
+"language.russian" = "ロシア語";
+"language.italian" = "イタリア語";
+"language.dutch" = "オランダ語";
+"language.swedish" = "スウェーデン語";
+"language.norwegian" = "ノルウェー語";
+"language.danish" = "デンマーク語";
+"language.polish" = "ポーランド語";
+"language.turkish" = "トルコ語";
+"language.arabic" = "アラビア語";
+"language.hindi" = "ヒンディー語";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Echoバンドル";
+"export.format.text" = "プレーンテキスト";
+"export.format.json" = "JSON";
+"export.include_audio" = "音声ファイルを含める";
+"export.format_label" = "フォーマット";
+"export.audio_size_warning" = "音声ファイルはエクスポートサイズを増加させます";
+"export.options" = "エクスポートオプション";
+"export.select_scripts" = "カードを選択";
+"export.scripts_selected" = "カード（%d個選択）";
+"export.error_title" = "エクスポートエラー";
+"export.error_unknown" = "不明なエラーが発生しました";
+"import.complete_title" = "インポート完了";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "ヒント：句読点には「ピリオド」「カンマ」「クエスチョンマーク」と言ってください";
+"recording.no_recording_message" = "長押しして編集し、最初に音声を録音してください";
+
+// MARK: - Category Management
+"category.new_prompt" = "新しいカテゴリの名前を入力してください";
+"category.name_placeholder" = "カテゴリ名";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "デバイス間でカードを同期";
+
+// MARK: - Empty State
+"empty.no_cards" = "カードがありません";
+"empty.tap_to_create" = "+ボタンをタップして最初のセルフトークカードを作成";
+
+// MARK: - Filter
+"filter.all_cards" = "すべてのカード";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "感度";
+"picker.select_language" = "言語を選択";
+"picker.display_language" = "表示言語";
+"settings.language_settings" = "言語設定";
+"language.system_default" = "システムデフォルト";
+"settings.card_settings" = "カード設定";
+"settings.card_defaults" = "デフォルト設定";
+"settings.about_support" = "情報とサポート";
+"settings.sync" = "同期";
+"settings.backup" = "バックアップ";

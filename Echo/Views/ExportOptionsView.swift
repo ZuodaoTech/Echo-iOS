@@ -23,13 +23,13 @@ struct ExportOptionsView: View {
         NavigationView {
             List {
                 Section {
-                    Toggle("Include Audio Files", isOn: $includeAudio)
+                    Toggle(NSLocalizedString("export.include_audio", comment: ""), isOn: $includeAudio)
                         .disabled(exportFormat == .textOnly)
                     
-                    Picker("Format", selection: $exportFormat) {
-                        Text("Echo Bundle").tag(ExportService.ExportFormat.bundle)
-                        Text("Plain Text").tag(ExportService.ExportFormat.textOnly)
-                        Text("JSON").tag(ExportService.ExportFormat.json)
+                    Picker(NSLocalizedString("export.format_label", comment: ""), selection: $exportFormat) {
+                        Text(NSLocalizedString("export.format.bundle", comment: "")).tag(ExportService.ExportFormat.bundle)
+                        Text(NSLocalizedString("export.format.text", comment: "")).tag(ExportService.ExportFormat.textOnly)
+                        Text(NSLocalizedString("export.format.json", comment: "")).tag(ExportService.ExportFormat.json)
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     
@@ -38,18 +38,18 @@ struct ExportOptionsView: View {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
                                 .font(.footnote)
-                            Text("Audio files will increase export size")
+                            Text(NSLocalizedString("export.audio_size_warning", comment: ""))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
                     }
                 } header: {
-                    Text("Export Options")
+                    Text(NSLocalizedString("export.options", comment: ""))
                 }
                 
                 Section {
                     HStack {
-                        Text("Select Scripts")
+                        Text(NSLocalizedString("export.select_scripts", comment: ""))
                         Spacer()
                         Button(selectAll ? "Deselect All" : "Select All") {
                             if selectAll {
@@ -99,20 +99,20 @@ struct ExportOptionsView: View {
                         }
                     }
                 } header: {
-                    Text("Scripts (\(selectedScripts.count) selected)")
+                    Text(String(format: NSLocalizedString("export.scripts_selected", comment: ""), selectedScripts.count))
                 }
             }
-            .navigationTitle("Export Scripts")
+            .navigationTitle(NSLocalizedString("settings.export_scripts", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(NSLocalizedString("action.cancel", comment: "")) {
                         dismiss()
                     }
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Export") {
+                    Button(NSLocalizedString("action.share", comment: "")) {
                         performExport()
                     }
                     .disabled(selectedScripts.isEmpty)
@@ -123,10 +123,10 @@ struct ExportOptionsView: View {
                     ShareSheet(items: [url])
                 }
             }
-            .alert("Export Error", isPresented: $showingError) {
-                Button("OK", role: .cancel) { }
+            .alert(NSLocalizedString("export.error_title", comment: ""), isPresented: $showingError) {
+                Button(NSLocalizedString("action.ok", comment: ""), role: .cancel) { }
             } message: {
-                Text(exportError ?? "An unknown error occurred")
+                Text(exportError ?? NSLocalizedString("export.error_unknown", comment: ""))
             }
         }
         .onAppear {

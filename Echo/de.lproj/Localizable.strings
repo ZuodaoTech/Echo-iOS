@@ -6,7 +6,7 @@
 // MARK: - Navigation & Titles
 "navigation.cards" = "Karten";
 "navigation.me" = "Ich";
-"navigation.new_script" = "Neues Skript";
+"navigation.new_script" = "Neue Karte";
 "navigation.edit_script" = "Skript bearbeiten";
 
 // MARK: - Categories
@@ -36,7 +36,7 @@
 "settings.display_language" = "Anzeigesprache";
 "settings.restart_to_apply" = "App neu starten, um Sprachwechsel anzuwenden";
 "settings.default_settings" = "Standardeinstellungen";
-"settings.script_preferences" = "Skript-Einstellungen";
+"settings.script_preferences" = "Karten-Einstellungen";
 "settings.transcription" = "Transkription";
 "settings.recording" = "Aufnahme";
 "settings.backup_sync" = "Sicherung & Sync";
@@ -145,3 +145,67 @@
 "sample.smoking" = "Ich rauche nie, weil es stinkt und ich es hasse, kontrolliert zu werden.";
 "sample.bedtime" = "Ich gehe immer vor 22 Uhr ins Bett, weil es gesünder ist und ich es liebe, mit viel Energie aufzuwachen.";
 "sample.mistakes" = "Ich habe einige Fehler gemacht, aber ich habe auch mehrere Dinge gut gemacht. Fehler sind ein normaler Teil des Lernens und ich kann sie als Chance zur Verbesserung nutzen.";
+// MARK: - Languages
+"language.english" = "Englisch";
+"language.chinese_simplified" = "Chinesisch (Vereinfacht)";
+"language.chinese_traditional" = "Chinesisch (Traditionell)";
+"language.spanish" = "Spanisch";
+"language.french" = "Französisch";
+"language.german" = "Deutsch";
+"language.japanese" = "Japanisch";
+"language.korean" = "Koreanisch";
+"language.portuguese" = "Portugiesisch";
+"language.russian" = "Russisch";
+"language.italian" = "Italienisch";
+"language.dutch" = "Niederländisch";
+"language.swedish" = "Schwedisch";
+"language.norwegian" = "Norwegisch";
+"language.danish" = "Dänisch";
+"language.polish" = "Polnisch";
+"language.turkish" = "Türkisch";
+"language.arabic" = "Arabisch";
+"language.hindi" = "Hindi";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Echo-Paket";
+"export.format.text" = "Klartext";
+"export.format.json" = "JSON";
+"export.include_audio" = "Audiodateien einschließen";
+"export.format_label" = "Format";
+"export.audio_size_warning" = "Audiodateien erhöhen die Exportgröße";
+"export.options" = "Exportoptionen";
+"export.select_scripts" = "Karten auswählen";
+"export.scripts_selected" = "Karten (%d ausgewählt)";
+"export.error_title" = "Exportfehler";
+"export.error_unknown" = "Ein unbekannter Fehler ist aufgetreten";
+"import.complete_title" = "Import abgeschlossen";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Tipp: Sagen Sie \"Punkt\", \"Komma\" oder \"Fragezeichen\" für Satzzeichen";
+"recording.no_recording_message" = "Bitte lange drücken zum Bearbeiten und zuerst Audio aufnehmen";
+
+// MARK: - Category Management
+"category.new_prompt" = "Geben Sie den Namen für Ihre neue Kategorie ein";
+"category.name_placeholder" = "Kategoriename";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Karten zwischen Ihren Geräten synchronisieren";
+
+// MARK: - Empty State
+"empty.no_cards" = "Noch keine Karten";
+"empty.tap_to_create" = "Tippen Sie auf die + Taste, um Ihre erste Selbstgesprächskarte zu erstellen";
+
+// MARK: - Filter
+"filter.all_cards" = "Alle Karten";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Empfindlichkeit";
+"picker.select_language" = "Sprache auswählen";
+"picker.display_language" = "Anzeigesprache";
+"settings.language_settings" = "Spracheinstellungen";
+"language.system_default" = "Systemstandard";
+"settings.card_settings" = "Karteneinstellungen";
+"settings.card_defaults" = "Standardwerte";
+"settings.about_support" = "Über & Support";
+"settings.sync" = "Synchronisierung";
+"settings.backup" = "Sicherung";

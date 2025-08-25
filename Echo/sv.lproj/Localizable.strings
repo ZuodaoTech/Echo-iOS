@@ -145,3 +145,67 @@
 "sample.smoking" = "Jag röker aldrig, för det stinker och jag hatar att bli kontrollerad.";
 "sample.bedtime" = "Jag går alltid till sängs före 22:00, för det är hälsosammare och jag älskar att vakna med mycket energi.";
 "sample.mistakes" = "Jag gjorde några misstag, men jag gjorde också flera saker bra. Misstag är en normal del av lärande, och jag kan använda dem som en möjlighet att förbättra mig.";
+// MARK: - Languages
+"language.english" = "Engelska";
+"language.chinese_simplified" = "Kinesiska (förenklad)";
+"language.chinese_traditional" = "Kinesiska (traditionell)";
+"language.spanish" = "Spanska";
+"language.french" = "Franska";
+"language.german" = "Tyska";
+"language.japanese" = "Japanska";
+"language.korean" = "Koreanska";
+"language.portuguese" = "Portugisiska";
+"language.russian" = "Ryska";
+"language.italian" = "Italienska";
+"language.dutch" = "Nederländska";
+"language.swedish" = "Svenska";
+"language.norwegian" = "Norska";
+"language.danish" = "Danska";
+"language.polish" = "Polska";
+"language.turkish" = "Turkiska";
+"language.arabic" = "Arabiska";
+"language.hindi" = "Hindi";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Echo-paket";
+"export.format.text" = "Vanlig text";
+"export.format.json" = "JSON";
+"export.include_audio" = "Inkludera ljudfiler";
+"export.format_label" = "Format";
+"export.audio_size_warning" = "Ljudfiler ökar exportstorleken";
+"export.options" = "Exportalternativ";
+"export.select_scripts" = "Välj kort";
+"export.scripts_selected" = "Kort (%d valda)";
+"export.error_title" = "Exportfel";
+"export.error_unknown" = "Ett okänt fel uppstod";
+"import.complete_title" = "Import slutförd";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Tips: Säg «punkt», «komma» eller «frågetecken» för skiljetecken";
+"recording.no_recording_message" = "Tryck länge för att redigera och spela in ljud först";
+
+// MARK: - Category Management
+"category.new_prompt" = "Ange namnet för din nya kategori";
+"category.name_placeholder" = "Kategorinamn";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Synkronisera kort mellan dina enheter";
+
+// MARK: - Empty State
+"empty.no_cards" = "Inga kort än";
+"empty.tap_to_create" = "Tryck på + knappen för att skapa ditt första självsamtalskort";
+
+// MARK: - Filter
+"filter.all_cards" = "Alla kort";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Känslighet";
+"picker.select_language" = "Välj språk";
+"picker.display_language" = "Visningsspråk";
+"settings.language_settings" = "Språkinställningar";
+"language.system_default" = "Systemstandard";
+"settings.card_settings" = "Kortinställningar";
+"settings.card_defaults" = "Standardvärden";
+"settings.about_support" = "Om & Support";
+"settings.sync" = "Synkronisering";
+"settings.backup" = "Säkerhetskopiering";

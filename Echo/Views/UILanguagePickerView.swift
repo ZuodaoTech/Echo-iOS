@@ -5,26 +5,28 @@ struct UILanguagePickerView: View {
     @Environment(\.dismiss) private var dismiss
     
     // Available UI languages for the app
-    private let languages = [
-        ("system", "System Default", "⚙️"),
-        ("en", "English", "🇺🇸"),
-        ("zh-Hans", "简体中文", "🇨🇳"),
-        ("zh-Hant", "繁體中文", "🇹🇼"),
-        ("es", "Español", "🇪🇸"),
-        ("fr", "Français", "🇫🇷"),
-        ("de", "Deutsch", "🇩🇪"),
-        ("ja", "日本語", "🇯🇵"),
-        ("ko", "한국어", "🇰🇷"),
-        ("it", "Italiano", "🇮🇹"),
-        ("pt", "Português", "🇵🇹"),
-        ("ru", "Русский", "🇷🇺"),
-        ("nl", "Nederlands", "🇳🇱"),
-        ("sv", "Svenska", "🇸🇪"),
-        ("nb", "Norsk", "🇳🇴"),
-        ("da", "Dansk", "🇩🇰"),
-        ("pl", "Polski", "🇵🇱"),
-        ("tr", "Türkçe", "🇹🇷")
-    ]
+    private var languages: [(String, String, String)] {
+        [
+            ("system", NSLocalizedString("language.system_default", comment: ""), "⚙️"),
+            ("en", "English", "🇺🇸"),
+            ("zh-Hans", "简体中文", "🇨🇳"),
+            ("zh-Hant", "繁體中文", "🇹🇼"),
+            ("es", "Español", "🇪🇸"),
+            ("fr", "Français", "🇫🇷"),
+            ("de", "Deutsch", "🇩🇪"),
+            ("ja", "日本語", "🇯🇵"),
+            ("ko", "한국어", "🇰🇷"),
+            ("it", "Italiano", "🇮🇹"),
+            ("pt", "Português", "🇵🇹"),
+            ("ru", "Русский", "🇷🇺"),
+            ("nl", "Nederlands", "🇳🇱"),
+            ("sv", "Svenska", "🇸🇪"),
+            ("nb", "Norsk", "🇳🇴"),
+            ("da", "Dansk", "🇩🇰"),
+            ("pl", "Polski", "🇵🇱"),
+            ("tr", "Türkçe", "🇹🇷")
+        ]
+    }
     
     var body: some View {
         NavigationView {
@@ -55,11 +57,11 @@ struct UILanguagePickerView: View {
                     }
                 }
             }
-            .navigationTitle("Display Language")
+            .navigationTitle(NSLocalizedString("picker.display_language", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                    Button(NSLocalizedString("action.done", comment: "")) {
                         dismiss()
                     }
                 }

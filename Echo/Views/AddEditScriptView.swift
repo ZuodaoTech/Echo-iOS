@@ -74,7 +74,7 @@ struct AddEditScriptView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section("Script") {
+                Section(NSLocalizedString("navigation.cards", comment: "")) {
                     VStack(alignment: .leading, spacing: 8) {
                         ZStack(alignment: .topLeading) {
                             // Invisible text for height calculation
@@ -98,7 +98,7 @@ struct AddEditScriptView: View {
                                 .overlay(
                                     Group {
                                         if scriptText.isEmpty {
-                                            Text("Enter your self-talk script here...")
+                                            Text(NSLocalizedString("guidance.enter_script", comment: ""))
                                                 .foregroundColor(.secondary)
                                                 .padding(.top, 8)
                                                 .padding(.leading, 4)
@@ -149,29 +149,29 @@ struct AddEditScriptView: View {
                 }
                 
                 if isEditing {
-                    Section("Recording") {
+                    Section(NSLocalizedString("script.recording", comment: "")) {
                         // Transcription Language Picker
                         VStack(alignment: .leading, spacing: 4) {
-                            Picker("Transcription Language", selection: $transcriptionLanguage) {
-                                Text("English").tag("en-US")
-                                Text("Chinese (Simplified)").tag("zh-CN")
-                                Text("Chinese (Traditional)").tag("zh-TW")
-                                Text("Spanish").tag("es-ES")
-                                Text("French").tag("fr-FR")
-                                Text("German").tag("de-DE")
-                                Text("Japanese").tag("ja-JP")
-                                Text("Korean").tag("ko-KR")
-                                Text("Portuguese").tag("pt-BR")
-                                Text("Russian").tag("ru-RU")
-                                Text("Italian").tag("it-IT")
-                                Text("Dutch").tag("nl-NL")
-                                Text("Swedish").tag("sv-SE")
-                                Text("Norwegian").tag("nb-NO")
-                                Text("Danish").tag("da-DK")
-                                Text("Polish").tag("pl-PL")
-                                Text("Turkish").tag("tr-TR")
-                                Text("Arabic").tag("ar-SA")
-                                Text("Hindi").tag("hi-IN")
+                            Picker(NSLocalizedString("settings.transcription", comment: ""), selection: $transcriptionLanguage) {
+                                Text(NSLocalizedString("language.english", comment: "")).tag("en-US")
+                                Text(NSLocalizedString("language.chinese_simplified", comment: "")).tag("zh-CN")
+                                Text(NSLocalizedString("language.chinese_traditional", comment: "")).tag("zh-TW")
+                                Text(NSLocalizedString("language.spanish", comment: "")).tag("es-ES")
+                                Text(NSLocalizedString("language.french", comment: "")).tag("fr-FR")
+                                Text(NSLocalizedString("language.german", comment: "")).tag("de-DE")
+                                Text(NSLocalizedString("language.japanese", comment: "")).tag("ja-JP")
+                                Text(NSLocalizedString("language.korean", comment: "")).tag("ko-KR")
+                                Text(NSLocalizedString("language.portuguese", comment: "")).tag("pt-BR")
+                                Text(NSLocalizedString("language.russian", comment: "")).tag("ru-RU")
+                                Text(NSLocalizedString("language.italian", comment: "")).tag("it-IT")
+                                Text(NSLocalizedString("language.dutch", comment: "")).tag("nl-NL")
+                                Text(NSLocalizedString("language.swedish", comment: "")).tag("sv-SE")
+                                Text(NSLocalizedString("language.norwegian", comment: "")).tag("nb-NO")
+                                Text(NSLocalizedString("language.danish", comment: "")).tag("da-DK")
+                                Text(NSLocalizedString("language.polish", comment: "")).tag("pl-PL")
+                                Text(NSLocalizedString("language.turkish", comment: "")).tag("tr-TR")
+                                Text(NSLocalizedString("language.arabic", comment: "")).tag("ar-SA")
+                                Text(NSLocalizedString("language.hindi", comment: "")).tag("hi-IN")
                             }
                             .onChange(of: transcriptionLanguage) { newValue in
                                 // Save language preference and re-transcribe if there's an existing recording
@@ -196,7 +196,7 @@ struct AddEditScriptView: View {
                             if #available(iOS 16, *) {
                                 // iOS 16+ has automatic punctuation
                             } else {
-                                Text("Tip: Say 'period', 'comma', or 'question mark' for punctuation")
+                                Text(NSLocalizedString("recording.punctuation_tip", comment: ""))
                                     .font(.caption2)
                                     .foregroundColor(.secondary)
                             }
@@ -219,7 +219,7 @@ struct AddEditScriptView: View {
                         if hasRecording && (isRetranscribing || (script?.transcribedText != nil && !(script?.transcribedText?.isEmpty ?? true))) {
                             VStack(alignment: .leading, spacing: 8) {
                                 HStack {
-                                    Label("Transcript", systemImage: "text.quote")
+                                    Label(NSLocalizedString("script.transcript", comment: ""), systemImage: "text.quote")
                                         .font(.subheadline)
                                         .foregroundColor(.secondary)
                                     
@@ -227,7 +227,7 @@ struct AddEditScriptView: View {
                                         Spacer()
                                         ProgressView()
                                             .scaleEffect(0.8)
-                                        Text("Re-transcribing...")
+                                        Text(NSLocalizedString("recording.re_transcribing", comment: ""))
                                             .font(.caption)
                                             .foregroundColor(.secondary)
                                     }
@@ -250,7 +250,7 @@ struct AddEditScriptView: View {
                                             HStack(spacing: 4) {
                                                 Image(systemName: "doc.on.doc")
                                                     .imageScale(.small)
-                                                Text("Copy")
+                                                Text(NSLocalizedString("action.copy", comment: ""))
                                             }
                                             .font(.caption)
                                             .foregroundColor(.accentColor)
@@ -272,7 +272,7 @@ struct AddEditScriptView: View {
                                             HStack(spacing: 4) {
                                                 Image(systemName: "arrow.up.doc")
                                                     .imageScale(.small)
-                                                Text("Use as Script")
+                                                Text(NSLocalizedString("action.use_as_script", comment: ""))
                                             }
                                             .font(.caption)
                                             .foregroundColor(.accentColor)
@@ -284,10 +284,10 @@ struct AddEditScriptView: View {
                     }
                 }
                 
-                Section("Settings") {
+                Section(NSLocalizedString("settings.default_settings", comment: "")) {
                     // Category Picker
                     HStack {
-                        Text("Category")
+                        Text(NSLocalizedString("category.select", comment: ""))
                         Spacer()
                         Menu {
                             ForEach(categories, id: \.id) { category in
@@ -307,11 +307,11 @@ struct AddEditScriptView: View {
                             Button {
                                 showingNewCategoryAlert = true
                             } label: {
-                                Label("Add New Category...", systemImage: "plus")
+                                Label(NSLocalizedString("category.add_new", comment: ""), systemImage: "plus")
                             }
                         } label: {
                             HStack {
-                                Text(selectedCategory?.name ?? "Select Category")
+                                Text(selectedCategory?.name ?? NSLocalizedString("category.select", comment: ""))
                                     .foregroundColor(selectedCategory == nil ? .secondary : .primary)
                                 Image(systemName: "chevron.down")
                                     .font(.caption)
@@ -323,7 +323,7 @@ struct AddEditScriptView: View {
                     // Repetitions Stepper
                     Stepper(value: $repetitions, in: 1...10) {
                         HStack {
-                            Text("Repetitions")
+                            Text(NSLocalizedString("script.repetitions", comment: ""))
                             Spacer()
                             Text("\(repetitions)x")
                                 .foregroundColor(.secondary)
@@ -344,7 +344,7 @@ struct AddEditScriptView: View {
                     // Privacy Mode Toggle
                     Toggle(isOn: $privacyModeEnabled) {
                         HStack {
-                            Text("Privacy Mode")
+                            Text(NSLocalizedString("script.privacy_mode", comment: ""))
                             Button {
                                 showingPrivacyAlert = true
                             } label: {
@@ -368,7 +368,7 @@ struct AddEditScriptView: View {
                     }
                     
                     // Notification Settings
-                    Toggle("Enable Notifications", isOn: $notificationEnabled)
+                    Toggle(NSLocalizedString("notifications.enable", comment: ""), isOn: $notificationEnabled)
                         .onChange(of: notificationEnabled) { newValue in
                             if let script = script {
                                 if newValue {
@@ -394,10 +394,10 @@ struct AddEditScriptView: View {
                     
                     if notificationEnabled {
                         VStack(alignment: .leading, spacing: 8) {
-                            Picker("Frequency", selection: $notificationFrequency) {
-                                Text("High (1-2 times/hour)").tag("high")
-                                Text("Medium (every 2 hours)").tag("medium")
-                                Text("Low (1-2 times/day)").tag("low")
+                            Picker(NSLocalizedString("notifications.frequency", comment: ""), selection: $notificationFrequency) {
+                                Text(NSLocalizedString("notifications.frequency.high", comment: "")).tag("high")
+                                Text(NSLocalizedString("notifications.frequency.medium", comment: "")).tag("medium")
+                                Text(NSLocalizedString("notifications.frequency.low", comment: "")).tag("low")
                             }
                             .pickerStyle(.menu)
                             .onChange(of: notificationFrequency) { newValue in
@@ -413,7 +413,7 @@ struct AddEditScriptView: View {
                                 }
                             }
                             
-                            Text("Notifications only during daytime (8 AM - 9 PM)")
+                            Text(NSLocalizedString("notifications.daytime_only", comment: ""))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
@@ -428,7 +428,7 @@ struct AddEditScriptView: View {
                         } label: {
                             HStack {
                                 Spacer()
-                                Text("Delete Script")
+                                Text(NSLocalizedString("script.delete", comment: ""))
                                     .fontWeight(.medium)
                                 Spacer()
                             }
@@ -436,11 +436,11 @@ struct AddEditScriptView: View {
                     }
                 }
             }
-            .navigationTitle(isEditing ? "Edit Script" : "New Script")
+            .navigationTitle(isEditing ? NSLocalizedString("navigation.edit_script", comment: "") : NSLocalizedString("navigation.new_script", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                    Button(NSLocalizedString("action.done", comment: "")) {
                         handleDone()
                     }
                     .font(.body.weight(.medium))
@@ -451,37 +451,37 @@ struct AddEditScriptView: View {
                 // Auto-save when view disappears (including swipe down)
                 autoSave()
             }
-            .alert("New Category", isPresented: $showingNewCategoryAlert) {
-                TextField("Category Name", text: $newCategoryName)
-                Button("Cancel", role: .cancel) {
+            .alert(NSLocalizedString("category.add_new", comment: ""), isPresented: $showingNewCategoryAlert) {
+                TextField(NSLocalizedString("category.name_placeholder", comment: ""), text: $newCategoryName)
+                Button(NSLocalizedString("action.cancel", comment: ""), role: .cancel) {
                     newCategoryName = ""
                 }
-                Button("Add") {
+                Button(NSLocalizedString("action.add", comment: "")) {
                     createNewCategory()
                 }
             } message: {
-                Text("Enter the name for your new category")
+                Text(NSLocalizedString("category.new_prompt", comment: ""))
             }
-            .alert("Microphone Access", isPresented: $showingMicPermissionAlert) {
-                Button("OK") { }
+            .alert(NSLocalizedString("recording.microphone_access", comment: ""), isPresented: $showingMicPermissionAlert) {
+                Button(NSLocalizedString("action.ok", comment: "")) { }
             } message: {
-                Text("Please grant microphone access in Settings to record audio")
+                Text(NSLocalizedString("recording.microphone_access.message", comment: ""))
             }
-            .alert("Privacy Mode", isPresented: $showingPrivacyAlert) {
-                Button("Got it", role: .cancel) { }
+            .alert(NSLocalizedString("settings.privacy_mode.title", comment: ""), isPresented: $showingPrivacyAlert) {
+                Button(NSLocalizedString("action.got_it", comment: ""), role: .cancel) { }
             } message: {
-                Text("When Privacy Mode is enabled, audio recordings will only play through connected earphones or headphones. This prevents accidental playback through speakers in public spaces.")
+                Text(NSLocalizedString("settings.privacy_mode.alert.message", comment: ""))
             }
-            .alert("Delete Script", isPresented: $showingDeleteAlert) {
-                Button("Cancel", role: .cancel) { }
-                Button("Delete", role: .destructive) {
+            .alert(NSLocalizedString("script.delete.confirm.title", comment: ""), isPresented: $showingDeleteAlert) {
+                Button(NSLocalizedString("action.cancel", comment: ""), role: .cancel) { }
+                Button(NSLocalizedString("action.delete", comment: ""), role: .destructive) {
                     performDeletion()
                 }
             } message: {
-                Text("Are you sure you want to delete this script? This action cannot be undone.")
+                Text(NSLocalizedString("script.delete.confirm.message", comment: ""))
             }
-            .alert("Error", isPresented: $showingErrorAlert) {
-                Button("OK", role: .cancel) { }
+            .alert(NSLocalizedString("error.title", comment: ""), isPresented: $showingErrorAlert) {
+                Button(NSLocalizedString("action.ok", comment: ""), role: .cancel) { }
             } message: {
                 Text(errorMessage)
             }
@@ -895,7 +895,7 @@ struct RecordingButton: View {
                             .font(.title2)  // Standardized size
                             .foregroundColor(.green)
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("Recording saved")
+                            Text(NSLocalizedString("recording.saved", comment: ""))
                                 .foregroundColor(.secondary)
                             if !recordingDuration.isEmpty {
                                 Text(recordingDuration)
@@ -908,7 +908,7 @@ struct RecordingButton: View {
                         Button {
                             onDelete()
                         } label: {
-                            Text("Delete")
+                            Text(NSLocalizedString("action.delete", comment: ""))
                                 .font(.callout)
                                 .foregroundColor(.red)
                         }
@@ -922,7 +922,7 @@ struct RecordingButton: View {
                             Image(systemName: isPlaying ? "pause.circle.fill" : (isPaused ? "play.circle.fill" : "play.circle.fill"))
                                 .font(.title2)  // Standardized size
                             
-                            Text("Preview")
+                            Text(NSLocalizedString("recording.preview", comment: ""))
                                 .fontWeight(.medium)
                         }
                         .frame(maxWidth: .infinity)
@@ -942,13 +942,13 @@ struct RecordingButton: View {
                                 .tint(.blue)
                             
                             HStack {
-                                Text(isPlaying ? "Playing preview..." : "Preview paused")
+                                Text(isPlaying ? NSLocalizedString("recording.playing_preview", comment: "") : NSLocalizedString("recording.preview_paused", comment: ""))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                                 
                                 Spacer()
                                 
-                                Text("(plays once)")
+                                Text(NSLocalizedString("recording.plays_once", comment: ""))
                                     .font(.caption2)
                                     .foregroundColor(.secondary)
                             }
@@ -965,7 +965,7 @@ struct RecordingButton: View {
                         .font(.title2)
                         .foregroundColor(isRecording ? .red : .blue)
                     
-                    Text(isRecording ? "Stop Recording" : (hasRecording ? "Re-record" : "Start Recording"))
+                    Text(isRecording ? NSLocalizedString("recording.stop", comment: "") : (hasRecording ? NSLocalizedString("recording.re_record", comment: "") : NSLocalizedString("recording.start", comment: "")))
                         .fontWeight(.medium)
                 }
                 .frame(maxWidth: .infinity)
@@ -982,7 +982,7 @@ struct RecordingButton: View {
                     HStack {
                         Image(systemName: "dot.radiowaves.left.and.right")
                             .foregroundColor(.red)
-                        Text(voiceActivityLevel > 0.1 ? "Speaking..." : "Listening...")
+                        Text(voiceActivityLevel > 0.1 ? NSLocalizedString("recording.speaking", comment: "") : NSLocalizedString("recording.listening", comment: ""))
                             .foregroundColor(.secondary)
                     }
                     
@@ -1005,7 +1005,7 @@ struct RecordingButton: View {
                 HStack {
                     ProgressView()
                         .scaleEffect(0.8)
-                    Text("Processing audio...")
+                    Text(NSLocalizedString("recording.processing", comment: ""))
                         .foregroundColor(.secondary)
                         .padding(.leading, 4)
                 }

@@ -48,11 +48,11 @@ struct LanguagePickerView: View {
                     }
                 }
             }
-            .navigationTitle("Select Language")
+            .navigationTitle(NSLocalizedString("picker.select_language", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                    Button(NSLocalizedString("action.done", comment: "")) {
                         dismiss()
                     }
                 }

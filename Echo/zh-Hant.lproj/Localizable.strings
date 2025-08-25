@@ -6,8 +6,8 @@
 // MARK: - Navigation & Titles
 "navigation.cards" = "卡片";
 "navigation.me" = "我";
-"navigation.new_script" = "新建腳本";
-"navigation.edit_script" = "編輯腳本";
+"navigation.new_script" = "新建卡片";
+"navigation.edit_script" = "編輯卡片";
 
 // MARK: - Categories
 "category.breaking_bad_habits" = "戒除壞習慣";
@@ -27,8 +27,8 @@
 "script.repetitions" = "重複次數";
 "script.interval" = "間隔時間";
 "script.privacy_mode" = "隱私模式";
-"script.delete" = "刪除腳本";
-"script.delete.confirm.title" = "刪除腳本";
+"script.delete" = "刪除卡片";
+"script.delete.confirm.title" = "刪除卡片";
 "script.delete.confirm.message" = "您確定要刪除此腳本嗎？此操作無法復原。";
 
 // MARK: - Settings
@@ -145,3 +145,67 @@
 "sample.smoking" = "我絕不吸菸，因為它很臭，而且我討厭被控制。";
 "sample.bedtime" = "我總是在晚上 10 點前上床睡覺，因為這更健康，我喜歡精力充沛地醒來。";
 "sample.mistakes" = "我犯了一些錯誤，但我也做對了許多事情。錯誤是學習的正常部分，我可以將其作為改進的機會。";
+// MARK: - Languages
+"language.english" = "英語";
+"language.chinese_simplified" = "簡體中文";
+"language.chinese_traditional" = "繁體中文";
+"language.spanish" = "西班牙語";
+"language.french" = "法語";
+"language.german" = "德語";
+"language.japanese" = "日語";
+"language.korean" = "韓語";
+"language.portuguese" = "葡萄牙語";
+"language.russian" = "俄語";
+"language.italian" = "義大利語";
+"language.dutch" = "荷蘭語";
+"language.swedish" = "瑞典語";
+"language.norwegian" = "挪威語";
+"language.danish" = "丹麥語";
+"language.polish" = "波蘭語";
+"language.turkish" = "土耳其語";
+"language.arabic" = "阿拉伯語";
+"language.hindi" = "印地語";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Echo 資料包";
+"export.format.text" = "純文字";
+"export.format.json" = "JSON";
+"export.include_audio" = "包含音訊檔案";
+"export.format_label" = "格式";
+"export.audio_size_warning" = "音訊檔案會增加匯出大小";
+"export.options" = "匯出選項";
+"export.select_scripts" = "選擇卡片";
+"export.scripts_selected" = "卡片（已選擇 %d 個）";
+"export.error_title" = "匯出錯誤";
+"export.error_unknown" = "發生未知錯誤";
+"import.complete_title" = "匯入完成";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "提示：說\"句號\"、\"逗號\"或\"問號\"來添加標點符號";
+"recording.no_recording_message" = "請長按編輯並先錄製音訊";
+
+// MARK: - Category Management
+"category.new_prompt" = "輸入新分類的名稱";
+"category.name_placeholder" = "分類名稱";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "在您的裝置間同步卡片";
+
+// MARK: - Empty State
+"empty.no_cards" = "還沒有卡片";
+"empty.tap_to_create" = "點擊 + 按鈕建立您的第一張自我對話卡片";
+
+// MARK: - Filter
+"filter.all_cards" = "所有卡片";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "敏感度";
+"picker.select_language" = "選擇語言";
+"picker.display_language" = "顯示語言";
+"settings.language_settings" = "語言設定";
+"language.system_default" = "系統預設";
+"settings.card_settings" = "卡片設置";
+"settings.card_defaults" = "卡片預設值";
+"settings.about_support" = "關於與支援";
+"settings.sync" = "同步";
+"settings.backup" = "備份";

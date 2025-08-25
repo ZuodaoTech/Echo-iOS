@@ -145,3 +145,67 @@
 "sample.smoking" = "Nigdy nie palę, bo to śmierdzi i nienawidzę być kontrolowany.";
 "sample.bedtime" = "Zawsze kładę się spać przed 22:00, bo to zdrowsze i uwielbiam budzić się z dużą energią.";
 "sample.mistakes" = "Popełniłem kilka błędów, ale zrobiłem też kilka rzeczy dobrze. Błędy to normalna część uczenia się i mogę wykorzystać je jako okazję do poprawy.";
+// MARK: - Languages
+"language.english" = "Angielski";
+"language.chinese_simplified" = "Chiński (uproszczony)";
+"language.chinese_traditional" = "Chiński (tradycyjny)";
+"language.spanish" = "Hiszpański";
+"language.french" = "Francuski";
+"language.german" = "Niemiecki";
+"language.japanese" = "Japoński";
+"language.korean" = "Koreański";
+"language.portuguese" = "Portugalski";
+"language.russian" = "Rosyjski";
+"language.italian" = "Włoski";
+"language.dutch" = "Holenderski";
+"language.swedish" = "Szwedzki";
+"language.norwegian" = "Norweski";
+"language.danish" = "Duński";
+"language.polish" = "Polski";
+"language.turkish" = "Turecki";
+"language.arabic" = "Arabski";
+"language.hindi" = "Hindi";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Pakiet Echo";
+"export.format.text" = "Zwykły tekst";
+"export.format.json" = "JSON";
+"export.include_audio" = "Dołącz pliki audio";
+"export.format_label" = "Format";
+"export.audio_size_warning" = "Pliki audio zwiększą rozmiar eksportu";
+"export.options" = "Opcje eksportu";
+"export.select_scripts" = "Wybierz karty";
+"export.scripts_selected" = "Karty (%d wybrane)";
+"export.error_title" = "Błąd eksportu";
+"export.error_unknown" = "Wystąpił nieznany błąd";
+"import.complete_title" = "Import zakończony";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Wskazówka: Powiedz «kropka», «przecinek» lub «znak zapytania» dla interpunkcji";
+"recording.no_recording_message" = "Przytrzymaj długo, aby edytować i najpierw nagrać dźwięk";
+
+// MARK: - Category Management
+"category.new_prompt" = "Wprowadź nazwę nowej kategorii";
+"category.name_placeholder" = "Nazwa kategorii";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Synchronizuj karty między urządzeniami";
+
+// MARK: - Empty State
+"empty.no_cards" = "Brak kart";
+"empty.tap_to_create" = "Stuknij przycisk +, aby utworzyć pierwszą kartę samodzielnej rozmowy";
+
+// MARK: - Filter
+"filter.all_cards" = "Wszystkie karty";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Czułość";
+"picker.select_language" = "Wybierz język";
+"picker.display_language" = "Język wyświetlania";
+"settings.language_settings" = "Ustawienia języka";
+"language.system_default" = "Domyślny systemowy";
+"settings.card_settings" = "Ustawienia kart";
+"settings.card_defaults" = "Wartości domyślne";
+"settings.about_support" = "O aplikacji i wsparcie";
+"settings.sync" = "Synchronizacja";
+"settings.backup" = "Kopia zapasowa";

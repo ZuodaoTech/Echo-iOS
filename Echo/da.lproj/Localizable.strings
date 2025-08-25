@@ -145,3 +145,67 @@
 "sample.smoking" = "Jeg ryger aldrig, fordi det stinker og jeg hader at blive kontrolleret.";
 "sample.bedtime" = "Jeg går altid i seng før kl. 22:00, fordi det er sundere og jeg elsker at vågne med masser af energi.";
 "sample.mistakes" = "Jeg lavede nogle fejl, men jeg gjorde også flere ting godt. Fejl er en normal del af læring, og jeg kan bruge dem som en mulighed for at forbedre mig.";
+// MARK: - Languages
+"language.english" = "Engelsk";
+"language.chinese_simplified" = "Kinesisk (forenklet)";
+"language.chinese_traditional" = "Kinesisk (traditionel)";
+"language.spanish" = "Spansk";
+"language.french" = "Fransk";
+"language.german" = "Tysk";
+"language.japanese" = "Japansk";
+"language.korean" = "Koreansk";
+"language.portuguese" = "Portugisisk";
+"language.russian" = "Russisk";
+"language.italian" = "Italiensk";
+"language.dutch" = "Nederlandsk";
+"language.swedish" = "Svensk";
+"language.norwegian" = "Norsk";
+"language.danish" = "Dansk";
+"language.polish" = "Polsk";
+"language.turkish" = "Tyrkisk";
+"language.arabic" = "Arabisk";
+"language.hindi" = "Hindi";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Echo-pakke";
+"export.format.text" = "Ren tekst";
+"export.format.json" = "JSON";
+"export.include_audio" = "Inkluder lydfiler";
+"export.format_label" = "Format";
+"export.audio_size_warning" = "Lydfiler øger eksportstørrelsen";
+"export.options" = "Eksportindstillinger";
+"export.select_scripts" = "Vælg kort";
+"export.scripts_selected" = "Kort (%d valgt)";
+"export.error_title" = "Eksportfejl";
+"export.error_unknown" = "Der opstod en ukendt fejl";
+"import.complete_title" = "Import fuldført";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Tip: Sig «punktum», «komma» eller «spørgsmålstegn» for tegnsætning";
+"recording.no_recording_message" = "Tryk og hold for at redigere og optage lyd først";
+
+// MARK: - Category Management
+"category.new_prompt" = "Indtast navnet på din nye kategori";
+"category.name_placeholder" = "Kategorinavn";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Synkroniser kort mellem dine enheder";
+
+// MARK: - Empty State
+"empty.no_cards" = "Ingen kort endnu";
+"empty.tap_to_create" = "Tryk på + knappen for at oprette dit første selvsamtalekort";
+
+// MARK: - Filter
+"filter.all_cards" = "Alle kort";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Følsomhed";
+"picker.select_language" = "Vælg sprog";
+"picker.display_language" = "Visningssprog";
+"settings.language_settings" = "Sprogindstillinger";
+"language.system_default" = "Systemstandard";
+"settings.card_settings" = "Kortindstillinger";
+"settings.card_defaults" = "Standardværdier";
+"settings.about_support" = "Om & Support";
+"settings.sync" = "Synkronisering";
+"settings.backup" = "Sikkerhedskopi";

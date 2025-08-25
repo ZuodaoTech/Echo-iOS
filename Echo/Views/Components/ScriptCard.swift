@@ -139,7 +139,7 @@ struct ScriptCard: View {
                     ProgressView()
                         .scaleEffect(0.7)
                         .frame(width: 14, height: 14)
-                    Text("Processing...")
+                    Text(NSLocalizedString("recording.processing", comment: ""))
                         .font(.caption)
                         .foregroundColor(.secondary)
                     Spacer()
@@ -199,18 +199,18 @@ struct ScriptCard: View {
                 onEdit()
             }
         )
-        .alert("Privacy Mode", isPresented: $showingPrivacyAlert) {
-            Button("OK", role: .cancel) { }
+        .alert(NSLocalizedString("settings.privacy_mode.title", comment: ""), isPresented: $showingPrivacyAlert) {
+            Button(NSLocalizedString("action.ok", comment: ""), role: .cancel) { }
         } message: {
-            Text("Please connect earphones to play this audio")
+            Text(NSLocalizedString("settings.privacy_mode.info", comment: ""))
         }
-        .alert("No Recording", isPresented: $showingNoRecordingAlert) {
-            Button("OK", role: .cancel) { }
+        .alert(NSLocalizedString("script.no_recording", comment: ""), isPresented: $showingNoRecordingAlert) {
+            Button(NSLocalizedString("action.ok", comment: ""), role: .cancel) { }
         } message: {
-            Text("Please long press to edit and record audio first")
+            Text(NSLocalizedString("recording.no_recording_message", comment: ""))
         }
-        .alert("Error", isPresented: $showingErrorAlert) {
-            Button("OK", role: .cancel) { }
+        .alert(NSLocalizedString("error.title", comment: ""), isPresented: $showingErrorAlert) {
+            Button(NSLocalizedString("action.ok", comment: ""), role: .cancel) { }
         } message: {
             Text(errorMessage)
         }

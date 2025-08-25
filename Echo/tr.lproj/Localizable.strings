@@ -145,3 +145,67 @@
 "sample.smoking" = "Asla sigara içmem, çünkü kokuyor ve kontrol edilmekten nefret ediyorum.";
 "sample.bedtime" = "Her zaman saat 22:00'den önce yatarım, çünkü daha sağlıklı ve bol enerjiyle uyanmayı seviyorum.";
 "sample.mistakes" = "Birkaç hata yaptım ama aynı zamanda birçok şeyi de iyi yaptım. Hatalar öğrenmenin normal bir parçasıdır ve onları gelişim fırsatı olarak kullanabilirim.";
+// MARK: - Languages
+"language.english" = "İngilizce";
+"language.chinese_simplified" = "Çince (Basitleştirilmiş)";
+"language.chinese_traditional" = "Çince (Geleneksel)";
+"language.spanish" = "İspanyolca";
+"language.french" = "Fransızca";
+"language.german" = "Almanca";
+"language.japanese" = "Japonca";
+"language.korean" = "Korece";
+"language.portuguese" = "Portekizce";
+"language.russian" = "Rusça";
+"language.italian" = "İtalyanca";
+"language.dutch" = "Felemenkçe";
+"language.swedish" = "İsveççe";
+"language.norwegian" = "Norveççe";
+"language.danish" = "Danca";
+"language.polish" = "Lehçe";
+"language.turkish" = "Türkçe";
+"language.arabic" = "Arapça";
+"language.hindi" = "Hintçe";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Echo Paketi";
+"export.format.text" = "Düz Metin";
+"export.format.json" = "JSON";
+"export.include_audio" = "Ses Dosyalarını Dahil Et";
+"export.format_label" = "Format";
+"export.audio_size_warning" = "Ses dosyaları dışa aktarma boyutunu artıracaktır";
+"export.options" = "Dışa Aktarma Seçenekleri";
+"export.select_scripts" = "Kartları Seç";
+"export.scripts_selected" = "Kartlar (%d seçili)";
+"export.error_title" = "Dışa Aktarma Hatası";
+"export.error_unknown" = "Bilinmeyen bir hata oluştu";
+"import.complete_title" = "İçe Aktarma Tamamlandı";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "İpucu: Noktalama için «nokta», «virgül» veya «soru işareti» deyin";
+"recording.no_recording_message" = "Düzenlemek ve önce ses kaydetmek için uzun basın";
+
+// MARK: - Category Management
+"category.new_prompt" = "Yeni kategorinizin adını girin";
+"category.name_placeholder" = "Kategori Adı";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Kartları cihazlarınız arasında senkronize edin";
+
+// MARK: - Empty State
+"empty.no_cards" = "Henüz kart yok";
+"empty.tap_to_create" = "İlk iç konuşma kartınızı oluşturmak için + düğmesine dokunun";
+
+// MARK: - Filter
+"filter.all_cards" = "Tüm kartlar";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Hassasiyet";
+"picker.select_language" = "Dil Seç";
+"picker.display_language" = "Görüntü Dili";
+"settings.language_settings" = "Dil Ayarları";
+"language.system_default" = "Sistem Varsayılanı";
+"settings.card_settings" = "Kart Ayarları";
+"settings.card_defaults" = "Varsayılan Değerler";
+"settings.about_support" = "Hakkında ve Destek";
+"settings.sync" = "Senkronizasyon";
+"settings.backup" = "Yedekleme";

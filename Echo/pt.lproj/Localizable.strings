@@ -145,3 +145,67 @@
 "sample.smoking" = "Nunca fumo, porque cheira mal e odeio ser controlado.";
 "sample.bedtime" = "Sempre vou para a cama antes das 22h, porque é mais saudável e adoro acordar com muita energia.";
 "sample.mistakes" = "Cometi alguns erros, mas também fiz várias coisas bem. Erros são uma parte normal do aprendizado e posso usá-los como oportunidade para melhorar.";
+// MARK: - Languages
+"language.english" = "Inglês";
+"language.chinese_simplified" = "Chinês (Simplificado)";
+"language.chinese_traditional" = "Chinês (Tradicional)";
+"language.spanish" = "Espanhol";
+"language.french" = "Francês";
+"language.german" = "Alemão";
+"language.japanese" = "Japonês";
+"language.korean" = "Coreano";
+"language.portuguese" = "Português";
+"language.russian" = "Russo";
+"language.italian" = "Italiano";
+"language.dutch" = "Holandês";
+"language.swedish" = "Sueco";
+"language.norwegian" = "Norueguês";
+"language.danish" = "Dinamarquês";
+"language.polish" = "Polonês";
+"language.turkish" = "Turco";
+"language.arabic" = "Árabe";
+"language.hindi" = "Hindi";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Pacote Echo";
+"export.format.text" = "Texto simples";
+"export.format.json" = "JSON";
+"export.include_audio" = "Incluir arquivos de áudio";
+"export.format_label" = "Formato";
+"export.audio_size_warning" = "Os arquivos de áudio aumentarão o tamanho da exportação";
+"export.options" = "Opções de exportação";
+"export.select_scripts" = "Selecionar cartões";
+"export.scripts_selected" = "Cartões (%d selecionados)";
+"export.error_title" = "Erro de exportação";
+"export.error_unknown" = "Ocorreu um erro desconhecido";
+"import.complete_title" = "Importação concluída";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Dica: Diga «ponto», «vírgula» ou «ponto de interrogação» para pontuação";
+"recording.no_recording_message" = "Por favor, pressione longamente para editar e gravar áudio primeiro";
+
+// MARK: - Category Management
+"category.new_prompt" = "Digite o nome para sua nova categoria";
+"category.name_placeholder" = "Nome da categoria";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Sincronizar cartões entre seus dispositivos";
+
+// MARK: - Empty State
+"empty.no_cards" = "Ainda sem cartões";
+"empty.tap_to_create" = "Toque no botão + para criar seu primeiro cartão de diálogo interno";
+
+// MARK: - Filter
+"filter.all_cards" = "Todos os cartões";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Sensibilidade";
+"picker.select_language" = "Selecionar idioma";
+"picker.display_language" = "Idioma de exibição";
+"settings.language_settings" = "Configurações de idioma";
+"language.system_default" = "Padrão do sistema";
+"settings.card_settings" = "Configurações de cartões";
+"settings.card_defaults" = "Valores padrão";
+"settings.about_support" = "Sobre e Suporte";
+"settings.sync" = "Sincronização";
+"settings.backup" = "Backup";

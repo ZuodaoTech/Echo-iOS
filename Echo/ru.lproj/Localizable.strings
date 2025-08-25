@@ -145,3 +145,67 @@
 "sample.smoking" = "Я никогда не курю, потому что это воняет и я ненавижу быть под контролем.";
 "sample.bedtime" = "Я всегда ложусь спать до 22:00, потому что это полезнее для здоровья, и мне нравится просыпаться с большим количеством энергии.";
 "sample.mistakes" = "Я совершил несколько ошибок, но также сделал хорошо несколько вещей. Ошибки — это нормальная часть обучения, и я могу использовать их как возможность для улучшения.";
+// MARK: - Languages
+"language.english" = "Английский";
+"language.chinese_simplified" = "Китайский (упрощенный)";
+"language.chinese_traditional" = "Китайский (традиционный)";
+"language.spanish" = "Испанский";
+"language.french" = "Французский";
+"language.german" = "Немецкий";
+"language.japanese" = "Японский";
+"language.korean" = "Корейский";
+"language.portuguese" = "Португальский";
+"language.russian" = "Русский";
+"language.italian" = "Итальянский";
+"language.dutch" = "Голландский";
+"language.swedish" = "Шведский";
+"language.norwegian" = "Норвежский";
+"language.danish" = "Датский";
+"language.polish" = "Польский";
+"language.turkish" = "Турецкий";
+"language.arabic" = "Арабский";
+"language.hindi" = "Хинди";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Пакет Echo";
+"export.format.text" = "Простой текст";
+"export.format.json" = "JSON";
+"export.include_audio" = "Включить аудиофайлы";
+"export.format_label" = "Формат";
+"export.audio_size_warning" = "Аудиофайлы увеличат размер экспорта";
+"export.options" = "Параметры экспорта";
+"export.select_scripts" = "Выбрать карточки";
+"export.scripts_selected" = "Карточки (%d выбрано)";
+"export.error_title" = "Ошибка экспорта";
+"export.error_unknown" = "Произошла неизвестная ошибка";
+"import.complete_title" = "Импорт завершен";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Совет: Скажите «точка», «запятая» или «вопросительный знак» для пунктуации";
+"recording.no_recording_message" = "Пожалуйста, удерживайте для редактирования и сначала запишите аудио";
+
+// MARK: - Category Management
+"category.new_prompt" = "Введите имя для новой категории";
+"category.name_placeholder" = "Имя категории";
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Синхронизация карточек между устройствами";
+
+// MARK: - Empty State
+"empty.no_cards" = "Карточек пока нет";
+"empty.tap_to_create" = "Нажмите кнопку +, чтобы создать первую карточку внутреннего диалога";
+
+// MARK: - Filter
+"filter.all_cards" = "Все карточки";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Чувствительность";
+"picker.select_language" = "Выбрать язык";
+"picker.display_language" = "Язык отображения";
+"settings.language_settings" = "Настройки языка";
+"language.system_default" = "Системный по умолчанию";
+"settings.card_settings" = "Настройки карточек";
+"settings.card_defaults" = "Значения по умолчанию";
+"settings.about_support" = "О программе и поддержка";
+"settings.sync" = "Синхронизация";
+"settings.backup" = "Резервное копирование";
