@@ -11,7 +11,6 @@ struct ExportOptionsView: View {
     ) private var scripts: FetchedResults<SelftalkScript>
     
     @State private var includeAudio = true
-    @State private var exportFormat: ExportService.ExportFormat = .bundle
     @State private var selectedScripts = Set<UUID>()
     @State private var showingShareSheet = false
     @State private var exportURL: URL?
@@ -19,21 +18,16 @@ struct ExportOptionsView: View {
     @State private var showingError = false
     @State private var selectAll = true
     
+    // Fixed to Echo Bundle format only
+    private let exportFormat: ExportService.ExportFormat = .bundle
+    
     var body: some View {
         NavigationView {
             List {
                 Section {
                     Toggle(NSLocalizedString("export.include_audio", comment: ""), isOn: $includeAudio)
-                        .disabled(exportFormat == .textOnly)
                     
-                    Picker(NSLocalizedString("export.format_label", comment: ""), selection: $exportFormat) {
-                        Text(NSLocalizedString("export.format.bundle", comment: "")).tag(ExportService.ExportFormat.bundle)
-                        Text(NSLocalizedString("export.format.text", comment: "")).tag(ExportService.ExportFormat.textOnly)
-                        Text(NSLocalizedString("export.format.json", comment: "")).tag(ExportService.ExportFormat.json)
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    
-                    if exportFormat == .bundle && includeAudio {
+                    if includeAudio {
                         HStack {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
@@ -142,7 +136,7 @@ struct ExportOptionsView: View {
         do {
             let url = try exportService.exportScripts(
                 scriptsToExport,
-                includeAudio: includeAudio && exportFormat != .textOnly,
+                includeAudio: includeAudio,
                 format: exportFormat
             )
             

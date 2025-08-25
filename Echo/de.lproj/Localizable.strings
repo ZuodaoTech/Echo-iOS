@@ -104,6 +104,19 @@
 "notifications.frequency.medium" = "Mittel (alle 2 Stunden)";
 "notifications.frequency.low" = "Niedrig (1-2 mal/Tag)";
 "notifications.daytime_only" = "Benachrichtigungen nur tagsüber (8-21 Uhr)";
+"notifications.settings_title" = "Notification Settings";
+"notifications.max_cards" = "Maximum cards with notifications";
+"notifications.burden_warning" = "Too many notifications can become burdensome";
+"notifications.global_settings" = "Global Settings";
+"notifications.max_cards_footer" = "Limit how many cards can send notifications";
+"notifications.no_cards_enabled" = "No cards have notifications enabled";
+"notifications.enabled_cards" = "Enabled Cards (%d)";
+"notifications.request_permission" = "Enable Notifications";
+"notifications.select_to_disable" = "Select %d cards to disable notifications";
+"notifications.select_cards" = "Select Cards";
+"notifications.reminder_title" = "Time for Self-Talk";
+"notifications.action_play" = "Play Audio";
+"notifications.action_done" = "Mark as Done";
 
 // MARK: - Common Actions
 "action.done" = "Fertig";

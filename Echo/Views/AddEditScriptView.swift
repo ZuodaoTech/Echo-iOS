@@ -842,6 +842,9 @@ struct AddEditScriptView: View {
     // MARK: - Notification Helper Methods
     
     private func checkAndEnforceNotificationLimit() {
+        let maxNotificationCards = UserDefaults.standard.integer(forKey: "maxNotificationCards")
+        let limit = maxNotificationCards > 0 ? maxNotificationCards : 1 // Default to 1 if not set
+        
         // Fetch all scripts with notifications enabled, sorted by when they were enabled
         let request: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
         request.predicate = NSPredicate(format: "notificationEnabled == YES AND id != %@", script?.id as CVarArg? ?? UUID() as CVarArg)
@@ -850,8 +853,8 @@ struct AddEditScriptView: View {
         do {
             let scriptsWithNotifications = try viewContext.fetch(request)
             
-            // If there are already 3 or more scripts with notifications, disable the oldest
-            if scriptsWithNotifications.count >= 3 {
+            // If we're at or over the limit, disable the oldest
+            if scriptsWithNotifications.count >= limit {
                 if let oldestScript = scriptsWithNotifications.first {
                     oldestScript.notificationEnabled = false
                     oldestScript.notificationEnabledAt = nil

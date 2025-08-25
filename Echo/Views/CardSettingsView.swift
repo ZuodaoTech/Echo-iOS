@@ -19,6 +19,7 @@ struct CardSettingsView: View {
     @AppStorage("silenceTrimSensitivity") private var silenceTrimSensitivity = "medium"
     
     @State private var showingPrivacyModeInfo = false
+    @State private var showingNotificationSettings = false
     
     var body: some View {
         NavigationView {
@@ -127,6 +128,23 @@ struct CardSettingsView: View {
                         .padding(.vertical, 4)
                     }
                 }
+                
+                // Notification Settings Section
+                Section {
+                    Button {
+                        showingNotificationSettings = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "bell.badge")
+                            Text(NSLocalizedString("notifications.settings_title", comment: ""))
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .foregroundColor(.primary)
+                }
             }
             .navigationTitle(NSLocalizedString("settings.card_settings", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
@@ -141,6 +159,9 @@ struct CardSettingsView: View {
                 Button(NSLocalizedString("action.got_it", comment: ""), role: .cancel) { }
             } message: {
                 Text(NSLocalizedString("settings.privacy_mode.alert.message", comment: ""))
+            }
+            .sheet(isPresented: $showingNotificationSettings) {
+                NotificationSettingsView()
             }
         }
     }
