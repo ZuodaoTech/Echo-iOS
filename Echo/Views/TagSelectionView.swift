@@ -20,6 +20,7 @@ struct TagSelectionView: View {
     @State private var searchText = ""
     @State private var showingNowLimitAlert = false
     @State private var scriptsWithNowTag: [SelftalkScript] = []
+    @State private var tagToEdit: Tag? = nil
     
     var filteredTags: [Tag] {
         if searchText.isEmpty {
@@ -43,9 +44,13 @@ struct TagSelectionView: View {
             if !selectedTags.isEmpty {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
-                        ForEach(Array(selectedTags), id: \.id) { tag in
+                        ForEach(Array(selectedTags.filter { !$0.isFault && $0.managedObjectContext != nil }), id: \.id) { tag in
                             TagChip(tag: tag, isSelected: true) {
                                 selectedTags.remove(tag)
+                            } onLongPress: {
+                                if !tag.isNowTag {  // Don't allow editing the Now tag
+                                    tagToEdit = tag
+                                }
                             }
                         }
                     }
@@ -76,6 +81,10 @@ struct TagSelectionView: View {
                         if !selectedTags.contains(tag) {
                             TagChip(tag: tag, isSelected: false) {
                                 handleTagSelection(tag)
+                            } onLongPress: {
+                                if !tag.isNowTag {  // Don't allow editing the Now tag
+                                    tagToEdit = tag
+                                }
                             }
                         }
                     }
@@ -91,6 +100,17 @@ struct TagSelectionView: View {
             Button("Add") {
                 createNewTag()
             }
+        }
+        .sheet(item: $tagToEdit) { tag in
+            TagEditView(tag: tag)
+        }
+        .onAppear {
+            // Clean up any deleted tags from selectedTags
+            selectedTags = selectedTags.filter { !$0.isFault && $0.managedObjectContext != nil }
+        }
+        .onChange(of: allTags.count) { _ in
+            // Clean up when tags are deleted
+            selectedTags = selectedTags.filter { !$0.isFault && $0.managedObjectContext != nil }
         }
     }
     
@@ -132,7 +152,7 @@ struct TagSelectionView: View {
             }
         } else {
             // Create new tag
-            let newTag = Tag.create(name: trimmedName, in: viewContext)
+            _ = Tag.create(name: trimmedName, in: viewContext)
             do {
                 try viewContext.save()
                 // Don't automatically select the new tag
@@ -149,9 +169,11 @@ struct TagChip: View {
     let tag: Tag
     let isSelected: Bool
     let action: () -> Void
+    var onLongPress: (() -> Void)? = nil
     
     var body: some View {
-        Button(action: action) {
+        // Check if tag is valid before rendering
+        if !tag.isFault && tag.managedObjectContext != nil {
             HStack(spacing: 4) {
                 Text(tag.name)
                     .font(.footnote)
@@ -173,8 +195,16 @@ struct TagChip: View {
                     (isSelected ? .white : .primary)
             )
             .cornerRadius(15)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                action()
+            }
+            .onLongPressGesture {
+                onLongPress?()
+            }
+        } else {
+            EmptyView()
         }
-        .buttonStyle(PlainButtonStyle())
     }
 }
 

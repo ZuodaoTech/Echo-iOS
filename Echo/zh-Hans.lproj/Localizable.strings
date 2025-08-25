@@ -18,6 +18,7 @@
 "tag.edit" = "编辑标签";
 "tag.delete.confirm.title" = "删除标签";
 "tag.delete.confirm.message" = "此标签被 %d 个卡片使用。删除后将从这些卡片中移除此标签。";
+"tag.delete.confirm.empty" = "此标签未被任何卡片使用。确定要删除吗？";
 "tag.max_now_cards" = "最多「当下」卡片数";
 "tag.now_limit_reached" = "当下标签达到上限";
 "tag.now_limit_message" = "您已达到「当下」卡片的最大数量（%d）。请选择一个卡片以移除其「当下」标签：";
