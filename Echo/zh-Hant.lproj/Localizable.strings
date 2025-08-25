@@ -1,146 +1,147 @@
 /* 
-  Localizable.strings (English)
+  Localizable.strings (Traditional Chinese)
   Echo
-  
-  Base localization file for Echo app
 */
 
 // MARK: - Navigation & Titles
-"navigation.cards" = "Cards";
-"navigation.me" = "Me";
-"navigation.new_script" = "New Script";
-"navigation.edit_script" = "Edit Script";
+"navigation.cards" = "卡片";
+"navigation.me" = "我";
+"navigation.new_script" = "新建腳本";
+"navigation.edit_script" = "編輯腳本";
 
 // MARK: - Categories
-"category.breaking_bad_habits" = "Breaking Bad Habits";
-"category.building_good_habits" = "Building Good Habits";
-"category.appropriate_positivity" = "Appropriate Positivity";
-"category.personal_growth" = "Personal Growth";
-"category.daily_affirmations" = "Daily Affirmations";
-"category.select" = "Select Category";
-"category.add_new" = "Add New Category...";
-"category.uncategorized" = "Uncategorized";
+"category.breaking_bad_habits" = "戒除壞習慣";
+"category.building_good_habits" = "培養好習慣";
+"category.appropriate_positivity" = "合理正面思考";
+"category.personal_growth" = "個人成長";
+"category.daily_affirmations" = "每日正面肯定";
+"category.select" = "選擇分類";
+"category.add_new" = "新增分類...";
+"category.uncategorized" = "未分類";
 
 // MARK: - Script Card
-"script.play_count" = "%d plays";
-"script.transcript" = "Transcript";
-"script.recording" = "Recording";
-"script.no_recording" = "No recording";
-"script.repetitions" = "Repetitions";
-"script.interval" = "Interval";
-"script.privacy_mode" = "Privacy Mode";
-"script.delete" = "Delete Script";
-"script.delete.confirm.title" = "Delete Script";
-"script.delete.confirm.message" = "Are you sure you want to delete this script? This action cannot be undone.";
+"script.play_count" = "%d 次播放";
+"script.transcript" = "文字記錄";
+"script.recording" = "錄音";
+"script.no_recording" = "無錄音";
+"script.repetitions" = "重複次數";
+"script.interval" = "間隔時間";
+"script.privacy_mode" = "隱私模式";
+"script.delete" = "刪除腳本";
+"script.delete.confirm.title" = "刪除腳本";
+"script.delete.confirm.message" = "您確定要刪除此腳本嗎？此操作無法復原。";
 
 // MARK: - Settings
-"settings.default_settings" = "Default Settings";
-"settings.script_preferences" = "Script Preferences";
-"settings.transcription" = "Transcription";
-"settings.recording" = "Recording";
-"settings.backup_sync" = "Backup & Sync";
-"settings.about" = "About";
-"settings.support" = "Support";
+"settings.app_language" = "應用程式語言";
+"settings.display_language" = "顯示語言";
+"settings.restart_to_apply" = "請重新啟動應用程式以套用語言變更";
+"settings.default_settings" = "預設設定";
+"settings.script_preferences" = "腳本偏好設定";
+"settings.transcription" = "語音轉文字";
+"settings.recording" = "錄音";
+"settings.backup_sync" = "備份與同步";
+"settings.about" = "關於";
+"settings.support" = "支援";
 
-"settings.privacy_mode.title" = "Privacy Mode";
-"settings.privacy_mode.info" = "Audio plays only through earphones";
-"settings.privacy_mode.alert.title" = "Privacy Mode";
-"settings.privacy_mode.alert.message" = "When Privacy Mode is enabled, audio recordings will only play through connected earphones or headphones. This prevents accidental playback through speakers in public spaces.";
+"settings.privacy_mode.title" = "隱私模式";
+"settings.privacy_mode.info" = "音訊僅透過耳機播放";
+"settings.privacy_mode.alert.title" = "隱私模式";
+"settings.privacy_mode.alert.message" = "當隱私模式啟用時，音訊錄音將僅透過已連接的耳機或頭戴式耳機播放。這可防止在公共場所意外透過揚聲器播放。";
 
-"settings.character_guidance" = "Character Guidance";
-"settings.recommended_length" = "Recommended length";
-"settings.when_exceeded" = "When exceeded";
-"settings.just_warn" = "Just warn me";
-"settings.show_tip_only" = "Show tip only";
-"settings.character_guidance.info" = "Shorter scripts are easier to remember and more impactful";
+"settings.character_guidance" = "字數指引";
+"settings.recommended_length" = "建議長度";
+"settings.when_exceeded" = "超出時";
+"settings.just_warn" = "僅提醒";
+"settings.show_tip_only" = "僅顯示提示";
+"settings.character_guidance.info" = "較短的腳本更容易記住且更有效";
 
-"settings.default_language" = "Default Language";
-"settings.voice_enhancement" = "Voice Enhancement";
-"settings.voice_enhancement.desc" = "Reduces background noise and echo";
-"settings.auto_trim_silence" = "Auto-Trim Silence";
-"settings.auto_trim_silence.desc" = "Remove silence at start and end";
-"settings.trim_sensitivity" = "Trim Sensitivity";
+"settings.default_language" = "預設語言";
+"settings.voice_enhancement" = "語音增強";
+"settings.voice_enhancement.desc" = "降低背景雜音和迴音";
+"settings.auto_trim_silence" = "自動修剪靜音";
+"settings.auto_trim_silence.desc" = "移除開頭和結尾的靜音";
+"settings.trim_sensitivity" = "修剪敏感度";
 
-"settings.icloud_sync" = "iCloud Sync";
-"settings.icloud_sync.desc" = "Sync scripts across your devices";
-"settings.icloud_sync.info" = "Text and settings sync automatically. Audio files remain local.";
-"settings.export_scripts" = "Export Scripts";
-"settings.import_scripts" = "Import Scripts";
+"settings.icloud_sync" = "iCloud 同步";
+"settings.icloud_sync.desc" = "在您的裝置間同步腳本";
+"settings.icloud_sync.info" = "文字和設定會自動同步。音訊檔案保持在本地。";
+"settings.export_scripts" = "匯出腳本";
+"settings.import_scripts" = "匯入腳本";
 
-"settings.version" = "Version";
-"settings.build" = "Build";
-"settings.rate_github" = "Rate on GitHub";
-"settings.contact_support" = "Contact Support";
+"settings.version" = "版本";
+"settings.build" = "組建";
+"settings.rate_github" = "在 GitHub 上評分";
+"settings.contact_support" = "聯繫支援";
 
 // MARK: - Recording
-"recording.start" = "Start Recording";
-"recording.stop" = "Stop Recording";
-"recording.re_record" = "Re-record";
-"recording.saved" = "Recording saved";
-"recording.delete" = "Delete";
-"recording.preview" = "Preview";
-"recording.playing_preview" = "Playing preview...";
-"recording.preview_paused" = "Preview paused";
-"recording.plays_once" = "(plays once)";
-"recording.processing" = "Processing audio...";
-"recording.listening" = "Listening...";
-"recording.speaking" = "Speaking...";
-"recording.transcribing" = "Transcribing...";
-"recording.re_transcribing" = "Re-transcribing...";
-"recording.microphone_access" = "Microphone Access";
-"recording.microphone_access.message" = "Please grant microphone access in Settings to record audio";
+"recording.start" = "開始錄音";
+"recording.stop" = "停止錄音";
+"recording.re_record" = "重新錄音";
+"recording.saved" = "錄音已儲存";
+"recording.delete" = "刪除";
+"recording.preview" = "預覽";
+"recording.playing_preview" = "正在播放預覽...";
+"recording.preview_paused" = "預覽已暫停";
+"recording.plays_once" = "（播放一次）";
+"recording.processing" = "正在處理音訊...";
+"recording.listening" = "正在聆聽...";
+"recording.speaking" = "正在說話...";
+"recording.transcribing" = "正在轉寫...";
+"recording.re_transcribing" = "重新轉寫中...";
+"recording.microphone_access" = "麥克風存取";
+"recording.microphone_access.message" = "請在設定中授予麥克風存取權限以進行音訊錄音";
 
 // MARK: - Character Guidance
-"guidance.trim_characters" = "Consider trimming %d characters for better memorability";
-"guidance.script_over" = "Script is %d characters over. Try to be more concise";
-"guidance.script_long" = "Script is quite long.";
-"guidance.enter_script" = "Enter your self-talk script here...";
+"guidance.trim_characters" = "建議減少 %d 個字元以提高記憶效果";
+"guidance.script_over" = "腳本超出 %d 個字元。請嘗試更加簡潔";
+"guidance.script_long" = "腳本相當長。";
+"guidance.enter_script" = "在此輸入您的自我對話腳本...";
 
 // MARK: - Notifications
-"notifications.enable" = "Enable Notifications";
-"notifications.frequency" = "Frequency";
-"notifications.frequency.high" = "High (1-2 times/hour)";
-"notifications.frequency.medium" = "Medium (every 2 hours)";
-"notifications.frequency.low" = "Low (1-2 times/day)";
-"notifications.daytime_only" = "Notifications only during daytime (8 AM - 9 PM)";
+"notifications.enable" = "啟用通知";
+"notifications.frequency" = "頻率";
+"notifications.frequency.high" = "高（每小時 1-2 次）";
+"notifications.frequency.medium" = "中（每 2 小時）";
+"notifications.frequency.low" = "低（每天 1-2 次）";
+"notifications.daytime_only" = "僅在白天時段通知（8:00 - 21:00）";
 
 // MARK: - Common Actions
-"action.done" = "Done";
-"action.cancel" = "Cancel";
-"action.delete" = "Delete";
-"action.add" = "Add";
-"action.save" = "Save";
-"action.ok" = "OK";
-"action.got_it" = "Got it";
-"action.copy" = "Copy";
-"action.use_as_script" = "Use as Script";
-"action.share" = "Share";
-"action.edit" = "Edit";
+"action.done" = "完成";
+"action.cancel" = "取消";
+"action.delete" = "刪除";
+"action.add" = "新增";
+"action.save" = "儲存";
+"action.ok" = "確定";
+"action.got_it" = "了解";
+"action.copy" = "複製";
+"action.use_as_script" = "用作腳本";
+"action.share" = "分享";
+"action.edit" = "編輯";
 
 // MARK: - Errors
-"error.title" = "Error";
-"error.save" = "Failed to save script";
-"error.database" = "Database error";
-"error.restart_app" = "Please restart the app";
-"error.try_again" = "Please try again";
-"error.import" = "Import failed";
-"error.export" = "Export failed";
+"error.title" = "錯誤";
+"error.save" = "腳本儲存失敗";
+"error.database" = "資料庫錯誤";
+"error.restart_app" = "請重新啟動應用程式";
+"error.try_again" = "請再試一次";
+"error.import" = "匯入失敗";
+"error.export" = "匯出失敗";
 
 // MARK: - Time Units
-"time.seconds" = "%@ seconds";
-"time.times_per_hour" = "1-2 times/hour";
-"time.every_hours" = "every 2 hours";
-"time.times_per_day" = "1-2 times/day";
+"time.seconds" = "%@ 秒";
+"time.times_per_hour" = "每小時 1-2 次";
+"time.every_hours" = "每 2 小時";
+"time.times_per_day" = "每天 1-2 次";
 
 // MARK: - Sensitivity Levels
-"sensitivity.low" = "Low";
-"sensitivity.medium" = "Medium";
-"sensitivity.high" = "High";
-"sensitivity.low.desc" = "Needs louder voice • 0.5s buffer";
-"sensitivity.medium.desc" = "Balanced detection • 0.3s buffer";
-"sensitivity.high.desc" = "Detects whispers • 0.15s buffer";
+"sensitivity.low" = "低";
+"sensitivity.medium" = "中";
+"sensitivity.high" = "高";
+"sensitivity.low.desc" = "需要較大的音量 • 0.5 秒緩衝";
+"sensitivity.medium.desc" = "平衡偵測 • 0.3 秒緩衝";
+"sensitivity.high.desc" = "偵測輕語 • 0.15 秒緩衝";
 
 // MARK: - Sample Scripts
-"sample.smoking" = "I never smoke, because it stinks, and I hate being controlled.";
-"sample.bedtime" = "I always go to bed before 10 p.m., because it's healthier, and I love waking up with a great deal of energy.";
-"sample.mistakes" = "I made a few mistakes, but I also did several things well. Mistakes are a normal part of learning, and I can use them as an opportunity to improve.";
+"sample.smoking" = "我絕不吸菸，因為它很臭，而且我討厭被控制。";
+"sample.bedtime" = "我總是在晚上 10 點前上床睡覺，因為這更健康，我喜歡精力充沛地醒來。";
+"sample.mistakes" = "我犯了一些錯誤，但我也做對了許多事情。錯誤是學習的正常部分，我可以將其作為改進的機會。";

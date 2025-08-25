@@ -1,146 +1,147 @@
 /* 
-  Localizable.strings (English)
+  Localizable.strings (Korean)
   Echo
-  
-  Base localization file for Echo app
 */
 
 // MARK: - Navigation & Titles
-"navigation.cards" = "Cards";
-"navigation.me" = "Me";
-"navigation.new_script" = "New Script";
-"navigation.edit_script" = "Edit Script";
+"navigation.cards" = "카드";
+"navigation.me" = "나";
+"navigation.new_script" = "새 스크립트";
+"navigation.edit_script" = "스크립트 편집";
 
 // MARK: - Categories
-"category.breaking_bad_habits" = "Breaking Bad Habits";
-"category.building_good_habits" = "Building Good Habits";
-"category.appropriate_positivity" = "Appropriate Positivity";
-"category.personal_growth" = "Personal Growth";
-"category.daily_affirmations" = "Daily Affirmations";
-"category.select" = "Select Category";
-"category.add_new" = "Add New Category...";
-"category.uncategorized" = "Uncategorized";
+"category.breaking_bad_habits" = "나쁜 습관 끊기";
+"category.building_good_habits" = "좋은 습관 만들기";
+"category.appropriate_positivity" = "적절한 긍정적 사고";
+"category.personal_growth" = "개인 성장";
+"category.daily_affirmations" = "일일 확언";
+"category.select" = "카테고리 선택";
+"category.add_new" = "새 카테고리 추가...";
+"category.uncategorized" = "미분류";
 
 // MARK: - Script Card
-"script.play_count" = "%d plays";
-"script.transcript" = "Transcript";
-"script.recording" = "Recording";
-"script.no_recording" = "No recording";
-"script.repetitions" = "Repetitions";
-"script.interval" = "Interval";
-"script.privacy_mode" = "Privacy Mode";
-"script.delete" = "Delete Script";
-"script.delete.confirm.title" = "Delete Script";
-"script.delete.confirm.message" = "Are you sure you want to delete this script? This action cannot be undone.";
+"script.play_count" = "%d번 재생";
+"script.transcript" = "전사";
+"script.recording" = "녹음";
+"script.no_recording" = "녹음 없음";
+"script.repetitions" = "반복 횟수";
+"script.interval" = "간격";
+"script.privacy_mode" = "프라이버시 모드";
+"script.delete" = "스크립트 삭제";
+"script.delete.confirm.title" = "스크립트 삭제";
+"script.delete.confirm.message" = "이 스크립트를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.";
 
 // MARK: - Settings
-"settings.default_settings" = "Default Settings";
-"settings.script_preferences" = "Script Preferences";
-"settings.transcription" = "Transcription";
-"settings.recording" = "Recording";
-"settings.backup_sync" = "Backup & Sync";
-"settings.about" = "About";
-"settings.support" = "Support";
+"settings.app_language" = "앱 언어";
+"settings.display_language" = "표시 언어";
+"settings.restart_to_apply" = "언어 변경을 적용하려면 앱을 다시 시작하세요";
+"settings.default_settings" = "기본 설정";
+"settings.script_preferences" = "스크립트 설정";
+"settings.transcription" = "전사";
+"settings.recording" = "녹음";
+"settings.backup_sync" = "백업 및 동기화";
+"settings.about" = "정보";
+"settings.support" = "지원";
 
-"settings.privacy_mode.title" = "Privacy Mode";
-"settings.privacy_mode.info" = "Audio plays only through earphones";
-"settings.privacy_mode.alert.title" = "Privacy Mode";
-"settings.privacy_mode.alert.message" = "When Privacy Mode is enabled, audio recordings will only play through connected earphones or headphones. This prevents accidental playback through speakers in public spaces.";
+"settings.privacy_mode.title" = "프라이버시 모드";
+"settings.privacy_mode.info" = "이어폰을 통해서만 오디오 재생";
+"settings.privacy_mode.alert.title" = "프라이버시 모드";
+"settings.privacy_mode.alert.message" = "프라이버시 모드가 활성화되면 연결된 이어폰이나 헤드폰을 통해서만 오디오 녹음이 재생됩니다. 공공장소에서 스피커를 통한 의도하지 않은 재생을 방지합니다.";
 
-"settings.character_guidance" = "Character Guidance";
-"settings.recommended_length" = "Recommended length";
-"settings.when_exceeded" = "When exceeded";
-"settings.just_warn" = "Just warn me";
-"settings.show_tip_only" = "Show tip only";
-"settings.character_guidance.info" = "Shorter scripts are easier to remember and more impactful";
+"settings.character_guidance" = "문자 가이던스";
+"settings.recommended_length" = "권장 길이";
+"settings.when_exceeded" = "초과 시";
+"settings.just_warn" = "경고만";
+"settings.show_tip_only" = "팁만 표시";
+"settings.character_guidance.info" = "짧은 스크립트가 기억하기 쉽고 더 효과적입니다";
 
-"settings.default_language" = "Default Language";
-"settings.voice_enhancement" = "Voice Enhancement";
-"settings.voice_enhancement.desc" = "Reduces background noise and echo";
-"settings.auto_trim_silence" = "Auto-Trim Silence";
-"settings.auto_trim_silence.desc" = "Remove silence at start and end";
-"settings.trim_sensitivity" = "Trim Sensitivity";
+"settings.default_language" = "기본 언어";
+"settings.voice_enhancement" = "음성 향상";
+"settings.voice_enhancement.desc" = "배경 소음과 에코 감소";
+"settings.auto_trim_silence" = "자동 무음 제거";
+"settings.auto_trim_silence.desc" = "시작과 끝의 무음 부분 제거";
+"settings.trim_sensitivity" = "트림 감도";
 
-"settings.icloud_sync" = "iCloud Sync";
-"settings.icloud_sync.desc" = "Sync scripts across your devices";
-"settings.icloud_sync.info" = "Text and settings sync automatically. Audio files remain local.";
-"settings.export_scripts" = "Export Scripts";
-"settings.import_scripts" = "Import Scripts";
+"settings.icloud_sync" = "iCloud 동기화";
+"settings.icloud_sync.desc" = "기기 간 스크립트 동기화";
+"settings.icloud_sync.info" = "텍스트와 설정이 자동으로 동기화됩니다. 오디오 파일은 로컬에 유지됩니다.";
+"settings.export_scripts" = "스크립트 내보내기";
+"settings.import_scripts" = "스크립트 가져오기";
 
-"settings.version" = "Version";
-"settings.build" = "Build";
-"settings.rate_github" = "Rate on GitHub";
-"settings.contact_support" = "Contact Support";
+"settings.version" = "버전";
+"settings.build" = "빌드";
+"settings.rate_github" = "GitHub에서 평가하기";
+"settings.contact_support" = "지원팀 문의";
 
 // MARK: - Recording
-"recording.start" = "Start Recording";
-"recording.stop" = "Stop Recording";
-"recording.re_record" = "Re-record";
-"recording.saved" = "Recording saved";
-"recording.delete" = "Delete";
-"recording.preview" = "Preview";
-"recording.playing_preview" = "Playing preview...";
-"recording.preview_paused" = "Preview paused";
-"recording.plays_once" = "(plays once)";
-"recording.processing" = "Processing audio...";
-"recording.listening" = "Listening...";
-"recording.speaking" = "Speaking...";
-"recording.transcribing" = "Transcribing...";
-"recording.re_transcribing" = "Re-transcribing...";
-"recording.microphone_access" = "Microphone Access";
-"recording.microphone_access.message" = "Please grant microphone access in Settings to record audio";
+"recording.start" = "녹음 시작";
+"recording.stop" = "녹음 정지";
+"recording.re_record" = "다시 녹음";
+"recording.saved" = "녹음 저장됨";
+"recording.delete" = "삭제";
+"recording.preview" = "미리보기";
+"recording.playing_preview" = "미리보기 재생 중...";
+"recording.preview_paused" = "미리보기 일시정지";
+"recording.plays_once" = "(한 번 재생)";
+"recording.processing" = "오디오 처리 중...";
+"recording.listening" = "듣는 중...";
+"recording.speaking" = "말하는 중...";
+"recording.transcribing" = "전사 중...";
+"recording.re_transcribing" = "다시 전사 중...";
+"recording.microphone_access" = "마이크 접근";
+"recording.microphone_access.message" = "오디오를 녹음하려면 설정에서 마이크 접근을 허용해주세요";
 
 // MARK: - Character Guidance
-"guidance.trim_characters" = "Consider trimming %d characters for better memorability";
-"guidance.script_over" = "Script is %d characters over. Try to be more concise";
-"guidance.script_long" = "Script is quite long.";
-"guidance.enter_script" = "Enter your self-talk script here...";
+"guidance.trim_characters" = "기억하기 쉽도록 %d자를 줄이는 것을 고려해보세요";
+"guidance.script_over" = "스크립트가 %d자 초과되었습니다. 더 간결하게 작성해보세요";
+"guidance.script_long" = "스크립트가 꽤 깁니다.";
+"guidance.enter_script" = "셀프토크 스크립트를 여기에 입력하세요...";
 
 // MARK: - Notifications
-"notifications.enable" = "Enable Notifications";
-"notifications.frequency" = "Frequency";
-"notifications.frequency.high" = "High (1-2 times/hour)";
-"notifications.frequency.medium" = "Medium (every 2 hours)";
-"notifications.frequency.low" = "Low (1-2 times/day)";
-"notifications.daytime_only" = "Notifications only during daytime (8 AM - 9 PM)";
+"notifications.enable" = "알림 활성화";
+"notifications.frequency" = "빈도";
+"notifications.frequency.high" = "높음 (시간당 1-2회)";
+"notifications.frequency.medium" = "보통 (2시간마다)";
+"notifications.frequency.low" = "낮음 (하루 1-2회)";
+"notifications.daytime_only" = "주간 시간대에만 알림 (오전 8시 - 오후 9시)";
 
 // MARK: - Common Actions
-"action.done" = "Done";
-"action.cancel" = "Cancel";
-"action.delete" = "Delete";
-"action.add" = "Add";
-"action.save" = "Save";
-"action.ok" = "OK";
-"action.got_it" = "Got it";
-"action.copy" = "Copy";
-"action.use_as_script" = "Use as Script";
-"action.share" = "Share";
-"action.edit" = "Edit";
+"action.done" = "완료";
+"action.cancel" = "취소";
+"action.delete" = "삭제";
+"action.add" = "추가";
+"action.save" = "저장";
+"action.ok" = "확인";
+"action.got_it" = "알겠습니다";
+"action.copy" = "복사";
+"action.use_as_script" = "스크립트로 사용";
+"action.share" = "공유";
+"action.edit" = "편집";
 
 // MARK: - Errors
-"error.title" = "Error";
-"error.save" = "Failed to save script";
-"error.database" = "Database error";
-"error.restart_app" = "Please restart the app";
-"error.try_again" = "Please try again";
-"error.import" = "Import failed";
-"error.export" = "Export failed";
+"error.title" = "오류";
+"error.save" = "스크립트 저장 실패";
+"error.database" = "데이터베이스 오류";
+"error.restart_app" = "앱을 다시 시작해주세요";
+"error.try_again" = "다시 시도해주세요";
+"error.import" = "가져오기 실패";
+"error.export" = "내보내기 실패";
 
 // MARK: - Time Units
-"time.seconds" = "%@ seconds";
-"time.times_per_hour" = "1-2 times/hour";
-"time.every_hours" = "every 2 hours";
-"time.times_per_day" = "1-2 times/day";
+"time.seconds" = "%@초";
+"time.times_per_hour" = "시간당 1-2회";
+"time.every_hours" = "2시간마다";
+"time.times_per_day" = "하루 1-2회";
 
 // MARK: - Sensitivity Levels
-"sensitivity.low" = "Low";
-"sensitivity.medium" = "Medium";
-"sensitivity.high" = "High";
-"sensitivity.low.desc" = "Needs louder voice • 0.5s buffer";
-"sensitivity.medium.desc" = "Balanced detection • 0.3s buffer";
-"sensitivity.high.desc" = "Detects whispers • 0.15s buffer";
+"sensitivity.low" = "낮음";
+"sensitivity.medium" = "보통";
+"sensitivity.high" = "높음";
+"sensitivity.low.desc" = "더 큰 목소리 필요 • 0.5초 버퍼";
+"sensitivity.medium.desc" = "균형 잡힌 감지 • 0.3초 버퍼";
+"sensitivity.high.desc" = "속삭임도 감지 • 0.15초 버퍼";
 
 // MARK: - Sample Scripts
-"sample.smoking" = "I never smoke, because it stinks, and I hate being controlled.";
-"sample.bedtime" = "I always go to bed before 10 p.m., because it's healthier, and I love waking up with a great deal of energy.";
-"sample.mistakes" = "I made a few mistakes, but I also did several things well. Mistakes are a normal part of learning, and I can use them as an opportunity to improve.";
+"sample.smoking" = "나는 담배를 피우지 않습니다. 냄새가 나고 통제받는 것을 싫어하기 때문입니다.";
+"sample.bedtime" = "나는 항상 밤 10시 전에 잠자리에 듭니다. 더 건강하고, 많은 에너지로 일어나는 것을 좋아하기 때문입니다.";
+"sample.mistakes" = "몇 가지 실수를 했지만 여러 가지를 잘해내기도 했습니다. 실수는 학습의 정상적인 부분이며, 개선의 기회로 활용할 수 있습니다.";
