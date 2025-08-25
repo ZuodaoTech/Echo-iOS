@@ -1,7 +1,9 @@
 import SwiftUI
+import CoreData
 
 struct CardSettingsView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.managedObjectContext) private var viewContext
     
     // Default Settings
     @AppStorage("privacyModeDefault") private var privacyModeDefault = true
@@ -18,8 +20,19 @@ struct CardSettingsView: View {
     @AppStorage("autoTrimSilence") private var autoTrimSilence = true
     @AppStorage("silenceTrimSensitivity") private var silenceTrimSensitivity = "medium"
     
+    // Notification Settings
+    @AppStorage("maxNotificationCards") private var maxNotificationCards = 1
+    @AppStorage("notificationPermissionRequested") private var notificationPermissionRequested = false
+    
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \SelftalkScript.createdAt, ascending: false)],
+        predicate: NSPredicate(format: "notificationEnabled == YES")
+    ) private var notificationEnabledScripts: FetchedResults<SelftalkScript>
+    
     @State private var showingPrivacyModeInfo = false
-    @State private var showingNotificationSettings = false
+    @State private var showingCardSelection = false
+    @State private var cardsToDisable: Set<UUID> = []
+    @State private var previousMaxCards = 1
     
     var body: some View {
         NavigationView {
@@ -131,19 +144,38 @@ struct CardSettingsView: View {
                 
                 // Notification Settings Section
                 Section {
-                    Button {
-                        showingNotificationSettings = true
-                    } label: {
+                    VStack(alignment: .leading, spacing: 12) {
                         HStack {
-                            Image(systemName: "bell.badge")
-                            Text(NSLocalizedString("notifications.settings_title", comment: ""))
+                            Text(NSLocalizedString("notifications.max_cards", comment: "Maximum cards with notifications"))
                             Spacer()
-                            Image(systemName: "chevron.right")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
+                            Stepper(value: $maxNotificationCards, in: 1...5) {
+                                Text("\(maxNotificationCards)")
+                                    .foregroundColor(.accentColor)
+                                    .fontWeight(.semibold)
+                            }
+                        }
+                        
+                        if maxNotificationCards > 1 {
+                            HStack {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .foregroundColor(.orange)
+                                    .font(.footnote)
+                                Text(NSLocalizedString("notifications.burden_warning", comment: "Too many notifications can become burdensome"))
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
                         }
                     }
-                    .foregroundColor(.primary)
+                    
+                    if notificationEnabledScripts.count > 0 {
+                        Text(String(format: NSLocalizedString("notifications.enabled_cards", comment: "Enabled Cards (%d)"), notificationEnabledScripts.count))
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                } header: {
+                    Text(NSLocalizedString("notifications.settings_title", comment: ""))
+                } footer: {
+                    Text(NSLocalizedString("notifications.max_cards_footer", comment: ""))
                 }
             }
             .navigationTitle(NSLocalizedString("settings.card_settings", comment: ""))
@@ -160,8 +192,19 @@ struct CardSettingsView: View {
             } message: {
                 Text(NSLocalizedString("settings.privacy_mode.alert.message", comment: ""))
             }
-            .sheet(isPresented: $showingNotificationSettings) {
-                NotificationSettingsView()
+            .onChange(of: maxNotificationCards) { newValue in
+                handleMaxCardsChange(from: previousMaxCards, to: newValue)
+                previousMaxCards = newValue
+            }
+            .onAppear {
+                previousMaxCards = maxNotificationCards
+            }
+            .sheet(isPresented: $showingCardSelection) {
+                NotificationCardSelectionView(
+                    cardsToDisable: $cardsToDisable,
+                    maxAllowed: maxNotificationCards,
+                    onConfirm: disableSelectedCards
+                )
             }
         }
     }
@@ -174,6 +217,115 @@ struct CardSettingsView: View {
             return NSLocalizedString("sensitivity.high.desc", comment: "")
         default:
             return NSLocalizedString("sensitivity.medium.desc", comment: "")
+        }
+    }
+    
+    private func handleMaxCardsChange(from oldValue: Int, to newValue: Int) {
+        guard newValue < oldValue else { return }
+        
+        let enabledCount = notificationEnabledScripts.count
+        if enabledCount > newValue {
+            // Need to disable some cards
+            showingCardSelection = true
+        }
+    }
+    
+    private func disableSelectedCards() {
+        for script in notificationEnabledScripts {
+            if cardsToDisable.contains(script.id) {
+                script.notificationEnabled = false
+                script.notificationEnabledAt = nil
+            }
+        }
+        
+        do {
+            try viewContext.save()
+            cardsToDisable.removeAll()
+        } catch {
+            print("Error disabling notifications: \(error)")
+        }
+    }
+}
+
+// MARK: - Card Selection View for Disabling Notifications
+
+private struct NotificationCardSelectionView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.managedObjectContext) private var viewContext
+    
+    @Binding var cardsToDisable: Set<UUID>
+    let maxAllowed: Int
+    let onConfirm: () -> Void
+    
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \SelftalkScript.createdAt, ascending: false)],
+        predicate: NSPredicate(format: "notificationEnabled == YES")
+    ) private var notificationEnabledScripts: FetchedResults<SelftalkScript>
+    
+    private var numberToSelect: Int {
+        notificationEnabledScripts.count - maxAllowed
+    }
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                Text(String(format: NSLocalizedString("notifications.select_to_disable", comment: "Select %d cards to disable notifications"), numberToSelect))
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .padding()
+                
+                List(notificationEnabledScripts) { script in
+                    HStack {
+                        Image(systemName: cardsToDisable.contains(script.id) ? "checkmark.circle.fill" : "circle")
+                            .foregroundColor(cardsToDisable.contains(script.id) ? .red : .secondary)
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(script.scriptText)
+                                .lineLimit(2)
+                                .font(.subheadline)
+                            
+                            if let category = script.category {
+                                Text(category.name)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        
+                        Spacer()
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        toggleSelection(for: script.id)
+                    }
+                }
+            }
+            .navigationTitle(NSLocalizedString("notifications.select_cards", comment: "Select Cards"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(NSLocalizedString("action.cancel", comment: "")) {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(NSLocalizedString("action.done", comment: "")) {
+                        onConfirm()
+                        dismiss()
+                    }
+                    .disabled(cardsToDisable.count != numberToSelect)
+                }
+            }
+        }
+    }
+    
+    private func toggleSelection(for id: UUID) {
+        if cardsToDisable.contains(id) {
+            cardsToDisable.remove(id)
+        } else {
+            if cardsToDisable.count < numberToSelect {
+                cardsToDisable.insert(id)
+            }
         }
     }
 }
