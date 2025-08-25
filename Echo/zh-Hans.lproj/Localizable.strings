@@ -19,7 +19,6 @@
 "category.daily_affirmations" = "每日肯定";
 "category.select" = "选择分类";
 "category.add_new" = "添加新分类...";
-"category.uncategorized" = "未分类";
 
 // MARK: - Script Card
 "script.play_count" = "播放 %d 次";

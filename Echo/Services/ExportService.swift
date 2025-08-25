@@ -129,7 +129,8 @@ class ExportService {
         
         for script in scripts {
             textContent += "Script: \(script.scriptText)\n"
-            textContent += "Category: \(script.category?.name ?? "Uncategorized")\n"
+            let tagNames = script.tagsArray.map { $0.name }.joined(separator: ", ")
+            textContent += "Tags: \(tagNames.isEmpty ? "None" : tagNames)\n"
             textContent += "Repetitions: \(script.repetitions)\n"
             textContent += "Interval: \(script.intervalSeconds)s\n"
             textContent += "Privacy Mode: \(script.privacyModeEnabled ? "Yes" : "No")\n"

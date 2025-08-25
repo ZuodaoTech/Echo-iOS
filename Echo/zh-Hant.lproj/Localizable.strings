@@ -17,7 +17,6 @@
 "category.daily_affirmations" = "每日正面肯定";
 "category.select" = "選擇分類";
 "category.add_new" = "新增分類...";
-"category.uncategorized" = "未分類";
 
 // MARK: - Script Card
 "script.play_count" = "%d 次播放";
