@@ -117,7 +117,7 @@
 "action.ok" = "OK";
 "action.got_it" = "Got it";
 "action.copy" = "Copy";
-"action.use_as_script" = "Use as Card";
+"action.use_as_script" = "Use as Script";
 "action.share" = "Share";
 "action.edit" = "Edit";
 
@@ -212,3 +212,4 @@
 "settings.about_support" = "About & Support";
 "settings.sync" = "Sync";
 "settings.backup" = "Backup";
+"script.label" = "Script";

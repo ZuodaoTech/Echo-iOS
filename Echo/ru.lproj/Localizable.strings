@@ -209,3 +209,4 @@
 "settings.about_support" = "О программе и поддержка";
 "settings.sync" = "Синхронизация";
 "settings.backup" = "Резервное копирование";
+"script.label" = "Скрипт";

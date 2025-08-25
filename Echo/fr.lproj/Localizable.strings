@@ -211,3 +211,4 @@
 "settings.about_support" = "À propos et Assistance";
 "settings.sync" = "Synchronisation";
 "settings.backup" = "Sauvegarde";
+"script.label" = "Script";
