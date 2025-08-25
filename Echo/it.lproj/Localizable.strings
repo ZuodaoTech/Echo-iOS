@@ -1,146 +1,147 @@
 /* 
-  Localizable.strings (English)
+  Localizable.strings (Italian)
   Echo
-  
-  Base localization file for Echo app
 */
 
 // MARK: - Navigation & Titles
-"navigation.cards" = "Cards";
-"navigation.me" = "Me";
-"navigation.new_script" = "New Script";
-"navigation.edit_script" = "Edit Script";
+"navigation.cards" = "Carte";
+"navigation.me" = "Io";
+"navigation.new_script" = "Nuovo Script";
+"navigation.edit_script" = "Modifica Script";
 
 // MARK: - Categories
-"category.breaking_bad_habits" = "Breaking Bad Habits";
-"category.building_good_habits" = "Building Good Habits";
-"category.appropriate_positivity" = "Appropriate Positivity";
-"category.personal_growth" = "Personal Growth";
-"category.daily_affirmations" = "Daily Affirmations";
-"category.select" = "Select Category";
-"category.add_new" = "Add New Category...";
-"category.uncategorized" = "Uncategorized";
+"category.breaking_bad_habits" = "Rompere le Cattive Abitudini";
+"category.building_good_habits" = "Costruire Buone Abitudini";
+"category.appropriate_positivity" = "Positività Appropriata";
+"category.personal_growth" = "Crescita Personale";
+"category.daily_affirmations" = "Affermazioni Quotidiane";
+"category.select" = "Seleziona Categoria";
+"category.add_new" = "Aggiungi Nuova Categoria...";
+"category.uncategorized" = "Non Categorizzato";
 
 // MARK: - Script Card
-"script.play_count" = "%d plays";
-"script.transcript" = "Transcript";
-"script.recording" = "Recording";
-"script.no_recording" = "No recording";
-"script.repetitions" = "Repetitions";
-"script.interval" = "Interval";
-"script.privacy_mode" = "Privacy Mode";
-"script.delete" = "Delete Script";
-"script.delete.confirm.title" = "Delete Script";
-"script.delete.confirm.message" = "Are you sure you want to delete this script? This action cannot be undone.";
+"script.play_count" = "%d riproduzioni";
+"script.transcript" = "Trascrizione";
+"script.recording" = "Registrazione";
+"script.no_recording" = "Nessuna registrazione";
+"script.repetitions" = "Ripetizioni";
+"script.interval" = "Intervallo";
+"script.privacy_mode" = "Modalità Privacy";
+"script.delete" = "Elimina Script";
+"script.delete.confirm.title" = "Elimina Script";
+"script.delete.confirm.message" = "Sei sicuro di voler eliminare questo script? Questa azione non può essere annullata.";
 
 // MARK: - Settings
-"settings.default_settings" = "Default Settings";
-"settings.script_preferences" = "Script Preferences";
-"settings.transcription" = "Transcription";
-"settings.recording" = "Recording";
-"settings.backup_sync" = "Backup & Sync";
-"settings.about" = "About";
-"settings.support" = "Support";
+"settings.app_language" = "Lingua App";
+"settings.display_language" = "Lingua di Visualizzazione";
+"settings.restart_to_apply" = "Riavvia l'app per applicare il cambio di lingua";
+"settings.default_settings" = "Impostazioni Predefinite";
+"settings.script_preferences" = "Preferenze Script";
+"settings.transcription" = "Trascrizione";
+"settings.recording" = "Registrazione";
+"settings.backup_sync" = "Backup e Sincronizzazione";
+"settings.about" = "Informazioni";
+"settings.support" = "Supporto";
 
-"settings.privacy_mode.title" = "Privacy Mode";
-"settings.privacy_mode.info" = "Audio plays only through earphones";
-"settings.privacy_mode.alert.title" = "Privacy Mode";
-"settings.privacy_mode.alert.message" = "When Privacy Mode is enabled, audio recordings will only play through connected earphones or headphones. This prevents accidental playback through speakers in public spaces.";
+"settings.privacy_mode.title" = "Modalità Privacy";
+"settings.privacy_mode.info" = "Audio riprodotto solo tramite auricolari";
+"settings.privacy_mode.alert.title" = "Modalità Privacy";
+"settings.privacy_mode.alert.message" = "Quando la Modalità Privacy è abilitata, le registrazioni audio verranno riprodotte solo tramite auricolari o cuffie collegate. Questo previene la riproduzione accidentale tramite altoparlanti in spazi pubblici.";
 
-"settings.character_guidance" = "Character Guidance";
-"settings.recommended_length" = "Recommended length";
-"settings.when_exceeded" = "When exceeded";
-"settings.just_warn" = "Just warn me";
-"settings.show_tip_only" = "Show tip only";
-"settings.character_guidance.info" = "Shorter scripts are easier to remember and more impactful";
+"settings.character_guidance" = "Guida Caratteri";
+"settings.recommended_length" = "Lunghezza consigliata";
+"settings.when_exceeded" = "Quando superata";
+"settings.just_warn" = "Solo avvertimento";
+"settings.show_tip_only" = "Mostra solo suggerimento";
+"settings.character_guidance.info" = "Script più brevi sono più facili da ricordare e più efficaci";
 
-"settings.default_language" = "Default Language";
-"settings.voice_enhancement" = "Voice Enhancement";
-"settings.voice_enhancement.desc" = "Reduces background noise and echo";
-"settings.auto_trim_silence" = "Auto-Trim Silence";
-"settings.auto_trim_silence.desc" = "Remove silence at start and end";
-"settings.trim_sensitivity" = "Trim Sensitivity";
+"settings.default_language" = "Lingua Predefinita";
+"settings.voice_enhancement" = "Miglioramento Vocale";
+"settings.voice_enhancement.desc" = "Riduce rumore di fondo ed eco";
+"settings.auto_trim_silence" = "Rimozione Automatica Silenzio";
+"settings.auto_trim_silence.desc" = "Rimuovi silenzio all'inizio e alla fine";
+"settings.trim_sensitivity" = "Sensibilità Rimozione";
 
-"settings.icloud_sync" = "iCloud Sync";
-"settings.icloud_sync.desc" = "Sync scripts across your devices";
-"settings.icloud_sync.info" = "Text and settings sync automatically. Audio files remain local.";
-"settings.export_scripts" = "Export Scripts";
-"settings.import_scripts" = "Import Scripts";
+"settings.icloud_sync" = "Sincronizzazione iCloud";
+"settings.icloud_sync.desc" = "Sincronizza script tra i tuoi dispositivi";
+"settings.icloud_sync.info" = "Testo e impostazioni si sincronizzano automaticamente. I file audio rimangono locali.";
+"settings.export_scripts" = "Esporta Script";
+"settings.import_scripts" = "Importa Script";
 
-"settings.version" = "Version";
+"settings.version" = "Versione";
 "settings.build" = "Build";
-"settings.rate_github" = "Rate on GitHub";
-"settings.contact_support" = "Contact Support";
+"settings.rate_github" = "Valuta su GitHub";
+"settings.contact_support" = "Contatta Supporto";
 
 // MARK: - Recording
-"recording.start" = "Start Recording";
-"recording.stop" = "Stop Recording";
-"recording.re_record" = "Re-record";
-"recording.saved" = "Recording saved";
-"recording.delete" = "Delete";
-"recording.preview" = "Preview";
-"recording.playing_preview" = "Playing preview...";
-"recording.preview_paused" = "Preview paused";
-"recording.plays_once" = "(plays once)";
-"recording.processing" = "Processing audio...";
-"recording.listening" = "Listening...";
-"recording.speaking" = "Speaking...";
-"recording.transcribing" = "Transcribing...";
-"recording.re_transcribing" = "Re-transcribing...";
-"recording.microphone_access" = "Microphone Access";
-"recording.microphone_access.message" = "Please grant microphone access in Settings to record audio";
+"recording.start" = "Avvia Registrazione";
+"recording.stop" = "Ferma Registrazione";
+"recording.re_record" = "Registra di Nuovo";
+"recording.saved" = "Registrazione salvata";
+"recording.delete" = "Elimina";
+"recording.preview" = "Anteprima";
+"recording.playing_preview" = "Riproduzione anteprima...";
+"recording.preview_paused" = "Anteprima in pausa";
+"recording.plays_once" = "(riproduzione singola)";
+"recording.processing" = "Elaborazione audio...";
+"recording.listening" = "In ascolto...";
+"recording.speaking" = "Parlando...";
+"recording.transcribing" = "Trascrizione in corso...";
+"recording.re_transcribing" = "Ritrascrizione in corso...";
+"recording.microphone_access" = "Accesso Microfono";
+"recording.microphone_access.message" = "Concedi l'accesso al microfono nelle Impostazioni per registrare audio";
 
 // MARK: - Character Guidance
-"guidance.trim_characters" = "Consider trimming %d characters for better memorability";
-"guidance.script_over" = "Script is %d characters over. Try to be more concise";
-"guidance.script_long" = "Script is quite long.";
-"guidance.enter_script" = "Enter your self-talk script here...";
+"guidance.trim_characters" = "Considera di ridurre di %d caratteri per una migliore memorizzazione";
+"guidance.script_over" = "Lo script supera di %d caratteri. Prova ad essere più conciso";
+"guidance.script_long" = "Lo script è piuttosto lungo.";
+"guidance.enter_script" = "Inserisci qui il tuo script di dialogo interno...";
 
 // MARK: - Notifications
-"notifications.enable" = "Enable Notifications";
-"notifications.frequency" = "Frequency";
-"notifications.frequency.high" = "High (1-2 times/hour)";
-"notifications.frequency.medium" = "Medium (every 2 hours)";
-"notifications.frequency.low" = "Low (1-2 times/day)";
-"notifications.daytime_only" = "Notifications only during daytime (8 AM - 9 PM)";
+"notifications.enable" = "Abilita Notifiche";
+"notifications.frequency" = "Frequenza";
+"notifications.frequency.high" = "Alta (1-2 volte/ora)";
+"notifications.frequency.medium" = "Media (ogni 2 ore)";
+"notifications.frequency.low" = "Bassa (1-2 volte/giorno)";
+"notifications.daytime_only" = "Notifiche solo durante il giorno (8:00 - 21:00)";
 
 // MARK: - Common Actions
-"action.done" = "Done";
-"action.cancel" = "Cancel";
-"action.delete" = "Delete";
-"action.add" = "Add";
-"action.save" = "Save";
+"action.done" = "Fatto";
+"action.cancel" = "Annulla";
+"action.delete" = "Elimina";
+"action.add" = "Aggiungi";
+"action.save" = "Salva";
 "action.ok" = "OK";
-"action.got_it" = "Got it";
-"action.copy" = "Copy";
-"action.use_as_script" = "Use as Script";
-"action.share" = "Share";
-"action.edit" = "Edit";
+"action.got_it" = "Capito";
+"action.copy" = "Copia";
+"action.use_as_script" = "Usa come Script";
+"action.share" = "Condividi";
+"action.edit" = "Modifica";
 
 // MARK: - Errors
-"error.title" = "Error";
-"error.save" = "Failed to save script";
-"error.database" = "Database error";
-"error.restart_app" = "Please restart the app";
-"error.try_again" = "Please try again";
-"error.import" = "Import failed";
-"error.export" = "Export failed";
+"error.title" = "Errore";
+"error.save" = "Salvataggio script fallito";
+"error.database" = "Errore database";
+"error.restart_app" = "Riavvia l'app";
+"error.try_again" = "Riprova";
+"error.import" = "Importazione fallita";
+"error.export" = "Esportazione fallita";
 
 // MARK: - Time Units
-"time.seconds" = "%@ seconds";
-"time.times_per_hour" = "1-2 times/hour";
-"time.every_hours" = "every 2 hours";
-"time.times_per_day" = "1-2 times/day";
+"time.seconds" = "%@ secondi";
+"time.times_per_hour" = "1-2 volte/ora";
+"time.every_hours" = "ogni 2 ore";
+"time.times_per_day" = "1-2 volte/giorno";
 
 // MARK: - Sensitivity Levels
-"sensitivity.low" = "Low";
-"sensitivity.medium" = "Medium";
-"sensitivity.high" = "High";
-"sensitivity.low.desc" = "Needs louder voice • 0.5s buffer";
-"sensitivity.medium.desc" = "Balanced detection • 0.3s buffer";
-"sensitivity.high.desc" = "Detects whispers • 0.15s buffer";
+"sensitivity.low" = "Bassa";
+"sensitivity.medium" = "Media";
+"sensitivity.high" = "Alta";
+"sensitivity.low.desc" = "Richiede voce più forte • buffer 0.5s";
+"sensitivity.medium.desc" = "Rilevamento bilanciato • buffer 0.3s";
+"sensitivity.high.desc" = "Rileva sussurri • buffer 0.15s";
 
 // MARK: - Sample Scripts
-"sample.smoking" = "I never smoke, because it stinks, and I hate being controlled.";
-"sample.bedtime" = "I always go to bed before 10 p.m., because it's healthier, and I love waking up with a great deal of energy.";
-"sample.mistakes" = "I made a few mistakes, but I also did several things well. Mistakes are a normal part of learning, and I can use them as an opportunity to improve.";
+"sample.smoking" = "Non fumo mai, perché puzza e odio essere controllato.";
+"sample.bedtime" = "Vado sempre a letto prima delle 22:00, perché è più salutare e amo svegliarmi con tanta energia.";
+"sample.mistakes" = "Ho commesso alcuni errori, ma ho anche fatto diverse cose bene. Gli errori sono una parte normale dell'apprendimento e posso usarli come opportunità per migliorare.";

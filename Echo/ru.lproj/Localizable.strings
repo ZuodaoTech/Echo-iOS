@@ -1,146 +1,147 @@
 /* 
-  Localizable.strings (English)
+  Localizable.strings (Russian)
   Echo
-  
-  Base localization file for Echo app
 */
 
 // MARK: - Navigation & Titles
-"navigation.cards" = "Cards";
-"navigation.me" = "Me";
-"navigation.new_script" = "New Script";
-"navigation.edit_script" = "Edit Script";
+"navigation.cards" = "Карточки";
+"navigation.me" = "Я";
+"navigation.new_script" = "Новый скрипт";
+"navigation.edit_script" = "Редактировать скрипт";
 
 // MARK: - Categories
-"category.breaking_bad_habits" = "Breaking Bad Habits";
-"category.building_good_habits" = "Building Good Habits";
-"category.appropriate_positivity" = "Appropriate Positivity";
-"category.personal_growth" = "Personal Growth";
-"category.daily_affirmations" = "Daily Affirmations";
-"category.select" = "Select Category";
-"category.add_new" = "Add New Category...";
-"category.uncategorized" = "Uncategorized";
+"category.breaking_bad_habits" = "Избавление от плохих привычек";
+"category.building_good_habits" = "Формирование хороших привычек";
+"category.appropriate_positivity" = "Уместная позитивность";
+"category.personal_growth" = "Личностный рост";
+"category.daily_affirmations" = "Ежедневные аффирмации";
+"category.select" = "Выбрать категорию";
+"category.add_new" = "Добавить новую категорию...";
+"category.uncategorized" = "Без категории";
 
 // MARK: - Script Card
-"script.play_count" = "%d plays";
-"script.transcript" = "Transcript";
-"script.recording" = "Recording";
-"script.no_recording" = "No recording";
-"script.repetitions" = "Repetitions";
-"script.interval" = "Interval";
-"script.privacy_mode" = "Privacy Mode";
-"script.delete" = "Delete Script";
-"script.delete.confirm.title" = "Delete Script";
-"script.delete.confirm.message" = "Are you sure you want to delete this script? This action cannot be undone.";
+"script.play_count" = "%d воспроизведений";
+"script.transcript" = "Транскрипция";
+"script.recording" = "Запись";
+"script.no_recording" = "Нет записи";
+"script.repetitions" = "Повторения";
+"script.interval" = "Интервал";
+"script.privacy_mode" = "Режим приватности";
+"script.delete" = "Удалить скрипт";
+"script.delete.confirm.title" = "Удалить скрипт";
+"script.delete.confirm.message" = "Вы уверены, что хотите удалить этот скрипт? Это действие нельзя отменить.";
 
 // MARK: - Settings
-"settings.default_settings" = "Default Settings";
-"settings.script_preferences" = "Script Preferences";
-"settings.transcription" = "Transcription";
-"settings.recording" = "Recording";
-"settings.backup_sync" = "Backup & Sync";
-"settings.about" = "About";
-"settings.support" = "Support";
+"settings.app_language" = "Язык приложения";
+"settings.display_language" = "Язык интерфейса";
+"settings.restart_to_apply" = "Перезапустите приложение для применения смены языка";
+"settings.default_settings" = "Настройки по умолчанию";
+"settings.script_preferences" = "Настройки скриптов";
+"settings.transcription" = "Транскрипция";
+"settings.recording" = "Запись";
+"settings.backup_sync" = "Резервное копирование и синхронизация";
+"settings.about" = "О программе";
+"settings.support" = "Поддержка";
 
-"settings.privacy_mode.title" = "Privacy Mode";
-"settings.privacy_mode.info" = "Audio plays only through earphones";
-"settings.privacy_mode.alert.title" = "Privacy Mode";
-"settings.privacy_mode.alert.message" = "When Privacy Mode is enabled, audio recordings will only play through connected earphones or headphones. This prevents accidental playback through speakers in public spaces.";
+"settings.privacy_mode.title" = "Режим приватности";
+"settings.privacy_mode.info" = "Аудио воспроизводится только через наушники";
+"settings.privacy_mode.alert.title" = "Режим приватности";
+"settings.privacy_mode.alert.message" = "Когда включен режим приватности, аудиозаписи будут воспроизводиться только через подключенные наушники или гарнитуру. Это предотвращает случайное воспроизведение через динамики в общественных местах.";
 
-"settings.character_guidance" = "Character Guidance";
-"settings.recommended_length" = "Recommended length";
-"settings.when_exceeded" = "When exceeded";
-"settings.just_warn" = "Just warn me";
-"settings.show_tip_only" = "Show tip only";
-"settings.character_guidance.info" = "Shorter scripts are easier to remember and more impactful";
+"settings.character_guidance" = "Управление символами";
+"settings.recommended_length" = "Рекомендуемая длина";
+"settings.when_exceeded" = "При превышении";
+"settings.just_warn" = "Только предупредить";
+"settings.show_tip_only" = "Показывать только подсказку";
+"settings.character_guidance.info" = "Короткие скрипты легче запомнить и более эффективны";
 
-"settings.default_language" = "Default Language";
-"settings.voice_enhancement" = "Voice Enhancement";
-"settings.voice_enhancement.desc" = "Reduces background noise and echo";
-"settings.auto_trim_silence" = "Auto-Trim Silence";
-"settings.auto_trim_silence.desc" = "Remove silence at start and end";
-"settings.trim_sensitivity" = "Trim Sensitivity";
+"settings.default_language" = "Язык по умолчанию";
+"settings.voice_enhancement" = "Улучшение голоса";
+"settings.voice_enhancement.desc" = "Снижает фоновый шум и эхо";
+"settings.auto_trim_silence" = "Автоматическая обрезка тишины";
+"settings.auto_trim_silence.desc" = "Удалить тишину в начале и конце";
+"settings.trim_sensitivity" = "Чувствительность обрезки";
 
-"settings.icloud_sync" = "iCloud Sync";
-"settings.icloud_sync.desc" = "Sync scripts across your devices";
-"settings.icloud_sync.info" = "Text and settings sync automatically. Audio files remain local.";
-"settings.export_scripts" = "Export Scripts";
-"settings.import_scripts" = "Import Scripts";
+"settings.icloud_sync" = "Синхронизация iCloud";
+"settings.icloud_sync.desc" = "Синхронизировать скрипты между устройствами";
+"settings.icloud_sync.info" = "Текст и настройки синхронизируются автоматически. Аудиофайлы остаются локальными.";
+"settings.export_scripts" = "Экспорт скриптов";
+"settings.import_scripts" = "Импорт скриптов";
 
-"settings.version" = "Version";
-"settings.build" = "Build";
-"settings.rate_github" = "Rate on GitHub";
-"settings.contact_support" = "Contact Support";
+"settings.version" = "Версия";
+"settings.build" = "Сборка";
+"settings.rate_github" = "Оценить на GitHub";
+"settings.contact_support" = "Связаться с поддержкой";
 
 // MARK: - Recording
-"recording.start" = "Start Recording";
-"recording.stop" = "Stop Recording";
-"recording.re_record" = "Re-record";
-"recording.saved" = "Recording saved";
-"recording.delete" = "Delete";
-"recording.preview" = "Preview";
-"recording.playing_preview" = "Playing preview...";
-"recording.preview_paused" = "Preview paused";
-"recording.plays_once" = "(plays once)";
-"recording.processing" = "Processing audio...";
-"recording.listening" = "Listening...";
-"recording.speaking" = "Speaking...";
-"recording.transcribing" = "Transcribing...";
-"recording.re_transcribing" = "Re-transcribing...";
-"recording.microphone_access" = "Microphone Access";
-"recording.microphone_access.message" = "Please grant microphone access in Settings to record audio";
+"recording.start" = "Начать запись";
+"recording.stop" = "Остановить запись";
+"recording.re_record" = "Перезаписать";
+"recording.saved" = "Запись сохранена";
+"recording.delete" = "Удалить";
+"recording.preview" = "Предпросмотр";
+"recording.playing_preview" = "Воспроизводится предпросмотр...";
+"recording.preview_paused" = "Предпросмотр приостановлен";
+"recording.plays_once" = "(воспроизводится один раз)";
+"recording.processing" = "Обработка аудио...";
+"recording.listening" = "Слушаю...";
+"recording.speaking" = "Говорю...";
+"recording.transcribing" = "Транскрибирую...";
+"recording.re_transcribing" = "Повторная транскрибация...";
+"recording.microphone_access" = "Доступ к микрофону";
+"recording.microphone_access.message" = "Пожалуйста, предоставьте доступ к микрофону в настройках для записи аудио";
 
 // MARK: - Character Guidance
-"guidance.trim_characters" = "Consider trimming %d characters for better memorability";
-"guidance.script_over" = "Script is %d characters over. Try to be more concise";
-"guidance.script_long" = "Script is quite long.";
-"guidance.enter_script" = "Enter your self-talk script here...";
+"guidance.trim_characters" = "Рассмотрите возможность сокращения на %d символов для лучшего запоминания";
+"guidance.script_over" = "Скрипт превышает на %d символов. Попробуйте быть более лаконичным";
+"guidance.script_long" = "Скрипт довольно длинный.";
+"guidance.enter_script" = "Введите здесь ваш скрипт внутреннего диалога...";
 
 // MARK: - Notifications
-"notifications.enable" = "Enable Notifications";
-"notifications.frequency" = "Frequency";
-"notifications.frequency.high" = "High (1-2 times/hour)";
-"notifications.frequency.medium" = "Medium (every 2 hours)";
-"notifications.frequency.low" = "Low (1-2 times/day)";
-"notifications.daytime_only" = "Notifications only during daytime (8 AM - 9 PM)";
+"notifications.enable" = "Включить уведомления";
+"notifications.frequency" = "Частота";
+"notifications.frequency.high" = "Высокая (1-2 раза/час)";
+"notifications.frequency.medium" = "Средняя (каждые 2 часа)";
+"notifications.frequency.low" = "Низкая (1-2 раза/день)";
+"notifications.daytime_only" = "Уведомления только в дневное время (8:00 - 21:00)";
 
 // MARK: - Common Actions
-"action.done" = "Done";
-"action.cancel" = "Cancel";
-"action.delete" = "Delete";
-"action.add" = "Add";
-"action.save" = "Save";
-"action.ok" = "OK";
-"action.got_it" = "Got it";
-"action.copy" = "Copy";
-"action.use_as_script" = "Use as Script";
-"action.share" = "Share";
-"action.edit" = "Edit";
+"action.done" = "Готово";
+"action.cancel" = "Отмена";
+"action.delete" = "Удалить";
+"action.add" = "Добавить";
+"action.save" = "Сохранить";
+"action.ok" = "ОК";
+"action.got_it" = "Понятно";
+"action.copy" = "Копировать";
+"action.use_as_script" = "Использовать как скрипт";
+"action.share" = "Поделиться";
+"action.edit" = "Редактировать";
 
 // MARK: - Errors
-"error.title" = "Error";
-"error.save" = "Failed to save script";
-"error.database" = "Database error";
-"error.restart_app" = "Please restart the app";
-"error.try_again" = "Please try again";
-"error.import" = "Import failed";
-"error.export" = "Export failed";
+"error.title" = "Ошибка";
+"error.save" = "Не удалось сохранить скрипт";
+"error.database" = "Ошибка базы данных";
+"error.restart_app" = "Пожалуйста, перезапустите приложение";
+"error.try_again" = "Пожалуйста, попробуйте еще раз";
+"error.import" = "Импорт не удался";
+"error.export" = "Экспорт не удался";
 
 // MARK: - Time Units
-"time.seconds" = "%@ seconds";
-"time.times_per_hour" = "1-2 times/hour";
-"time.every_hours" = "every 2 hours";
-"time.times_per_day" = "1-2 times/day";
+"time.seconds" = "%@ секунд";
+"time.times_per_hour" = "1-2 раза/час";
+"time.every_hours" = "каждые 2 часа";
+"time.times_per_day" = "1-2 раза/день";
 
 // MARK: - Sensitivity Levels
-"sensitivity.low" = "Low";
-"sensitivity.medium" = "Medium";
-"sensitivity.high" = "High";
-"sensitivity.low.desc" = "Needs louder voice • 0.5s buffer";
-"sensitivity.medium.desc" = "Balanced detection • 0.3s buffer";
-"sensitivity.high.desc" = "Detects whispers • 0.15s buffer";
+"sensitivity.low" = "Низкая";
+"sensitivity.medium" = "Средняя";
+"sensitivity.high" = "Высокая";
+"sensitivity.low.desc" = "Требует более громкого голоса • буфер 0.5с";
+"sensitivity.medium.desc" = "Сбалансированное обнаружение • буфер 0.3с";
+"sensitivity.high.desc" = "Обнаруживает шепот • буфер 0.15с";
 
 // MARK: - Sample Scripts
-"sample.smoking" = "I never smoke, because it stinks, and I hate being controlled.";
-"sample.bedtime" = "I always go to bed before 10 p.m., because it's healthier, and I love waking up with a great deal of energy.";
-"sample.mistakes" = "I made a few mistakes, but I also did several things well. Mistakes are a normal part of learning, and I can use them as an opportunity to improve.";
+"sample.smoking" = "Я никогда не курю, потому что это воняет и я ненавижу быть под контролем.";
+"sample.bedtime" = "Я всегда ложусь спать до 22:00, потому что это полезнее для здоровья, и мне нравится просыпаться с большим количеством энергии.";
+"sample.mistakes" = "Я совершил несколько ошибок, но также сделал хорошо несколько вещей. Ошибки — это нормальная часть обучения, и я могу использовать их как возможность для улучшения.";

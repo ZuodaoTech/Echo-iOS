@@ -1,146 +1,147 @@
 /* 
-  Localizable.strings (English)
+  Localizable.strings (Danish)
   Echo
-  
-  Base localization file for Echo app
 */
 
 // MARK: - Navigation & Titles
-"navigation.cards" = "Cards";
-"navigation.me" = "Me";
-"navigation.new_script" = "New Script";
-"navigation.edit_script" = "Edit Script";
+"navigation.cards" = "Kort";
+"navigation.me" = "Mig";
+"navigation.new_script" = "Nyt Script";
+"navigation.edit_script" = "Rediger Script";
 
 // MARK: - Categories
-"category.breaking_bad_habits" = "Breaking Bad Habits";
-"category.building_good_habits" = "Building Good Habits";
-"category.appropriate_positivity" = "Appropriate Positivity";
-"category.personal_growth" = "Personal Growth";
-"category.daily_affirmations" = "Daily Affirmations";
-"category.select" = "Select Category";
-"category.add_new" = "Add New Category...";
-"category.uncategorized" = "Uncategorized";
+"category.breaking_bad_habits" = "Bryde Dårlige Vaner";
+"category.building_good_habits" = "Opbygge Gode Vaner";
+"category.appropriate_positivity" = "Passende Positivitet";
+"category.personal_growth" = "Personlig Vækst";
+"category.daily_affirmations" = "Daglige Bekræftelser";
+"category.select" = "Vælg Kategori";
+"category.add_new" = "Tilføj Ny Kategori...";
+"category.uncategorized" = "Ukategoriseret";
 
 // MARK: - Script Card
-"script.play_count" = "%d plays";
-"script.transcript" = "Transcript";
-"script.recording" = "Recording";
-"script.no_recording" = "No recording";
-"script.repetitions" = "Repetitions";
+"script.play_count" = "%d afspilninger";
+"script.transcript" = "Transkription";
+"script.recording" = "Optagelse";
+"script.no_recording" = "Ingen optagelse";
+"script.repetitions" = "Gentagelser";
 "script.interval" = "Interval";
-"script.privacy_mode" = "Privacy Mode";
-"script.delete" = "Delete Script";
-"script.delete.confirm.title" = "Delete Script";
-"script.delete.confirm.message" = "Are you sure you want to delete this script? This action cannot be undone.";
+"script.privacy_mode" = "Privatliv Tilstand";
+"script.delete" = "Slet Script";
+"script.delete.confirm.title" = "Slet Script";
+"script.delete.confirm.message" = "Er du sikker på, at du vil slette dette script? Denne handling kan ikke fortrydes.";
 
 // MARK: - Settings
-"settings.default_settings" = "Default Settings";
-"settings.script_preferences" = "Script Preferences";
-"settings.transcription" = "Transcription";
-"settings.recording" = "Recording";
-"settings.backup_sync" = "Backup & Sync";
-"settings.about" = "About";
+"settings.app_language" = "App Sprog";
+"settings.display_language" = "Visningssprog";
+"settings.restart_to_apply" = "Genstart appen for at anvende sprogændring";
+"settings.default_settings" = "Standardindstillinger";
+"settings.script_preferences" = "Script Indstillinger";
+"settings.transcription" = "Transkription";
+"settings.recording" = "Optagelse";
+"settings.backup_sync" = "Backup og Synkronisering";
+"settings.about" = "Om";
 "settings.support" = "Support";
 
-"settings.privacy_mode.title" = "Privacy Mode";
-"settings.privacy_mode.info" = "Audio plays only through earphones";
-"settings.privacy_mode.alert.title" = "Privacy Mode";
-"settings.privacy_mode.alert.message" = "When Privacy Mode is enabled, audio recordings will only play through connected earphones or headphones. This prevents accidental playback through speakers in public spaces.";
+"settings.privacy_mode.title" = "Privatliv Tilstand";
+"settings.privacy_mode.info" = "Lyd afspilles kun gennem øretelefoner";
+"settings.privacy_mode.alert.title" = "Privatliv Tilstand";
+"settings.privacy_mode.alert.message" = "Når Privatliv Tilstand er aktiveret, vil lydoptagelser kun blive afspillet gennem tilsluttede øretelefoner eller hovedtelefoner. Dette forhindrer utilsigtet afspilning gennem højttalere i offentlige rum.";
 
-"settings.character_guidance" = "Character Guidance";
-"settings.recommended_length" = "Recommended length";
-"settings.when_exceeded" = "When exceeded";
-"settings.just_warn" = "Just warn me";
-"settings.show_tip_only" = "Show tip only";
-"settings.character_guidance.info" = "Shorter scripts are easier to remember and more impactful";
+"settings.character_guidance" = "Tegn Vejledning";
+"settings.recommended_length" = "Anbefalet længde";
+"settings.when_exceeded" = "Ved overskridelse";
+"settings.just_warn" = "Advar kun";
+"settings.show_tip_only" = "Vis kun tip";
+"settings.character_guidance.info" = "Kortere scripts er lettere at huske og mere effektive";
 
-"settings.default_language" = "Default Language";
-"settings.voice_enhancement" = "Voice Enhancement";
-"settings.voice_enhancement.desc" = "Reduces background noise and echo";
-"settings.auto_trim_silence" = "Auto-Trim Silence";
-"settings.auto_trim_silence.desc" = "Remove silence at start and end";
-"settings.trim_sensitivity" = "Trim Sensitivity";
+"settings.default_language" = "Standardsprog";
+"settings.voice_enhancement" = "Stemmeforbedring";
+"settings.voice_enhancement.desc" = "Reducerer baggrundsstøj og ekko";
+"settings.auto_trim_silence" = "Beskær Stilhed Automatisk";
+"settings.auto_trim_silence.desc" = "Fjern stilhed i begyndelsen og slutningen";
+"settings.trim_sensitivity" = "Beskær Følsomhed";
 
-"settings.icloud_sync" = "iCloud Sync";
-"settings.icloud_sync.desc" = "Sync scripts across your devices";
-"settings.icloud_sync.info" = "Text and settings sync automatically. Audio files remain local.";
-"settings.export_scripts" = "Export Scripts";
-"settings.import_scripts" = "Import Scripts";
+"settings.icloud_sync" = "iCloud Synkronisering";
+"settings.icloud_sync.desc" = "Synkroniser scripts mellem dine enheder";
+"settings.icloud_sync.info" = "Tekst og indstillinger synkroniseres automatisk. Lydfiler forbliver lokale.";
+"settings.export_scripts" = "Eksporter Scripts";
+"settings.import_scripts" = "Importer Scripts";
 
 "settings.version" = "Version";
 "settings.build" = "Build";
-"settings.rate_github" = "Rate on GitHub";
-"settings.contact_support" = "Contact Support";
+"settings.rate_github" = "Bedøm på GitHub";
+"settings.contact_support" = "Kontakt Support";
 
 // MARK: - Recording
-"recording.start" = "Start Recording";
-"recording.stop" = "Stop Recording";
-"recording.re_record" = "Re-record";
-"recording.saved" = "Recording saved";
-"recording.delete" = "Delete";
-"recording.preview" = "Preview";
-"recording.playing_preview" = "Playing preview...";
-"recording.preview_paused" = "Preview paused";
-"recording.plays_once" = "(plays once)";
-"recording.processing" = "Processing audio...";
-"recording.listening" = "Listening...";
-"recording.speaking" = "Speaking...";
-"recording.transcribing" = "Transcribing...";
-"recording.re_transcribing" = "Re-transcribing...";
-"recording.microphone_access" = "Microphone Access";
-"recording.microphone_access.message" = "Please grant microphone access in Settings to record audio";
+"recording.start" = "Start Optagelse";
+"recording.stop" = "Stop Optagelse";
+"recording.re_record" = "Optag igen";
+"recording.saved" = "Optagelse gemt";
+"recording.delete" = "Slet";
+"recording.preview" = "Forhåndsvisning";
+"recording.playing_preview" = "Afspiller forhåndsvisning...";
+"recording.preview_paused" = "Forhåndsvisning sat på pause";
+"recording.plays_once" = "(afspilles én gang)";
+"recording.processing" = "Behandler lyd...";
+"recording.listening" = "Lytter...";
+"recording.speaking" = "Taler...";
+"recording.transcribing" = "Transkriberer...";
+"recording.re_transcribing" = "Omtranskriberer...";
+"recording.microphone_access" = "Mikrofonadgang";
+"recording.microphone_access.message" = "Giv venligst mikrofonadgang i Indstillinger for at optage lyd";
 
 // MARK: - Character Guidance
-"guidance.trim_characters" = "Consider trimming %d characters for better memorability";
-"guidance.script_over" = "Script is %d characters over. Try to be more concise";
-"guidance.script_long" = "Script is quite long.";
-"guidance.enter_script" = "Enter your self-talk script here...";
+"guidance.trim_characters" = "Overvej at beskære %d tegn for bedre hukommelse";
+"guidance.script_over" = "Script overskrider med %d tegn. Prøv at være mere kortfattet";
+"guidance.script_long" = "Script er ret langt.";
+"guidance.enter_script" = "Indtast dit selvsamtale script her...";
 
 // MARK: - Notifications
-"notifications.enable" = "Enable Notifications";
-"notifications.frequency" = "Frequency";
-"notifications.frequency.high" = "High (1-2 times/hour)";
-"notifications.frequency.medium" = "Medium (every 2 hours)";
-"notifications.frequency.low" = "Low (1-2 times/day)";
-"notifications.daytime_only" = "Notifications only during daytime (8 AM - 9 PM)";
+"notifications.enable" = "Aktiver Notifikationer";
+"notifications.frequency" = "Frekvens";
+"notifications.frequency.high" = "Høj (1-2 gange/time)";
+"notifications.frequency.medium" = "Medium (hver 2. time)";
+"notifications.frequency.low" = "Lav (1-2 gange/dag)";
+"notifications.daytime_only" = "Notifikationer kun om dagen (8:00 - 21:00)";
 
 // MARK: - Common Actions
-"action.done" = "Done";
-"action.cancel" = "Cancel";
-"action.delete" = "Delete";
-"action.add" = "Add";
-"action.save" = "Save";
+"action.done" = "Færdig";
+"action.cancel" = "Annuller";
+"action.delete" = "Slet";
+"action.add" = "Tilføj";
+"action.save" = "Gem";
 "action.ok" = "OK";
-"action.got_it" = "Got it";
-"action.copy" = "Copy";
-"action.use_as_script" = "Use as Script";
-"action.share" = "Share";
-"action.edit" = "Edit";
+"action.got_it" = "Forstået";
+"action.copy" = "Kopier";
+"action.use_as_script" = "Brug som Script";
+"action.share" = "Del";
+"action.edit" = "Rediger";
 
 // MARK: - Errors
-"error.title" = "Error";
-"error.save" = "Failed to save script";
-"error.database" = "Database error";
-"error.restart_app" = "Please restart the app";
-"error.try_again" = "Please try again";
-"error.import" = "Import failed";
-"error.export" = "Export failed";
+"error.title" = "Fejl";
+"error.save" = "Kunne ikke gemme script";
+"error.database" = "Database fejl";
+"error.restart_app" = "Genstart venligst appen";
+"error.try_again" = "Prøv venligst igen";
+"error.import" = "Import mislykkedes";
+"error.export" = "Eksport mislykkedes";
 
 // MARK: - Time Units
-"time.seconds" = "%@ seconds";
-"time.times_per_hour" = "1-2 times/hour";
-"time.every_hours" = "every 2 hours";
-"time.times_per_day" = "1-2 times/day";
+"time.seconds" = "%@ sekunder";
+"time.times_per_hour" = "1-2 gange/time";
+"time.every_hours" = "hver 2. time";
+"time.times_per_day" = "1-2 gange/dag";
 
 // MARK: - Sensitivity Levels
-"sensitivity.low" = "Low";
+"sensitivity.low" = "Lav";
 "sensitivity.medium" = "Medium";
-"sensitivity.high" = "High";
-"sensitivity.low.desc" = "Needs louder voice • 0.5s buffer";
-"sensitivity.medium.desc" = "Balanced detection • 0.3s buffer";
-"sensitivity.high.desc" = "Detects whispers • 0.15s buffer";
+"sensitivity.high" = "Høj";
+"sensitivity.low.desc" = "Kræver højere stemme • 0.5s buffer";
+"sensitivity.medium.desc" = "Balanceret detektering • 0.3s buffer";
+"sensitivity.high.desc" = "Detekterer hvisken • 0.15s buffer";
 
 // MARK: - Sample Scripts
-"sample.smoking" = "I never smoke, because it stinks, and I hate being controlled.";
-"sample.bedtime" = "I always go to bed before 10 p.m., because it's healthier, and I love waking up with a great deal of energy.";
-"sample.mistakes" = "I made a few mistakes, but I also did several things well. Mistakes are a normal part of learning, and I can use them as an opportunity to improve.";
+"sample.smoking" = "Jeg ryger aldrig, fordi det stinker og jeg hader at blive kontrolleret.";
+"sample.bedtime" = "Jeg går altid i seng før kl. 22:00, fordi det er sundere og jeg elsker at vågne med masser af energi.";
+"sample.mistakes" = "Jeg lavede nogle fejl, men jeg gjorde også flere ting godt. Fejl er en normal del af læring, og jeg kan bruge dem som en mulighed for at forbedre mig.";
