@@ -104,6 +104,19 @@
 "notifications.frequency.medium" = "中（每 2 小時）";
 "notifications.frequency.low" = "低（每天 1-2 次）";
 "notifications.daytime_only" = "僅在白天時段通知（8:00 - 21:00）";
+"notifications.settings_title" = "通知設定";
+"notifications.max_cards" = "最多通知卡片數";
+"notifications.burden_warning" = "過多的通知會造成負擔並降低效果";
+"notifications.global_settings" = "全局設定";
+"notifications.max_cards_footer" = "限制同時發送通知的卡片數量";
+"notifications.no_cards_enabled" = "沒有卡片啟用通知";
+"notifications.enabled_cards" = "已啟用卡片（%d）";
+"notifications.request_permission" = "啟用通知";
+"notifications.select_to_disable" = "選擇 %d 張卡片以禁用通知";
+"notifications.select_cards" = "選擇卡片";
+"notifications.reminder_title" = "自我對話時間";
+"notifications.action_play" = "播放音訊";
+"notifications.action_done" = "標記為完成";
 
 // MARK: - Common Actions
 "action.done" = "完成";

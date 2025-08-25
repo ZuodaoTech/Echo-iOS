@@ -91,9 +91,7 @@ struct BackupSyncView: View {
             .sheet(isPresented: $showingDocumentPicker) {
                 DocumentPicker(
                     allowedContentTypes: [
-                        UTType(filenameExtension: "echo") ?? .data,
-                        .json,
-                        .plainText
+                        UTType(filenameExtension: "echo") ?? .data
                     ]
                 ) { url in
                     Task {

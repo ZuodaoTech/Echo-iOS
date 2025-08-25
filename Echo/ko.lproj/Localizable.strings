@@ -104,6 +104,19 @@
 "notifications.frequency.medium" = "보통 (2시간마다)";
 "notifications.frequency.low" = "낮음 (하루 1-2회)";
 "notifications.daytime_only" = "주간 시간대에만 알림 (오전 8시 - 오후 9시)";
+"notifications.settings_title" = "Notification Settings";
+"notifications.max_cards" = "Maximum cards with notifications";
+"notifications.burden_warning" = "Too many notifications can become burdensome";
+"notifications.global_settings" = "Global Settings";
+"notifications.max_cards_footer" = "Limit how many cards can send notifications";
+"notifications.no_cards_enabled" = "No cards have notifications enabled";
+"notifications.enabled_cards" = "Enabled Cards (%d)";
+"notifications.request_permission" = "Enable Notifications";
+"notifications.select_to_disable" = "Select %d cards to disable notifications";
+"notifications.select_cards" = "Select Cards";
+"notifications.reminder_title" = "Time for Self-Talk";
+"notifications.action_play" = "Play Audio";
+"notifications.action_done" = "Mark as Done";
 
 // MARK: - Common Actions
 "action.done" = "완료";

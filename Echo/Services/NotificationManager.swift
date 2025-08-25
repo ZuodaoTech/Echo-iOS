@@ -59,17 +59,28 @@ class NotificationManager: NSObject, ObservableObject {
         // Calculate notification times based on frequency
         let notificationTimes = calculateNotificationTimes(frequency: frequency)
         
+        // Register notification actions
+        registerNotificationActions()
+        
         // Schedule notifications for the next 7 days
         for dayOffset in 0..<7 {
             for time in notificationTimes {
                 guard let scheduledDate = calculateNextNotificationDate(time: time, dayOffset: dayOffset) else { continue }
                 
                 let content = UNMutableNotificationContent()
-                content.title = "Time for Self-Talk"
-                content.body = String(script.scriptText.prefix(100))
+                content.title = NSLocalizedString("notifications.reminder_title", comment: "Time for Self-Talk")
+                content.body = script.scriptText // Show full script text
                 content.sound = .default
                 content.categoryIdentifier = "SELFTALK_REMINDER"
-                content.userInfo = ["scriptId": scriptId]
+                content.userInfo = [
+                    "scriptId": scriptId,
+                    "hasAudio": script.hasRecording
+                ]
+                
+                // Add subtitle if there's a category
+                if let category = script.category {
+                    content.subtitle = category.name
+                }
                 
                 let trigger = UNCalendarNotificationTrigger(
                     dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: scheduledDate),
@@ -105,6 +116,29 @@ class NotificationManager: NSObject, ObservableObject {
     }
     
     // MARK: - Helper Methods
+    
+    private func registerNotificationActions() {
+        let playAction = UNNotificationAction(
+            identifier: "PLAY_AUDIO",
+            title: NSLocalizedString("notifications.action_play", comment: "Play Audio"),
+            options: [.foreground]
+        )
+        
+        let markDoneAction = UNNotificationAction(
+            identifier: "MARK_DONE",
+            title: NSLocalizedString("notifications.action_done", comment: "Mark as Done"),
+            options: []
+        )
+        
+        let category = UNNotificationCategory(
+            identifier: "SELFTALK_REMINDER",
+            actions: [playAction, markDoneAction],
+            intentIdentifiers: [],
+            options: [.customDismissAction]
+        )
+        
+        UNUserNotificationCenter.current().setNotificationCategories([category])
+    }
     
     private struct NotificationTime {
         let hour: Int
@@ -172,6 +206,9 @@ class NotificationManager: NSObject, ObservableObject {
     // MARK: - Notification Limit Management
     
     func enforceNotificationLimit(context: NSManagedObjectContext, excludingScript: SelftalkScript? = nil) {
+        let maxNotificationCards = UserDefaults.standard.integer(forKey: "maxNotificationCards")
+        let limit = maxNotificationCards > 0 ? maxNotificationCards : 1 // Default to 1 if not set
+        
         let request: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
         
         if let excludingScript = excludingScript {
@@ -185,9 +222,9 @@ class NotificationManager: NSObject, ObservableObject {
         do {
             let scriptsWithNotifications = try context.fetch(request)
             
-            // Keep only the 3 most recent, disable others
-            if scriptsWithNotifications.count > 3 {
-                for i in 0..<(scriptsWithNotifications.count - 3) {
+            // Keep only the allowed number of most recent, disable others
+            if scriptsWithNotifications.count > limit {
+                for i in 0..<(scriptsWithNotifications.count - limit) {
                     let script = scriptsWithNotifications[i]
                     script.notificationEnabled = false
                     script.notificationEnabledAt = nil
@@ -212,11 +249,58 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        // Handle notification tap
-        if let scriptId = response.notification.request.content.userInfo["scriptId"] as? String {
-            // Could navigate to the script or play it
-            print("User tapped notification for script: \(scriptId)")
+        guard let scriptIdString = response.notification.request.content.userInfo["scriptId"] as? String,
+              let scriptId = UUID(uuidString: scriptIdString) else {
+            completionHandler()
+            return
         }
+        
+        switch response.actionIdentifier {
+        case "PLAY_AUDIO":
+            // Play the audio if available
+            playScriptAudio(scriptId: scriptId)
+        case "MARK_DONE":
+            // Just dismiss, could track completion if needed
+            print("User marked script as done: \(scriptId)")
+        case UNNotificationDefaultActionIdentifier:
+            // User tapped on notification itself - open the script
+            openScript(scriptId: scriptId)
+        default:
+            break
+        }
+        
         completionHandler()
+    }
+    
+    private func playScriptAudio(scriptId: UUID) {
+        // Get the script and play its audio
+        let context = PersistenceController.shared.container.viewContext
+        let request: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", scriptId as CVarArg)
+        
+        do {
+            if let script = try context.fetch(request).first {
+                // Check privacy mode - play only if privacy mode is disabled or headphones connected
+                let audioCoordinator = AudioCoordinator.shared
+                audioCoordinator.checkPrivacyMode()
+                
+                if !script.privacyModeEnabled || !audioCoordinator.privacyModeActive {
+                    if script.hasRecording {
+                        try audioCoordinator.play(script: script)
+                    }
+                }
+            }
+        } catch {
+            print("Failed to fetch or play script audio: \(error)")
+        }
+    }
+    
+    private func openScript(scriptId: UUID) {
+        // Post notification to open the script in the app
+        NotificationCenter.default.post(
+            name: Notification.Name("OpenScriptFromNotification"),
+            object: nil,
+            userInfo: ["scriptId": scriptId]
+        )
     }
 }
