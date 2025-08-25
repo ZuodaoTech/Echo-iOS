@@ -1,100 +1,110 @@
 /* 
   Localizable.strings (Danish)
   Echo
+  
+  Danish localization file for Echo app
 */
 
 // MARK: - Navigation & Titles
 "navigation.cards" = "Kort";
 "navigation.me" = "Mig";
-"navigation.new_script" = "Nyt Script";
-"navigation.edit_script" = "Rediger Script";
+"navigation.new_script" = "Nyt Kort";
+"navigation.edit_script" = "Rediger Kort";
 
-// MARK: - Categories
-"category.breaking_bad_habits" = "Bryde Dårlige Vaner";
-"category.building_good_habits" = "Opbygge Gode Vaner";
-"category.appropriate_positivity" = "Passende Positivitet";
-"category.personal_growth" = "Personlig Vækst";
-"category.daily_affirmations" = "Daglige Bekræftelser";
-"category.select" = "Vælg Kategori";
-"category.add_new" = "Tilføj Ny Kategori...";
+
+// MARK: - Tags
+"tag.now" = "Nu";
+"tag.untagged" = "Ikke-tagget";
+"tag.edit" = "Rediger Tags";
+"tag.delete.confirm.title" = "Slet Tag";
+"tag.delete.confirm.message" = "Dette tag bruges af %d scripts. Sletning vil fjerne tagget fra disse scripts.";
+"tag.max_now_cards" = "Maks 'Nu' Kort";
+"tag.now_limit_reached" = "Nu Tag Grænse";
+"tag.now_limit_message" = "Du har nået det maksimale antal 'Nu' kort (%d). Vælg et kort at fjerne 'Nu' tagget fra:";
+"tag.auto_cleanup" = "Automatisk Fjern Ubrugte Tags";
+"tag.select" = "Vælg Tags";
+"tag.new" = "Nyt Tag";
+"tag.label" = "Tags";
+"tag.none" = "Ingen";
+"tag.count_selected" = "%d valgt";
 
 // MARK: - Script Card
 "script.play_count" = "%d afspilninger";
-"script.transcript" = "Transkription";
+"script.transcript" = "Transkript";
 "script.recording" = "Optagelse";
 "script.no_recording" = "Ingen optagelse";
 "script.repetitions" = "Gentagelser";
 "script.interval" = "Interval";
-"script.privacy_mode" = "Privatliv Tilstand";
-"script.delete" = "Slet Script";
-"script.delete.confirm.title" = "Slet Script";
+"script.privacy_mode" = "Privat Tilstand";
+"script.delete" = "Slet Kort";
+"script.delete.confirm.title" = "Slet Kort";
 "script.delete.confirm.message" = "Er du sikker på, at du vil slette dette script? Denne handling kan ikke fortrydes.";
 
 // MARK: - Settings
 "settings.app_language" = "App Sprog";
-"settings.display_language" = "Visningssprog";
+"settings.display_language" = "Display Sprog";
 "settings.restart_to_apply" = "Genstart appen for at anvende sprogændring";
-"settings.default_settings" = "Standardindstillinger";
-"settings.script_preferences" = "Script Indstillinger";
+"settings.default_settings" = "Standard Indstillinger";
+"settings.script_preferences" = "Kort Præferencer";
 "settings.transcription" = "Transkription";
 "settings.recording" = "Optagelse";
-"settings.backup_sync" = "Backup og Synkronisering";
+"settings.backup_sync" = "Backup & Synk";
 "settings.about" = "Om";
 "settings.support" = "Support";
 
-"settings.privacy_mode.title" = "Privatliv Tilstand";
-"settings.privacy_mode.info" = "Lyd afspilles kun gennem øretelefoner";
-"settings.privacy_mode.alert.title" = "Privatliv Tilstand";
-"settings.privacy_mode.alert.message" = "Når Privatliv Tilstand er aktiveret, vil lydoptagelser kun blive afspillet gennem tilsluttede øretelefoner eller hovedtelefoner. Dette forhindrer utilsigtet afspilning gennem højttalere i offentlige rum.";
+"settings.privacy_mode.title" = "Privat Tilstand";
+"settings.privacy_mode.info" = "Lyd afspilles kun gennem høretelefoner";
+"settings.privacy_mode.alert.title" = "Privat Tilstand";
+"settings.privacy_mode.alert.message" = "Når Privat Tilstand er aktiveret, vil lydoptagelser kun afspilles gennem tilsluttede øretelefoner eller hovedtelefoner. Dette forhindrer utilsigtet afspilning gennem højttalere på offentlige steder.";
 
-"settings.character_guidance" = "Tegn Vejledning";
+"settings.character_guidance" = "Karakter Vejledning";
 "settings.recommended_length" = "Anbefalet længde";
-"settings.when_exceeded" = "Ved overskridelse";
-"settings.just_warn" = "Advar kun";
+"settings.when_exceeded" = "Når overskredet";
+"settings.just_warn" = "Bare advar mig";
 "settings.show_tip_only" = "Vis kun tip";
-"settings.character_guidance.info" = "Kortere scripts er lettere at huske og mere effektive";
+"settings.character_guidance.info" = "Kortere scripts er nemmere at huske og mere effektfulde";
 
-"settings.default_language" = "Standardsprog";
-"settings.voice_enhancement" = "Stemmeforbedring";
+"settings.default_language" = "Standard Sprog";
+"settings.voice_enhancement" = "Stemme Forbedring";
 "settings.voice_enhancement.desc" = "Reducerer baggrundsstøj og ekko";
-"settings.auto_trim_silence" = "Beskær Stilhed Automatisk";
-"settings.auto_trim_silence.desc" = "Fjern stilhed i begyndelsen og slutningen";
-"settings.trim_sensitivity" = "Beskær Følsomhed";
+"settings.auto_trim_silence" = "Auto-Trim Stilhed";
+"settings.auto_trim_silence.desc" = "Fjern stilhed i start og slut";
+"settings.trim_sensitivity" = "Trim Følsomhed";
 
-"settings.icloud_sync" = "iCloud Synkronisering";
-"settings.icloud_sync.desc" = "Synkroniser scripts mellem dine enheder";
+"settings.icloud_sync" = "iCloud Synk";
+"settings.icloud_sync.desc" = "Synkroniser kort på tværs af dine enheder";
 "settings.icloud_sync.info" = "Tekst og indstillinger synkroniseres automatisk. Lydfiler forbliver lokale.";
-"settings.export_scripts" = "Eksporter Scripts";
-"settings.import_scripts" = "Importer Scripts";
+"settings.export_scripts" = "Eksporter Kort";
+"settings.import_scripts" = "Importer Kort";
 
 "settings.version" = "Version";
 "settings.build" = "Build";
-"settings.rate_github" = "Bedøm på GitHub";
+"settings.rate_github" = "Vurder på GitHub";
 "settings.contact_support" = "Kontakt Support";
 
 // MARK: - Recording
 "recording.start" = "Start Optagelse";
 "recording.stop" = "Stop Optagelse";
-"recording.re_record" = "Optag igen";
+"recording.re_record" = "Optag Igen";
 "recording.saved" = "Optagelse gemt";
 "recording.delete" = "Slet";
 "recording.preview" = "Forhåndsvisning";
 "recording.playing_preview" = "Afspiller forhåndsvisning...";
-"recording.preview_paused" = "Forhåndsvisning sat på pause";
+"recording.preview_paused" = "Forhåndsvisning pauseret";
 "recording.plays_once" = "(afspilles én gang)";
 "recording.processing" = "Behandler lyd...";
 "recording.listening" = "Lytter...";
 "recording.speaking" = "Taler...";
 "recording.transcribing" = "Transkriberer...";
-"recording.re_transcribing" = "Omtranskriberer...";
-"recording.microphone_access" = "Mikrofonadgang";
-"recording.microphone_access.message" = "Giv venligst mikrofonadgang i Indstillinger for at optage lyd";
+"recording.re_transcribing" = "Gentranskriberer...";
+"recording.microphone_access" = "Mikrofon Adgang";
+"recording.microphone_access.message" = "Giv venligst mikrofon adgang i Indstillinger for at optage lyd";
 
 // MARK: - Character Guidance
-"guidance.trim_characters" = "Overvej at beskære %d tegn for bedre hukommelse";
-"guidance.script_over" = "Script overskrider med %d tegn. Prøv at være mere kortfattet";
+"guidance.trim_characters" = "Overvej at trimme %d tegn for bedre hukommelse";
+"guidance.script_over" = "Script er %d tegn over. Prøv at være mere kortfattet";
 "guidance.script_long" = "Script er ret langt.";
-"guidance.enter_script" = "Indtast dit selvsamtale script her...";
+"guidance.enter_script" = "Indtast dit selv-snak script her...";
 
 // MARK: - Notifications
 "notifications.enable" = "Aktiver Notifikationer";
@@ -102,22 +112,23 @@
 "notifications.frequency.high" = "Høj (1-2 gange/time)";
 "notifications.frequency.medium" = "Medium (hver 2. time)";
 "notifications.frequency.low" = "Lav (1-2 gange/dag)";
-"notifications.daytime_only" = "Notifikationer kun om dagen (8:00 - 21:00)";
-"notifications.settings_title" = "Notification Settings";
-"notifications.max_cards" = "Maximum cards with notifications";
-"notifications.burden_warning" = "Too many notifications can become burdensome";
-"notifications.global_settings" = "Global Settings";
-"notifications.max_cards_footer" = "Limit how many cards can send notifications";
-"notifications.no_cards_enabled" = "No cards have notifications enabled";
-"notifications.enabled_cards" = "Enabled Cards (%d)";
-"notifications.request_permission" = "Enable Notifications";
-"notifications.select_to_disable" = "Select %d cards to disable notifications";
-"notifications.select_cards" = "Select Cards";
-"notifications.reminder_title" = "Time for Self-Talk";
-"notifications.action_play" = "Play Audio";
-"notifications.action_done" = "Mark as Done";
+"notifications.daytime_only" = "Kun notifikationer i dagtimerne (8:00 - 21:00)";
+"notifications.settings_title" = "Notifikations Indstillinger";
+"notifications.max_cards" = "Maksimum kort med notifikationer";
+"notifications.burden_warning" = "For mange notifikationer kan blive byrdefulde og reducere deres effektivitet";
+"notifications.global_settings" = "Globale Indstillinger";
+"notifications.max_cards_footer" = "Begræns hvor mange kort der samtidig kan sende notifikationer";
+"notifications.no_cards_enabled" = "Ingen kort har notifikationer aktiveret";
+"notifications.enabled_cards" = "Aktiverede Kort (%d)";
+"notifications.request_permission" = "Aktiver Notifikationer";
+"notifications.select_to_disable" = "Vælg %d kort for at deaktivere notifikationer";
+"notifications.select_cards" = "Vælg Kort";
+"notifications.reminder_title" = "Tid til Selv-snak";
+"notifications.action_play" = "Afspil Lyd";
+"notifications.action_done" = "Marker som Færdig";
 
 // MARK: - Common Actions
+"chars" = "tegn";
 "action.done" = "Færdig";
 "action.cancel" = "Annuller";
 "action.delete" = "Slet";
@@ -132,12 +143,12 @@
 
 // MARK: - Errors
 "error.title" = "Fejl";
-"error.save" = "Kunne ikke gemme script";
+"error.save" = "Kunne ikke gemme kort";
 "error.database" = "Database fejl";
 "error.restart_app" = "Genstart venligst appen";
 "error.try_again" = "Prøv venligst igen";
-"error.import" = "Import mislykkedes";
-"error.export" = "Eksport mislykkedes";
+"error.import" = "Import fejlede";
+"error.export" = "Eksport fejlede";
 
 // MARK: - Time Units
 "time.seconds" = "%@ sekunder";
@@ -150,17 +161,18 @@
 "sensitivity.medium" = "Medium";
 "sensitivity.high" = "Høj";
 "sensitivity.low.desc" = "Kræver højere stemme • 0.5s buffer";
-"sensitivity.medium.desc" = "Balanceret detektering • 0.3s buffer";
+"sensitivity.medium.desc" = "Balanceret detektion • 0.3s buffer";
 "sensitivity.high.desc" = "Detekterer hvisken • 0.15s buffer";
 
 // MARK: - Sample Scripts
-"sample.smoking" = "Jeg ryger aldrig, fordi det stinker og jeg hader at blive kontrolleret.";
-"sample.bedtime" = "Jeg går altid i seng før kl. 22:00, fordi det er sundere og jeg elsker at vågne med masser af energi.";
-"sample.mistakes" = "Jeg lavede nogle fejl, men jeg gjorde også flere ting godt. Fejl er en normal del af læring, og jeg kan bruge dem som en mulighed for at forbedre mig.";
+"sample.smoking" = "Jeg ryger aldrig, fordi det stinker, og jeg hader at blive kontrolleret.";
+"sample.bedtime" = "Jeg går altid i seng før 22:00, fordi det er sundere, og jeg elsker at vågne med masser af energi.";
+"sample.mistakes" = "Jeg lavede et par fejl, men jeg gjorde også flere ting godt. Fejl er en normal del af læring, og jeg kan bruge dem som en mulighed for at forbedre mig.";
+
 // MARK: - Languages
 "language.english" = "Engelsk";
-"language.chinese_simplified" = "Kinesisk (forenklet)";
-"language.chinese_traditional" = "Kinesisk (traditionel)";
+"language.chinese_simplified" = "Kinesisk (Forenklet)";
+"language.chinese_traditional" = "Kinesisk (Traditionel)";
 "language.spanish" = "Spansk";
 "language.french" = "Fransk";
 "language.german" = "Tysk";
@@ -169,7 +181,7 @@
 "language.portuguese" = "Portugisisk";
 "language.russian" = "Russisk";
 "language.italian" = "Italiensk";
-"language.dutch" = "Nederlandsk";
+"language.dutch" = "Hollandsk";
 "language.swedish" = "Svensk";
 "language.norwegian" = "Norsk";
 "language.danish" = "Dansk";
@@ -179,46 +191,43 @@
 "language.hindi" = "Hindi";
 
 // MARK: - Export/Import
-"export.format.bundle" = "Echo-pakke";
-"export.format.text" = "Ren tekst";
+"export.format.bundle" = "Echo Bundle";
+"export.format.text" = "Almindelig Tekst";
 "export.format.json" = "JSON";
-"export.include_audio" = "Inkluder lydfiler";
+"export.include_audio" = "Inkluder Lydfiler";
 "export.format_label" = "Format";
-"export.audio_size_warning" = "Lydfiler øger eksportstørrelsen";
-"export.options" = "Eksportindstillinger";
-"export.select_scripts" = "Vælg kort";
+"export.audio_size_warning" = "Lydfiler vil øge eksport størrelse";
+"export.options" = "Eksport Muligheder";
+"export.select_scripts" = "Vælg Kort";
 "export.scripts_selected" = "Kort (%d valgt)";
-"export.error_title" = "Eksportfejl";
-"export.error_unknown" = "Der opstod en ukendt fejl";
-"import.complete_title" = "Import fuldført";
+"export.error_title" = "Eksport Fejl";
+"export.error_unknown" = "En ukendt fejl opstod";
+"import.complete_title" = "Import Færdig";
 
 // MARK: - Recording Tips
-"recording.punctuation_tip" = "Tip: Sig «punktum», «komma» eller «spørgsmålstegn» for tegnsætning";
-"recording.no_recording_message" = "Tryk og hold for at redigere og optage lyd først";
+"recording.punctuation_tip" = "Tip: Sig 'punktum', 'komma' eller 'spørgsmålstegn' for tegnsætning";
+"recording.no_recording_message" = "Tryk og hold venligst for at redigere og optage lyd først";
 
-// MARK: - Category Management
-"category.new_prompt" = "Indtast navnet på din nye kategori";
-"category.name_placeholder" = "Kategorinavn";
 
 // MARK: - iCloud & Sync
-"settings.icloud_sync_desc" = "Synkroniser kort mellem dine enheder";
+"settings.icloud_sync_desc" = "Synkroniser kort på tværs af dine enheder";
 
 // MARK: - Empty State
-"empty.no_cards" = "Ingen kort endnu";
-"empty.tap_to_create" = "Tryk på + knappen for at oprette dit første selvsamtalekort";
+"empty.no_cards" = "Ingen Kort Endnu";
+"empty.tap_to_create" = "Tryk på + knappen for at oprette dit første selv-snak kort";
 
 // MARK: - Filter
-"filter.all_cards" = "Alle kort";
+"filter.all_cards" = "Alle Kort";
 
 // MARK: - Picker Labels
 "picker.sensitivity" = "Følsomhed";
-"picker.select_language" = "Vælg sprog";
-"picker.display_language" = "Visningssprog";
-"settings.language_settings" = "Sprogindstillinger";
-"language.system_default" = "Systemstandard";
-"settings.card_settings" = "Kortindstillinger";
-"settings.card_defaults" = "Standardværdier";
+"picker.select_language" = "Vælg Sprog";
+"picker.display_language" = "Display Sprog";
+"settings.language_settings" = "Sprog Indstillinger";
+"language.system_default" = "System Standard";
+"settings.card_settings" = "Kort Indstillinger";
+"settings.card_defaults" = "Kort Standarder";
 "settings.about_support" = "Om & Support";
-"settings.sync" = "Synkronisering";
-"settings.backup" = "Sikkerhedskopi";
+"settings.sync" = "Synk";
+"settings.backup" = "Backup";
 "script.label" = "Script";

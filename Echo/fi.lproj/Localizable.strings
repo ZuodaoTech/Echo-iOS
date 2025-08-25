@@ -1,0 +1,64 @@
+/* 
+  Localizable.strings (Finnish)
+  Echo
+  
+  Suomenkielinen lokalisointitiedosto Echo-sovellukselle
+*/
+
+// MARK: - Navigation & Titles
+"navigation.cards" = "Kortit";
+"navigation.me" = "Minä";
+"navigation.new_script" = "Uusi kortti";
+"navigation.edit_script" = "Muokkaa korttia";
+
+
+// MARK: - Tags
+"tag.now" = "Nyt";
+"tag.untagged" = "Ei tunnistetta";
+"tag.edit" = "Muokkaa tunnisteita";
+"tag.delete.confirm.title" = "Poista tunniste";
+"tag.delete.confirm.message" = "Tätä tunnistetta käyttää %d skriptiä. Sen poistaminen poistaa tunnisteen näistä skripteistä.";
+"tag.max_now_cards" = "Enintään 'Nyt' kortteja";
+"tag.now_limit_reached" = "Nyt-tunnisteen raja";
+"tag.now_limit_message" = "Olet saavuttanut 'Nyt' korttien enimmäismäärän (%d). Valitse kortti, josta poistat 'Nyt' tunnisteen:";
+"tag.auto_cleanup" = "Poista käyttämättömät tunnisteet automaattisesti";
+"tag.select" = "Valitse tunnisteet";
+"tag.new" = "Uusi tunniste";
+"tag.label" = "Tunnisteet";
+"tag.none" = "Ei mitään";
+"tag.count_selected" = "%d valittu";
+
+// MARK: - Script Card
+"script.play_count" = "%d toistoa";
+"script.transcript" = "Litteraatio";
+"script.recording" = "Tallenne";
+"script.no_recording" = "Ei tallennetta";
+"script.repetitions" = "Toistot";
+"script.interval" = "Väli";
+"script.privacy_mode" = "Yksityisyystila";
+"script.delete" = "Poista kortti";
+"script.delete.confirm.title" = "Poista kortti";
+"script.delete.confirm.message" = "Oletko varma, että haluat poistaa tämän skriptin? Tätä toimintoa ei voi peruuttaa.";
+
+// MARK: - Common Actions
+"chars" = "merkkiä";
+"action.done" = "Valmis";
+"action.cancel" = "Peruuta";
+"action.delete" = "Poista";
+"action.add" = "Lisää";
+"action.save" = "Tallenna";
+"action.ok" = "OK";
+"action.got_it" = "Selvä";
+"action.copy" = "Kopioi";
+"action.use_as_script" = "Käytä skriptinä";
+"action.share" = "Jaa";
+"action.edit" = "Muokkaa";
+
+// MARK: - Errors
+"error.title" = "Virhe";
+"error.save" = "Kortin tallentaminen epäonnistui";
+"error.database" = "Tietokantavirhe";
+"error.restart_app" = "Käynnistä sovellus uudelleen";
+"error.try_again" = "Yritä uudelleen";
+"error.import" = "Tuonti epäonnistui";
+"error.export" = "Vienti epäonnistui";

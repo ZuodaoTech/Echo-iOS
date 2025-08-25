@@ -11,14 +11,22 @@
 "navigation.new_script" = "New Card";
 "navigation.edit_script" = "Edit Card";
 
-// MARK: - Categories
-"category.breaking_bad_habits" = "Breaking Bad Habits";
-"category.building_good_habits" = "Building Good Habits";
-"category.appropriate_positivity" = "Appropriate Positivity";
-"category.personal_growth" = "Personal Growth";
-"category.daily_affirmations" = "Daily Affirmations";
-"category.select" = "Select Category";
-"category.add_new" = "Add New Category...";
+
+// MARK: - Tags
+"tag.now" = "Now";
+"tag.untagged" = "Untagged";
+"tag.edit" = "Edit Tags";
+"tag.delete.confirm.title" = "Delete Tag";
+"tag.delete.confirm.message" = "This tag is used by %d scripts. Deleting it will remove the tag from these scripts.";
+"tag.max_now_cards" = "Max 'Now' Cards";
+"tag.now_limit_reached" = "Now Tag Limit";
+"tag.now_limit_message" = "You've reached the maximum number of 'Now' cards (%d). Please select a card to remove the 'Now' tag from:";
+"tag.auto_cleanup" = "Auto-remove Unused Tags";
+"tag.select" = "Select Tags";
+"tag.new" = "New Tag";
+"tag.label" = "Tags";
+"tag.none" = "None";
+"tag.count_selected" = "%d selected";
 
 // MARK: - Script Card
 "script.play_count" = "%d plays";
@@ -199,9 +207,6 @@
 "recording.punctuation_tip" = "Tip: Say 'period', 'comma', or 'question mark' for punctuation";
 "recording.no_recording_message" = "Please long press to edit and record audio first";
 
-// MARK: - Category Management
-"category.new_prompt" = "Enter the name for your new category";
-"category.name_placeholder" = "Category Name";
 
 // MARK: - iCloud & Sync
 "settings.icloud_sync_desc" = "Sync cards across your devices";

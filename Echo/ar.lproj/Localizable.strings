@@ -1,0 +1,64 @@
+/* 
+  Localizable.strings (Arabic)
+  Echo
+  
+  ملف التعريب العربي لتطبيق Echo
+*/
+
+// MARK: - Navigation & Titles
+"navigation.cards" = "البطاقات";
+"navigation.me" = "أنا";
+"navigation.new_script" = "بطاقة جديدة";
+"navigation.edit_script" = "تحرير البطاقة";
+
+
+// MARK: - Tags
+"tag.now" = "الآن";
+"tag.untagged" = "بدون علامة";
+"tag.edit" = "تحرير العلامات";
+"tag.delete.confirm.title" = "حذف العلامة";
+"tag.delete.confirm.message" = "هذه العلامة مستخدمة بواسطة %d نصوص. حذفها سيزيل العلامة من هذه النصوص.";
+"tag.max_now_cards" = "أقصى بطاقات 'الآن'";
+"tag.now_limit_reached" = "حد علامة الآن";
+"tag.now_limit_message" = "وصلت إلى العدد الأقصى من بطاقات 'الآن' (%d). يرجى اختيار بطاقة لإزالة علامة 'الآن' منها:";
+"tag.auto_cleanup" = "إزالة العلامات غير المستخدمة تلقائياً";
+"tag.select" = "اختر العلامات";
+"tag.new" = "علامة جديدة";
+"tag.label" = "العلامات";
+"tag.none" = "لا يوجد";
+"tag.count_selected" = "%d محدد";
+
+// MARK: - Script Card
+"script.play_count" = "%d تشغيل";
+"script.transcript" = "النص المفرغ";
+"script.recording" = "التسجيل";
+"script.no_recording" = "لا يوجد تسجيل";
+"script.repetitions" = "التكرارات";
+"script.interval" = "الفاصل الزمني";
+"script.privacy_mode" = "وضع الخصوصية";
+"script.delete" = "حذف البطاقة";
+"script.delete.confirm.title" = "حذف البطاقة";
+"script.delete.confirm.message" = "هل أنت متأكد من رغبتك في حذف هذا النص؟ لا يمكن التراجع عن هذا الإجراء.";
+
+// MARK: - Common Actions
+"chars" = "حرف";
+"action.done" = "تم";
+"action.cancel" = "إلغاء";
+"action.delete" = "حذف";
+"action.add" = "إضافة";
+"action.save" = "حفظ";
+"action.ok" = "موافق";
+"action.got_it" = "فهمت";
+"action.copy" = "نسخ";
+"action.use_as_script" = "استخدم كنص";
+"action.share" = "مشاركة";
+"action.edit" = "تحرير";
+
+// MARK: - Errors
+"error.title" = "خطأ";
+"error.save" = "فشل في حفظ البطاقة";
+"error.database" = "خطأ في قاعدة البيانات";
+"error.restart_app" = "يرجى إعادة تشغيل التطبيق";
+"error.try_again" = "يرجى المحاولة مرة أخرى";
+"error.import" = "فشل الاستيراد";
+"error.export" = "فشل التصدير";

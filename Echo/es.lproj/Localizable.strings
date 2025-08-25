@@ -2,7 +2,7 @@
   Localizable.strings (Spanish)
   Echo
   
-  Localización en español
+  Archivo de localización en español para la app Echo
 */
 
 // MARK: - Navigation & Titles
@@ -11,14 +11,22 @@
 "navigation.new_script" = "Nueva Tarjeta";
 "navigation.edit_script" = "Editar Tarjeta";
 
-// MARK: - Categories
-"category.breaking_bad_habits" = "Romper Malos Hábitos";
-"category.building_good_habits" = "Construir Buenos Hábitos";
-"category.appropriate_positivity" = "Positividad Apropiada";
-"category.personal_growth" = "Crecimiento Personal";
-"category.daily_affirmations" = "Afirmaciones Diarias";
-"category.select" = "Seleccionar Categoría";
-"category.add_new" = "Añadir Nueva Categoría...";
+
+// MARK: - Tags
+"tag.now" = "Ahora";
+"tag.untagged" = "Sin etiqueta";
+"tag.edit" = "Editar Etiquetas";
+"tag.delete.confirm.title" = "Eliminar Etiqueta";
+"tag.delete.confirm.message" = "Esta etiqueta es usada por %d scripts. Eliminarla removerá la etiqueta de estos scripts.";
+"tag.max_now_cards" = "Máximo Tarjetas 'Ahora'";
+"tag.now_limit_reached" = "Límite de Etiqueta Ahora";
+"tag.now_limit_message" = "Has alcanzado el número máximo de tarjetas 'Ahora' (%d). Por favor selecciona una tarjeta para remover la etiqueta 'Ahora':";
+"tag.auto_cleanup" = "Eliminar automáticamente etiquetas no usadas";
+"tag.select" = "Seleccionar Etiquetas";
+"tag.new" = "Nueva Etiqueta";
+"tag.label" = "Etiquetas";
+"tag.none" = "Ninguna";
+"tag.count_selected" = "%d seleccionadas";
 
 // MARK: - Script Card
 "script.play_count" = "%d reproducciones";
@@ -30,96 +38,97 @@
 "script.privacy_mode" = "Modo Privado";
 "script.delete" = "Eliminar Tarjeta";
 "script.delete.confirm.title" = "Eliminar Tarjeta";
-"script.delete.confirm.message" = "¿Estás seguro de que quieres eliminar este guión? Esta acción no se puede deshacer.";
+"script.delete.confirm.message" = "¿Estás seguro de que quieres eliminar este script? Esta acción no se puede deshacer.";
 
 // MARK: - Settings
 "settings.app_language" = "Idioma de la App";
-"settings.display_language" = "Idioma de Visualización";
+"settings.display_language" = "Idioma de Pantalla";
 "settings.restart_to_apply" = "Reinicia la app para aplicar el cambio de idioma";
-"settings.default_settings" = "Ajustes Predeterminados";
+"settings.default_settings" = "Configuraciones por Defecto";
 "settings.script_preferences" = "Preferencias de Tarjeta";
 "settings.transcription" = "Transcripción";
 "settings.recording" = "Grabación";
-"settings.backup_sync" = "Copia de Seguridad y Sincronización";
+"settings.backup_sync" = "Respaldo y Sincronización";
 "settings.about" = "Acerca de";
 "settings.support" = "Soporte";
 
 "settings.privacy_mode.title" = "Modo Privado";
-"settings.privacy_mode.info" = "El audio solo se reproduce por auriculares";
+"settings.privacy_mode.info" = "El audio se reproduce solo a través de auriculares";
 "settings.privacy_mode.alert.title" = "Modo Privado";
-"settings.privacy_mode.alert.message" = "Cuando el Modo Privado está activado, las grabaciones de audio solo se reproducirán a través de auriculares conectados. Esto evita la reproducción accidental por altavoces en espacios públicos.";
+"settings.privacy_mode.alert.message" = "Cuando el Modo Privado está activado, las grabaciones de audio solo se reproducirán a través de auriculares o audífonos conectados. Esto previene reproducción accidental a través de altavoces en espacios públicos.";
 
 "settings.character_guidance" = "Guía de Caracteres";
 "settings.recommended_length" = "Longitud recomendada";
 "settings.when_exceeded" = "Cuando se excede";
-"settings.just_warn" = "Solo avisar";
+"settings.just_warn" = "Solo advertir";
 "settings.show_tip_only" = "Mostrar solo consejo";
-"settings.character_guidance.info" = "Los guiones más cortos son más fáciles de recordar y más impactantes";
+"settings.character_guidance.info" = "Los scripts más cortos son más fáciles de recordar y más impactantes";
 
-"settings.default_language" = "Idioma Predeterminado";
+"settings.default_language" = "Idioma por Defecto";
 "settings.voice_enhancement" = "Mejora de Voz";
-"settings.voice_enhancement.desc" = "Reduce el ruido de fondo y el eco";
-"settings.auto_trim_silence" = "Recortar Silencio Automático";
+"settings.voice_enhancement.desc" = "Reduce el ruido de fondo y eco";
+"settings.auto_trim_silence" = "Recortar Silencio Automáticamente";
 "settings.auto_trim_silence.desc" = "Eliminar silencio al inicio y final";
 "settings.trim_sensitivity" = "Sensibilidad de Recorte";
 
 "settings.icloud_sync" = "Sincronización iCloud";
-"settings.icloud_sync.desc" = "Sincroniza tarjetas entre tus dispositivos";
-"settings.icloud_sync.info" = "El texto y los ajustes se sincronizan automáticamente. Los archivos de audio permanecen locales.";
+"settings.icloud_sync.desc" = "Sincronizar tarjetas entre tus dispositivos";
+"settings.icloud_sync.info" = "El texto y configuraciones se sincronizan automáticamente. Los archivos de audio permanecen locales.";
 "settings.export_scripts" = "Exportar Tarjetas";
 "settings.import_scripts" = "Importar Tarjetas";
 
 "settings.version" = "Versión";
-"settings.build" = "Compilación";
+"settings.build" = "Build";
 "settings.rate_github" = "Calificar en GitHub";
 "settings.contact_support" = "Contactar Soporte";
 
 // MARK: - Recording
 "recording.start" = "Iniciar Grabación";
-"recording.stop" = "Detener Grabación";
+"recording.stop" = "Parar Grabación";
 "recording.re_record" = "Volver a Grabar";
 "recording.saved" = "Grabación guardada";
 "recording.delete" = "Eliminar";
-"recording.preview" = "Vista Previa";
+"recording.preview" = "Vista previa";
 "recording.playing_preview" = "Reproduciendo vista previa...";
 "recording.preview_paused" = "Vista previa pausada";
-"recording.plays_once" = "(reproduce una vez)";
+"recording.plays_once" = "(se reproduce una vez)";
 "recording.processing" = "Procesando audio...";
 "recording.listening" = "Escuchando...";
 "recording.speaking" = "Hablando...";
 "recording.transcribing" = "Transcribiendo...";
 "recording.re_transcribing" = "Re-transcribiendo...";
 "recording.microphone_access" = "Acceso al Micrófono";
-"recording.microphone_access.message" = "Por favor, concede acceso al micrófono en Ajustes para grabar audio";
+"recording.microphone_access.message" = "Por favor otorga acceso al micrófono en Configuraciones para grabar audio";
 
 // MARK: - Character Guidance
 "guidance.trim_characters" = "Considera recortar %d caracteres para mejor memorabilidad";
-"guidance.script_over" = "El guión excede %d caracteres. Intenta ser más conciso";
-"guidance.script_long" = "El guión es bastante largo.";
-"guidance.enter_script" = "Introduce tu guión de autodiálogo aquí...";
+"guidance.script_over" = "El script tiene %d caracteres de más. Trata de ser más conciso";
+"guidance.script_long" = "El script es bastante largo.";
+"guidance.enter_script" = "Ingresa tu script de auto-charla aquí...";
 
 // MARK: - Notifications
-"notifications.enable" = "Activar Notificaciones";
+"notifications.enable" = "Habilitar Notificaciones";
 "notifications.frequency" = "Frecuencia";
 "notifications.frequency.high" = "Alta (1-2 veces/hora)";
 "notifications.frequency.medium" = "Media (cada 2 horas)";
 "notifications.frequency.low" = "Baja (1-2 veces/día)";
 "notifications.daytime_only" = "Notificaciones solo durante el día (8 AM - 9 PM)";
-"notifications.settings_title" = "Notification Settings";
-"notifications.max_cards" = "Maximum cards with notifications";
-"notifications.burden_warning" = "Too many notifications can become burdensome";
-"notifications.global_settings" = "Global Settings";
-"notifications.max_cards_footer" = "Limit how many cards can send notifications";
-"notifications.no_cards_enabled" = "No cards have notifications enabled";
-"notifications.enabled_cards" = "Enabled Cards (%d)";
-"notifications.request_permission" = "Enable Notifications";
-"notifications.select_to_disable" = "Select %d cards to disable notifications";
-"notifications.select_cards" = "Select Cards";
-"notifications.reminder_title" = "Time for Self-Talk";
-"notifications.action_play" = "Play Audio";
-"notifications.action_done" = "Mark as Done";
+"notifications.settings_title" = "Configuraciones de Notificación";
+"notifications.max_cards" = "Máximo de tarjetas con notificaciones";
+"notifications.burden_warning" = "Demasiadas notificaciones pueden volverse una carga y reducir su efectividad";
+"notifications.global_settings" = "Configuraciones Globales";
+"notifications.max_cards_footer" = "Limita cuántas tarjetas pueden enviar notificaciones simultáneamente";
+"notifications.no_cards_enabled" = "Ninguna tarjeta tiene notificaciones habilitadas";
+"notifications.enabled_cards" = "Tarjetas Habilitadas (%d)";
+"notifications.request_permission" = "Habilitar Notificaciones";
+"notifications.select_to_disable" = "Selecciona %d tarjetas para deshabilitar notificaciones";
+"notifications.select_cards" = "Seleccionar Tarjetas";
+"notifications.reminder_title" = "Hora de Auto-charla";
+"notifications.action_play" = "Reproducir Audio";
+"notifications.action_done" = "Marcar como Hecho";
 
 // MARK: - Common Actions
+"chars" = "caracteres";
 "action.done" = "Hecho";
 "action.cancel" = "Cancelar";
 "action.delete" = "Eliminar";
@@ -134,12 +143,12 @@
 
 // MARK: - Errors
 "error.title" = "Error";
-"error.save" = "Error al guardar la tarjeta";
+"error.save" = "Falló al guardar tarjeta";
 "error.database" = "Error de base de datos";
-"error.restart_app" = "Por favor, reinicia la aplicación";
-"error.try_again" = "Por favor, inténtalo de nuevo";
-"error.import" = "Error de importación";
-"error.export" = "Error de exportación";
+"error.restart_app" = "Por favor reinicia la app";
+"error.try_again" = "Por favor intenta de nuevo";
+"error.import" = "Importación falló";
+"error.export" = "Exportación falló";
 
 // MARK: - Time Units
 "time.seconds" = "%@ segundos";
@@ -151,14 +160,15 @@
 "sensitivity.low" = "Baja";
 "sensitivity.medium" = "Media";
 "sensitivity.high" = "Alta";
-"sensitivity.low.desc" = "Necesita voz más fuerte • 0.5s de búfer";
-"sensitivity.medium.desc" = "Detección equilibrada • 0.3s de búfer";
-"sensitivity.high.desc" = "Detecta susurros • 0.15s de búfer";
+"sensitivity.low.desc" = "Requiere voz más fuerte • Buffer 0.5s";
+"sensitivity.medium.desc" = "Detección balanceada • Buffer 0.3s";
+"sensitivity.high.desc" = "Detecta susurros • Buffer 0.15s";
 
 // MARK: - Sample Scripts
-"sample.smoking" = "Nunca fumo, porque apesta y odio ser controlado.";
-"sample.bedtime" = "Siempre me acuesto antes de las 10 p.m., porque es más saludable y me encanta despertar con mucha energía.";
-"sample.mistakes" = "Cometí algunos errores, pero también hice varias cosas bien. Los errores son una parte normal del aprendizaje y puedo usarlos como una oportunidad para mejorar.";
+"sample.smoking" = "Nunca fumo, porque apesta, y odio ser controlado.";
+"sample.bedtime" = "Siempre me acuesto antes de las 10 p.m., porque es más saludable, y me encanta despertar con mucha energía.";
+"sample.mistakes" = "Cometí algunos errores, pero también hice varias cosas bien. Los errores son una parte normal del aprendizaje, y puedo usarlos como una oportunidad para mejorar.";
+
 // MARK: - Languages
 "language.english" = "Inglés";
 "language.chinese_simplified" = "Chino (Simplificado)";
@@ -171,7 +181,7 @@
 "language.portuguese" = "Portugués";
 "language.russian" = "Ruso";
 "language.italian" = "Italiano";
-"language.dutch" = "Neerlandés";
+"language.dutch" = "Holandés";
 "language.swedish" = "Sueco";
 "language.norwegian" = "Noruego";
 "language.danish" = "Danés";
@@ -182,45 +192,42 @@
 
 // MARK: - Export/Import
 "export.format.bundle" = "Paquete Echo";
-"export.format.text" = "Texto sin formato";
+"export.format.text" = "Texto Plano";
 "export.format.json" = "JSON";
-"export.include_audio" = "Incluir archivos de audio";
+"export.include_audio" = "Incluir Archivos de Audio";
 "export.format_label" = "Formato";
 "export.audio_size_warning" = "Los archivos de audio aumentarán el tamaño de exportación";
-"export.options" = "Opciones de exportación";
-"export.select_scripts" = "Seleccionar tarjetas";
+"export.options" = "Opciones de Exportación";
+"export.select_scripts" = "Seleccionar Tarjetas";
 "export.scripts_selected" = "Tarjetas (%d seleccionadas)";
-"export.error_title" = "Error de exportación";
+"export.error_title" = "Error de Exportación";
 "export.error_unknown" = "Ocurrió un error desconocido";
-"import.complete_title" = "Importación completa";
+"import.complete_title" = "Importación Completa";
 
 // MARK: - Recording Tips
-"recording.punctuation_tip" = "Consejo: Di «punto», «coma» o «signo de interrogación» para puntuación";
-"recording.no_recording_message" = "Por favor, mantén presionado para editar y grabar audio primero";
+"recording.punctuation_tip" = "Consejo: Di 'punto', 'coma' o 'signo de interrogación' para puntuación";
+"recording.no_recording_message" = "Por favor mantén presionado para editar y grabar audio primero";
 
-// MARK: - Category Management
-"category.new_prompt" = "Ingresa el nombre para tu nueva categoría";
-"category.name_placeholder" = "Nombre de categoría";
 
 // MARK: - iCloud & Sync
-"settings.icloud_sync_desc" = "Sincroniza tarjetas entre tus dispositivos";
+"settings.icloud_sync_desc" = "Sincronizar tarjetas entre tus dispositivos";
 
 // MARK: - Empty State
-"empty.no_cards" = "Sin tarjetas aún";
-"empty.tap_to_create" = "Toca el botón + para crear tu primera tarjeta de diálogo interno";
+"empty.no_cards" = "Aún No Hay Tarjetas";
+"empty.tap_to_create" = "Toca el botón + para crear tu primera tarjeta de auto-charla";
 
 // MARK: - Filter
-"filter.all_cards" = "Todas las tarjetas";
+"filter.all_cards" = "Todas las Tarjetas";
 
 // MARK: - Picker Labels
 "picker.sensitivity" = "Sensibilidad";
-"picker.select_language" = "Seleccionar idioma";
-"picker.display_language" = "Idioma de pantalla";
-"settings.language_settings" = "Configuración de idioma";
-"language.system_default" = "Predeterminado del sistema";
-"settings.card_settings" = "Configuración de tarjetas";
-"settings.card_defaults" = "Valores predeterminados";
+"picker.select_language" = "Seleccionar Idioma";
+"picker.display_language" = "Idioma de Pantalla";
+"settings.language_settings" = "Configuraciones de Idioma";
+"language.system_default" = "Predeterminado del Sistema";
+"settings.card_settings" = "Configuraciones de Tarjeta";
+"settings.card_defaults" = "Valores por Defecto de Tarjeta";
 "settings.about_support" = "Acerca de y Soporte";
-"settings.sync" = "Sincronización";
-"settings.backup" = "Copia de seguridad";
+"settings.sync" = "Sincronizar";
+"settings.backup" = "Respaldo";
 "script.label" = "Script";

@@ -3,10 +3,14 @@ import CoreData
 
 struct TagSelectionView: View {
     @Binding var selectedTags: Set<Tag>
+    var currentScript: SelftalkScript? = nil  // Optional: the script being edited
     @Environment(\.managedObjectContext) private var viewContext
     
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Tag.name, ascending: true)],
+        sortDescriptors: [
+            NSSortDescriptor(keyPath: \Tag.sortOrder, ascending: true),
+            NSSortDescriptor(keyPath: \Tag.name, ascending: true)
+        ],
         animation: .default
     )
     private var allTags: FetchedResults<Tag>
@@ -14,6 +18,8 @@ struct TagSelectionView: View {
     @State private var showingNewTagAlert = false
     @State private var newTagName = ""
     @State private var searchText = ""
+    @State private var showingNowLimitAlert = false
+    @State private var scriptsWithNowTag: [SelftalkScript] = []
     
     var filteredTags: [Tag] {
         if searchText.isEmpty {
@@ -56,7 +62,7 @@ struct TagSelectionView: View {
                     Button {
                         showingNewTagAlert = true
                     } label: {
-                        Label("New Tag", systemImage: "plus.circle.fill")
+                        Label(NSLocalizedString("tag.new", comment: ""), systemImage: "plus.circle.fill")
                             .font(.footnote)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 8)
@@ -69,7 +75,7 @@ struct TagSelectionView: View {
                     ForEach(filteredTags, id: \.id) { tag in
                         if !selectedTags.contains(tag) {
                             TagChip(tag: tag, isSelected: false) {
-                                selectedTags.insert(tag)
+                                handleTagSelection(tag)
                             }
                         }
                     }
@@ -88,6 +94,32 @@ struct TagSelectionView: View {
         }
     }
     
+    private func handleTagSelection(_ tag: Tag) {
+        // Check if this is the "Now" tag and if limit would be exceeded
+        if tag.isNowTag {
+            let maxNowCards = UserDefaults.standard.integer(forKey: "maxNowCards")
+            let effectiveMax = maxNowCards > 0 ? maxNowCards : 3 // Default to 3
+            
+            // Fetch all scripts with the Now tag
+            let request: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
+            request.predicate = NSPredicate(format: "ANY tags == %@", tag)
+            
+            if let scripts = try? viewContext.fetch(request) {
+                // Filter out the current script if we're editing one
+                let otherScripts = scripts.filter { $0.id != currentScript?.id }
+                
+                if otherScripts.count >= effectiveMax {
+                    // Show picker to remove from another card
+                    scriptsWithNowTag = otherScripts
+                    showingNowLimitAlert = true
+                    return
+                }
+            }
+        }
+        
+        selectedTags.insert(tag)
+    }
+    
     private func createNewTag() {
         let trimmedName = newTagName.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedName.isEmpty else { return }
@@ -103,7 +135,7 @@ struct TagSelectionView: View {
             let newTag = Tag.create(name: trimmedName, in: viewContext)
             do {
                 try viewContext.save()
-                selectedTags.insert(newTag)
+                // Don't automatically select the new tag
             } catch {
                 print("Failed to create tag: \(error)")
             }
@@ -130,8 +162,16 @@ struct TagChip: View {
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-            .background(isSelected ? Color.blue : Color.gray.opacity(0.2))
-            .foregroundColor(isSelected ? .white : .primary)
+            .background(
+                tag.isNowTag ? 
+                    (isSelected ? Color.orange : Color.yellow.opacity(0.3)) :
+                    (isSelected ? Color.blue : Color.gray.opacity(0.2))
+            )
+            .foregroundColor(
+                tag.isNowTag ?
+                    (isSelected ? .white : Color.orange) :
+                    (isSelected ? .white : .primary)
+            )
             .cornerRadius(15)
         }
         .buttonStyle(PlainButtonStyle())

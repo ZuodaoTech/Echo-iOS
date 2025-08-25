@@ -22,6 +22,7 @@ struct ScriptsListView: View {
     @State private var scriptToEdit: SelftalkScript?
     @State private var showingFilterSheet = false
     @State private var deletingScriptIds = Set<UUID>()  // Track scripts being deleted
+    @State private var hasSetInitialFilter = false
     
     private var filteredScripts: [SelftalkScript] {
         scripts.filter { script in
@@ -108,7 +109,35 @@ struct ScriptsListView: View {
             }
         }
         .onAppear {
+            // Check first launch status before any setup
+            let isFirstLaunch = !UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
+            
             setupInitialData()
+            setupInitialFilter(isFirstLaunch: isFirstLaunch)
+        }
+        .onChange(of: selectedTags) { newTags in
+            // Save selected tags for next launch
+            let tagIds = newTags.map { $0.id.uuidString }
+            UserDefaults.standard.set(tagIds, forKey: "lastSelectedTagIds")
+        }
+    }
+    
+    private func setupInitialFilter(isFirstLaunch: Bool) {
+        guard !hasSetInitialFilter else { return }
+        hasSetInitialFilter = true
+        
+        if isFirstLaunch {
+            // First launch - set "Now" tag as default filter
+            if let nowTag = Tag.getNowTag(context: viewContext) {
+                selectedTags.insert(nowTag)
+            }
+        } else {
+            // Not first launch - restore last filter if saved
+            if let savedTagIds = UserDefaults.standard.array(forKey: "lastSelectedTagIds") as? [String] {
+                let tagIds = savedTagIds.compactMap { UUID(uuidString: $0) }
+                let matchingTags = allTags.filter { tagIds.contains($0.id) }
+                selectedTags = Set(matchingTags)
+            }
         }
     }
     
@@ -141,41 +170,47 @@ struct ScriptsListView: View {
         do {
             try viewContext.save()
             
-            // Fetch the newly created categories
+            // Get or create the "Now" tag
+            let nowTag = Tag.createOrGetNowTag(context: viewContext)
+            
+            // Fetch the newly created categories for migration
             let categoryRequest: NSFetchRequest<Category> = Category.fetchRequest()
             let allCategories = try viewContext.fetch(categoryRequest)
             
-            // Sample 1: Breaking Bad Habits
+            // Sample 1: Breaking Bad Habits (with Now tag)
             if let breakingBadHabits = allCategories.first(where: { $0.name == NSLocalizedString("category.breaking_bad_habits", comment: "") }) {
-                _ = SelftalkScript.create(
+                let script1 = SelftalkScript.create(
                     scriptText: NSLocalizedString("sample.smoking", comment: ""),
                     category: breakingBadHabits,
                     repetitions: 3,
                     privacyMode: true,
                     in: viewContext
                 )
+                script1.addToTags(nowTag)
             }
             
-            // Sample 2: Building Good Habits
+            // Sample 2: Building Good Habits (with Now tag)
             if let buildingGoodHabits = allCategories.first(where: { $0.name == NSLocalizedString("category.building_good_habits", comment: "") }) {
-                _ = SelftalkScript.create(
+                let script2 = SelftalkScript.create(
                     scriptText: NSLocalizedString("sample.bedtime", comment: ""),
                     category: buildingGoodHabits,
                     repetitions: 3,
                     privacyMode: true,
                     in: viewContext
                 )
+                script2.addToTags(nowTag)
             }
             
-            // Sample 3: Appropriate Positivity
+            // Sample 3: Appropriate Positivity (with Now tag)
             if let appropriatePositivity = allCategories.first(where: { $0.name == NSLocalizedString("category.appropriate_positivity", comment: "") }) {
-                _ = SelftalkScript.create(
+                let script3 = SelftalkScript.create(
                     scriptText: NSLocalizedString("sample.mistakes", comment: ""),
                     category: appropriatePositivity,
                     repetitions: 3,
                     privacyMode: true,
                     in: viewContext
                 )
+                script3.addToTags(nowTag)
             }
             
             try viewContext.save()
