@@ -14,6 +14,12 @@ struct EchoApp: App {
     @StateObject private var persistenceController = PersistenceController.shared
 
     init() {
+        // Apply user's language preference
+        if let appLanguage = UserDefaults.standard.string(forKey: "appLanguage"), appLanguage != "system" {
+            UserDefaults.standard.set([appLanguage], forKey: "AppleLanguages")
+            UserDefaults.standard.synchronize()
+        }
+        
         // Set default language preferences on first launch
         if UserDefaults.standard.object(forKey: "defaultTranscriptionLanguage") == nil {
             let defaultLanguage = LocalizationHelper.shared.getDefaultTranscriptionLanguage()

@@ -13,8 +13,10 @@ struct MeView: View {
     @AppStorage("characterGuidanceEnabled") private var characterGuidanceEnabled = true
     @AppStorage("characterLimit") private var characterLimit = 140
     @AppStorage("limitBehavior") private var limitBehavior = "warn"
+    @AppStorage("appLanguage") private var appLanguage = "system"
     
     @State private var showingLanguagePicker = false
+    @State private var showingUILanguagePicker = false
     @State private var showingExportOptions = false
     @State private var showingDocumentPicker = false
     @State private var exportProgress: String?
@@ -27,6 +29,34 @@ struct MeView: View {
     var body: some View {
         NavigationView {
             List {
+                Section("App Language") {
+                    Button {
+                        showingUILanguagePicker = true
+                    } label: {
+                        HStack {
+                            Text("Display Language")
+                            Spacer()
+                            Text(uiLanguageDisplayName(for: appLanguage))
+                                .foregroundColor(.secondary)
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .foregroundColor(.primary)
+                    
+                    if appLanguage != "system" {
+                        HStack {
+                            Image(systemName: "info.circle")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            Text("Restart the app to apply language change")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
+                
                 Section("Default Settings") {
                     Toggle(isOn: $privacyModeDefault) {
                         HStack {
@@ -249,6 +279,9 @@ struct MeView: View {
             .sheet(isPresented: $showingLanguagePicker) {
                 LanguagePickerView(selectedLanguage: $defaultTranscriptionLanguage)
             }
+            .sheet(isPresented: $showingUILanguagePicker) {
+                UILanguagePickerView(selectedLanguage: $appLanguage)
+            }
             .sheet(isPresented: $showingExportOptions) {
                 ExportOptionsView(exportProgress: $exportProgress)
             }
@@ -303,6 +336,30 @@ struct MeView: View {
             return "Detects whispers • 0.15s buffer"
         default:
             return "Balanced detection • 0.3s buffer"
+        }
+    }
+    
+    private func uiLanguageDisplayName(for code: String) -> String {
+        switch code {
+        case "system": return "System Default"
+        case "en": return "English"
+        case "zh-Hans": return "简体中文"
+        case "zh-Hant": return "繁體中文"
+        case "es": return "Español"
+        case "fr": return "Français"
+        case "de": return "Deutsch"
+        case "ja": return "日本語"
+        case "ko": return "한국어"
+        case "it": return "Italiano"
+        case "pt": return "Português"
+        case "ru": return "Русский"
+        case "nl": return "Nederlands"
+        case "sv": return "Svenska"
+        case "nb": return "Norsk"
+        case "da": return "Dansk"
+        case "pl": return "Polski"
+        case "tr": return "Türkçe"
+        default: return code
         }
     }
     
