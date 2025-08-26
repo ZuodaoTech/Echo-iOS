@@ -39,10 +39,10 @@ final class RecordingService: NSObject, ObservableObject {
         static let maxRecordingDuration: TimeInterval = 60.0  // 60 seconds max
         static let recordingSettings: [String: Any] = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-            AVSampleRateKey: 44100,
+            AVSampleRateKey: 48000,  // Higher sample rate for better quality
             AVNumberOfChannelsKey: 1,  // Mono is better for voice
-            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue,
-            AVEncoderBitRateKey: 128000  // Higher bitrate for better quality
+            AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue,  // Maximum quality
+            AVEncoderBitRateKey: 160000  // Higher bitrate for better quality
         ]
     }
     

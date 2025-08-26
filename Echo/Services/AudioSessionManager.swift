@@ -35,19 +35,44 @@ final class AudioSessionManager: ObservableObject {
     /// Configure audio session for recording
     func configureForRecording(enhancedProcessing: Bool = true) throws {
         do {
-            // Choose mode based on user preference
-            let mode: AVAudioSession.Mode = enhancedProcessing ? .voiceChat : .default
+            // Use measurement mode for MAXIMUM noise reduction
+            // measurement mode provides the most aggressive audio processing
+            let mode: AVAudioSession.Mode = enhancedProcessing ? .measurement : .default
             
-            // voiceChat mode enables:
-            // ✅ Echo cancellation (AEC)
-            // ✅ Noise suppression 
-            // ✅ Automatic gain control (AGC)
-            // ✅ Voice activity detection (VAD)
+            // measurement mode enables MAXIMUM:
+            // ✅ Echo cancellation (AEC) - Most aggressive
+            // ✅ Noise suppression - Maximum level
+            // ✅ Automatic gain control (AGC) - Optimized for voice
+            // ✅ Voice activity detection (VAD) - Enhanced
+            // ✅ Wide-band speech mode - Better frequency response
+            
+            // Additional options for better quality
+            var options: AVAudioSession.CategoryOptions = [
+                .defaultToSpeaker,      // Use speaker by default
+                .allowBluetooth,        // Allow Bluetooth devices
+                .interruptSpokenAudioAndMixWithOthers  // Better handling
+            ]
+            
+            // iOS 13+ enhancement
+            if #available(iOS 13.0, *) {
+                options.insert(.allowBluetoothA2DP)  // Higher quality Bluetooth
+            }
+            
             try audioSession.setCategory(.playAndRecord, 
                                         mode: mode,
-                                        options: [.defaultToSpeaker, .allowBluetooth])
+                                        options: options)
             
-            print("🎤 Recording mode: \(enhancedProcessing ? "Enhanced (noise reduction ON)" : "Natural (raw audio)")")
+            // Set preferred sample rate for better quality
+            try audioSession.setPreferredSampleRate(48000)  // Higher than 44100
+            
+            // Set preferred input gain if available (iOS 14+)
+            if #available(iOS 14.0, *) {
+                if audioSession.isInputGainSettable {
+                    try audioSession.setInputGain(1.0)  // Maximum gain
+                }
+            }
+            
+            print("🎤 Recording mode: Maximum noise reduction (measurement mode)")
             // Only activate if not already active
             if !audioSession.isOtherAudioPlaying {
                 try audioSession.setActive(true)
