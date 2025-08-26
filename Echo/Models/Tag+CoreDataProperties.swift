@@ -66,6 +66,27 @@ extension Tag {
         return create(name: name, in: context)
     }
     
+    // Enhanced method to prevent duplicates with case-insensitive and trimmed comparison
+    static func findOrCreateNormalized(name: String, in context: NSManagedObjectContext) -> Tag {
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedName.isEmpty else {
+            // Return or create a default "Untagged" tag for empty names
+            return findOrCreate(name: "Untagged", in: context)
+        }
+        
+        let request: NSFetchRequest<Tag> = Tag.fetchRequest()
+        // Case-insensitive comparison with trimmed name
+        request.predicate = NSPredicate(format: "name ==[c] %@", trimmedName)
+        request.fetchLimit = 1
+        
+        if let existingTag = try? context.fetch(request).first {
+            return existingTag
+        }
+        
+        // Create with trimmed name
+        return create(name: trimmedName, in: context)
+    }
+    
     // MARK: - Special "Now" Tag
     static func createOrGetNowTag(context: NSManagedObjectContext) -> Tag {
         let request: NSFetchRequest<Tag> = Tag.fetchRequest()
@@ -108,6 +129,63 @@ extension Tag {
     
     var isNowTag: Bool {
         return isSpecial
+    }
+    
+    // MARK: - Duplicate Cleanup
+    static func cleanupDuplicateTags(in context: NSManagedObjectContext) {
+        let request: NSFetchRequest<Tag> = Tag.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
+        
+        guard let allTags = try? context.fetch(request) else {
+            print("Failed to fetch tags for cleanup")
+            return
+        }
+        
+        // Group tags by normalized name
+        var tagsByNormalizedName: [String: [Tag]] = [:]
+        
+        for tag in allTags {
+            // Skip special tags (like "Now")
+            if tag.isSpecial { continue }
+            
+            let normalized = tag.name
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .lowercased()
+            
+            tagsByNormalizedName[normalized, default: []].append(tag)
+        }
+        
+        var mergeCount = 0
+        
+        // Merge duplicates
+        for (normalizedName, tags) in tagsByNormalizedName where tags.count > 1 {
+            print("Found \(tags.count) duplicate tags for '\(normalizedName)'")
+            
+            // Keep the first (oldest) tag
+            let keepTag = tags[0]
+            
+            // Merge scripts from duplicate tags
+            for duplicateTag in tags.dropFirst() {
+                if let scripts = duplicateTag.scripts {
+                    keepTag.addToScripts(scripts)
+                    print("  Merging scripts from '\(duplicateTag.name)' to '\(keepTag.name)'")
+                }
+                context.delete(duplicateTag)
+                mergeCount += 1
+            }
+        }
+        
+        if mergeCount > 0 {
+            print("Cleaned up \(mergeCount) duplicate tags")
+            do {
+                try context.save()
+                print("Successfully saved tag cleanup")
+            } catch {
+                print("Failed to save tag cleanup: \(error)")
+            }
+        } else {
+            print("No duplicate tags found")
+        }
     }
     
 }

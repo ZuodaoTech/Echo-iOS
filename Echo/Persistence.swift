@@ -23,17 +23,17 @@ class PersistenceController: ObservableObject {
         // Create sample data for previews using Tags
         let nowTag = Tag.createOrGetNowTag(context: viewContext)
         
-        let breakingBadHabitsTag = Tag.create(
+        let breakingBadHabitsTag = Tag.findOrCreateNormalized(
             name: NSLocalizedString("tag.breaking_bad_habits", comment: ""),
             in: viewContext
         )
         
-        let buildingGoodHabitsTag = Tag.create(
+        let buildingGoodHabitsTag = Tag.findOrCreateNormalized(
             name: NSLocalizedString("tag.building_good_habits", comment: ""),
             in: viewContext
         )
         
-        let appropriatePositivityTag = Tag.create(
+        let appropriatePositivityTag = Tag.findOrCreateNormalized(
             name: NSLocalizedString("tag.appropriate_positivity", comment: ""),
             in: viewContext
         )
@@ -188,6 +188,9 @@ class PersistenceController: ObservableObject {
                 try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 second
             }
             _ = Tag.createOrGetNowTag(context: self.container.viewContext)
+            
+            // Clean up any duplicate tags that might exist
+            Tag.cleanupDuplicateTags(in: self.container.viewContext)
             
             // Set up CloudKit schema initialization only if CloudKit is enabled and in DEBUG
             #if DEBUG
