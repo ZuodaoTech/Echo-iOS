@@ -210,6 +210,8 @@
 // MARK: - Recording Tips
 "recording.punctuation_tip" = "Tip: Say 'period', 'comma', or 'question mark' for punctuation";
 "recording.no_recording_message" = "Please long press to edit and record audio first";
+"recording.time_warning" = "%d seconds remaining";
+"recording.max_duration_reached" = "Maximum duration reached";
 
 
 // MARK: - iCloud & Sync

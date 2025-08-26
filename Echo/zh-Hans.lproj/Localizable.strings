@@ -210,6 +210,8 @@
 // MARK: - Recording Tips
 "recording.punctuation_tip" = "提示：说'句号'、'逗号'或'问号'来添加标点符号";
 "recording.no_recording_message" = "请长按编辑并先录制音频";
+"recording.time_warning" = "剩余 %d 秒";
+"recording.max_duration_reached" = "已达最大录音时长";
 
 
 // MARK: - iCloud & Sync
