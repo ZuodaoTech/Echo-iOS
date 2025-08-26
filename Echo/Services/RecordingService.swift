@@ -95,13 +95,13 @@ final class RecordingService: NSObject, ObservableObject {
                 throw AudioServiceError.recordingFailed
             }
             
-            currentRecordingScriptId = scriptId
-            
             // Reset voice activity timestamps
             firstSpeakingTime = nil
             lastSpeakingTime = nil
             
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.currentRecordingScriptId = scriptId
                 self.isRecording = true
                 self.recordingDuration = 0
                 self.startRecordingTimer()
@@ -160,9 +160,10 @@ final class RecordingService: NSObject, ObservableObject {
         stopRecordingTimer()
         
         audioRecorder = nil
-        currentRecordingScriptId = nil
         
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.currentRecordingScriptId = nil
             self.isRecording = false
             self.recordingDuration = 0
         }
@@ -290,9 +291,10 @@ extension RecordingService: AVAudioRecorderDelegate {
         }
         
         audioRecorder = nil
-        currentRecordingScriptId = nil
         
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.currentRecordingScriptId = nil
             self.isRecording = false
             self.recordingDuration = 0
         }

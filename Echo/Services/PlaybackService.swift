@@ -154,9 +154,13 @@ final class PlaybackService: NSObject, ObservableObject {
             
             // Initialize playback state
             playbackSessionID = UUID()
-            currentRepetition = 1
-            totalRepetitions = repetitions
             pausedTime = 0
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.currentRepetition = 1
+                self.totalRepetitions = repetitions
+            }
             
             if audioPlayer?.play() != true {
                 print("PlaybackService: Failed to start playback - attempting recovery")
@@ -267,10 +271,10 @@ final class PlaybackService: NSObject, ObservableObject {
         stopIntervalTimer()
         stopProgressTimer()
         
-        currentRepetition = 0
-        totalRepetitions = 0
-        
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.currentRepetition = 0
+            self.totalRepetitions = 0
             self.isPlaying = false
             self.isPaused = false
             self.isInPlaybackSession = false
@@ -380,15 +384,14 @@ final class PlaybackService: NSObject, ObservableObject {
         completionTimer = nil
         
         if currentRepetition < totalRepetitions {
-            currentRepetition += 1
-            playbackProgress = 0
-            
             stopProgressTimer()
             
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.currentRepetition += 1
+                self.playbackProgress = 0
                 self.isInInterval = true
                 self.intervalProgress = 1.0
-                self.playbackProgress = 0
             }
             
             startIntervalTimer(duration: currentScriptIntervalSeconds)
