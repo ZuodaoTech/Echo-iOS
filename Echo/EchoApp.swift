@@ -14,23 +14,28 @@ struct EchoApp: App {
     let persistenceController = PersistenceController.shared
 
     init() {
-        // Apply user's language preference
+        // Track launch start time
+        AppLaunchOptimizer.LaunchMetrics.appInitStart = Date()
+        
+        // Only apply language preference if changed from system default
         if let appLanguage = UserDefaults.standard.string(forKey: "appLanguage"), appLanguage != "system" {
             UserDefaults.standard.set([appLanguage], forKey: "AppleLanguages")
-            UserDefaults.standard.synchronize()
+            // Remove unnecessary synchronize() call - it's automatic now
         }
         
-        // Set default language preferences on first launch
-        if UserDefaults.standard.object(forKey: "defaultTranscriptionLanguage") == nil {
-            let defaultLanguage = LocalizationHelper.shared.getDefaultTranscriptionLanguage()
-            UserDefaults.standard.set(defaultLanguage, forKey: "defaultTranscriptionLanguage")
-            print("Set default transcription language to: \(defaultLanguage)")
+        // Defer non-critical initialization to background
+        Task.detached {
+            // Set default language preferences on first launch
+            if UserDefaults.standard.object(forKey: "defaultTranscriptionLanguage") == nil {
+                let defaultLanguage = LocalizationHelper.shared.getDefaultTranscriptionLanguage()
+                UserDefaults.standard.set(defaultLanguage, forKey: "defaultTranscriptionLanguage")
+            }
+            
+            // Configure audio session after launch
+            await EchoApp.configureAudioSessionAsync()
         }
         
-        // Configure audio session early to avoid warnings
-        configureAudioSession()
-        
-        // Configure notification center
+        // Configure notification center (lightweight)
         configureNotifications()
         
         // Apply simulator warning fixes
@@ -38,17 +43,19 @@ struct EchoApp: App {
         SimulatorWarningFixes.configure()
         #endif
         
-        // Listen for iCloud sync toggle changes
-        NotificationCenter.default.addObserver(
-            forName: Notification.Name("RestartCoreDataForICloud"),
-            object: nil,
-            queue: .main
-        ) { notification in
-            // Note: In production, you might want to restart the Core Data stack
-            // For now, we'll just log the change
-            if let enabled = notification.userInfo?["enabled"] as? Bool {
-                print("iCloud sync toggled: \(enabled)")
-                // The Persistence controller already handles this in its init
+        // Perform deferred initialization
+        AppLaunchOptimizer.performDeferredInitialization()
+        
+        // Defer notification observer setup
+        Task { @MainActor in
+            NotificationCenter.default.addObserver(
+                forName: Notification.Name("RestartCoreDataForICloud"),
+                object: nil,
+                queue: .main
+            ) { notification in
+                if let enabled = notification.userInfo?["enabled"] as? Bool {
+                    print("iCloud sync toggled: \(enabled)")
+                }
             }
         }
     }
@@ -60,15 +67,14 @@ struct EchoApp: App {
         }
     }
     
-    private func configureAudioSession() {
+    private static func configureAudioSessionAsync() async {
         do {
             let audioSession = AVAudioSession.sharedInstance()
-            // Early configuration helps avoid factory warnings
             try audioSession.setCategory(.playAndRecord, 
                                         mode: .default,
                                         options: [.defaultToSpeaker, .allowBluetooth])
         } catch {
-            print("Early audio session configuration failed: \(error)")
+            print("Audio session configuration failed: \(error)")
         }
     }
     
