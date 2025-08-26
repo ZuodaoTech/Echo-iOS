@@ -13,13 +13,13 @@ final class AudioProcessingService {
     // MARK: - Constants
     
     private enum Constants {
-        // Always use high sensitivity for best trimming
-        static let silenceThresholdHigh: Float = 0.005  // High sensitivity (more aggressive)
+        // Optimized for noisy environments
+        static let silenceThreshold: Float = 0.02  // Low sensitivity - filters noise better
         static let minimumSilenceDuration: TimeInterval = 0.3  // Minimum silence to trim
         static let minimumAudioDuration: TimeInterval = 0.5  // Don't process very short recordings
         
         static func getThreshold() -> Float {
-            return silenceThresholdHigh  // Always use high sensitivity
+            return silenceThreshold  // Use low sensitivity for noise filtering
         }
     }
     
@@ -75,7 +75,7 @@ final class AudioProcessingService {
         }
         
         print("AudioProcessing: Starting buffer-based silence trimming (fallback method)")
-        print("AudioProcessing: Using high sensitivity for optimal trimming")
+        print("AudioProcessing: Using optimized settings for noise filtering")
         
         let audioURL = fileManager.audioURL(for: scriptId)
         let originalURL = fileManager.originalAudioURL(for: scriptId)
@@ -546,7 +546,7 @@ final class AudioProcessingService {
         
         let frameLength = Int(buffer.frameLength)
         let threshold = Constants.getThreshold()
-        print("AudioProcessing: Using threshold: \(threshold) (high sensitivity)")
+        print("AudioProcessing: Using threshold: \(threshold) for noise filtering")
         
         // Analyze first channel for simplicity
         let samples = channelData[0]

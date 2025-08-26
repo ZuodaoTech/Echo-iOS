@@ -24,13 +24,13 @@ final class RecordingService: NSObject, ObservableObject {
     private var firstSpeakingTime: TimeInterval?
     private var lastSpeakingTime: TimeInterval?
     
-    // Always use high sensitivity for best trimming
+    // Optimized for noisy environments with tight trimming
     private var voiceDetectionThreshold: Float {
-        return 0.05  // High sensitivity - detects quieter voice
+        return 0.15  // Low sensitivity - filters background noise better
     }
     
     private var trimBufferTime: TimeInterval {
-        return 0.15  // Less buffer - tighter trimming
+        return 0.15  // Short buffer - tighter trimming
     }
     
     // MARK: - Constants
@@ -108,7 +108,7 @@ final class RecordingService: NSObject, ObservableObject {
         // Log the trim points for debugging
         if let firstTime = firstSpeakingTime, let lastTime = lastSpeakingTime {
             print("RecordingService: Voice activity from \(firstTime)s to \(lastTime)s")
-            print("RecordingService: Using high sensitivity - threshold: \(voiceDetectionThreshold), buffer: \(trimBufferTime)s")
+            print("RecordingService: Using optimized settings - threshold: \(voiceDetectionThreshold), buffer: \(trimBufferTime)s")
             let trimStart = max(0, firstTime - trimBufferTime)
             let trimEnd = lastTime + trimBufferTime
             print("RecordingService: Will trim to \(trimStart)s - \(trimEnd)s")
@@ -219,7 +219,7 @@ final class RecordingService: NSObject, ObservableObject {
                 // Speaking detected
                 if self.firstSpeakingTime == nil {
                     self.firstSpeakingTime = currentTime
-                    print("RecordingService: First speaking detected at \(currentTime)s (high sensitivity, threshold: \(threshold))")
+                    print("RecordingService: First speaking detected at \(currentTime)s (threshold: \(threshold))")
                 }
                 self.lastSpeakingTime = currentTime
             }
