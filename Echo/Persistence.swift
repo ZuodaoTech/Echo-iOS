@@ -178,18 +178,14 @@ class PersistenceController: ObservableObject {
         
         container.viewContext.automaticallyMergesChangesFromParent = true
         
-        // Clean up duplicate tags after stores are loaded
+        // Set up CloudKit schema initialization only if CloudKit is enabled and in DEBUG
+        #if DEBUG
         Task { @MainActor in
             // Wait for stores to be ready
             while !isReady {
                 try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 second
             }
             
-            // Clean up any duplicate tags that might exist
-            Tag.cleanupDuplicateTags(in: self.container.viewContext)
-            
-            // Set up CloudKit schema initialization only if CloudKit is enabled and in DEBUG
-            #if DEBUG
             if iCloudEnabled && !self.container.persistentStoreCoordinator.persistentStores.isEmpty {
                 do {
                     try self.container.initializeCloudKitSchema()
@@ -198,7 +194,7 @@ class PersistenceController: ObservableObject {
                     print("CloudKit schema initialization error: \(error)")
                 }
             }
-            #endif
         }
+        #endif
     }
 }
