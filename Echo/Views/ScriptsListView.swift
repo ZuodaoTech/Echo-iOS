@@ -159,17 +159,18 @@ struct ScriptsListView: View {
             let nowTag = Tag.createOrGetNowTag(context: viewContext)
             
             // Create tags for the sample scripts using localized names
-            let breakingBadHabitsTag = Tag.create(
+            // Use findOrCreateNormalized to avoid duplicates
+            let breakingBadHabitsTag = Tag.findOrCreateNormalized(
                 name: NSLocalizedString("tag.breaking_bad_habits", comment: ""),
                 in: viewContext
             )
             
-            let buildingGoodHabitsTag = Tag.create(
+            let buildingGoodHabitsTag = Tag.findOrCreateNormalized(
                 name: NSLocalizedString("tag.building_good_habits", comment: ""),
                 in: viewContext
             )
             
-            let appropriatePositivityTag = Tag.create(
+            let appropriatePositivityTag = Tag.findOrCreateNormalized(
                 name: NSLocalizedString("tag.appropriate_positivity", comment: ""),
                 in: viewContext
             )

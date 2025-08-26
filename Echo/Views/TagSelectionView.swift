@@ -144,21 +144,17 @@ struct TagSelectionView: View {
         let trimmedName = newTagName.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedName.isEmpty else { return }
         
-        // Check if tag already exists
-        if allTags.contains(where: { $0.name.lowercased() == trimmedName.lowercased() }) {
-            // Tag exists, just add it to selection
-            if let existingTag = allTags.first(where: { $0.name.lowercased() == trimmedName.lowercased() }) {
-                selectedTags.insert(existingTag)
-            }
-        } else {
-            // Create new tag
-            _ = Tag.create(name: trimmedName, in: viewContext)
-            do {
+        // Use the new findOrCreateNormalized method which handles duplicates
+        let tag = Tag.findOrCreateNormalized(name: trimmedName, in: viewContext)
+        
+        do {
+            if viewContext.hasChanges {
                 try viewContext.save()
-                // Don't automatically select the new tag
-            } catch {
-                print("Failed to create tag: \(error)")
             }
+            // Add to selection if it's a new tag or user is explicitly adding it
+            selectedTags.insert(tag)
+        } catch {
+            print("Failed to create/save tag: \(error)")
         }
         
         newTagName = ""
