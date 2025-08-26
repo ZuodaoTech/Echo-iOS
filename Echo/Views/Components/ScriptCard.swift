@@ -309,7 +309,6 @@ struct ScriptCard_Previews: PreviewProvider {
         let context = PersistenceController.preview.container.viewContext
         let script = SelftalkScript.create(
             scriptText: "I am confident and capable of achieving my goals. Every day I grow stronger and more resilient.",
-            category: nil,
             repetitions: 3,
             privacyMode: true,
             in: context

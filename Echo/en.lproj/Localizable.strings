@@ -28,6 +28,9 @@
 "tag.label" = "Tags";
 "tag.none" = "None";
 "tag.count_selected" = "%d selected";
+"tag.breaking_bad_habits" = "Breaking Bad Habits";
+"tag.building_good_habits" = "Building Good Habits";
+"tag.appropriate_positivity" = "Appropriate Positivity";
 
 // MARK: - Script Card
 "script.play_count" = "%d plays";
