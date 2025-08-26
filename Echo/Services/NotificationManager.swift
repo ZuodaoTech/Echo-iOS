@@ -5,54 +5,147 @@ import CoreData
 class NotificationManager: NSObject, ObservableObject {
     static let shared = NotificationManager()
     
+    // Permission state caching
+    @Published private(set) var isNotificationPermissionGranted: Bool = false
+    private var permissionCheckTask: Task<Bool, Never>?
+    
     private override init() {
         super.init()
+        // Check initial permission state
+        Task {
+            await checkAndCachePermissionState()
+        }
     }
     
-    // MARK: - Permission Management
+    // MARK: - Permission Management (Async/Await)
+    
+    /// Request notification permission using async/await
+    @MainActor
+    func requestNotificationPermission() async -> Bool {
+        // Check if we already have permission cached
+        if isNotificationPermissionGranted {
+            return true
+        }
+        
+        // Use existing task if one is running
+        if let existingTask = permissionCheckTask {
+            return await existingTask.value
+        }
+        
+        // Create new permission request task
+        let task = Task { @MainActor () -> Bool in
+            do {
+                let granted = try await UNUserNotificationCenter.current()
+                    .requestAuthorization(options: [.alert, .sound, .badge])
+                
+                // Cache the result
+                self.isNotificationPermissionGranted = granted
+                self.permissionCheckTask = nil
+                
+                if !granted {
+                    print("NotificationManager: Permission denied by user")
+                }
+                
+                return granted
+            } catch {
+                print("NotificationManager: Permission request error: \(error)")
+                self.permissionCheckTask = nil
+                return false
+            }
+        }
+        
+        permissionCheckTask = task
+        return await task.value
+    }
+    
+    /// Check notification permission status using async/await
+    @MainActor
+    func checkNotificationPermission() async -> Bool {
+        // If we have an ongoing check, wait for it
+        if let existingTask = permissionCheckTask {
+            return await existingTask.value
+        }
+        
+        // Create new check task
+        let task = Task { @MainActor in
+            let settings = await UNUserNotificationCenter.current().notificationSettings()
+            let granted = settings.authorizationStatus == .authorized
+            
+            // Cache the result
+            self.isNotificationPermissionGranted = granted
+            self.permissionCheckTask = nil
+            
+            return granted
+        }
+        
+        permissionCheckTask = task
+        return await task.value
+    }
+    
+    /// Check and cache permission state (called on init and app foreground)
+    @MainActor
+    private func checkAndCachePermissionState() async {
+        _ = await checkNotificationPermission()
+    }
+    
+    /// Refresh permission state when app becomes active
+    func refreshPermissionState() {
+        Task { @MainActor in
+            await checkAndCachePermissionState()
+        }
+    }
+    
+    // MARK: - Legacy Completion Handler Methods (for backward compatibility)
     
     func requestNotificationPermission(completion: @escaping (Bool) -> Void) {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    print("Notification permission error: \(error)")
-                }
-                completion(granted)
-            }
+        Task {
+            let granted = await requestNotificationPermission()
+            completion(granted)
         }
     }
     
     func checkNotificationPermission(completion: @escaping (Bool) -> Void) {
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
-            DispatchQueue.main.async {
-                completion(settings.authorizationStatus == .authorized)
-            }
+        Task {
+            let granted = await checkNotificationPermission()
+            completion(granted)
         }
     }
     
     // MARK: - Scheduling
     
+    /// Schedule notifications using async/await for proper sequential flow
     func scheduleNotifications(for script: SelftalkScript) {
-        // First cancel existing notifications for this script
-        cancelNotifications(for: script)
-        
-        guard script.notificationEnabled else { return }
-        
-        // Request permission if needed
-        checkNotificationPermission { [weak self] granted in
-            guard granted else {
-                self?.requestNotificationPermission { granted in
-                    if granted {
-                        self?.scheduleNotificationsInternal(for: script)
-                    }
-                }
-                return
-            }
-            self?.scheduleNotificationsInternal(for: script)
+        Task {
+            await scheduleNotificationsAsync(for: script)
         }
     }
     
-    private func scheduleNotificationsInternal(for script: SelftalkScript) {
+    /// Async version of schedule notifications with proper permission handling
+    @MainActor
+    func scheduleNotificationsAsync(for script: SelftalkScript) async {
+        // First cancel existing notifications for this script
+        await cancelNotificationsAsync(for: script)
+        
+        guard script.notificationEnabled else { return }
+        
+        // Check permission first
+        var hasPermission = await checkNotificationPermission()
+        
+        // If no permission, request it
+        if !hasPermission {
+            hasPermission = await requestNotificationPermission()
+        }
+        
+        // Only schedule if we have permission
+        guard hasPermission else {
+            print("NotificationManager: Cannot schedule notifications - permission denied")
+            return
+        }
+        
+        await scheduleNotificationsInternal(for: script)
+    }
+    
+    private func scheduleNotificationsInternal(for script: SelftalkScript) async {
         let frequency = script.notificationFrequency ?? "medium"
         let scriptId = script.id.uuidString
         
@@ -90,28 +183,36 @@ class NotificationManager: NSObject, ObservableObject {
                 let identifier = "\(scriptId)_\(dayOffset)_\(time.hour)_\(time.minute)"
                 let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
                 
-                UNUserNotificationCenter.current().add(request) { error in
-                    if let error = error {
-                        print("Failed to schedule notification: \(error)")
-                    }
+                do {
+                    try await UNUserNotificationCenter.current().add(request)
+                } catch {
+                    print("Failed to schedule notification: \(error)")
                 }
             }
         }
     }
     
-    func cancelNotifications(for script: SelftalkScript) {
+    /// Cancel notifications using async/await
+    func cancelNotificationsAsync(for script: SelftalkScript) async {
         let scriptId = script.id.uuidString
         
-        // Get all pending notification identifiers
-        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-            let identifiersToRemove = requests
-                .filter { $0.identifier.hasPrefix(scriptId) }
-                .map { $0.identifier }
-            
-            if !identifiersToRemove.isEmpty {
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiersToRemove)
-                print("Cancelled \(identifiersToRemove.count) notifications for script")
-            }
+        // Get all pending notification requests
+        let requests = await UNUserNotificationCenter.current().pendingNotificationRequests()
+        
+        let identifiersToRemove = requests
+            .filter { $0.identifier.hasPrefix(scriptId) }
+            .map { $0.identifier }
+        
+        if !identifiersToRemove.isEmpty {
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiersToRemove)
+            print("Cancelled \(identifiersToRemove.count) notifications for script")
+        }
+    }
+    
+    /// Legacy version for backward compatibility
+    func cancelNotifications(for script: SelftalkScript) {
+        Task {
+            await cancelNotificationsAsync(for: script)
         }
     }
     
