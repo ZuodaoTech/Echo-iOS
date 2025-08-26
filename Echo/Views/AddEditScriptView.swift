@@ -24,7 +24,8 @@ struct AddEditScriptView: View {
     @State private var repetitions: Int16 = 3
     @State private var intervalSeconds: Double = 2.0
     @State private var privateModeEnabled = true
-    @State private var transcriptionLanguage = UserDefaults.standard.string(forKey: "defaultTranscriptionLanguage") ?? "en-US"
+    @AppStorage("defaultTranscriptionLanguage") private var defaultTranscriptionLanguage = "en-US"
+    @State private var transcriptionLanguage = ""
     @State private var notificationEnabled = false
     @State private var notificationFrequency = "medium"
     @State private var isRecording = false
@@ -517,13 +518,12 @@ struct AddEditScriptView: View {
             privateModeEnabled = script.privateModeEnabled
             notificationEnabled = script.notificationEnabled
             notificationFrequency = script.notificationFrequency ?? "medium"
-            // If script has "auto" or nil, default to English
-            if let lang = script.transcriptionLanguage, lang != "auto" {
-                transcriptionLanguage = lang
-            } else {
-                transcriptionLanguage = UserDefaults.standard.string(forKey: "defaultTranscriptionLanguage") ?? "en-US"
-            }
+            // Always use the default transcription language from Me Settings
+            transcriptionLanguage = defaultTranscriptionLanguage
             hasRecording = script.hasRecording
+        } else {
+            // For new scripts, also use the default from Me Settings
+            transcriptionLanguage = defaultTranscriptionLanguage
         }
     }
     
