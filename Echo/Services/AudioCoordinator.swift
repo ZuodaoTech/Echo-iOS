@@ -193,6 +193,8 @@ final class AudioCoordinator: ObservableObject {
             stopRecording()
         }
         
+        // Note: PlaybackService will auto-stop any current playback
+        // This ensures only one script plays at a time
         try playbackService.startPlayback(
             scriptId: script.id,
             repetitions: Int(script.repetitions),

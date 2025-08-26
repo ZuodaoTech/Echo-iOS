@@ -105,8 +105,12 @@ final class PlaybackService: NSObject, ObservableObject {
             return
         }
         
-        // Stop any current playback
-        stopPlayback()
+        // Auto-stop any current playback (different script or playing state)
+        // This ensures only one script plays at a time
+        if isPlaying || isPaused || isInPlaybackSession {
+            print("PlaybackService: Auto-stopping previous playback")
+            stopPlayback()
+        }
         
         // Configure session for playback
         try sessionManager.configureForPlayback()
@@ -152,12 +156,8 @@ final class PlaybackService: NSObject, ObservableObject {
             currentScriptRepetitions = repetitions
             currentScriptIntervalSeconds = intervalSeconds
             
-            // Cancel any previous session operations before starting new one
-            if playbackSessionID != nil {
-                stopPlayback()
-            }
-            
             // Initialize new playback session
+            // Previous playback was already stopped above if needed
             playbackSessionID = UUID()
             pausedTime = 0
             
