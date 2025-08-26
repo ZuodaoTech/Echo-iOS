@@ -2,43 +2,134 @@
   Localizable.strings (Finnish)
   Echo
   
-  Suomenkielinen lokalisointitiedosto Echo-sovellukselle
+  Finnish localization file for Echo app
 */
 
 // MARK: - Navigation & Titles
 "navigation.cards" = "Kortit";
 "navigation.me" = "Minä";
-"navigation.new_script" = "Uusi kortti";
-"navigation.edit_script" = "Muokkaa korttia";
+"navigation.new_script" = "Uusi Kortti";
+"navigation.edit_script" = "Muokkaa Korttia";
 
 
 // MARK: - Tags
 "tag.now" = "Nyt";
-"tag.untagged" = "Ei tunnistetta";
-"tag.edit" = "Muokkaa tunnisteita";
-"tag.delete.confirm.title" = "Poista tunniste";
-"tag.delete.confirm.message" = "Tätä tunnistetta käyttää %d skriptiä. Sen poistaminen poistaa tunnisteen näistä skripteistä.";
-"tag.max_now_cards" = "Enintään 'Nyt' kortteja";
-"tag.now_limit_reached" = "Nyt-tunnisteen raja";
-"tag.now_limit_message" = "Olet saavuttanut 'Nyt' korttien enimmäismäärän (%d). Valitse kortti, josta poistat 'Nyt' tunnisteen:";
-"tag.auto_cleanup" = "Poista käyttämättömät tunnisteet automaattisesti";
-"tag.select" = "Valitse tunnisteet";
-"tag.new" = "Uusi tunniste";
-"tag.label" = "Tunnisteet";
+"tag.untagged" = "Ilman tagia";
+"tag.edit" = "Muokkaa Tagia";
+"tag.delete.confirm.title" = "Poista Tagi";
+"tag.delete.confirm.message" = "Tätä tagia käyttää %d skriptiä. Poistaminen poistaa tagin näistä skripteistä.";
+"tag.delete.confirm.empty" = "Yksikään skripti ei käytä tätä tagia. Oletko varma, että haluat poistaa sen?";
+"tag.max_now_cards" = "Enimmäis 'Nyt' Kortit";
+"tag.now_limit_reached" = "Nyt Tagin Raja";
+"tag.now_limit_message" = "Olet saavuttanut 'Nyt' korttien enimmäismäärän (%d). Valitse kortti, josta poistat 'Nyt' tagin:";
+"tag.auto_cleanup" = "Automaattinen Käyttämättömien Tagien Poisto";
+"tag.select" = "Valitse Tagit";
+"tag.new" = "Uusi Tagi";
+"tag.label" = "Tagit";
 "tag.none" = "Ei mitään";
 "tag.count_selected" = "%d valittu";
+"tag.breaking_bad_habits" = "Huonojen Tapojen Murtaminen";
+"tag.building_good_habits" = "Hyvien Tapojen Rakentaminen";
+"tag.appropriate_positivity" = "Sopiva Positiivisuus";
 
 // MARK: - Script Card
 "script.play_count" = "%d toistoa";
-"script.transcript" = "Litteraatio";
+"script.transcript" = "Litterointi";
 "script.recording" = "Tallenne";
 "script.no_recording" = "Ei tallennetta";
 "script.repetitions" = "Toistot";
 "script.interval" = "Väli";
 "script.privacy_mode" = "Yksityisyystila";
-"script.delete" = "Poista kortti";
-"script.delete.confirm.title" = "Poista kortti";
+"script.delete" = "Poista Kortti";
+"script.delete.confirm.title" = "Poista Kortti";
 "script.delete.confirm.message" = "Oletko varma, että haluat poistaa tämän skriptin? Tätä toimintoa ei voi peruuttaa.";
+
+// MARK: - Settings
+"settings.app_language" = "Sovelluksen Kieli";
+"settings.display_language" = "Näyttökieli";
+"settings.restart_to_apply" = "Käynnistä sovellus uudelleen ottaaksesi kielenvaihdon käyttöön";
+"settings.default_settings" = "Oletusasetukset";
+"settings.script_preferences" = "Kortti Asetukset";
+"settings.transcription" = "Litterointi";
+"settings.recording" = "Tallentaminen";
+"settings.backup_sync" = "Varmuuskopio ja Synkronointi";
+"settings.about" = "Tietoja";
+"settings.support" = "Tuki";
+
+"settings.privacy_mode.title" = "Yksityisyystila";
+"settings.privacy_mode.info" = "Ääni toistuu vain kuulokkeiden kautta";
+"settings.privacy_mode.alert.title" = "Yksityisyystila";
+"settings.privacy_mode.alert.message" = "Kun Yksityisyystila on käytössä, äänitallenteet toistetaan vain liitettyjen kuulokkeiden tai kuulokemikrofonien kautta. Tämä estää tahattoman toiston kaiuttimien kautta julkisissa tiloissa.";
+
+"settings.character_guidance" = "Merkkiohjeistus";
+"settings.recommended_length" = "Suositeltu pituus";
+"settings.when_exceeded" = "Kun ylittyy";
+"settings.just_warn" = "Varoita vain";
+"settings.show_tip_only" = "Näytä vain vihje";
+"settings.character_guidance.info" = "Lyhyemmät skriptit ovat helpompia muistaa ja vaikuttavampia";
+
+"settings.default_language" = "Oletuskieli";
+"settings.voice_enhancement" = "Äänen Parannus";
+"settings.voice_enhancement.desc" = "Vähentää taustamelua ja kaikua";
+"settings.auto_trim_silence" = "Automaattinen Hiljaisuuden Leikkaus";
+"settings.auto_trim_silence.desc" = "Poista hiljaisuus alusta ja lopusta";
+"settings.trim_sensitivity" = "Leikkauksen Herkkyys";
+
+"settings.icloud_sync" = "iCloud Synkronointi";
+"settings.icloud_sync.desc" = "Synkronoi kortit laitteiden välillä";
+"settings.icloud_sync.info" = "Teksti ja asetukset synkronoituvat automaattisesti. Äänitiedostot pysyvät paikallisina.";
+"settings.export_scripts" = "Vie Kortit";
+"settings.import_scripts" = "Tuo Kortit";
+
+"settings.version" = "Versio";
+"settings.build" = "Koontiversio";
+"settings.rate_github" = "Arvostele GitHubissa";
+"settings.contact_support" = "Ota Yhteyttä Tukeen";
+
+// MARK: - Recording
+"recording.start" = "Aloita Tallentaminen";
+"recording.stop" = "Lopeta Tallentaminen";
+"recording.re_record" = "Tallenna uudelleen";
+"recording.saved" = "Tallenne tallennettu";
+"recording.delete" = "Poista";
+"recording.preview" = "Esikatselu";
+"recording.playing_preview" = "Toistetaan esikatselua...";
+"recording.preview_paused" = "Esikatselu keskeytetty";
+"recording.plays_once" = "(toistetaan kerran)";
+"recording.processing" = "Käsitellään ääntä...";
+"recording.listening" = "Kuuntelee...";
+"recording.speaking" = "Puhuu...";
+"recording.transcribing" = "Litteroidaan...";
+"recording.re_transcribing" = "Litteroidaan uudelleen...";
+"recording.microphone_access" = "Mikrofonin Käyttöoikeus";
+"recording.microphone_access.message" = "Myönnä mikrofonin käyttöoikeus asetuksissa äänittääksesi ääntä";
+
+// MARK: - Character Guidance
+"guidance.trim_characters" = "Harkitse %d merkin lyhentämistä paremman muistettavuuden vuoksi";
+"guidance.script_over" = "Skripti ylittää %d merkkiä. Yritä olla ytimekkäämpi";
+"guidance.script_long" = "Skripti on melko pitkä.";
+"guidance.enter_script" = "Syötä itsepuheluskriptisi tähän...";
+
+// MARK: - Notifications
+"notifications.enable" = "Ota Ilmoitukset Käyttöön";
+"notifications.frequency" = "Tiheys";
+"notifications.frequency.high" = "Korkea (1-2 kertaa/tunti)";
+"notifications.frequency.medium" = "Keskitaso (2 tunnin välein)";
+"notifications.frequency.low" = "Matala (1-2 kertaa/päivä)";
+"notifications.daytime_only" = "Ilmoitukset vain päiväsaikaan (08:00 - 21:00)";
+"notifications.settings_title" = "Ilmoitusasetukset";
+"notifications.max_cards" = "Enimmäismäärä kortteja ilmoituksilla";
+"notifications.burden_warning" = "Liian monet ilmoitukset voivat käydä rasittaviksi ja vähentää niiden tehokkuutta";
+"notifications.global_settings" = "Yleiset Asetukset";
+"notifications.max_cards_footer" = "Rajoita kuinka monta korttia voi lähettää ilmoituksia samanaikaisesti";
+"notifications.no_cards_enabled" = "Yhdenkään kortin ilmoitukset eivät ole käytössä";
+"notifications.enabled_cards" = "Käytössä Olevat Kortit (%d)";
+"notifications.request_permission" = "Ota Ilmoitukset Käyttöön";
+"notifications.select_to_disable" = "Valitse %d korttia poistaaksesi ilmoitukset käytöstä";
+"notifications.select_cards" = "Valitse Kortit";
+"notifications.reminder_title" = "Itsepuhelun Aika";
+"notifications.action_play" = "Toista Ääni";
+"notifications.action_done" = "Merkitse Valmiiksi";
 
 // MARK: - Common Actions
 "chars" = "merkkiä";
@@ -50,15 +141,96 @@
 "action.ok" = "OK";
 "action.got_it" = "Selvä";
 "action.copy" = "Kopioi";
-"action.use_as_script" = "Käytä skriptinä";
+"action.use_as_script" = "Käytä Skriptinä";
 "action.share" = "Jaa";
 "action.edit" = "Muokkaa";
 
 // MARK: - Errors
 "error.title" = "Virhe";
-"error.save" = "Kortin tallentaminen epäonnistui";
+"error.save" = "Kortin tallennus epäonnistui";
 "error.database" = "Tietokantavirhe";
 "error.restart_app" = "Käynnistä sovellus uudelleen";
 "error.try_again" = "Yritä uudelleen";
 "error.import" = "Tuonti epäonnistui";
 "error.export" = "Vienti epäonnistui";
+
+// MARK: - Time Units
+"time.seconds" = "%@ sekuntia";
+"time.times_per_hour" = "1-2 kertaa/tunti";
+"time.every_hours" = "2 tunnin välein";
+"time.times_per_day" = "1-2 kertaa/päivä";
+
+// MARK: - Sensitivity Levels
+"sensitivity.low" = "Matala";
+"sensitivity.medium" = "Keskitaso";
+"sensitivity.high" = "Korkea";
+"sensitivity.low.desc" = "Tarvitsee kovemman äänen • 0,5s puskuri";
+"sensitivity.medium.desc" = "Tasapainoinen tunnistus • 0,3s puskuri";
+"sensitivity.high.desc" = "Tunnistaa kuiskauksen • 0,15s puskuri";
+
+// MARK: - Sample Scripts
+"sample.smoking" = "En koskaan tupakoi, koska se haisee, ja vihaan olemasta kontrolloitu.";
+"sample.bedtime" = "Menen aina nukkumaan ennen klo 22, koska se on terveellisempää, ja rakastan herätä täynnä energiaa.";
+"sample.mistakes" = "Tein muutamia virheitä, mutta tein myös useita asioita hyvin. Virheet ovat normaali osa oppimista, ja voin käyttää niitä tilaisuutena parantaa itseäni.";
+// MARK: - Languages
+"language.english" = "Englanti";
+"language.chinese_simplified" = "Kiina (Yksinkertaistettu)";
+"language.chinese_traditional" = "Kiina (Perinteinen)";
+"language.spanish" = "Espanja";
+"language.french" = "Ranska";
+"language.german" = "Saksa";
+"language.japanese" = "Japani";
+"language.korean" = "Korea";
+"language.portuguese" = "Portugali";
+"language.russian" = "Venäjä";
+"language.italian" = "Italia";
+"language.dutch" = "Hollanti";
+"language.swedish" = "Ruotsi";
+"language.norwegian" = "Norja";
+"language.danish" = "Tanska";
+"language.polish" = "Puola";
+"language.turkish" = "Turkki";
+"language.arabic" = "Arabia";
+"language.hindi" = "Hindi";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Echo Paketti";
+"export.format.text" = "Pelkkä Teksti";
+"export.format.json" = "JSON";
+"export.include_audio" = "Sisällytä Äänitiedostot";
+"export.format_label" = "Muoto";
+"export.audio_size_warning" = "Äänitiedostot kasvattavat viennin kokoa";
+"export.options" = "Vientivaihtoehdot";
+"export.select_scripts" = "Valitse Kortit";
+"export.scripts_selected" = "Kortit (%d valittu)";
+"export.error_title" = "Vientivirhe";
+"export.error_unknown" = "Tuntematon virhe tapahtui";
+"import.complete_title" = "Tuonti Valmis";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Vinkki: Sano 'piste', 'pilkku', tai 'kysymysmerkki' välimerkkejä varten";
+"recording.no_recording_message" = "Paina pitkään muokataksesi ja tallenna ääni ensin";
+
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Synkronoi kortit laitteiden välillä";
+
+// MARK: - Empty State
+"empty.no_cards" = "Ei Vielä Kortteja";
+"empty.tap_to_create" = "Napauta + painiketta luodaksesi ensimmäisen itsepuhelukorttisi";
+
+// MARK: - Filter
+"filter.all_cards" = "Kaikki Kortit";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Herkkyys";
+"picker.select_language" = "Valitse Kieli";
+"picker.display_language" = "Näyttökieli";
+"settings.language_settings" = "Kieliasetukset";
+"language.system_default" = "Järjestelmän Oletus";
+"settings.card_settings" = "Korttidasetukset";
+"settings.card_defaults" = "Korttien Oletukset";
+"settings.about_support" = "Tietoja ja Tuki";
+"settings.sync" = "Synkronointi";
+"settings.backup" = "Varmuuskopio";
+"script.label" = "Skripti";

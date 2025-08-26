@@ -2,7 +2,7 @@
   Localizable.strings (Arabic)
   Echo
   
-  ملف التعريب العربي لتطبيق Echo
+  Arabic localization file for Echo app
 */
 
 // MARK: - Navigation & Titles
@@ -15,22 +15,26 @@
 // MARK: - Tags
 "tag.now" = "الآن";
 "tag.untagged" = "بدون علامة";
-"tag.edit" = "تحرير العلامات";
+"tag.edit" = "تحرير العلامة";
 "tag.delete.confirm.title" = "حذف العلامة";
-"tag.delete.confirm.message" = "هذه العلامة مستخدمة بواسطة %d نصوص. حذفها سيزيل العلامة من هذه النصوص.";
-"tag.max_now_cards" = "أقصى بطاقات 'الآن'";
+"tag.delete.confirm.message" = "هذه العلامة مستخدمة بواسطة %d سكريبت. حذفها سيزيل العلامة من هذه السكريبتات.";
+"tag.delete.confirm.empty" = "هذه العلامة غير مستخدمة من قبل أي سكريبت. هل أنت متأكد من أنك تريد حذفها؟";
+"tag.max_now_cards" = "الحد الأقصى لبطاقات 'الآن'";
 "tag.now_limit_reached" = "حد علامة الآن";
-"tag.now_limit_message" = "وصلت إلى العدد الأقصى من بطاقات 'الآن' (%d). يرجى اختيار بطاقة لإزالة علامة 'الآن' منها:";
-"tag.auto_cleanup" = "إزالة العلامات غير المستخدمة تلقائياً";
-"tag.select" = "اختر العلامات";
+"tag.now_limit_message" = "لقد وصلت إلى الحد الأقصى لبطاقات 'الآن' (%d). يرجى اختيار بطاقة لإزالة علامة 'الآن':";
+"tag.auto_cleanup" = "إزالة تلقائية للعلامات غير المستخدمة";
+"tag.select" = "اختيار العلامات";
 "tag.new" = "علامة جديدة";
 "tag.label" = "العلامات";
-"tag.none" = "لا يوجد";
+"tag.none" = "لا شيء";
 "tag.count_selected" = "%d محدد";
+"tag.breaking_bad_habits" = "كسر العادات السيئة";
+"tag.building_good_habits" = "بناء العادات الجيدة";
+"tag.appropriate_positivity" = "الإيجابية المناسبة";
 
 // MARK: - Script Card
-"script.play_count" = "%d تشغيل";
-"script.transcript" = "النص المفرغ";
+"script.play_count" = "%d مرة تشغيل";
+"script.transcript" = "النسخة المكتوبة";
 "script.recording" = "التسجيل";
 "script.no_recording" = "لا يوجد تسجيل";
 "script.repetitions" = "التكرارات";
@@ -38,10 +42,97 @@
 "script.privacy_mode" = "وضع الخصوصية";
 "script.delete" = "حذف البطاقة";
 "script.delete.confirm.title" = "حذف البطاقة";
-"script.delete.confirm.message" = "هل أنت متأكد من رغبتك في حذف هذا النص؟ لا يمكن التراجع عن هذا الإجراء.";
+"script.delete.confirm.message" = "هل أنت متأكد من أنك تريد حذف هذا السكريبت؟ هذا الإجراء لا يمكن التراجع عنه.";
+
+// MARK: - Settings
+"settings.app_language" = "لغة التطبيق";
+"settings.display_language" = "لغة العرض";
+"settings.restart_to_apply" = "أعد تشغيل التطبيق لتطبيق تغيير اللغة";
+"settings.default_settings" = "الإعدادات الافتراضية";
+"settings.script_preferences" = "تفضيلات البطاقة";
+"settings.transcription" = "النسخة المكتوبة";
+"settings.recording" = "التسجيل";
+"settings.backup_sync" = "النسخ الاحتياطي والمزامنة";
+"settings.about" = "حول";
+"settings.support" = "الدعم";
+
+"settings.privacy_mode.title" = "وضع الخصوصية";
+"settings.privacy_mode.info" = "الصوت يتم تشغيله فقط من خلال سماعات الأذن";
+"settings.privacy_mode.alert.title" = "وضع الخصوصية";
+"settings.privacy_mode.alert.message" = "عندما يكون وضع الخصوصية مُفعلاً، سيتم تشغيل التسجيلات الصوتية فقط من خلال سماعات الأذن أو سماعات الرأس المتصلة. هذا يمنع التشغيل العرضي من خلال مكبرات الصوت في الأماكن العامة.";
+
+"settings.character_guidance" = "إرشادات الأحرف";
+"settings.recommended_length" = "الطول الموصى به";
+"settings.when_exceeded" = "عند التجاوز";
+"settings.just_warn" = "فقط حذرني";
+"settings.show_tip_only" = "إظهار النصيحة فقط";
+"settings.character_guidance.info" = "السكريبتات الأقصر أسهل في التذكر وأكثر تأثيراً";
+
+"settings.default_language" = "اللغة الافتراضية";
+"settings.voice_enhancement" = "تحسين الصوت";
+"settings.voice_enhancement.desc" = "يقلل الضوضاء الخلفية والصدى";
+"settings.auto_trim_silence" = "قص الصمت التلقائي";
+"settings.auto_trim_silence.desc" = "إزالة الصمت في البداية والنهاية";
+"settings.trim_sensitivity" = "حساسية القص";
+
+"settings.icloud_sync" = "مزامنة iCloud";
+"settings.icloud_sync.desc" = "مزامنة البطاقات عبر الأجهزة";
+"settings.icloud_sync.info" = "النص والإعدادات يتم مزامنتهما تلقائياً. ملفات الصوت تبقى محلية.";
+"settings.export_scripts" = "تصدير البطاقات";
+"settings.import_scripts" = "استيراد البطاقات";
+
+"settings.version" = "الإصدار";
+"settings.build" = "البناء";
+"settings.rate_github" = "التقييم على GitHub";
+"settings.contact_support" = "الاتصال بالدعم";
+
+// MARK: - Recording
+"recording.start" = "بدء التسجيل";
+"recording.stop" = "إيقاف التسجيل";
+"recording.re_record" = "إعادة التسجيل";
+"recording.saved" = "تم حفظ التسجيل";
+"recording.delete" = "حذف";
+"recording.preview" = "معاينة";
+"recording.playing_preview" = "تشغيل المعاينة...";
+"recording.preview_paused" = "المعاينة متوقفة";
+"recording.plays_once" = "(يشغل مرة واحدة)";
+"recording.processing" = "معالجة الصوت...";
+"recording.listening" = "الاستماع...";
+"recording.speaking" = "التحدث...";
+"recording.transcribing" = "النسخ...";
+"recording.re_transcribing" = "إعادة النسخ...";
+"recording.microphone_access" = "الوصول إلى الميكروفون";
+"recording.microphone_access.message" = "يرجى منح الوصول للميكروفون في الإعدادات لتسجيل الصوت";
+
+// MARK: - Character Guidance
+"guidance.trim_characters" = "فكر في تقليل %d حرف لسهولة التذكر";
+"guidance.script_over" = "السكريبت يتجاوز %d حرف. حاول أن تكون أكثر إيجازاً";
+"guidance.script_long" = "السكريبت طويل جداً.";
+"guidance.enter_script" = "أدخل سكريبت الحديث الذاتي هنا...";
+
+// MARK: - Notifications
+"notifications.enable" = "تفعيل الإشعارات";
+"notifications.frequency" = "التكرار";
+"notifications.frequency.high" = "عالي (1-2 مرة/ساعة)";
+"notifications.frequency.medium" = "متوسط (كل ساعتين)";
+"notifications.frequency.low" = "منخفض (1-2 مرة/يوم)";
+"notifications.daytime_only" = "الإشعارات فقط أثناء النهار (8 ص - 9 م)";
+"notifications.settings_title" = "إعدادات الإشعارات";
+"notifications.max_cards" = "الحد الأقصى للبطاقات مع الإشعارات";
+"notifications.burden_warning" = "الكثير من الإشعارات قد تصبح مرهقة وتقلل من فعاليتها";
+"notifications.global_settings" = "الإعدادات العامة";
+"notifications.max_cards_footer" = "الحد من عدد البطاقات التي يمكن أن ترسل إشعارات في نفس الوقت";
+"notifications.no_cards_enabled" = "لا توجد بطاقات مفعلة للإشعارات";
+"notifications.enabled_cards" = "البطاقات المُفعلة (%d)";
+"notifications.request_permission" = "تفعيل الإشعارات";
+"notifications.select_to_disable" = "اختر %d بطاقة لتعطيل الإشعارات";
+"notifications.select_cards" = "اختيار البطاقات";
+"notifications.reminder_title" = "وقت الحديث الذاتي";
+"notifications.action_play" = "تشغيل الصوت";
+"notifications.action_done" = "وضع علامة كمكتمل";
 
 // MARK: - Common Actions
-"chars" = "حرف";
+"chars" = "أحرف";
 "action.done" = "تم";
 "action.cancel" = "إلغاء";
 "action.delete" = "حذف";
@@ -50,7 +141,7 @@
 "action.ok" = "موافق";
 "action.got_it" = "فهمت";
 "action.copy" = "نسخ";
-"action.use_as_script" = "استخدم كنص";
+"action.use_as_script" = "استخدام كسكريبت";
 "action.share" = "مشاركة";
 "action.edit" = "تحرير";
 
@@ -62,3 +153,84 @@
 "error.try_again" = "يرجى المحاولة مرة أخرى";
 "error.import" = "فشل الاستيراد";
 "error.export" = "فشل التصدير";
+
+// MARK: - Time Units
+"time.seconds" = "%@ ثانية";
+"time.times_per_hour" = "1-2 مرة/ساعة";
+"time.every_hours" = "كل ساعتين";
+"time.times_per_day" = "1-2 مرة/يوم";
+
+// MARK: - Sensitivity Levels
+"sensitivity.low" = "منخفض";
+"sensitivity.medium" = "متوسط";
+"sensitivity.high" = "عالي";
+"sensitivity.low.desc" = "يحتاج صوت أعلى • حاجز 0.5 ث";
+"sensitivity.medium.desc" = "اكتشاف متوازن • حاجز 0.3 ث";
+"sensitivity.high.desc" = "يكتشف الهمس • حاجز 0.15 ث";
+
+// MARK: - Sample Scripts
+"sample.smoking" = "أنا لا أدخن أبداً، لأنه كريه الرائحة، وأكره أن أكون تحت السيطرة.";
+"sample.bedtime" = "أذهب دائماً إلى السرير قبل الساعة العاشرة مساءً، لأن ذلك أصح، وأحب الاستيقاظ بطاقة كبيرة.";
+"sample.mistakes" = "لقد ارتكبت بعض الأخطاء، لكنني أيضاً فعلت عدة أشياء بشكل جيد. الأخطاء جزء طبيعي من التعلم، ويمكنني استخدامها كفرصة للتحسن.";
+// MARK: - Languages
+"language.english" = "الإنجليزية";
+"language.chinese_simplified" = "الصينية (المبسطة)";
+"language.chinese_traditional" = "الصينية (التقليدية)";
+"language.spanish" = "الإسبانية";
+"language.french" = "الفرنسية";
+"language.german" = "الألمانية";
+"language.japanese" = "اليابانية";
+"language.korean" = "الكورية";
+"language.portuguese" = "البرتغالية";
+"language.russian" = "الروسية";
+"language.italian" = "الإيطالية";
+"language.dutch" = "الهولندية";
+"language.swedish" = "السويدية";
+"language.norwegian" = "النرويجية";
+"language.danish" = "الدنماركية";
+"language.polish" = "البولندية";
+"language.turkish" = "التركية";
+"language.arabic" = "العربية";
+"language.hindi" = "الهندية";
+
+// MARK: - Export/Import
+"export.format.bundle" = "حزمة Echo";
+"export.format.text" = "نص عادي";
+"export.format.json" = "JSON";
+"export.include_audio" = "تضمين الملفات الصوتية";
+"export.format_label" = "التنسيق";
+"export.audio_size_warning" = "الملفات الصوتية ستزيد من حجم التصدير";
+"export.options" = "خيارات التصدير";
+"export.select_scripts" = "اختيار البطاقات";
+"export.scripts_selected" = "البطاقات (%d محدد)";
+"export.error_title" = "خطأ في التصدير";
+"export.error_unknown" = "حدث خطأ غير معروف";
+"import.complete_title" = "اكتمل الاستيراد";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "نصيحة: قل 'نقطة'، 'فاصلة'، أو 'علامة استفهام' لعلامات الترقيم";
+"recording.no_recording_message" = "يرجى الضغط مطولاً للتحرير وتسجيل الصوت أولاً";
+
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "مزامنة البطاقات عبر الأجهزة";
+
+// MARK: - Empty State
+"empty.no_cards" = "لا توجد بطاقات بعد";
+"empty.tap_to_create" = "انقر على زر + لإنشاء أول بطاقة حديث ذاتي";
+
+// MARK: - Filter
+"filter.all_cards" = "جميع البطاقات";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "الحساسية";
+"picker.select_language" = "اختيار اللغة";
+"picker.display_language" = "لغة العرض";
+"settings.language_settings" = "إعدادات اللغة";
+"language.system_default" = "افتراضي النظام";
+"settings.card_settings" = "إعدادات البطاقة";
+"settings.card_defaults" = "افتراضيات البطاقة";
+"settings.about_support" = "حول والدعم";
+"settings.sync" = "المزامنة";
+"settings.backup" = "النسخ الاحتياطي";
+"script.label" = "السكريبت";
