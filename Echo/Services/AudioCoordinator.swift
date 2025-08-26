@@ -18,6 +18,8 @@ final class AudioCoordinator: ObservableObject {
     @Published var recordingDuration: TimeInterval = 0
     @Published var processingScriptIds = Set<UUID>()  // Track which scripts are being processed
     @Published var voiceActivityLevel: Float = 0  // Voice activity visualization (0.0 to 1.0)
+    @Published var processingProgress: Double = 0  // Progress for long operations (0.0 to 1.0)
+    @Published var processingMessage: String = ""  // Current processing step description
     
     // Playback state
     @Published var isPlaying = false
@@ -102,20 +104,35 @@ final class AudioCoordinator: ObservableObject {
         }
         
         // Show processing state
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             self.isProcessingRecording = true
             self.processingScriptIds.insert(script.id)
+            self.processingProgress = 0.1
+            self.processingMessage = NSLocalizedString("processing.stopping_recording", comment: "Stopping recording...")
         }
         
         // Use async version to ensure file is ready
         recordingService.stopRecording { [weak self] scriptId, duration in
             guard let self = self else { return }
             
+            // Update progress
+            DispatchQueue.main.async { [weak self] in
+                self?.processingProgress = 0.3
+                self?.processingMessage = NSLocalizedString("processing.trimming_silence", comment: "Trimming silence...")
+            }
+            
             // Get voice activity timestamps from recording service
             let trimTimestamps = self.recordingService.getTrimTimestamps()
             
             // Process the recording (trim silence, etc.)
             self.processingService.processRecording(for: scriptId, trimTimestamps: trimTimestamps) { success in
+                // Update progress
+                DispatchQueue.main.async { [weak self] in
+                    self?.processingProgress = 0.6
+                    self?.processingMessage = NSLocalizedString("processing.transcribing", comment: "Transcribing audio...")
+                }
+                
                 // After processing, transcribe the ORIGINAL audio with selected language
                 // The original audio maintains AAC format that Speech Recognition can read
                 let languageCode = script.transcriptionLanguage ?? "en-US"
@@ -152,6 +169,8 @@ final class AudioCoordinator: ObservableObject {
                             self.currentRecordingScript = nil
                             self.isProcessingRecording = false
                             self.processingScriptIds.remove(scriptId)
+                            self.processingProgress = 0
+                            self.processingMessage = ""
                         }
                     }
                 }

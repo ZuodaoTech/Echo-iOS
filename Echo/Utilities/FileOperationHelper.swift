@@ -191,4 +191,48 @@ final class FileOperationHelper {
             throw AudioServiceError.fileCorrupted(url.lastPathComponent)
         }
     }
+    
+    // MARK: - Async Versions for Background Operations
+    
+    /// Copy file asynchronously with retry logic
+    static func copyFileAsync(from source: URL, to destination: URL, maxRetries: Int = Constants.maxRetryAttempts) async throws {
+        try await Task.detached(priority: .background) {
+            try copyFile(from: source, to: destination, maxRetries: maxRetries)
+        }.value
+    }
+    
+    /// Move file asynchronously with retry logic
+    static func moveFileAsync(from source: URL, to destination: URL, maxRetries: Int = Constants.maxRetryAttempts) async throws {
+        try await Task.detached(priority: .background) {
+            try moveFile(from: source, to: destination, maxRetries: maxRetries)
+        }.value
+    }
+    
+    /// Delete file asynchronously with retry logic
+    static func deleteFileAsync(at url: URL, maxRetries: Int = Constants.maxRetryAttempts) async throws {
+        try await Task.detached(priority: .background) {
+            try deleteFile(at: url, maxRetries: maxRetries)
+        }.value
+    }
+    
+    /// Create directory asynchronously with retry logic
+    static func createDirectoryAsync(at url: URL, maxRetries: Int = Constants.maxRetryAttempts) async throws {
+        try await Task.detached(priority: .background) {
+            try createDirectory(at: url, maxRetries: maxRetries)
+        }.value
+    }
+    
+    /// Validate audio file asynchronously
+    static func validateAudioFileAsync(at url: URL) async throws {
+        try await Task.detached(priority: .background) {
+            try validateAudioFile(at: url)
+        }.value
+    }
+    
+    /// Check available disk space asynchronously
+    static func checkAvailableDiskSpaceAsync() async throws {
+        try await Task.detached(priority: .background) {
+            try checkAvailableDiskSpace()
+        }.value
+    }
 }

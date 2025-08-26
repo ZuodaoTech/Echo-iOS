@@ -37,6 +37,13 @@ final class AudioFileManager {
         FileManager.default.fileExists(atPath: audioURL(for: scriptId).path)
     }
     
+    /// Check if audio file exists for a script (async version)
+    func audioFileExistsAsync(for scriptId: UUID) async -> Bool {
+        await Task.detached(priority: .background) {
+            FileManager.default.fileExists(atPath: self.audioURL(for: scriptId).path)
+        }.value
+    }
+    
     /// Delete recording for a script with proper error handling
     func deleteRecording(for scriptId: UUID) throws {
         // Delete the processed audio file
@@ -55,6 +62,25 @@ final class AudioFileManager {
         } catch {
             print("AudioFileManager: Warning - Failed to delete original audio: \(error)")
             // Don't throw here as the files might already be deleted
+        }
+    }
+    
+    /// Delete recording for a script asynchronously
+    func deleteRecordingAsync(for scriptId: UUID) async throws {
+        // Delete the processed audio file
+        let url = audioURL(for: scriptId)
+        do {
+            try await FileOperationHelper.deleteFileAsync(at: url)
+        } catch {
+            print("AudioFileManager: Warning - Failed to delete processed audio: \(error)")
+        }
+        
+        // Delete the original audio file
+        let originalUrl = originalAudioURL(for: scriptId)
+        do {
+            try await FileOperationHelper.deleteFileAsync(at: originalUrl)
+        } catch {
+            print("AudioFileManager: Warning - Failed to delete original audio: \(error)")
         }
     }
     
@@ -84,6 +110,13 @@ final class AudioFileManager {
         
         // If both methods fail, return nil
         return nil
+    }
+    
+    /// Get audio duration asynchronously
+    func getAudioDurationAsync(for scriptId: UUID) async -> TimeInterval? {
+        await Task.detached(priority: .background) { [self] in
+            return getAudioDuration(for: scriptId)
+        }.value
     }
     
     /// Get all recording URLs with proper error handling
