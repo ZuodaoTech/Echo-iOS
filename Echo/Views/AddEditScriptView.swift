@@ -21,8 +21,11 @@ struct AddEditScriptView: View {
     
     @State private var scriptText = ""
     @State private var selectedTags: Set<Tag> = []
+    @AppStorage("defaultRepetitions") private var defaultRepetitions = 3
+    @AppStorage("defaultInterval") private var defaultInterval = 2.0
     @State private var repetitions: Int16 = 3
     @State private var intervalSeconds: Double = 2.0
+    @AppStorage("privateModeDefault") private var privateModeDefault = true
     @State private var privateModeEnabled = true
     @AppStorage("defaultTranscriptionLanguage") private var defaultTranscriptionLanguage = "en-US"
     @State private var transcriptionLanguage = ""
@@ -522,7 +525,10 @@ struct AddEditScriptView: View {
             transcriptionLanguage = defaultTranscriptionLanguage
             hasRecording = script.hasRecording
         } else {
-            // For new scripts, also use the default from Me Settings
+            // For new scripts, use defaults from Me Settings
+            repetitions = Int16(defaultRepetitions)
+            intervalSeconds = defaultInterval
+            privateModeEnabled = privateModeDefault
             transcriptionLanguage = defaultTranscriptionLanguage
         }
     }
