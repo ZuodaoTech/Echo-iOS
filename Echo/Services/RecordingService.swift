@@ -24,29 +24,13 @@ final class RecordingService: NSObject, ObservableObject {
     private var firstSpeakingTime: TimeInterval?
     private var lastSpeakingTime: TimeInterval?
     
-    // Dynamic thresholds based on sensitivity setting
+    // Always use high sensitivity for best trimming
     private var voiceDetectionThreshold: Float {
-        let sensitivity = UserDefaults.standard.string(forKey: "silenceTrimSensitivity") ?? "medium"
-        switch sensitivity {
-        case "low":
-            return 0.15  // Less sensitive - needs louder voice
-        case "high":
-            return 0.05  // More sensitive - detects quieter voice
-        default:
-            return 0.1   // Medium - balanced
-        }
+        return 0.05  // High sensitivity - detects quieter voice
     }
     
     private var trimBufferTime: TimeInterval {
-        let sensitivity = UserDefaults.standard.string(forKey: "silenceTrimSensitivity") ?? "medium"
-        switch sensitivity {
-        case "low":
-            return 0.5   // More buffer - keeps natural pauses
-        case "high":
-            return 0.15  // Less buffer - tighter trimming
-        default:
-            return 0.3   // Medium - balanced
-        }
+        return 0.15  // Less buffer - tighter trimming
     }
     
     // MARK: - Constants
@@ -80,9 +64,8 @@ final class RecordingService: NSObject, ObservableObject {
         // Stop any existing recording
         stopRecording()
         
-        // Configure session for recording with user's preference
-        let enhancedProcessing = UserDefaults.standard.bool(forKey: "voiceEnhancementEnabled")
-        try sessionManager.configureForRecording(enhancedProcessing: enhancedProcessing)
+        // Configure session for recording with voice enhancement always ON
+        try sessionManager.configureForRecording(enhancedProcessing: true)
         
         let audioURL = fileManager.audioURL(for: scriptId)
         
@@ -123,9 +106,8 @@ final class RecordingService: NSObject, ObservableObject {
         
         // Log the trim points for debugging
         if let firstTime = firstSpeakingTime, let lastTime = lastSpeakingTime {
-            let sensitivity = UserDefaults.standard.string(forKey: "silenceTrimSensitivity") ?? "medium"
             print("RecordingService: Voice activity from \(firstTime)s to \(lastTime)s")
-            print("RecordingService: Using \(sensitivity) sensitivity - threshold: \(voiceDetectionThreshold), buffer: \(trimBufferTime)s")
+            print("RecordingService: Using high sensitivity - threshold: \(voiceDetectionThreshold), buffer: \(trimBufferTime)s")
             let trimStart = max(0, firstTime - trimBufferTime)
             let trimEnd = lastTime + trimBufferTime
             print("RecordingService: Will trim to \(trimStart)s - \(trimEnd)s")
@@ -236,8 +218,7 @@ final class RecordingService: NSObject, ObservableObject {
                 // Speaking detected
                 if self.firstSpeakingTime == nil {
                     self.firstSpeakingTime = currentTime
-                    let sensitivity = UserDefaults.standard.string(forKey: "silenceTrimSensitivity") ?? "medium"
-                    print("RecordingService: First speaking detected at \(currentTime)s (sensitivity: \(sensitivity), threshold: \(threshold))")
+                    print("RecordingService: First speaking detected at \(currentTime)s (high sensitivity, threshold: \(threshold))")
                 }
                 self.lastSpeakingTime = currentTime
             }
