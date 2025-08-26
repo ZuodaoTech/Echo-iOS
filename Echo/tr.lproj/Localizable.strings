@@ -39,7 +39,7 @@
 "script.no_recording" = "Kayıt yok";
 "script.repetitions" = "Tekrarlar";
 "script.interval" = "Aralık";
-"script.privacy_mode" = "Gizlilik Modu";
+"script.private_mode" = "Gizlilik Modu";
 "script.delete" = "Kartı Sil";
 "script.delete.confirm.title" = "Kartı Sil";
 "script.delete.confirm.message" = "Bu betiği silmek istediğinden emin misin? Bu eylem geri alınamaz.";
@@ -56,10 +56,10 @@
 "settings.about" = "Hakkında";
 "settings.support" = "Destek";
 
-"settings.privacy_mode.title" = "Gizlilik Modu";
-"settings.privacy_mode.info" = "Ses sadece kulaklık ile çalar";
-"settings.privacy_mode.alert.title" = "Gizlilik Modu";
-"settings.privacy_mode.alert.message" = "Gizlilik Modu etkinken, ses kayıtları sadece bağlı kulaklık veya mikrofonlu kulaklık ile çalacak. Bu, kamusal alanlarda hoparlörlerden kazara çalmasını önler.";
+"settings.private_mode.title" = "Gizlilik Modu";
+"settings.private_mode.info" = "Ses sadece kulaklık ile çalar";
+"settings.private_mode.alert.title" = "Gizlilik Modu";
+"settings.private_mode.alert.message" = "Gizlilik Modu etkinken, ses kayıtları sadece bağlı kulaklık veya mikrofonlu kulaklık ile çalacak. Bu, kamusal alanlarda hoparlörlerden kazara çalmasını önler.";
 
 "settings.character_guidance" = "Karakter Rehberi";
 "settings.recommended_length" = "Önerilen uzunluk";

@@ -39,7 +39,7 @@
 "script.no_recording" = "No recording";
 "script.repetitions" = "Repetitions";
 "script.interval" = "Interval";
-"script.privacy_mode" = "Privacy Mode";
+"script.private_mode" = "Private Mode";
 "script.delete" = "Delete Card";
 "script.delete.confirm.title" = "Delete Card";
 "script.delete.confirm.message" = "Are you sure you want to delete this script? This action cannot be undone.";
@@ -56,10 +56,10 @@
 "settings.about" = "About";
 "settings.support" = "Support";
 
-"settings.privacy_mode.title" = "Privacy Mode";
-"settings.privacy_mode.info" = "Audio plays only through earphones";
-"settings.privacy_mode.alert.title" = "Privacy Mode";
-"settings.privacy_mode.alert.message" = "When Privacy Mode is enabled, audio recordings will only play through connected earphones or headphones. This prevents accidental playback through speakers in public spaces.";
+"settings.private_mode.title" = "Private Mode";
+"settings.private_mode.info" = "Audio plays only through earphones";
+"settings.private_mode.alert.title" = "Private Mode";
+"settings.private_mode.alert.message" = "When Private Mode is enabled, audio recordings will only play through connected earphones or headphones. This prevents accidental playback through speakers in public spaces.";
 
 "settings.character_guidance" = "Character Guidance";
 "settings.recommended_length" = "Recommended length";

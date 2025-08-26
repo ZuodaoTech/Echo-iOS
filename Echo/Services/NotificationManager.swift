@@ -280,11 +280,11 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         
         do {
             if let script = try context.fetch(request).first {
-                // Check privacy mode - play only if privacy mode is disabled or headphones connected
+                // Check private mode - play only if private mode is disabled or headphones connected
                 let audioCoordinator = AudioCoordinator.shared
-                audioCoordinator.checkPrivacyMode()
+                audioCoordinator.checkPrivateMode()
                 
-                if !script.privacyModeEnabled || !audioCoordinator.privacyModeActive {
+                if !script.privateModeEnabled || !audioCoordinator.privateModeActive {
                     if script.hasRecording {
                         try audioCoordinator.play(script: script)
                     }

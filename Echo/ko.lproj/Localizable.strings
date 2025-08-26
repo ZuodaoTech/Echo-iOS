@@ -39,7 +39,7 @@
 "script.no_recording" = "녹음 없음";
 "script.repetitions" = "반복 횟수";
 "script.interval" = "간격";
-"script.privacy_mode" = "프라이버시 모드";
+"script.private_mode" = "프라이버시 모드";
 "script.delete" = "카드 삭제";
 "script.delete.confirm.title" = "카드 삭제";
 "script.delete.confirm.message" = "이 스크립트를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.";
@@ -56,10 +56,10 @@
 "settings.about" = "정보";
 "settings.support" = "지원";
 
-"settings.privacy_mode.title" = "프라이버시 모드";
-"settings.privacy_mode.info" = "오디오가 이어폰을 통해서만 재생됩니다";
-"settings.privacy_mode.alert.title" = "프라이버시 모드";
-"settings.privacy_mode.alert.message" = "프라이버시 모드가 활성화되면 오디오 녹음은 연결된 이어폰이나 헤드셋을 통해서만 재생됩니다. 이를 통해 공공장소에서 스피커를 통한 우발적 재생을 방지할 수 있습니다.";
+"settings.private_mode.title" = "프라이버시 모드";
+"settings.private_mode.info" = "오디오가 이어폰을 통해서만 재생됩니다";
+"settings.private_mode.alert.title" = "프라이버시 모드";
+"settings.private_mode.alert.message" = "프라이버시 모드가 활성화되면 오디오 녹음은 연결된 이어폰이나 헤드셋을 통해서만 재생됩니다. 이를 통해 공공장소에서 스피커를 통한 우발적 재생을 방지할 수 있습니다.";
 
 "settings.character_guidance" = "문자 가이드";
 "settings.recommended_length" = "권장 길이";

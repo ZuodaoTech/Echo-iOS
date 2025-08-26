@@ -39,7 +39,7 @@
 "script.no_recording" = "Ingen optagelse";
 "script.repetitions" = "Gentagelser";
 "script.interval" = "Interval";
-"script.privacy_mode" = "Privatliv Tilstand";
+"script.private_mode" = "Privatliv Tilstand";
 "script.delete" = "Slet Kort";
 "script.delete.confirm.title" = "Slet Kort";
 "script.delete.confirm.message" = "Er du sikker på, at du vil slette dette script? Denne handling kan ikke fortrydes.";
@@ -56,10 +56,10 @@
 "settings.about" = "Om";
 "settings.support" = "Support";
 
-"settings.privacy_mode.title" = "Privatliv Tilstand";
-"settings.privacy_mode.info" = "Lyd afspilles kun gennem øretelefoner";
-"settings.privacy_mode.alert.title" = "Privatliv Tilstand";
-"settings.privacy_mode.alert.message" = "Når Privatliv Tilstand er aktiveret, vil lydoptagelser kun afspilles gennem tilsluttede øretelefoner eller hovedtelefoner. Dette forhindrer utilsigtet afspilning gennem højttalere i offentlige rum.";
+"settings.private_mode.title" = "Privatliv Tilstand";
+"settings.private_mode.info" = "Lyd afspilles kun gennem øretelefoner";
+"settings.private_mode.alert.title" = "Privatliv Tilstand";
+"settings.private_mode.alert.message" = "Når Privatliv Tilstand er aktiveret, vil lydoptagelser kun afspilles gennem tilsluttede øretelefoner eller hovedtelefoner. Dette forhindrer utilsigtet afspilning gennem højttalere i offentlige rum.";
 
 "settings.character_guidance" = "Tegn Vejledning";
 "settings.recommended_length" = "Anbefalet længde";

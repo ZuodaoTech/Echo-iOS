@@ -39,7 +39,7 @@
 "script.no_recording" = "Sem gravação";
 "script.repetitions" = "Repetições";
 "script.interval" = "Intervalo";
-"script.privacy_mode" = "Modo Privacidade";
+"script.private_mode" = "Modo Privacidade";
 "script.delete" = "Excluir Cartão";
 "script.delete.confirm.title" = "Excluir Cartão";
 "script.delete.confirm.message" = "Tem certeza de que deseja excluir este script? Esta ação não pode ser desfeita.";
@@ -56,10 +56,10 @@
 "settings.about" = "Sobre";
 "settings.support" = "Suporte";
 
-"settings.privacy_mode.title" = "Modo Privacidade";
-"settings.privacy_mode.info" = "Áudio toca apenas através de fones";
-"settings.privacy_mode.alert.title" = "Modo Privacidade";
-"settings.privacy_mode.alert.message" = "Quando o Modo Privacidade está ativado, as gravações de áudio só tocarão através de fones de ouvido ou headsets conectados. Isso previne reprodução acidental através de alto-falantes em espaços públicos.";
+"settings.private_mode.title" = "Modo Privacidade";
+"settings.private_mode.info" = "Áudio toca apenas através de fones";
+"settings.private_mode.alert.title" = "Modo Privacidade";
+"settings.private_mode.alert.message" = "Quando o Modo Privacidade está ativado, as gravações de áudio só tocarão através de fones de ouvido ou headsets conectados. Isso previne reprodução acidental através de alto-falantes em espaços públicos.";
 
 "settings.character_guidance" = "Orientação de Caracteres";
 "settings.recommended_length" = "Comprimento recomendado";

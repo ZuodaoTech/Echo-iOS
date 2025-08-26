@@ -11,7 +11,7 @@ extension SelftalkScript: Identifiable {
     @NSManaged public var repetitions: Int16
     @NSManaged public var intervalSeconds: Double
     @NSManaged public var audioDuration: Double
-    @NSManaged public var privacyModeEnabled: Bool
+    @NSManaged public var privateModeEnabled: Bool
     @NSManaged public var audioFilePath: String?
     @NSManaged public var createdAt: Date
     @NSManaged public var updatedAt: Date
@@ -74,7 +74,7 @@ extension SelftalkScript {
         scriptText: String,
         repetitions: Int16 = 3,
         intervalSeconds: Double = 2.0,
-        privacyMode: Bool = true,
+        privateMode: Bool = true,
         in context: NSManagedObjectContext
     ) -> SelftalkScript {
         let script = SelftalkScript(context: context)
@@ -83,7 +83,7 @@ extension SelftalkScript {
         script.repetitions = repetitions
         script.intervalSeconds = intervalSeconds
         script.audioDuration = 0
-        script.privacyModeEnabled = privacyMode
+        script.privateModeEnabled = privateMode
         script.createdAt = Date()
         script.updatedAt = Date()
         script.playCount = 0

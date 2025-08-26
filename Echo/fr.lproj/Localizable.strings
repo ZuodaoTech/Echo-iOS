@@ -39,7 +39,7 @@
 "script.no_recording" = "Pas d'enregistrement";
 "script.repetitions" = "Répétitions";
 "script.interval" = "Intervalle";
-"script.privacy_mode" = "Mode Privé";
+"script.private_mode" = "Mode Privé";
 "script.delete" = "Supprimer la Carte";
 "script.delete.confirm.title" = "Supprimer la Carte";
 "script.delete.confirm.message" = "Êtes-vous sûr de vouloir supprimer ce script ? Cette action ne peut pas être annulée.";
@@ -56,10 +56,10 @@
 "settings.about" = "À propos";
 "settings.support" = "Support";
 
-"settings.privacy_mode.title" = "Mode Privé";
-"settings.privacy_mode.info" = "L'audio ne joue que via les écouteurs";
-"settings.privacy_mode.alert.title" = "Mode Privé";
-"settings.privacy_mode.alert.message" = "Lorsque le Mode Privé est activé, les enregistrements audio ne joueront que via les écouteurs ou casques connectés. Cela empêche la lecture accidentelle via les haut-parleurs dans les espaces publics.";
+"settings.private_mode.title" = "Mode Privé";
+"settings.private_mode.info" = "L'audio ne joue que via les écouteurs";
+"settings.private_mode.alert.title" = "Mode Privé";
+"settings.private_mode.alert.message" = "Lorsque le Mode Privé est activé, les enregistrements audio ne joueront que via les écouteurs ou casques connectés. Cela empêche la lecture accidentelle via les haut-parleurs dans les espaces publics.";
 
 "settings.character_guidance" = "Guide de Caractères";
 "settings.recommended_length" = "Longueur recommandée";

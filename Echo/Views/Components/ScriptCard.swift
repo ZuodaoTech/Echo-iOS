@@ -5,7 +5,7 @@ import UIKit
 struct ScriptCard: View {
     @ObservedObject var script: SelftalkScript
     @StateObject private var audioService = AudioCoordinator.shared
-    @State private var showingPrivacyAlert = false
+    @State private var showingPrivateAlert = false
     @State private var showingNoRecordingAlert = false
     @State private var showingErrorAlert = false
     @State private var errorMessage = ""
@@ -123,7 +123,7 @@ struct ScriptCard: View {
                         .foregroundColor(cardAccentColor)
                 }
                 
-                if script.privacyModeEnabled {
+                if script.privateModeEnabled {
                     Image(systemName: "lock.fill")
                         .font(.caption)
                         .foregroundColor(.secondary)
@@ -232,10 +232,10 @@ struct ScriptCard: View {
                 onEdit()
             }
         )
-        .alert(NSLocalizedString("settings.privacy_mode.title", comment: ""), isPresented: $showingPrivacyAlert) {
+        .alert(NSLocalizedString("settings.private_mode.title", comment: ""), isPresented: $showingPrivateAlert) {
             Button(NSLocalizedString("action.ok", comment: ""), role: .cancel) { }
         } message: {
-            Text(NSLocalizedString("settings.privacy_mode.info", comment: ""))
+            Text(NSLocalizedString("settings.private_mode.info", comment: ""))
         }
         .alert(NSLocalizedString("script.no_recording", comment: ""), isPresented: $showingNoRecordingAlert) {
             Button(NSLocalizedString("action.ok", comment: ""), role: .cancel) { }
@@ -279,15 +279,15 @@ struct ScriptCard: View {
             // Start new playback
             do {
                 try audioService.play(script: script)
-            } catch AudioServiceError.privacyModeActive {
-                showingPrivacyAlert = true
+            } catch AudioServiceError.privateModeActive {
+                showingPrivateAlert = true
             } catch {
                 // Silently retry once after a brief delay instead of showing error immediately
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     do {
                         try audioService.play(script: script)
-                    } catch AudioServiceError.privacyModeActive {
-                        showingPrivacyAlert = true
+                    } catch AudioServiceError.privateModeActive {
+                        showingPrivateAlert = true
                     } catch {
                         // Only show error if retry also fails
                         // Could also just ignore and let user tap again
@@ -310,7 +310,7 @@ struct ScriptCard_Previews: PreviewProvider {
         let script = SelftalkScript.create(
             scriptText: "I am confident and capable of achieving my goals. Every day I grow stronger and more resilient.",
             repetitions: 3,
-            privacyMode: true,
+            privateMode: true,
             in: context
         )
         

@@ -5,7 +5,7 @@ import SwiftUI
 // MARK: - Error Types
 
 enum AudioServiceError: LocalizedError {
-    case privacyModeActive
+    case privateModeActive
     case recordingFailed
     case playbackFailed
     case noRecording
@@ -14,7 +14,7 @@ enum AudioServiceError: LocalizedError {
     
     var errorDescription: String? {
         switch self {
-        case .privacyModeActive:
+        case .privateModeActive:
             return "Please connect earphones to play audio"
         case .recordingFailed:
             return "Failed to record audio"
@@ -48,7 +48,7 @@ class AudioService: NSObject, ObservableObject {
     @Published var isInPlaybackSession = false
     @Published var currentPlayingScriptId: UUID?
     @Published var playbackProgress: Double = 0
-    @Published var privacyModeActive = false
+    @Published var privateModeActive = false
     @Published var currentRepetition: Int = 0
     @Published var totalRepetitions: Int = 0
     @Published var isInInterval = false
@@ -88,8 +88,8 @@ class AudioService: NSObject, ObservableObject {
         coordinator.$playbackProgress
             .assign(to: &$playbackProgress)
         
-        coordinator.$privacyModeActive
-            .assign(to: &$privacyModeActive)
+        coordinator.$privateModeActive
+            .assign(to: &$privateModeActive)
         
         coordinator.$currentRepetition
             .assign(to: &$currentRepetition)
@@ -146,7 +146,7 @@ class AudioService: NSObject, ObservableObject {
         coordinator.deleteRecording(for: script)
     }
     
-    func checkPrivacyMode() {
-        coordinator.checkPrivacyMode()
+    func checkPrivateMode() {
+        coordinator.checkPrivateMode()
     }
 }

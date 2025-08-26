@@ -39,7 +39,7 @@
 "script.no_recording" = "Нет записи";
 "script.repetitions" = "Повторения";
 "script.interval" = "Интервал";
-"script.privacy_mode" = "Режим Конфиденциальности";
+"script.private_mode" = "Режим Конфиденциальности";
 "script.delete" = "Удалить Карточку";
 "script.delete.confirm.title" = "Удалить Карточку";
 "script.delete.confirm.message" = "Уверены, что хотите удалить этот скрипт? Это действие нельзя отменить.";
@@ -56,10 +56,10 @@
 "settings.about" = "О программе";
 "settings.support" = "Поддержка";
 
-"settings.privacy_mode.title" = "Режим Конфиденциальности";
-"settings.privacy_mode.info" = "Аудио воспроизводится только через наушники";
-"settings.privacy_mode.alert.title" = "Режим Конфиденциальности";
-"settings.privacy_mode.alert.message" = "Когда Режим Конфиденциальности включен, аудиозаписи будут воспроизводиться только через подключенные наушники или гарнитуру. Это предотвращает случайное воспроизведение через динамики в общественных местах.";
+"settings.private_mode.title" = "Режим Конфиденциальности";
+"settings.private_mode.info" = "Аудио воспроизводится только через наушники";
+"settings.private_mode.alert.title" = "Режим Конфиденциальности";
+"settings.private_mode.alert.message" = "Когда Режим Конфиденциальности включен, аудиозаписи будут воспроизводиться только через подключенные наушники или гарнитуру. Это предотвращает случайное воспроизведение через динамики в общественных местах.";
 
 "settings.character_guidance" = "Рекомендации по Символам";
 "settings.recommended_length" = "Рекомендуемая длина";

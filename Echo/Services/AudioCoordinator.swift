@@ -30,8 +30,8 @@ final class AudioCoordinator: ObservableObject {
     @Published var isInInterval = false
     @Published var intervalProgress: Double = 0
     
-    // Privacy mode
-    @Published var privacyModeActive = false
+    // Private mode
+    @Published var privateModeActive = false
     
     // MARK: - Services
     
@@ -167,7 +167,7 @@ final class AudioCoordinator: ObservableObject {
             scriptId: script.id,
             repetitions: Int(script.repetitions),
             intervalSeconds: script.intervalSeconds,
-            privacyModeEnabled: script.privacyModeEnabled
+            privateModeEnabled: script.privateModeEnabled
         )
         
         // Increment play count
@@ -207,8 +207,8 @@ final class AudioCoordinator: ObservableObject {
         script.transcribedText = nil  // Clear transcript when audio is deleted
     }
     
-    func checkPrivacyMode() {
-        sessionManager.checkPrivacyMode()
+    func checkPrivateMode() {
+        sessionManager.checkPrivateMode()
     }
     
     // MARK: - Private Methods
@@ -256,8 +256,8 @@ final class AudioCoordinator: ObservableObject {
             .assign(to: &$intervalProgress)
         
         // Bind session manager properties
-        sessionManager.$privacyModeActive
-            .assign(to: &$privacyModeActive)
+        sessionManager.$privateModeActive
+            .assign(to: &$privateModeActive)
     }
 }
 

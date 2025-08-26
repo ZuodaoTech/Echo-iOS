@@ -39,7 +39,7 @@
 "script.no_recording" = "Nessuna registrazione";
 "script.repetitions" = "Ripetizioni";
 "script.interval" = "Intervallo";
-"script.privacy_mode" = "Modalità Privacy";
+"script.private_mode" = "Modalità Privacy";
 "script.delete" = "Elimina Scheda";
 "script.delete.confirm.title" = "Elimina Scheda";
 "script.delete.confirm.message" = "Sei sicuro di voler eliminare questo script? Questa azione non può essere annullata.";
@@ -56,10 +56,10 @@
 "settings.about" = "Informazioni";
 "settings.support" = "Supporto";
 
-"settings.privacy_mode.title" = "Modalità Privacy";
-"settings.privacy_mode.info" = "L'audio viene riprodotto solo tramite auricolari";
-"settings.privacy_mode.alert.title" = "Modalità Privacy";
-"settings.privacy_mode.alert.message" = "Quando la Modalità Privacy è abilitata, le registrazioni audio verranno riprodotte solo tramite auricolari o cuffie collegati. Questo previene la riproduzione accidentale tramite altoparlanti in spazi pubblici.";
+"settings.private_mode.title" = "Modalità Privacy";
+"settings.private_mode.info" = "L'audio viene riprodotto solo tramite auricolari";
+"settings.private_mode.alert.title" = "Modalità Privacy";
+"settings.private_mode.alert.message" = "Quando la Modalità Privacy è abilitata, le registrazioni audio verranno riprodotte solo tramite auricolari o cuffie collegati. Questo previene la riproduzione accidentale tramite altoparlanti in spazi pubblici.";
 
 "settings.character_guidance" = "Guida Caratteri";
 "settings.recommended_length" = "Lunghezza raccomandata";
