@@ -73,6 +73,9 @@ final class AudioSessionManager: ObservableObject {
     private let stateLock = NSLock()
     private let logger = Logger(subsystem: "xiaolai.Echo", category: "AudioSession")
     
+    // Permission checking task to prevent race conditions
+    private var permissionCheckTask: Task<Bool, Never>?
+    
     // MARK: - Constants
     
     private enum Constants {
@@ -86,7 +89,11 @@ final class AudioSessionManager: ObservableObject {
         setupAudioSession()
         setupNotifications()
         checkPrivateMode()
-        checkMicrophonePermission()
+        
+        // Check initial permission state asynchronously
+        Task { @MainActor in
+            await checkAndCacheMicrophonePermission()
+        }
     }
     
     // MARK: - Public Methods
@@ -189,13 +196,107 @@ final class AudioSessionManager: ObservableObject {
         }
     }
     
-    /// Request microphone permission
-    func requestMicrophonePermission(completion: @escaping (Bool) -> Void) {
-        audioSession.requestRecordPermission { [weak self] granted in
-            DispatchQueue.main.async {
-                self?.isMicrophonePermissionGranted = granted
-                completion(granted)
+    // MARK: - Microphone Permission Management (Async/Await)
+    
+    /// Request microphone permission using async/await with race condition prevention
+    @MainActor
+    func requestMicrophonePermission() async -> Bool {
+        // Check cached state first
+        if isMicrophonePermissionGranted {
+            logger.info("Microphone permission already granted (cached)")
+            return true
+        }
+        
+        // Use Task to ensure sequential permission checking
+        if let existingTask = permissionCheckTask {
+            return await existingTask.value
+        }
+        
+        // Create a new task for permission request
+        let task = Task { @MainActor () -> Bool in
+            let currentStatus = self.audioSession.recordPermission
+            
+            switch currentStatus {
+            case .granted:
+                self.isMicrophonePermissionGranted = true
+                self.permissionCheckTask = nil
+                return true
+                
+            case .denied:
+                self.isMicrophonePermissionGranted = false
+                self.logger.warning("Microphone permission denied by user")
+                self.permissionCheckTask = nil
+                return false
+                
+            case .undetermined:
+                // Request permission
+                let granted = await withCheckedContinuation { continuation in
+                    self.audioSession.requestRecordPermission { [weak self] granted in
+                        DispatchQueue.main.async {
+                            self?.isMicrophonePermissionGranted = granted
+                            self?.logger.info("Microphone permission request result: \(granted)")
+                            self?.permissionCheckTask = nil
+                            continuation.resume(returning: granted)
+                        }
+                    }
+                }
+                return granted
+                
+            @unknown default:
+                self.logger.error("Unknown microphone permission status")
+                self.permissionCheckTask = nil
+                return false
             }
+        }
+        
+        permissionCheckTask = task
+        return await task.value
+    }
+    
+    /// Check microphone permission status using async/await
+    @MainActor
+    func checkMicrophonePermission() async -> Bool {
+        // If we have an ongoing check, wait for it
+        if let existingTask = permissionCheckTask {
+            return await existingTask.value
+        }
+        
+        // Create new check task
+        let task = Task { @MainActor in
+            let permission = self.audioSession.recordPermission
+            let granted = permission == .granted
+            
+            // Cache the result
+            self.isMicrophonePermissionGranted = granted
+            self.permissionCheckTask = nil
+            
+            return granted
+        }
+        
+        permissionCheckTask = task
+        return await task.value
+    }
+    
+    /// Check and cache microphone permission state
+    @MainActor
+    private func checkAndCacheMicrophonePermission() async {
+        _ = await checkMicrophonePermission()
+    }
+    
+    /// Refresh permission state when app becomes active
+    func refreshPermissionState() {
+        Task { @MainActor in
+            await checkAndCacheMicrophonePermission()
+        }
+    }
+    
+    // MARK: - Legacy Permission Methods (for backward compatibility)
+    
+    /// Request microphone permission (legacy completion handler)
+    func requestMicrophonePermission(completion: @escaping (Bool) -> Void) {
+        Task {
+            let granted = await requestMicrophonePermission()
+            completion(granted)
         }
     }
     
