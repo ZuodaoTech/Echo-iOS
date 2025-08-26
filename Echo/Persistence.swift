@@ -17,48 +17,51 @@ class PersistenceController: ObservableObject {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         
-        // Create sample data for previews
-        Category.createDefaultCategories(context: viewContext)
+        // Create sample data for previews using Tags
+        let nowTag = Tag.createOrGetNowTag(context: viewContext)
         
-        // Create sample scripts with localized content
-        let categories = try? viewContext.fetch(Category.fetchRequest())
-        let localizedScripts = LocalizationHelper.shared.getLocalizedSampleScripts()
+        let breakingBadHabitsTag = Tag.create(
+            name: "Breaking Bad Habits",
+            in: viewContext
+        )
         
-        if let breakingBadHabits = categories?.first(where: { $0.nameKey == "category.breaking_bad_habits" }) {
-            if let scriptText = localizedScripts.first(where: { $0.category == "category.breaking_bad_habits" })?.text {
-                _ = SelftalkScript.create(
-                    scriptText: scriptText,
-                    category: breakingBadHabits,
-                    repetitions: 3,
-                    privacyMode: true,
-                    in: viewContext
-                )
-            }
-        }
+        let buildingGoodHabitsTag = Tag.create(
+            name: "Building Good Habits",
+            in: viewContext
+        )
         
-        if let buildingGoodHabits = categories?.first(where: { $0.nameKey == "category.building_good_habits" }) {
-            if let scriptText = localizedScripts.first(where: { $0.category == "category.building_good_habits" })?.text {
-                _ = SelftalkScript.create(
-                    scriptText: scriptText,
-                    category: buildingGoodHabits,
-                    repetitions: 3,
-                    privacyMode: true,
-                    in: viewContext
-                )
-            }
-        }
+        let appropriatePositivityTag = Tag.create(
+            name: "Appropriate Positivity",
+            in: viewContext
+        )
         
-        if let appropriatePositivity = categories?.first(where: { $0.nameKey == "category.appropriate_positivity" }) {
-            if let scriptText = localizedScripts.first(where: { $0.category == "category.appropriate_positivity" })?.text {
-                _ = SelftalkScript.create(
-                    scriptText: scriptText,
-                    category: appropriatePositivity,
-                    repetitions: 3,
-                    privacyMode: true,
-                    in: viewContext
-                )
-            }
-        }
+        // Create sample scripts
+        let script1 = SelftalkScript.create(
+            scriptText: "I never smoke, because it stinks, and I hate being controlled.",
+            repetitions: 3,
+            privacyMode: true,
+            in: viewContext
+        )
+        script1.addToTags(nowTag)
+        script1.addToTags(breakingBadHabitsTag)
+        
+        let script2 = SelftalkScript.create(
+            scriptText: "I always go to bed before 10 p.m., because it's healthier, and I love waking up with a lot of energy.",
+            repetitions: 3,
+            privacyMode: true,
+            in: viewContext
+        )
+        script2.addToTags(nowTag)
+        script2.addToTags(buildingGoodHabitsTag)
+        
+        let script3 = SelftalkScript.create(
+            scriptText: "I made a few mistakes, but I also did several things well. Mistakes are a normal part of learning, and I can use them as an opportunity to improve.",
+            repetitions: 3,
+            privacyMode: true,
+            in: viewContext
+        )
+        script3.addToTags(nowTag)
+        script3.addToTags(appropriatePositivityTag)
         
         do {
             try viewContext.save()
@@ -157,11 +160,9 @@ class PersistenceController: ObservableObject {
         
         container.viewContext.automaticallyMergesChangesFromParent = true
         
-        // Migrate categories to tags if needed
+        // Create the special "Now" tag if it doesn't exist
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             guard let self = self else { return }
-            Tag.migrateFromCategories(context: self.container.viewContext)
-            // Create the special "Now" tag if it doesn't exist
             _ = Tag.createOrGetNowTag(context: self.container.viewContext)
         }
         
