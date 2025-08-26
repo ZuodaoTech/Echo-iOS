@@ -1,4 +1,6 @@
 import SwiftUI
+import CloudKit
+import CoreData
 
 struct MeView: View {
     // Language Settings
@@ -34,6 +36,20 @@ struct MeView: View {
     @State private var cardsToDisable: Set<UUID> = []
     @State private var previousMaxCards = 1
     
+    // Dev section state
+    @State private var showDevSection = false
+    @State private var swipeSequence: [SwipeDirection] = []
+    @State private var lastSwipeTime = Date()
+    @State private var showingClearICloudAlert = false
+    @State private var showingClearLocalDataAlert = false
+    @State private var showingRemoveDuplicatesAlert = false
+    @State private var devActionMessage = ""
+    @State private var showingDevActionResult = false
+    
+    enum SwipeDirection {
+        case up, down, left, right
+    }
+    
     @Environment(\.managedObjectContext) private var viewContext
     
     @FetchRequest(
@@ -46,27 +62,7 @@ struct MeView: View {
             List {
                 // MARK: - Language Section
                 Section {
-                    // App Display Language
-                    Button {
-                        showingUILanguagePicker = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "globe")
-                                .font(.system(size: 20))
-                                .foregroundColor(.primary)
-                                .frame(width: 25)
-                            Text(NSLocalizedString("settings.display_language", comment: ""))
-                            Spacer()
-                            Text(uiLanguageDisplayName(for: appLanguage))
-                                .foregroundColor(.secondary)
-                            Image(systemName: "chevron.right")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    .foregroundColor(.primary)
-                    
-                    // Transcription Language
+                    // Transcription Language (Display Language moved to Dev section)
                     Button {
                         showingTranscriptionLanguagePicker = true
                     } label: {
@@ -345,7 +341,88 @@ struct MeView: View {
                 } header: {
                     Text(NSLocalizedString("settings.about", comment: ""))
                 }
+                
+                // MARK: - Developer Section (Hidden)
+                if showDevSection {
+                    Section {
+                        // App Display Language (moved here)
+                        Button {
+                            showingUILanguagePicker = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "globe")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.primary)
+                                    .frame(width: 25)
+                                Text(NSLocalizedString("settings.display_language", comment: ""))
+                                Spacer()
+                                Text(uiLanguageDisplayName(for: appLanguage))
+                                    .foregroundColor(.secondary)
+                                Image(systemName: "chevron.right")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        .foregroundColor(.primary)
+                        
+                        // Clear iCloud Data
+                        Button {
+                            showingClearICloudAlert = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "icloud.slash")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.red)
+                                    .frame(width: 25)
+                                Text("Clear iCloud Data")
+                                    .foregroundColor(.red)
+                                Spacer()
+                            }
+                        }
+                        
+                        // Clear Local Data
+                        Button {
+                            showingClearLocalDataAlert = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "trash.fill")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.red)
+                                    .frame(width: 25)
+                                Text("Clear All Local Data")
+                                    .foregroundColor(.red)
+                                Spacer()
+                            }
+                        }
+                        
+                        // Remove Duplicates
+                        Button {
+                            showingRemoveDuplicatesAlert = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "doc.on.doc.fill")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.orange)
+                                    .frame(width: 25)
+                                Text("Remove Duplicate Tags & Cards")
+                                    .foregroundColor(.orange)
+                                Spacer()
+                            }
+                        }
+                    } header: {
+                        Text("🛠️ Developer Tools")
+                    } footer: {
+                        Text("⚠️ These actions are destructive and cannot be undone.")
+                            .font(.caption)
+                    }
+                }
             }
+            .gesture(
+                DragGesture(minimumDistance: 50)
+                    .onEnded { value in
+                        handleSwipe(value: value)
+                    }
+            )
 //            .navigationTitle(NSLocalizedString("tab.me", comment: ""))
             .sheet(isPresented: $showingUILanguagePicker) {
                 UILanguagePickerView(selectedLanguage: $appLanguage)
@@ -358,10 +435,77 @@ struct MeView: View {
             } message: {
                 Text(NSLocalizedString("settings.private_mode.alert.message", comment: ""))
             }
+            .alert("Clear iCloud Data?", isPresented: $showingClearICloudAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Clear", role: .destructive) {
+                    clearICloudData()
+                }
+            } message: {
+                Text("This will remove all Echo data from iCloud. Local data will remain intact.")
+            }
+            .alert("Clear All Local Data?", isPresented: $showingClearLocalDataAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Delete Everything", role: .destructive) {
+                    clearAllLocalData()
+                }
+            } message: {
+                Text("This will delete ALL scripts, recordings, and tags. This cannot be undone!")
+            }
+            .alert("Remove Duplicates?", isPresented: $showingRemoveDuplicatesAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Remove", role: .destructive) {
+                    removeDuplicates()
+                }
+            } message: {
+                Text("This will merge duplicate tags and remove duplicate scripts with the same content.")
+            }
+            .alert("Operation Complete", isPresented: $showingDevActionResult) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(devActionMessage)
+            }
         }
     }
     
     // MARK: - Helper Functions
+    
+    private func handleSwipe(value: DragGesture.Value) {
+        let verticalMovement = value.translation.height
+        let horizontalMovement = value.translation.width
+        
+        // Determine swipe direction
+        let direction: SwipeDirection
+        if abs(verticalMovement) > abs(horizontalMovement) {
+            direction = verticalMovement > 0 ? .down : .up
+        } else {
+            direction = horizontalMovement > 0 ? .right : .left
+        }
+        
+        // Check if it's been more than 2 seconds since last swipe (reset sequence)
+        if Date().timeIntervalSince(lastSwipeTime) > 2 {
+            swipeSequence = []
+        }
+        
+        // Add to sequence
+        swipeSequence.append(direction)
+        lastSwipeTime = Date()
+        
+        // Check for the Konami code: down, down, up
+        if swipeSequence.count >= 3 {
+            let recentSwipes = Array(swipeSequence.suffix(3))
+            if recentSwipes == [.down, .down, .up] {
+                // Activate dev section with haptic feedback
+                showDevSection = true
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                swipeSequence = [] // Reset sequence
+            }
+        }
+        
+        // Keep only last 10 swipes to prevent memory issues
+        if swipeSequence.count > 10 {
+            swipeSequence = Array(swipeSequence.suffix(10))
+        }
+    }
     
     private func handleMaxNotificationCardsChange() {
         // Simplified version without card selection dialog
@@ -416,6 +560,142 @@ struct MeView: View {
         case "hi-IN": return "हिन्दी"
         case "id-ID": return "Bahasa Indonesia"
         default: return code
+        }
+    }
+    
+    // MARK: - Dev Section Functions
+    
+    private func clearICloudData() {
+        Task {
+            let container = CKContainer(identifier: "iCloud.xiaolai.Echo")
+            let privateDB = container.privateCloudDatabase
+            
+            // Record types to delete
+            let recordTypes = ["CD_SelftalkScript", "CD_Tag"]
+            
+            var totalDeleted = 0
+            var errors: [String] = []
+            
+            for recordType in recordTypes {
+                let query = CKQuery(recordType: recordType, predicate: NSPredicate(value: true))
+                
+                do {
+                    let records = try await privateDB.records(matching: query)
+                    let recordIds = records.matchResults.compactMap { _, result in
+                        try? result.get().recordID
+                    }
+                    
+                    for recordId in recordIds {
+                        do {
+                            try await privateDB.deleteRecord(withID: recordId)
+                            totalDeleted += 1
+                        } catch {
+                            errors.append(error.localizedDescription)
+                        }
+                    }
+                } catch {
+                    errors.append("\(recordType): \(error.localizedDescription)")
+                }
+            }
+            
+            await MainActor.run {
+                if errors.isEmpty {
+                    devActionMessage = "Successfully deleted \(totalDeleted) records from iCloud."
+                } else {
+                    devActionMessage = "Deleted \(totalDeleted) records. Errors: \(errors.prefix(3).joined(separator: ", "))"
+                }
+                showingDevActionResult = true
+            }
+        }
+    }
+    
+    private func clearAllLocalData() {
+        // First, fetch all scripts to delete audio files
+        let scriptRequest: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
+        
+        do {
+            let scripts = try viewContext.fetch(scriptRequest)
+            
+            // Delete all audio files
+            for script in scripts {
+                if let audioPath = script.audioFilePath {
+                    let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                        .appendingPathComponent("Recordings")
+                        .appendingPathComponent(audioPath)
+                    try? FileManager.default.removeItem(at: fileURL)
+                }
+                viewContext.delete(script)
+            }
+            
+            // Delete all tags
+            let tagRequest: NSFetchRequest<Tag> = Tag.fetchRequest()
+            let tags = try viewContext.fetch(tagRequest)
+            for tag in tags {
+                viewContext.delete(tag)
+            }
+            
+            // Save context
+            try viewContext.save()
+            
+            // Clear all UserDefaults
+            if let bundleId = Bundle.main.bundleIdentifier {
+                UserDefaults.standard.removePersistentDomain(forName: bundleId)
+                UserDefaults.standard.synchronize()
+            }
+            
+            devActionMessage = "Successfully deleted \(scripts.count) scripts and \(tags.count) tags."
+            showingDevActionResult = true
+            
+        } catch {
+            devActionMessage = "Failed to clear data: \(error.localizedDescription)"
+            showingDevActionResult = true
+        }
+    }
+    
+    private func removeDuplicates() {
+        // Remove duplicate tags
+        Tag.cleanupDuplicateTags(in: viewContext)
+        var tagCount = 0 // We'll update this if the method returns a count
+        
+        // Remove duplicate scripts (same content)
+        let scriptRequest: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
+        scriptRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
+        
+        var scriptCount = 0
+        do {
+            let allScripts = try viewContext.fetch(scriptRequest)
+            var scriptsByContent: [String: [SelftalkScript]] = [:]
+            
+            for script in allScripts {
+                let key = script.scriptText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                scriptsByContent[key, default: []].append(script)
+            }
+            
+            for (_, scripts) in scriptsByContent where scripts.count > 1 {
+                // Keep the first (oldest) script
+                for duplicateScript in scripts.dropFirst() {
+                    // Delete audio file if exists
+                    if let audioPath = duplicateScript.audioFilePath {
+                        let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                            .appendingPathComponent("Recordings")
+                            .appendingPathComponent(audioPath)
+                        try? FileManager.default.removeItem(at: fileURL)
+                    }
+                    viewContext.delete(duplicateScript)
+                    scriptCount += 1
+                }
+            }
+            
+            if scriptCount > 0 {
+                try viewContext.save()
+            }
+            
+            devActionMessage = "Removed \(tagCount) duplicate tags and \(scriptCount) duplicate scripts."
+            showingDevActionResult = true
+            
+        } catch {
+            devActionMessage = "Error: \(error.localizedDescription)"
+            showingDevActionResult = true
         }
     }
 }
