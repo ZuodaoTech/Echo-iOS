@@ -516,7 +516,10 @@ final class AudioProcessingService {
         }
         
         // Capitalize first letter for western languages
-        if languageCode == nil || (!languageCode!.hasPrefix("zh") && !languageCode!.hasPrefix("ja") && !languageCode!.hasPrefix("ko")) {
+        let isAsianLanguage = languageCode?.hasPrefix("zh") ?? false || 
+                              languageCode?.hasPrefix("ja") ?? false || 
+                              languageCode?.hasPrefix("ko") ?? false
+        if languageCode == nil || !isAsianLanguage {
             if let firstChar = result.first, firstChar.isLowercase {
                 result = result.prefix(1).uppercased() + result.dropFirst()
             }
