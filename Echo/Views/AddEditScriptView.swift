@@ -945,12 +945,23 @@ struct RecordingButton: View {
             .buttonStyle(PlainButtonStyle())
             
             if isRecording {
+                let duration = Int(AudioCoordinator.shared.recordingDuration)
+                let remainingTime = max(0, 60 - duration)
+                
                 VStack(spacing: 8) {
                     HStack {
                         Image(systemName: "dot.radiowaves.left.and.right")
                             .foregroundColor(.red)
                         Text(voiceActivityLevel > 0.1 ? NSLocalizedString("recording.speaking", comment: "") : NSLocalizedString("recording.listening", comment: ""))
                             .foregroundColor(.secondary)
+                        
+                        Spacer()
+                        
+                        // Duration display with warning color
+                        Text("\(duration)s / 60s")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(remainingTime <= 10 ? .orange : (remainingTime <= 5 ? .red : .secondary))
                     }
                     
                     // Voice activity indicator
@@ -967,6 +978,17 @@ struct RecordingButton: View {
                     }
                     .frame(height: 4)
                     .padding(.horizontal)
+                    
+                    // Warning message when approaching limit
+                    if remainingTime <= 10 && remainingTime > 0 {
+                        Text(String(format: NSLocalizedString("recording.time_warning", comment: ""), remainingTime))
+                            .font(.caption)
+                            .foregroundColor(.orange)
+                    } else if remainingTime == 0 {
+                        Text(NSLocalizedString("recording.max_duration_reached", comment: ""))
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    }
                 }
             } else if isProcessing {
                 HStack {
