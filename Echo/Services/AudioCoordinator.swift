@@ -49,9 +49,11 @@ final class AudioCoordinator: ObservableObject {
     // MARK: - Initialization
     
     private init() {
-        // Initialize services
+        // Initialize only essential services
         self.fileManager = AudioFileManager()
         self.sessionManager = AudioSessionManager()
+        
+        // Lazy initialize recording and playback services
         self.recordingService = RecordingService(
             fileManager: fileManager,
             sessionManager: sessionManager
@@ -64,8 +66,12 @@ final class AudioCoordinator: ObservableObject {
             fileManager: fileManager
         )
         
-        // Bind published properties
-        bindPublishedProperties()
+        // Defer property binding to first use
+        Task {
+            await MainActor.run {
+                self.bindPublishedProperties()
+            }
+        }
     }
     
     // MARK: - Recording Methods

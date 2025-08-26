@@ -25,6 +25,18 @@ struct ContentView: View {
                 }
                 .tag(1)
         }
+        .onAppear {
+            // Track when UI is ready
+            AppLaunchOptimizer.LaunchMetrics.uiReady = Date()
+            
+            #if DEBUG
+            // Print launch performance report in debug
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                AppLaunchOptimizer.LaunchMetrics.fullyLoaded = Date()
+                AppLaunchOptimizer.LaunchMetrics.printReport()
+            }
+            #endif
+        }
     }
 }
 

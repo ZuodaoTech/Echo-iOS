@@ -12,6 +12,9 @@ import Combine
 class PersistenceController: ObservableObject {
     static let shared = PersistenceController()
     
+    // Track if Core Data is ready
+    @Published var isReady = false
+    
     @MainActor
     static let preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
@@ -116,7 +119,15 @@ class PersistenceController: ObservableObject {
             }
         }
         
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+        // Load stores asynchronously to not block app launch
+        Task {
+            await loadStores(inMemory: inMemory, iCloudEnabled: UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? true)
+        }
+    }
+    
+    private func loadStores(inMemory: Bool, iCloudEnabled: Bool) async {
+        await withCheckedContinuation { continuation in
+            container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 print("Core Data error: \(error), \(error.userInfo)")
                 
@@ -157,33 +168,38 @@ class PersistenceController: ObservableObject {
                 print("Store URL: \(storeDescription.url?.absoluteString ?? "nil")")
                 print("CloudKit enabled: \(storeDescription.cloudKitContainerOptions != nil)")
             }
+            
+            // Mark as ready and continue
+            DispatchQueue.main.async {
+                self.isReady = true
+                // Track Core Data ready time
+                AppLaunchOptimizer.LaunchMetrics.coreDataReady = Date()
+            }
+            continuation.resume()
         })
+        }
         
         container.viewContext.automaticallyMergesChangesFromParent = true
         
-        // Create the special "Now" tag if it doesn't exist
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            guard let self = self else { return }
+        // Create the special "Now" tag after stores are loaded
+        Task { @MainActor in
+            // Wait for stores to be ready
+            while !isReady {
+                try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 second
+            }
             _ = Tag.createOrGetNowTag(context: self.container.viewContext)
-        }
-        
-        // Set up CloudKit schema initialization only if CloudKit is enabled and in DEBUG
-        #if DEBUG
-        let cloudKitEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? true
-        if cloudKitEnabled {
-            // Delay schema initialization to ensure stores are loaded
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            
+            // Set up CloudKit schema initialization only if CloudKit is enabled and in DEBUG
+            #if DEBUG
+            if iCloudEnabled && !self.container.persistentStoreCoordinator.persistentStores.isEmpty {
                 do {
-                    // Only initialize if we have persistent stores
-                    if !self.container.persistentStoreCoordinator.persistentStores.isEmpty {
-                        try self.container.initializeCloudKitSchema()
-                        print("CloudKit schema initialized successfully")
-                    }
+                    try self.container.initializeCloudKitSchema()
+                    print("CloudKit schema initialized successfully")
                 } catch {
                     print("CloudKit schema initialization error: \(error)")
                 }
             }
+            #endif
         }
-        #endif
     }
 }
