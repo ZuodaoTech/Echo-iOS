@@ -152,7 +152,12 @@ final class PlaybackService: NSObject, ObservableObject {
             currentScriptRepetitions = repetitions
             currentScriptIntervalSeconds = intervalSeconds
             
-            // Initialize playback state
+            // Cancel any previous session operations before starting new one
+            if playbackSessionID != nil {
+                stopPlayback()
+            }
+            
+            // Initialize new playback session
             playbackSessionID = UUID()
             pausedTime = 0
             
@@ -268,28 +273,45 @@ final class PlaybackService: NSObject, ObservableObject {
         // Transition to transitioning, then idle
         sessionManager.transitionTo(.transitioning)
         
+        // Invalidate current session to cancel all orphaned operations
+        let oldSessionID = playbackSessionID
+        playbackSessionID = nil  // Immediately invalidate to prevent any pending operations
+        
+        // Stop audio player
         audioPlayer?.stop()
         audioPlayer = nil
         
+        // Reset all state
         pausedTime = 0
         intervalPausedTime = 0
-        playbackSessionID = nil
         isHandlingCompletion = false
+        intervalStartTime = nil
         
+        // Cancel all timers and work items
         completionTimer?.invalidate()
         completionTimer = nil
         
-        nextRepetitionWorkItem?.cancel()
-        nextRepetitionWorkItem = nil
+        progressTimer?.invalidate()
+        progressTimer = nil
         
-        stopIntervalTimer()
-        stopProgressTimer()
+        intervalTimer?.invalidate()
+        intervalTimer = nil
+        
+        // Cancel any pending repetition work
+        if let workItem = nextRepetitionWorkItem {
+            workItem.cancel()
+            nextRepetitionWorkItem = nil
+        }
         
         // Transition to idle after cleanup
         sessionManager.transitionTo(.idle)
         
+        // Update UI state on main thread
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
+            // Double-check session wasn't restarted
+            if self.playbackSessionID != nil && self.playbackSessionID != oldSessionID { return }
+            
             self.currentRepetition = 0
             self.totalRepetitions = 0
             self.isPlaying = false
@@ -297,6 +319,8 @@ final class PlaybackService: NSObject, ObservableObject {
             self.isInPlaybackSession = false
             self.currentPlayingScriptId = nil
             self.playbackProgress = 0
+            self.isInInterval = false
+            self.intervalProgress = 0
         }
     }
     
@@ -314,9 +338,18 @@ final class PlaybackService: NSObject, ObservableObject {
     
     private func startProgressTimer() {
         stopProgressTimer()
+        
+        // Capture session ID before timer creation
+        let sessionID = playbackSessionID
+        
         progressTimer = Timer.scheduledTimer(withTimeInterval: Constants.progressUpdateInterval, repeats: true) { [weak self] _ in
-            guard let self = self, let player = self.audioPlayer else { return }
-            DispatchQueue.main.async {
+            guard let self = self,
+                  let player = self.audioPlayer,
+                  self.playbackSessionID == sessionID else { return }
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self,
+                      self.playbackSessionID == sessionID else { return }
                 self.playbackProgress = player.currentTime / player.duration
             }
         }
@@ -335,12 +368,17 @@ final class PlaybackService: NSObject, ObservableObject {
             intervalStartTime = Date()
         }
         
+        // Capture session ID before async operation
+        let sessionID = playbackSessionID
+        
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
+            guard let self = self,
+                  self.playbackSessionID == sessionID else { return }
             
             self.intervalTimer = Timer.scheduledTimer(withTimeInterval: Constants.intervalTimerUpdateInterval, repeats: true) { [weak self] timer in
                 guard let self = self,
-                      let startTime = self.intervalStartTime else {
+                      let startTime = self.intervalStartTime,
+                      self.playbackSessionID == sessionID else {
                     timer.invalidate()
                     return
                 }
@@ -348,7 +386,9 @@ final class PlaybackService: NSObject, ObservableObject {
                 let elapsed = Date().timeIntervalSince(startTime)
                 let progress = min(elapsed / duration, 1.0)
                 
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self,
+                          self.playbackSessionID == sessionID else { return }
                     self.intervalProgress = max(1.0 - progress, 0.0)
                 }
                 
@@ -397,6 +437,10 @@ final class PlaybackService: NSObject, ObservableObject {
         guard !isHandlingCompletion else { return }
         isHandlingCompletion = true
         
+        // Capture session ID for validation
+        let sessionID = playbackSessionID
+        guard sessionID != nil else { return }
+        
         completionTimer?.invalidate()
         completionTimer = nil
         
@@ -404,7 +448,8 @@ final class PlaybackService: NSObject, ObservableObject {
             stopProgressTimer()
             
             DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
+                guard let self = self,
+                      self.playbackSessionID == sessionID else { return }
                 self.currentRepetition += 1
                 self.playbackProgress = 0
                 self.isInInterval = true
@@ -415,7 +460,9 @@ final class PlaybackService: NSObject, ObservableObject {
             
             nextRepetitionWorkItem?.cancel()
             let workItem = DispatchWorkItem { [weak self] in
-                guard let self = self, !self.isPaused else { return }
+                guard let self = self,
+                      !self.isPaused,
+                      self.playbackSessionID == sessionID else { return }
                 self.playNextRepetition()
             }
             nextRepetitionWorkItem = workItem
@@ -427,11 +474,16 @@ final class PlaybackService: NSObject, ObservableObject {
     }
     
     private func playNextRepetition() {
+        // Validate session before proceeding
+        let sessionID = playbackSessionID
+        guard sessionID != nil else { return }
+        
         stopIntervalTimer()
         intervalPausedTime = 0
         isHandlingCompletion = false
         
-        guard let player = audioPlayer else {
+        guard let player = audioPlayer,
+              playbackSessionID == sessionID else {
             stopPlayback()
             return
         }
@@ -440,7 +492,9 @@ final class PlaybackService: NSObject, ObservableObject {
         player.prepareToPlay()
         
         if player.play() {
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self,
+                      self.playbackSessionID == sessionID else { return }
                 self.isPlaying = true
                 self.isPaused = false
                 self.isInInterval = false
@@ -453,7 +507,13 @@ final class PlaybackService: NSObject, ObservableObject {
     }
     
     private func resumeInterval() {
-        DispatchQueue.main.async {
+        // Capture session ID for validation
+        let sessionID = playbackSessionID
+        guard sessionID != nil else { return }
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self,
+                  self.playbackSessionID == sessionID else { return }
             self.isPaused = false
         }
         
@@ -464,7 +524,9 @@ final class PlaybackService: NSObject, ObservableObject {
         
         nextRepetitionWorkItem?.cancel()
         let workItem = DispatchWorkItem { [weak self] in
-            guard let self = self, !self.isPaused else { return }
+            guard let self = self,
+                  !self.isPaused,
+                  self.playbackSessionID == sessionID else { return }
             self.playNextRepetition()
         }
         nextRepetitionWorkItem = workItem
@@ -477,7 +539,12 @@ final class PlaybackService: NSObject, ObservableObject {
 
 extension PlaybackService: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        guard playbackSessionID != nil else { return }
+        // Capture and validate session ID
+        let sessionID = playbackSessionID
+        guard sessionID != nil else { return }
+        
+        // Only handle completion if session is still valid
+        guard playbackSessionID == sessionID else { return }
         
         completionTimer?.invalidate()
         completionTimer = nil
