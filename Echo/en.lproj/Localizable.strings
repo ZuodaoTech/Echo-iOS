@@ -236,3 +236,26 @@
 "settings.sync" = "Sync";
 "settings.backup" = "Backup";
 "script.label" = "Script";
+
+// MARK: - Consolidated Me Page Settings
+"settings.language" = "Language";
+"settings.default_language" = "Transcription Language";
+"settings.card_preferences" = "Card Preferences";
+"settings.character_limit" = "Character Limit";
+"settings.limit_behavior" = "Over Limit Behavior";
+"settings.limit_behavior.warn" = "Warn";
+"settings.limit_behavior.strict" = "Strict";
+"settings.notifications" = "Notifications";
+"settings.max_notification_cards" = "Max Notification Cards";
+"settings.notification_cards_count" = "%d cards have notifications enabled";
+"settings.notification_cards.footer" = "Limit how many cards can send notifications simultaneously";
+"settings.tags" = "Tags";
+"settings.max_now_cards" = "Max 'Now' Cards";
+"settings.auto_cleanup_tags" = "Auto-cleanup Unused Tags";
+"settings.tags.footer" = "Control how tags are managed in your collection";
+"settings.version" = "Version";
+"settings.rate_github" = "Rate on GitHub";
+"settings.contact_support" = "Contact Support";
+"settings.notification_selection.message" = "Select up to %d cards to keep notifications enabled";
+"settings.notification_selection.count" = "%d of %d cards selected";
+"settings.select_notification_cards" = "Select Notification Cards";
