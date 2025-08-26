@@ -18,7 +18,6 @@ extension Tag {
     @NSManaged public var color: String?
     @NSManaged public var createdAt: Date
     @NSManaged public var scripts: NSSet?
-    @NSManaged public var isSpecial: Bool  // For special tags like "Now"
     @NSManaged public var sortOrder: Int16  // For custom sorting
 }
 
@@ -43,12 +42,11 @@ extension Tag {
         return scripts?.count ?? 0
     }
     
-    static func create(name: String, color: String? = nil, isSpecial: Bool = false, sortOrder: Int16 = 999, in context: NSManagedObjectContext) -> Tag {
+    static func create(name: String, color: String? = nil, sortOrder: Int16 = 999, in context: NSManagedObjectContext) -> Tag {
         let tag = Tag(context: context)
         tag.id = UUID()
         tag.name = name
         tag.color = color
-        tag.isSpecial = isSpecial
         tag.sortOrder = sortOrder
         tag.createdAt = Date()
         return tag
@@ -87,50 +85,6 @@ extension Tag {
         return create(name: trimmedName, in: context)
     }
     
-    // MARK: - Special "Now" Tag
-    static func createOrGetNowTag(context: NSManagedObjectContext) -> Tag {
-        let request: NSFetchRequest<Tag> = Tag.fetchRequest()
-        let nowTagName = NSLocalizedString("tag.now", comment: "")
-        request.predicate = NSPredicate(format: "name == %@ OR isSpecial == YES", nowTagName)
-        request.fetchLimit = 1
-        
-        if let existingTag = try? context.fetch(request).first {
-            // Update name if localization changed
-            if existingTag.name != nowTagName {
-                existingTag.name = nowTagName
-            }
-            return existingTag
-        }
-        
-        // Create the special "Now" tag
-        let nowTag = Tag.create(
-            name: nowTagName,
-            color: "#FFD700",  // Gold color
-            isSpecial: true,
-            sortOrder: 0,  // Always first
-            in: context
-        )
-        
-        do {
-            try context.save()
-        } catch {
-            print("Failed to create Now tag: \(error)")
-        }
-        
-        return nowTag
-    }
-    
-    static func getNowTag(context: NSManagedObjectContext) -> Tag? {
-        let request: NSFetchRequest<Tag> = Tag.fetchRequest()
-        request.predicate = NSPredicate(format: "isSpecial == YES")
-        request.fetchLimit = 1
-        return try? context.fetch(request).first
-    }
-    
-    var isNowTag: Bool {
-        return isSpecial
-    }
-    
     // MARK: - Duplicate Cleanup
     static func cleanupDuplicateTags(in context: NSManagedObjectContext) {
         let request: NSFetchRequest<Tag> = Tag.fetchRequest()
@@ -145,9 +99,6 @@ extension Tag {
         var tagsByNormalizedName: [String: [Tag]] = [:]
         
         for tag in allTags {
-            // Skip special tags (like "Now")
-            if tag.isSpecial { continue }
-            
             let normalized = tag.name
                 .trimmingCharacters(in: .whitespacesAndNewlines)
                 .lowercased()

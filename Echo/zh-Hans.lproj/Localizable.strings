@@ -13,15 +13,11 @@
 
 
 // MARK: - Tags
-"tag.now" = "现在";
 "tag.untagged" = "无标签";
 "tag.edit" = "编辑标签";
 "tag.delete.confirm.title" = "删除标签";
 "tag.delete.confirm.message" = "此标签被%d个脚本使用。删除它将从这些脚本中移除该标签。";
 "tag.delete.confirm.empty" = "此标签未被任何脚本使用。确定要删除吗？";
-"tag.max_now_cards" = "最大'现在'卡片数";
-"tag.now_limit_reached" = "现在标签限制";
-"tag.now_limit_message" = "您已达到'现在'卡片的最大数量（%d）。请选择一个卡片来移除'现在'标签：";
 "tag.auto_cleanup" = "自动清理未使用的标签";
 "tag.select" = "选择标签";
 "tag.new" = "新建标签";
@@ -252,7 +248,6 @@
 "settings.notification_cards_count" = "%d 张卡片已启用通知";
 "settings.notification_cards.footer" = "限制同时发送通知的卡片数量";
 "settings.tags" = "标签";
-"settings.max_now_cards" = "最大「现在」卡片数";
 "settings.auto_cleanup_tags" = "自动清理未使用标签";
 "settings.tags.footer" = "控制标签管理方式";
 "settings.version" = "版本";

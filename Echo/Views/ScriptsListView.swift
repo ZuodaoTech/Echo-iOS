@@ -120,12 +120,7 @@ struct ScriptsListView: View {
         guard !hasSetInitialFilter else { return }
         hasSetInitialFilter = true
         
-        if isFirstLaunch {
-            // First launch - set "Now" tag as default filter
-            if let nowTag = Tag.getNowTag(context: viewContext) {
-                selectedTags.insert(nowTag)
-            }
-        } else {
+        if !isFirstLaunch {
             // Not first launch - restore last filter if saved
             if let savedTagIds = UserDefaults.standard.array(forKey: "lastSelectedTagIds") as? [String] {
                 let tagIds = savedTagIds.compactMap { UUID(uuidString: $0) }
@@ -133,6 +128,7 @@ struct ScriptsListView: View {
                 selectedTags = Set(matchingTags)
             }
         }
+        // First launch - default to All (empty set)
     }
     
     private func setupInitialData() {
@@ -149,9 +145,6 @@ struct ScriptsListView: View {
     
     private func createSampleScripts() {
         do {
-            // Get or create the "Now" tag
-            let nowTag = Tag.createOrGetNowTag(context: viewContext)
-            
             // Create tags for the sample scripts using localized names
             // Use findOrCreateNormalized to avoid duplicates
             let breakingBadHabitsTag = Tag.findOrCreateNormalized(
@@ -169,34 +162,31 @@ struct ScriptsListView: View {
                 in: viewContext
             )
             
-            // Sample 1: Breaking Bad Habits (with Now tag)
+            // Sample 1: Breaking Bad Habits
             let script1 = SelftalkScript.create(
                 scriptText: NSLocalizedString("sample.smoking", comment: ""),
                 repetitions: 3,
                 privateMode: true,
                 in: viewContext
             )
-            script1.addToTags(nowTag)
             script1.addToTags(breakingBadHabitsTag)
             
-            // Sample 2: Building Good Habits (with Now tag)
+            // Sample 2: Building Good Habits
             let script2 = SelftalkScript.create(
                 scriptText: NSLocalizedString("sample.bedtime", comment: ""),
                 repetitions: 3,
                 privateMode: true,
                 in: viewContext
             )
-            script2.addToTags(nowTag)
             script2.addToTags(buildingGoodHabitsTag)
             
-            // Sample 3: Appropriate Positivity (with Now tag)
+            // Sample 3: Appropriate Positivity
             let script3 = SelftalkScript.create(
                 scriptText: NSLocalizedString("sample.mistakes", comment: ""),
                 repetitions: 3,
                 privateMode: true,
                 in: viewContext
             )
-            script3.addToTags(nowTag)
             script3.addToTags(appropriatePositivityTag)
             
             try viewContext.save()

@@ -79,29 +79,20 @@ struct ScriptCard: View {
                         .foregroundColor(.gray)
                         .cornerRadius(10)
                 } else {
-                    // Filter out "Now" tag if there are other tags
-                    let tagsToDisplay = script.tagsArray.filter { tag in
-                        // If there are other tags besides "Now", hide "Now"
-                        if tag.isNowTag && script.tagsArray.count > 1 {
-                            return false
-                        }
-                        return true
-                    }
-                    
                     HStack(spacing: 6) {
-                        ForEach(tagsToDisplay.prefix(2), id: \.id) { tag in
+                        ForEach(script.tagsArray.prefix(2), id: \.id) { tag in
                             Text(tag.name)
                                 .font(.caption)
                                 .fontWeight(.medium)
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 3)
-                                .background(tag.isNowTag ? Color.yellow.opacity(0.25) : cardAccentColor.opacity(0.15))
-                                .foregroundColor(tag.isNowTag ? Color.orange : cardAccentColor)
+                                .background(cardAccentColor.opacity(0.15))
+                                .foregroundColor(cardAccentColor)
                                 .cornerRadius(10)
                         }
                         
-                        if tagsToDisplay.count > 2 {
-                            Text("+\(tagsToDisplay.count - 2)")
+                        if script.tagsArray.count > 2 {
+                            Text("+\(script.tagsArray.count - 2)")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
