@@ -71,13 +71,7 @@ struct ScriptsListView: View {
                     Button {
                         showingFilterSheet = true
                     } label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: "line.3.horizontal.decrease.circle")
-                            if !selectedTags.isEmpty {
-                                Text("\(selectedTags.count) tags")
-                                    .font(.caption)
-                            }
-                        }
+                        Image(systemName: "line.3.horizontal.decrease.circle")
                     }
                 }
                 
@@ -369,7 +363,7 @@ struct TagFilterSheet: View {
                         }
                     }
                     
-                    Section("Tags") {
+                    Section(NSLocalizedString("filter.tags_section", comment: "")) {
                         ForEach(allTags, id: \.id) { tag in
                             Button {
                                 if selectedTags.contains(tag) {
@@ -394,7 +388,7 @@ struct TagFilterSheet: View {
                     }
                 }
             }
-            .navigationTitle("Filter by Tags")
+            .navigationTitle(NSLocalizedString("filter.title", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {

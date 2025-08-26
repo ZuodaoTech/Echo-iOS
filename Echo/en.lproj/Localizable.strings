@@ -222,7 +222,9 @@
 "empty.tap_to_create" = "Tap the + button to create your first self-talk card";
 
 // MARK: - Filter
+"filter.title" = "Filter by Tags";
 "filter.all_cards" = "All Cards";
+"filter.tags_section" = "Tags";
 
 // MARK: - Picker Labels
 "picker.sensitivity" = "Sensitivity";

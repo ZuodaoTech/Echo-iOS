@@ -258,7 +258,7 @@ struct MeView: View {
                     
                     // GitHub
                     Button {
-                        if let url = URL(string: "https://github.com/xiaolai/Echo-iOS") {
+                        if let url = URL(string: "https://github.com/ZuodaoTech/Echo-iOS") {
                             UIApplication.shared.open(url)
                         }
                     } label: {
@@ -278,7 +278,7 @@ struct MeView: View {
                     
                     // Contact Support
                     Button {
-                        if let url = URL(string: "mailto:support@echo.app") {
+                        if let url = URL(string: "mailto:support@echopro.app") {
                             UIApplication.shared.open(url)
                         }
                     } label: {
