@@ -8,7 +8,7 @@ struct MeView: View {
     @AppStorage("defaultTranscriptionLanguage") private var defaultTranscriptionLanguage = "en-US"
     
     // Card Defaults
-    @AppStorage("privateModeDefault") private var privateModeDefault = true
+    @AppStorage("privateModeDefault") private var privateModeDefault = false
     @AppStorage("defaultRepetitions") private var defaultRepetitions = 3
     @AppStorage("defaultInterval") private var defaultInterval = 2.0
     
@@ -23,10 +23,10 @@ struct MeView: View {
     
     // Tag Settings
     @AppStorage("maxNowCards") private var maxNowCards = 3
-    @AppStorage("autoCleanupUnusedTags") private var autoCleanupUnusedTags = false
+    @AppStorage("autoCleanupUnusedTags") private var autoCleanupUnusedTags = true
     
     // Sync Settings
-    @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = false
+    @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = true
     
     // State for pickers
     @State private var showingUILanguagePicker = false

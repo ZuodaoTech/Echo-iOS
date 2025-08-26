@@ -6,7 +6,7 @@ struct CardSettingsView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     // Default Settings
-    @AppStorage("privateModeDefault") private var privateModeDefault = true
+    @AppStorage("privateModeDefault") private var privateModeDefault = false
     @AppStorage("defaultRepetitions") private var defaultRepetitions = 3
     @AppStorage("defaultInterval") private var defaultInterval = 2.0
     
@@ -21,7 +21,7 @@ struct CardSettingsView: View {
     
     // Tag Settings
     @AppStorage("maxNowCards") private var maxNowCards = 3
-    @AppStorage("autoCleanupUnusedTags") private var autoCleanupUnusedTags = false
+    @AppStorage("autoCleanupUnusedTags") private var autoCleanupUnusedTags = true
     
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \SelftalkScript.createdAt, ascending: false)],
