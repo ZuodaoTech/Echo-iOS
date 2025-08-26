@@ -593,9 +593,9 @@ final class AudioProcessingService {
             // This matches the original recording format
             let outputSettings: [String: Any] = [
                 AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-                AVSampleRateKey: 44100,
+                AVSampleRateKey: 48000,  // Match recording sample rate
                 AVNumberOfChannelsKey: 1,
-                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+                AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue  // Maximum quality
             ]
             
             // Create output file with AAC format
