@@ -1,3 +1,25 @@
+analyze code base, find out all possible bugs that are needed human attention. provide a list, have me check one by one.
+
+try harder... not only identify potential threats, but also provide details (inlcuding files, lines, or whatever), and possible solutions.
+
+\> Ready to start with Step 1 (fixing the critical crashes)?
+
+Consider another aspect: I'm no coder, I go a very long way to here with aid of Claude-Code, wihtouth writing any line   of code... Therefore, you have to talk to me with another perspective... Please try harder.
+
+\>Ready to start? Just copy this command and paste it to me: "Please fix the 3 critical crash bugs from FixAll.md Phase 1. These are the force unwrapping issues."
+
+NO, even if I didn't write any code... 1) I know something about engineering; 2) I'd like you treat me as a designer or an engineeor, rather than a mere coder.
+
+could you please not use "days" to make schedule, just provide a step by step guide, since I can work day in and day out.
+
+Provide a list of promts that are designed with your best practice, to help me fix these issues one by one.
+
+save to ./Prompts/ as a markdown file.
+
+
+
+
+
 # Echo iOS - Bug Fix Prompts Collection
 
 ## How to Use These Prompts
