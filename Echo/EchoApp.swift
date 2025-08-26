@@ -64,7 +64,18 @@ struct EchoApp: App {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                    // Refresh permission states when app becomes active
+                    refreshPermissionStates()
+                }
         }
+    }
+    
+    private func refreshPermissionStates() {
+        // Refresh notification permissions
+        NotificationManager.shared.refreshPermissionState()
+        // AudioSessionManager permissions are refreshed via AudioCoordinator
+        // which checks permissions on each recording attempt
     }
     
     private static func configureAudioSessionAsync() async {
