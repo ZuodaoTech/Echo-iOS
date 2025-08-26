@@ -51,8 +51,11 @@ struct MeView: View {
                         showingUILanguagePicker = true
                     } label: {
                         HStack {
-                            Label(NSLocalizedString("settings.display_language", comment: ""), systemImage: "globe")
+                            Image(systemName: "globe")
+                                .font(.system(size: 20))
                                 .foregroundColor(.primary)
+                                .frame(width: 25)
+                            Text(NSLocalizedString("settings.display_language", comment: ""))
                             Spacer()
                             Text(uiLanguageDisplayName(for: appLanguage))
                                 .foregroundColor(.secondary)
@@ -68,8 +71,11 @@ struct MeView: View {
                         showingTranscriptionLanguagePicker = true
                     } label: {
                         HStack {
-                            Label(NSLocalizedString("settings.default_language", comment: ""), systemImage: "mic.badge.plus")
+                            Image(systemName: "mic.badge.plus")
+                                .font(.system(size: 20))
                                 .foregroundColor(.primary)
+                                .frame(width: 25)
+                            Text(NSLocalizedString("settings.default_language", comment: ""))
                             Spacer()
                             Text(transcriptionLanguageDisplayName(for: defaultTranscriptionLanguage))
                                 .foregroundColor(.secondary)
@@ -89,7 +95,11 @@ struct MeView: View {
                     // Private Mode
                     Toggle(isOn: $privateModeDefault) {
                         HStack {
-                            Label(NSLocalizedString("settings.private_mode.title", comment: ""), systemImage: "lock.shield")
+                            Image(systemName: "lock.shield")
+                                .font(.system(size: 20))
+                                .foregroundColor(.primary)
+                                .frame(width: 25)
+                            Text(NSLocalizedString("settings.private_mode.title", comment: ""))
                             Button {
                                 showingPrivateModeInfo = true
                             } label: {
@@ -103,7 +113,11 @@ struct MeView: View {
                     
                     // Repetitions
                     HStack {
-                        Label(NSLocalizedString("script.repetitions", comment: ""), systemImage: "repeat")
+                        Image(systemName: "repeat")
+                            .font(.system(size: 20))
+                            .foregroundColor(.primary)
+                            .frame(width: 25)
+                        Text(NSLocalizedString("script.repetitions", comment: ""))
                         Spacer()
                         Text("\(defaultRepetitions)")
                             .foregroundColor(.secondary)
@@ -113,7 +127,11 @@ struct MeView: View {
                     
                     // Interval
                     HStack {
-                        Label(NSLocalizedString("script.interval", comment: ""), systemImage: "timer")
+                        Image(systemName: "timer")
+                            .font(.system(size: 20))
+                            .foregroundColor(.primary)
+                            .frame(width: 25)
+                        Text(NSLocalizedString("script.interval", comment: ""))
                         Spacer()
                         Text(String(format: "%.1fs", defaultInterval))
                             .foregroundColor(.secondary)
@@ -129,13 +147,20 @@ struct MeView: View {
                 Section {
                     // Character Limit
                     Toggle(isOn: $characterGuidanceEnabled) {
-                        Label(NSLocalizedString("settings.character_guidance", comment: ""), systemImage: "character.cursor.ibeam")
+                        HStack {
+                            Image(systemName: "character.cursor.ibeam")
+                                .font(.system(size: 20))
+                                .foregroundColor(.primary)
+                                .frame(width: 25)
+                            Text(NSLocalizedString("settings.character_guidance", comment: ""))
+                                .foregroundColor(.primary)
+                        }
                     }
                     
                     if characterGuidanceEnabled {
                         HStack {
                             Text(NSLocalizedString("settings.character_limit", comment: ""))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(.primary)
                             Spacer()
                             Picker("", selection: $characterLimit) {
                                 Text("70").tag(70)
@@ -148,7 +173,7 @@ struct MeView: View {
                         
                         HStack {
                             Text(NSLocalizedString("settings.limit_behavior", comment: ""))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(.primary)
                             Spacer()
                             Picker("", selection: $limitBehavior) {
                                 Text(NSLocalizedString("settings.limit_behavior.warn", comment: "")).tag("warn")
@@ -165,7 +190,11 @@ struct MeView: View {
                 // MARK: - Notification Section
                 Section {
                     HStack {
-                        Label(NSLocalizedString("settings.max_notification_cards", comment: ""), systemImage: "bell.badge")
+                        Image(systemName: "bell.badge")
+                            .font(.system(size: 20))
+                            .foregroundColor(.primary)
+                            .frame(width: 25)
+                        Text(NSLocalizedString("settings.max_notification_cards", comment: ""))
                         Spacer()
                         Text("\(maxNotificationCards)")
                             .foregroundColor(.secondary)
@@ -192,7 +221,11 @@ struct MeView: View {
                 // MARK: - Tag Settings Section
                 Section {
                     HStack {
-                        Label(NSLocalizedString("settings.max_now_cards", comment: ""), systemImage: "tag.fill")
+                        Image(systemName: "tag.fill")
+                            .font(.system(size: 20))
+                            .foregroundColor(.primary)
+                            .frame(width: 25)
+                        Text(NSLocalizedString("settings.max_now_cards", comment: ""))
                         Spacer()
                         Text("\(maxNowCards)")
                             .foregroundColor(.secondary)
@@ -201,7 +234,14 @@ struct MeView: View {
                     }
                     
                     Toggle(isOn: $autoCleanupUnusedTags) {
-                        Label(NSLocalizedString("settings.auto_cleanup_tags", comment: ""), systemImage: "trash.circle")
+                        HStack {
+                            Image(systemName: "trash.circle")
+                                .font(.system(size: 20))
+                                .foregroundColor(.primary)
+                                .frame(width: 25)
+                            Text(NSLocalizedString("settings.auto_cleanup_tags", comment: ""))
+                                .foregroundColor(.primary)
+                        }
                     }
                 } header: {
                     Text(NSLocalizedString("settings.tags", comment: ""))
@@ -214,7 +254,13 @@ struct MeView: View {
                 Section {
                     Toggle(isOn: $iCloudSyncEnabled) {
                         VStack(alignment: .leading, spacing: 4) {
-                            Label(NSLocalizedString("settings.icloud_sync", comment: ""), systemImage: "icloud")
+                            HStack {
+                                Image(systemName: "icloud")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.primary)
+                                    .frame(width: 25)
+                                Text(NSLocalizedString("settings.icloud_sync", comment: ""))
+                            }
                             Text(NSLocalizedString("settings.icloud_sync_desc", comment: ""))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
@@ -232,7 +278,7 @@ struct MeView: View {
                     if iCloudSyncEnabled {
                         HStack {
                             Image(systemName: "info.circle")
-                                .foregroundColor(.blue)
+                                .foregroundColor(.secondary)
                                 .font(.footnote)
                             Text(NSLocalizedString("settings.icloud_sync.info", comment: ""))
                                 .font(.caption)
@@ -247,9 +293,13 @@ struct MeView: View {
                 Section {
                     // Version Info
                     HStack {
-                        Label(NSLocalizedString("settings.version", comment: ""), systemImage: "info.circle")
+                        Image(systemName: "info.circle")
+                            .font(.system(size: 20))
+                            .foregroundColor(.primary)
+                            .frame(width: 25)
+                        Text(NSLocalizedString("settings.version", comment: ""))
                         Spacer()
-                        Text("0.2.0 (2)")
+                        Text("0.2.1 (2)")
                             .foregroundColor(.secondary)
                     }
                     
@@ -260,8 +310,11 @@ struct MeView: View {
                         }
                     } label: {
                         HStack {
-                            Label(NSLocalizedString("settings.rate_github", comment: ""), systemImage: "star")
+                            Image(systemName: "star")
+                                .font(.system(size: 20))
                                 .foregroundColor(.primary)
+                                .frame(width: 25)
+                            Text(NSLocalizedString("settings.rate_github", comment: ""))
                             Spacer()
                             Image(systemName: "arrow.up.forward")
                                 .font(.caption)
@@ -277,8 +330,11 @@ struct MeView: View {
                         }
                     } label: {
                         HStack {
-                            Label(NSLocalizedString("settings.contact_support", comment: ""), systemImage: "envelope")
+                            Image(systemName: "envelope")
+                                .font(.system(size: 20))
                                 .foregroundColor(.primary)
+                                .frame(width: 25)
+                            Text(NSLocalizedString("settings.contact_support", comment: ""))
                             Spacer()
                             Image(systemName: "arrow.up.forward")
                                 .font(.caption)
@@ -290,7 +346,7 @@ struct MeView: View {
                     Text(NSLocalizedString("settings.about", comment: ""))
                 }
             }
-            .navigationTitle(NSLocalizedString("tab.me", comment: ""))
+//            .navigationTitle(NSLocalizedString("tab.me", comment: ""))
             .sheet(isPresented: $showingUILanguagePicker) {
                 UILanguagePickerView(selectedLanguage: $appLanguage)
             }
