@@ -22,7 +22,6 @@ struct MeView: View {
     @AppStorage("notificationPermissionRequested") private var notificationPermissionRequested = false
     
     // Tag Settings
-    @AppStorage("maxNowCards") private var maxNowCards = 3
     @AppStorage("autoCleanupUnusedTags") private var autoCleanupUnusedTags = true
     
     // Sync Settings
@@ -142,19 +141,6 @@ struct MeView: View {
                 
                 // MARK: - Tag Settings Section
                 Section {
-                    HStack {
-                        Image(systemName: "tag.fill")
-                            .font(.system(size: 20))
-                            .foregroundColor(.primary)
-                            .frame(width: 25)
-                        Text(NSLocalizedString("settings.max_now_cards", comment: ""))
-                        Spacer()
-                        Text("\(maxNowCards)")
-                            .foregroundColor(.secondary)
-                        Stepper("", value: $maxNowCards, in: 1...10)
-                            .labelsHidden()
-                    }
-                    
                     Toggle(isOn: $autoCleanupUnusedTags) {
                         HStack {
                             Image(systemName: "trash.circle")
@@ -708,7 +694,7 @@ struct MeView: View {
     private func removeDuplicates() {
         // Remove duplicate tags
         Tag.cleanupDuplicateTags(in: viewContext)
-        var tagCount = 0 // We'll update this if the method returns a count
+        let tagCount = 0 // We'll update this if the method returns a count
         
         // Remove duplicate scripts (same content)
         let scriptRequest: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()

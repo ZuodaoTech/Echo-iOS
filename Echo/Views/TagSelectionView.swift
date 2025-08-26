@@ -48,9 +48,7 @@ struct TagSelectionView: View {
                             TagChip(tag: tag, isSelected: true) {
                                 selectedTags.remove(tag)
                             } onLongPress: {
-                                if !tag.isNowTag {  // Don't allow editing the Now tag
-                                    tagToEdit = tag
-                                }
+                                tagToEdit = tag
                             }
                         }
                     }
@@ -82,9 +80,7 @@ struct TagSelectionView: View {
                             TagChip(tag: tag, isSelected: false) {
                                 handleTagSelection(tag)
                             } onLongPress: {
-                                if !tag.isNowTag {  // Don't allow editing the Now tag
-                                    tagToEdit = tag
-                                }
+                                tagToEdit = tag
                             }
                         }
                     }
@@ -115,28 +111,6 @@ struct TagSelectionView: View {
     }
     
     private func handleTagSelection(_ tag: Tag) {
-        // Check if this is the "Now" tag and if limit would be exceeded
-        if tag.isNowTag {
-            let maxNowCards = UserDefaults.standard.integer(forKey: "maxNowCards")
-            let effectiveMax = maxNowCards > 0 ? maxNowCards : 3 // Default to 3
-            
-            // Fetch all scripts with the Now tag
-            let request: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
-            request.predicate = NSPredicate(format: "ANY tags == %@", tag)
-            
-            if let scripts = try? viewContext.fetch(request) {
-                // Filter out the current script if we're editing one
-                let otherScripts = scripts.filter { $0.id != currentScript?.id }
-                
-                if otherScripts.count >= effectiveMax {
-                    // Show picker to remove from another card
-                    scriptsWithNowTag = otherScripts
-                    showingNowLimitAlert = true
-                    return
-                }
-            }
-        }
-        
         selectedTags.insert(tag)
     }
     
@@ -181,14 +155,10 @@ struct TagChip: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
             .background(
-                tag.isNowTag ? 
-                    (isSelected ? Color.orange : Color.yellow.opacity(0.3)) :
-                    (isSelected ? Color.blue : Color.gray.opacity(0.2))
+                isSelected ? Color.blue : Color.gray.opacity(0.2)
             )
             .foregroundColor(
-                tag.isNowTag ?
-                    (isSelected ? .white : Color.orange) :
-                    (isSelected ? .white : .primary)
+                isSelected ? .white : .primary
             )
             .cornerRadius(15)
             .contentShape(Rectangle())

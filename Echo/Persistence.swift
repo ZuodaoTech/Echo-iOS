@@ -21,8 +21,6 @@ class PersistenceController: ObservableObject {
         let viewContext = result.container.viewContext
         
         // Create sample data for previews using Tags
-        let nowTag = Tag.createOrGetNowTag(context: viewContext)
-        
         let breakingBadHabitsTag = Tag.findOrCreateNormalized(
             name: NSLocalizedString("tag.breaking_bad_habits", comment: ""),
             in: viewContext
@@ -45,7 +43,6 @@ class PersistenceController: ObservableObject {
             privateMode: true,
             in: viewContext
         )
-        script1.addToTags(nowTag)
         script1.addToTags(breakingBadHabitsTag)
         
         let script2 = SelftalkScript.create(
@@ -54,7 +51,6 @@ class PersistenceController: ObservableObject {
             privateMode: true,
             in: viewContext
         )
-        script2.addToTags(nowTag)
         script2.addToTags(buildingGoodHabitsTag)
         
         let script3 = SelftalkScript.create(
@@ -63,7 +59,6 @@ class PersistenceController: ObservableObject {
             privateMode: true,
             in: viewContext
         )
-        script3.addToTags(nowTag)
         script3.addToTags(appropriatePositivityTag)
         
         do {
@@ -181,13 +176,12 @@ class PersistenceController: ObservableObject {
         
         container.viewContext.automaticallyMergesChangesFromParent = true
         
-        // Create the special "Now" tag after stores are loaded
+        // Clean up duplicate tags after stores are loaded
         Task { @MainActor in
             // Wait for stores to be ready
             while !isReady {
                 try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 second
             }
-            _ = Tag.createOrGetNowTag(context: self.container.viewContext)
             
             // Clean up any duplicate tags that might exist
             Tag.cleanupDuplicateTags(in: self.container.viewContext)
