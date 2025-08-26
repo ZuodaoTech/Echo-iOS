@@ -581,7 +581,6 @@ struct AddEditScriptView: View {
             // Create new script only if there's content
             let newScript = SelftalkScript.create(
                 scriptText: trimmedText,
-                category: nil,  // No longer using category
                 repetitions: repetitions,
                 intervalSeconds: intervalSeconds,
                 privacyMode: privacyModeEnabled,

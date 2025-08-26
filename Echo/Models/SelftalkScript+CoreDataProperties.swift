@@ -73,7 +73,6 @@ extension SelftalkScript {
     
     static func create(
         scriptText: String,
-        category: Category?,
         repetitions: Int16 = 3,
         intervalSeconds: Double = 2.0,
         privacyMode: Bool = true,
@@ -82,7 +81,6 @@ extension SelftalkScript {
         let script = SelftalkScript(context: context)
         script.id = UUID()
         script.scriptText = scriptText
-        script.category = category
         script.repetitions = repetitions
         script.intervalSeconds = intervalSeconds
         script.audioDuration = 0

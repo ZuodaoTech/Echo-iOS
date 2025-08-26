@@ -29,9 +29,22 @@
 		F33EE30A2E5935FF007F42E6 /* EchoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EchoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F3654D5B2E5D341100EC22E9 /* Exceptions for "Echo" folder in "Echo" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F33EE2ED2E5935FE007F42E6 /* Echo */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F33EE2F02E5935FE007F42E6 /* Echo */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F3654D5B2E5D341100EC22E9 /* Exceptions for "Echo" folder in "Echo" target */,
+			);
 			path = Echo;
 			sourceTree = "<group>";
 		};
@@ -412,11 +425,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = Echo/Echo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = YOUR_TEAM_ID;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Echo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Echo;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Echo needs access to your microphone to record your personal self-talk affirmations.";
@@ -451,11 +466,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = Echo/Echo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = YOUR_TEAM_ID;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Echo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Echo;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Echo needs access to your microphone to record your personal self-talk affirmations.";

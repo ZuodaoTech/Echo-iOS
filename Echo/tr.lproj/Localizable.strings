@@ -1,53 +1,236 @@
 /* 
   Localizable.strings (Turkish)
   Echo
+  
+  Turkish localization file for Echo app
 */
 
 // MARK: - Navigation & Titles
 "navigation.cards" = "Kartlar";
 "navigation.me" = "Ben";
-"navigation.new_script" = "Yeni Betik";
-"navigation.edit_script" = "Betik Düzenle";
-
-
-
-// MARK: - Tags
-"tag.now" = "Şimdi";
-"tag.untagged" = "Etiketsiz";
-"tag.edit" = "Etiketleri Düzenle";
-"tag.delete.confirm.title" = "Etiketi Sil";
-"tag.delete.confirm.message" = "Bu etiket %d betik tarafından kullanılıyor. Silmek bu betiklerden etiketi kaldıracak.";
-"tag.max_now_cards" = "Maksimum 'Şimdi' Kartı";
-"tag.now_limit_reached" = "Şimdi Etiketi Limiti";
-"tag.now_limit_message" = "Maksimum 'Şimdi' kartı sayısına (%d) ulaştınız. Lütfen 'Şimdi' etiketini kaldırmak için bir kart seçin:";
-"tag.auto_cleanup" = "Kullanılmayan Etiketleri Otomatik Kaldır";
-
-/* 
-  Localizable.strings (Turkish)
-  Echo
-*/
-
-// MARK: - Navigation & Titles
-"navigation.cards" = "Kartlar";
-"navigation.me" = "Ben";
-"navigation.new_script" = "Yeni Betik";
-"navigation.edit_script" = "Betik Düzenle";
-
+"navigation.new_script" = "Yeni Kart";
+"navigation.edit_script" = "Kartı Düzenle";
 
 
 // MARK: - Tags
 "tag.now" = "Şimdi";
 "tag.untagged" = "Etiketsiz";
-"tag.edit" = "Etiketleri Düzenle";
+"tag.edit" = "Etiketi Düzenle";
 "tag.delete.confirm.title" = "Etiketi Sil";
-"tag.delete.confirm.message" = "Bu etiket %d betik tarafından kullanılıyor. Silmek bu betiklerden etiketi kaldıracak.";
-"tag.max_now_cards" = "Maksimum 'Şimdi' Kartı";
-"tag.now_limit_reached" = "Şimdi Etiketi Limiti";
-"tag.now_limit_message" = "Maksimum 'Şimdi' kartı sayısına (%d) ulaştınız. Lütfen 'Şimdi' etiketini kaldırmak için bir kart seçin:";
-"tag.auto_cleanup" = "Kullanılmayan Etiketleri Otomatik Kaldır";
-"tag.select" = "Etiketleri Seç";
+"tag.delete.confirm.message" = "Bu etiket %d betik tarafından kullanılıyor. Silmek, bu betiklerden etiketi kaldıracak.";
+"tag.delete.confirm.empty" = "Bu etiket hiçbir betik tarafından kullanılmıyor. Silmek istediğinden emin misin?";
+"tag.max_now_cards" = "Maksimum 'Şimdi' Kartları";
+"tag.now_limit_reached" = "Şimdi Etiket Sınırı";
+"tag.now_limit_message" = "Maksimum 'Şimdi' kart sayısına ulaştın (%d). 'Şimdi' etiketini kaldırmak için bir kart seç:";
+"tag.auto_cleanup" = "Kullanılmayan Etiketleri Otomatik Temizle";
+"tag.select" = "Etiket Seç";
 "tag.new" = "Yeni Etiket";
 "tag.label" = "Etiketler";
 "tag.none" = "Yok";
-"tag.count_selected" = "%d seçildi";
+"tag.count_selected" = "%d seçili";
+"tag.breaking_bad_habits" = "Kötü Alışkanlıkları Kırma";
+"tag.building_good_habits" = "İyi Alışkanlıklar Geliştirme";
+"tag.appropriate_positivity" = "Uygun Pozitiflik";
 
+// MARK: - Script Card
+"script.play_count" = "%d oynatma";
+"script.transcript" = "Transkript";
+"script.recording" = "Kayıt";
+"script.no_recording" = "Kayıt yok";
+"script.repetitions" = "Tekrarlar";
+"script.interval" = "Aralık";
+"script.privacy_mode" = "Gizlilik Modu";
+"script.delete" = "Kartı Sil";
+"script.delete.confirm.title" = "Kartı Sil";
+"script.delete.confirm.message" = "Bu betiği silmek istediğinden emin misin? Bu eylem geri alınamaz.";
+
+// MARK: - Settings
+"settings.app_language" = "Uygulama Dili";
+"settings.display_language" = "Görüntü Dili";
+"settings.restart_to_apply" = "Dil değişikliğini uygulamak için uygulamayı yeniden başlat";
+"settings.default_settings" = "Varsayılan Ayarlar";
+"settings.script_preferences" = "Kart Tercihleri";
+"settings.transcription" = "Transkripsiyon";
+"settings.recording" = "Kayıt";
+"settings.backup_sync" = "Yedekleme ve Senkronizasyon";
+"settings.about" = "Hakkında";
+"settings.support" = "Destek";
+
+"settings.privacy_mode.title" = "Gizlilik Modu";
+"settings.privacy_mode.info" = "Ses sadece kulaklık ile çalar";
+"settings.privacy_mode.alert.title" = "Gizlilik Modu";
+"settings.privacy_mode.alert.message" = "Gizlilik Modu etkinken, ses kayıtları sadece bağlı kulaklık veya mikrofonlu kulaklık ile çalacak. Bu, kamusal alanlarda hoparlörlerden kazara çalmasını önler.";
+
+"settings.character_guidance" = "Karakter Rehberi";
+"settings.recommended_length" = "Önerilen uzunluk";
+"settings.when_exceeded" = "Aşıldığında";
+"settings.just_warn" = "Sadece uyar";
+"settings.show_tip_only" = "Sadece ipucu göster";
+"settings.character_guidance.info" = "Daha kısa betikler hatırlaması daha kolay ve daha etkilidir";
+
+"settings.default_language" = "Varsayılan Dil";
+"settings.voice_enhancement" = "Ses İyileştirme";
+"settings.voice_enhancement.desc" = "Arka plan gürültüsünü ve yankıyı azaltır";
+"settings.auto_trim_silence" = "Otomatik Sessizlik Kırpma";
+"settings.auto_trim_silence.desc" = "Başlangıç ve sondaki sessizliği kaldır";
+"settings.trim_sensitivity" = "Kırpma Hassasiyeti";
+
+"settings.icloud_sync" = "iCloud Senkronizasyonu";
+"settings.icloud_sync.desc" = "Kartları cihazlar arasında senkronize et";
+"settings.icloud_sync.info" = "Metin ve ayarlar otomatik olarak senkronize edilir. Ses dosyaları yerel kalır.";
+"settings.export_scripts" = "Kartları Dışa Aktar";
+"settings.import_scripts" = "Kartları İçe Aktar";
+
+"settings.version" = "Sürüm";
+"settings.build" = "Yapı";
+"settings.rate_github" = "GitHub'da Değerlendir";
+"settings.contact_support" = "Desteğe Başvur";
+
+// MARK: - Recording
+"recording.start" = "Kaydı Başlat";
+"recording.stop" = "Kaydı Durdur";
+"recording.re_record" = "Yeniden kaydet";
+"recording.saved" = "Kayıt kaydedildi";
+"recording.delete" = "Sil";
+"recording.preview" = "Önizleme";
+"recording.playing_preview" = "Önizleme çalıyor...";
+"recording.preview_paused" = "Önizleme duraklatıldı";
+"recording.plays_once" = "(bir kez çalar)";
+"recording.processing" = "Ses işleniyor...";
+"recording.listening" = "Dinleniyor...";
+"recording.speaking" = "Konuşuluyor...";
+"recording.transcribing" = "Yazıya dökülüyor...";
+"recording.re_transcribing" = "Yeniden yazıya dökülüyor...";
+"recording.microphone_access" = "Mikrofon Erişimi";
+"recording.microphone_access.message" = "Ses kaydetmek için lütfen Ayarlar'da mikrofon erişimi verin";
+
+// MARK: - Character Guidance
+"guidance.trim_characters" = "Daha iyi hatırlanabilirlik için %d karakter kısaltmayı düşün";
+"guidance.script_over" = "Betik %d karakter aşıyor. Daha özlü olmaya çalış";
+"guidance.script_long" = "Betik oldukça uzun.";
+"guidance.enter_script" = "Kendi kendine konuşma betikini buraya gir...";
+
+// MARK: - Notifications
+"notifications.enable" = "Bildirimleri Etkinleştir";
+"notifications.frequency" = "Sıklık";
+"notifications.frequency.high" = "Yüksek (saatte 1-2 kez)";
+"notifications.frequency.medium" = "Orta (2 saatte bir)";
+"notifications.frequency.low" = "Düşük (günde 1-2 kez)";
+"notifications.daytime_only" = "Sadece gündüz bildirimleri (08:00 - 21:00)";
+"notifications.settings_title" = "Bildirim Ayarları";
+"notifications.max_cards" = "Bildirimi olan maksimum kart";
+"notifications.burden_warning" = "Çok fazla bildirim yük haline gelebilir ve etkinliklerini azaltabilir";
+"notifications.global_settings" = "Genel Ayarlar";
+"notifications.max_cards_footer" = "Aynı anda bildirim gönderebilecek kart sayısını sınırla";
+"notifications.no_cards_enabled" = "Hiçbir kartın bildirimi etkin değil";
+"notifications.enabled_cards" = "Etkin Kartlar (%d)";
+"notifications.request_permission" = "Bildirimleri Etkinleştir";
+"notifications.select_to_disable" = "Bildirimleri devre dışı bırakmak için %d kart seç";
+"notifications.select_cards" = "Kart Seç";
+"notifications.reminder_title" = "Kendi Kendine Konuşma Zamanı";
+"notifications.action_play" = "Sesi Oynat";
+"notifications.action_done" = "Tamamlandı Olarak İşaretle";
+
+// MARK: - Common Actions
+"chars" = "karakter";
+"action.done" = "Tamam";
+"action.cancel" = "İptal";
+"action.delete" = "Sil";
+"action.add" = "Ekle";
+"action.save" = "Kaydet";
+"action.ok" = "Tamam";
+"action.got_it" = "Anladım";
+"action.copy" = "Kopyala";
+"action.use_as_script" = "Betik Olarak Kullan";
+"action.share" = "Paylaş";
+"action.edit" = "Düzenle";
+
+// MARK: - Errors
+"error.title" = "Hata";
+"error.save" = "Kart kaydetme başarısız";
+"error.database" = "Veritabanı hatası";
+"error.restart_app" = "Lütfen uygulamayı yeniden başlat";
+"error.try_again" = "Lütfen tekrar dene";
+"error.import" = "İçe aktarma başarısız";
+"error.export" = "Dışa aktarma başarısız";
+
+// MARK: - Time Units
+"time.seconds" = "%@ saniye";
+"time.times_per_hour" = "saatte 1-2 kez";
+"time.every_hours" = "2 saatte bir";
+"time.times_per_day" = "günde 1-2 kez";
+
+// MARK: - Sensitivity Levels
+"sensitivity.low" = "Düşük";
+"sensitivity.medium" = "Orta";
+"sensitivity.high" = "Yüksek";
+"sensitivity.low.desc" = "Daha yüksek ses gerektirir • 0,5s tampon";
+"sensitivity.medium.desc" = "Dengeli algılama • 0,3s tampon";
+"sensitivity.high.desc" = "Fısıltıyı algılar • 0,15s tampon";
+
+// MARK: - Sample Scripts
+"sample.smoking" = "Asla sigara içmem, çünkü kokuyor ve kontrol edilmekten nefret ediyorum.";
+"sample.bedtime" = "Her zaman saat 22:00'den önce yatarım, çünkü daha sağlıklı ve bol enerjili uyanmayı seviyorum.";
+"sample.mistakes" = "Birkaç hata yaptım ama aynı zamanda birçok şeyi de doğru yaptım. Hatalar öğrenmenin normal bir parçası ve onları gelişim fırsatı olarak kullanabilirim.";
+// MARK: - Languages
+"language.english" = "İngilizce";
+"language.chinese_simplified" = "Çince (Basitleştirilmiş)";
+"language.chinese_traditional" = "Çince (Geleneksel)";
+"language.spanish" = "İspanyolca";
+"language.french" = "Fransızca";
+"language.german" = "Almanca";
+"language.japanese" = "Japonca";
+"language.korean" = "Korece";
+"language.portuguese" = "Portekizce";
+"language.russian" = "Rusça";
+"language.italian" = "İtalyanca";
+"language.dutch" = "Hollandaca";
+"language.swedish" = "İsveççe";
+"language.norwegian" = "Norveççe";
+"language.danish" = "Danca";
+"language.polish" = "Lehçe";
+"language.turkish" = "Türkçe";
+"language.arabic" = "Arapça";
+"language.hindi" = "Hintçe";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Echo Paketi";
+"export.format.text" = "Düz Metin";
+"export.format.json" = "JSON";
+"export.include_audio" = "Ses Dosyalarını Dahil Et";
+"export.format_label" = "Format";
+"export.audio_size_warning" = "Ses dosyaları dışa aktarma boyutunu artıracak";
+"export.options" = "Dışa Aktarma Seçenekleri";
+"export.select_scripts" = "Kart Seç";
+"export.scripts_selected" = "Kartlar (%d seçili)";
+"export.error_title" = "Dışa Aktarma Hatası";
+"export.error_unknown" = "Bilinmeyen bir hata oluştu";
+"import.complete_title" = "İçe Aktarma Tamamlandı";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "İpucu: Noktalama için 'nokta', 'virgül', veya 'soru işareti' deyin";
+"recording.no_recording_message" = "Lütfen düzenlemek için uzun basın ve önce ses kaydedin";
+
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Kartları cihazlar arasında senkronize et";
+
+// MARK: - Empty State
+"empty.no_cards" = "Henüz Kart Yok";
+"empty.tap_to_create" = "İlk kendi kendine konuşma kartını oluşturmak için + butonuna dokun";
+
+// MARK: - Filter
+"filter.all_cards" = "Tüm Kartlar";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Hassasiyet";
+"picker.select_language" = "Dil Seç";
+"picker.display_language" = "Görüntü Dili";
+"settings.language_settings" = "Dil Ayarları";
+"language.system_default" = "Sistem Varsayılanı";
+"settings.card_settings" = "Kart Ayarları";
+"settings.card_defaults" = "Kart Varsayılanları";
+"settings.about_support" = "Hakkında ve Destek";
+"settings.sync" = "Senkronizasyon";
+"settings.backup" = "Yedekleme";
+"script.label" = "Betik";
