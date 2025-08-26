@@ -222,7 +222,9 @@
 "empty.tap_to_create" = "点击+按钮创建您的第一张自我对话卡片";
 
 // MARK: - Filter
+"filter.title" = "按标签筛选";
 "filter.all_cards" = "所有卡片";
+"filter.tags_section" = "标签";
 
 // MARK: - Picker Labels
 "picker.sensitivity" = "敏感度";
