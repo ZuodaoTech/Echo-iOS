@@ -15,11 +15,6 @@ struct CardSettingsView: View {
     @AppStorage("characterLimit") private var characterLimit = 140
     @AppStorage("limitBehavior") private var limitBehavior = "warn"
     
-    // Recording Settings
-    @AppStorage("voiceEnhancementEnabled") private var voiceEnhancementEnabled = true
-    @AppStorage("autoTrimSilence") private var autoTrimSilence = true
-    @AppStorage("silenceTrimSensitivity") private var silenceTrimSensitivity = "medium"
-    
     // Notification Settings
     @AppStorage("maxNotificationCards") private var maxNotificationCards = 1
     @AppStorage("notificationPermissionRequested") private var notificationPermissionRequested = false
@@ -104,51 +99,6 @@ struct CardSettingsView: View {
                     }
                 }
                 
-                // Recording Settings Section
-                Section(NSLocalizedString("settings.recording", comment: "")) {
-                    Toggle(isOn: $voiceEnhancementEnabled) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(NSLocalizedString("settings.voice_enhancement", comment: ""))
-                            Text(NSLocalizedString("settings.voice_enhancement.desc", comment: ""))
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    
-                    Toggle(isOn: $autoTrimSilence) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(NSLocalizedString("settings.auto_trim_silence", comment: ""))
-                            Text(NSLocalizedString("settings.auto_trim_silence.desc", comment: ""))
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    
-                    if autoTrimSilence {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(NSLocalizedString("settings.trim_sensitivity", comment: ""))
-                                .font(.subheadline)
-                            
-                            Picker(NSLocalizedString("picker.sensitivity", comment: ""), selection: $silenceTrimSensitivity) {
-                                Text(NSLocalizedString("sensitivity.low", comment: "")).tag("low")
-                                Text(NSLocalizedString("sensitivity.medium", comment: "")).tag("medium")
-                                Text(NSLocalizedString("sensitivity.high", comment: "")).tag("high")
-                            }
-                            .pickerStyle(SegmentedPickerStyle())
-                            
-                            HStack {
-                                Image(systemName: "info.circle")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                Text(sensitivityDescription)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                        .padding(.vertical, 4)
-                    }
-                }
-                
                 // Notification Settings Section
                 Section {
                     VStack(alignment: .leading, spacing: 12) {
@@ -230,17 +180,6 @@ struct CardSettingsView: View {
                     onConfirm: disableSelectedCards
                 )
             }
-        }
-    }
-    
-    private var sensitivityDescription: String {
-        switch silenceTrimSensitivity {
-        case "low":
-            return NSLocalizedString("sensitivity.low.desc", comment: "")
-        case "high":
-            return NSLocalizedString("sensitivity.high.desc", comment: "")
-        default:
-            return NSLocalizedString("sensitivity.medium.desc", comment: "")
         }
     }
     

@@ -13,20 +13,13 @@ final class AudioProcessingService {
     // MARK: - Constants
     
     private enum Constants {
-        // Silence thresholds for different sensitivity levels
+        // Always use high sensitivity for best trimming
         static let silenceThresholdHigh: Float = 0.005  // High sensitivity (more aggressive)
-        static let silenceThresholdMedium: Float = 0.01  // Medium sensitivity (default)
-        static let silenceThresholdLow: Float = 0.02  // Low sensitivity (less aggressive)
         static let minimumSilenceDuration: TimeInterval = 0.3  // Minimum silence to trim
         static let minimumAudioDuration: TimeInterval = 0.5  // Don't process very short recordings
         
         static func getThreshold() -> Float {
-            let sensitivity = UserDefaults.standard.string(forKey: "silenceTrimSensitivity") ?? "medium"
-            switch sensitivity {
-            case "high": return silenceThresholdHigh
-            case "low": return silenceThresholdLow
-            default: return silenceThresholdMedium
-            }
+            return silenceThresholdHigh  // Always use high sensitivity
         }
     }
     
@@ -70,13 +63,7 @@ final class AudioProcessingService {
     
     /// Process audio file: trim silence and optimize for voice
     func processRecording(for scriptId: UUID, trimTimestamps: (start: TimeInterval, end: TimeInterval)? = nil, completion: @escaping (Bool) -> Void) {
-        // Check if auto-trim is enabled (default to true if not set)
-        let autoTrimEnabled = UserDefaults.standard.object(forKey: "autoTrimSilence") as? Bool ?? true
-        if !autoTrimEnabled {
-            print("AudioProcessing: Auto-trim disabled by user")
-            completion(true)
-            return
-        }
+        // Auto-trim is always enabled now
         // Check if we have trim timestamps from real-time voice detection
         if let timestamps = trimTimestamps {
             print("AudioProcessing: Using real-time voice detection timestamps")
@@ -88,7 +75,7 @@ final class AudioProcessingService {
         }
         
         print("AudioProcessing: Starting buffer-based silence trimming (fallback method)")
-        print("AudioProcessing: Sensitivity: \(UserDefaults.standard.string(forKey: "silenceTrimSensitivity") ?? "medium")")
+        print("AudioProcessing: Using high sensitivity for optimal trimming")
         
         let audioURL = fileManager.audioURL(for: scriptId)
         let originalURL = fileManager.originalAudioURL(for: scriptId)
@@ -559,7 +546,7 @@ final class AudioProcessingService {
         
         let frameLength = Int(buffer.frameLength)
         let threshold = Constants.getThreshold()
-        print("AudioProcessing: Using threshold: \(threshold) for sensitivity: \(UserDefaults.standard.string(forKey: "silenceTrimSensitivity") ?? "medium")")
+        print("AudioProcessing: Using threshold: \(threshold) (high sensitivity)")
         
         // Analyze first channel for simplicity
         let samples = channelData[0]
