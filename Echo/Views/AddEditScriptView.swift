@@ -25,7 +25,7 @@ struct AddEditScriptView: View {
     @AppStorage("defaultInterval") private var defaultInterval = 2.0
     @State private var repetitions: Int16 = 3
     @State private var intervalSeconds: Double = 2.0
-    @AppStorage("privateModeDefault") private var privateModeDefault = true
+    @AppStorage("privateModeDefault") private var privateModeDefault = false
     @State private var privateModeEnabled = true
     @AppStorage("defaultTranscriptionLanguage") private var defaultTranscriptionLanguage = "en-US"
     @State private var transcriptionLanguage = ""
