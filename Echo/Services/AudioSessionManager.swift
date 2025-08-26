@@ -1,5 +1,59 @@
 import AVFoundation
 import Combine
+import os
+
+/// Defines the possible states of the audio session
+enum AudioSessionState: String, CaseIterable {
+    case idle = "Idle"
+    case preparingToRecord = "Preparing to Record"
+    case recording = "Recording"
+    case preparingToPlay = "Preparing to Play"
+    case playing = "Playing"
+    case paused = "Paused"
+    case transitioning = "Transitioning"
+    case error = "Error"
+    
+    /// Determines if a transition to the target state is valid
+    func canTransition(to target: AudioSessionState) -> Bool {
+        switch (self, target) {
+        // From idle, can go to preparing states
+        case (.idle, .preparingToRecord), (.idle, .preparingToPlay):
+            return true
+            
+        // From preparing to record, can go to recording or back to idle
+        case (.preparingToRecord, .recording), (.preparingToRecord, .idle):
+            return true
+            
+        // From recording, can go to transitioning (stopping) or error
+        case (.recording, .transitioning), (.recording, .error):
+            return true
+            
+        // From preparing to play, can go to playing or back to idle
+        case (.preparingToPlay, .playing), (.preparingToPlay, .idle):
+            return true
+            
+        // From playing, can go to paused, transitioning (stopping), or error
+        case (.playing, .paused), (.playing, .transitioning), (.playing, .error):
+            return true
+            
+        // From paused, can go back to playing or transitioning (stopping)
+        case (.paused, .playing), (.paused, .transitioning):
+            return true
+            
+        // From transitioning, can go to idle or error
+        case (.transitioning, .idle), (.transitioning, .error):
+            return true
+            
+        // From error, can go to idle (reset)
+        case (.error, .idle):
+            return true
+            
+        // All other transitions are invalid
+        default:
+            return false
+        }
+    }
+}
 
 /// Manages audio session configuration and private mode detection
 final class AudioSessionManager: ObservableObject {
@@ -8,11 +62,16 @@ final class AudioSessionManager: ObservableObject {
     
     @Published var privateModeActive = false
     @Published var isMicrophonePermissionGranted = false
+    @Published private(set) var currentState: AudioSessionState = .idle
     
     // MARK: - Properties
     
     private let audioSession = AVAudioSession.sharedInstance()
     private var cancellables = Set<AnyCancellable>()
+    
+    // Thread safety
+    private let stateLock = NSLock()
+    private let logger = Logger(subsystem: "xiaolai.Echo", category: "AudioSession")
     
     // MARK: - Constants
     
@@ -34,6 +93,17 @@ final class AudioSessionManager: ObservableObject {
     
     /// Configure audio session for recording
     func configureForRecording(enhancedProcessing: Bool = true) throws {
+        // Check if we can start recording
+        guard canStartRecording else {
+            logger.error("Cannot start recording in current state: \(self.currentState.rawValue)")
+            throw AudioServiceError.invalidState("Cannot start recording while \(currentState.rawValue)")
+        }
+        
+        // Transition to preparing state
+        guard transitionTo(.preparingToRecord) else {
+            throw AudioServiceError.invalidState("Failed to transition to preparingToRecord state")
+        }
+        
         do {
             // Use measurement mode for MAXIMUM noise reduction
             // measurement mode provides the most aggressive audio processing
@@ -89,6 +159,17 @@ final class AudioSessionManager: ObservableObject {
     
     /// Configure audio session for playback
     func configureForPlayback() throws {
+        // Check if we can start playback
+        guard canStartPlayback else {
+            logger.error("Cannot start playback in current state: \(self.currentState.rawValue)")
+            throw AudioServiceError.invalidState("Cannot start playback while \(currentState.rawValue)")
+        }
+        
+        // Transition to preparing state
+        guard transitionTo(.preparingToPlay) else {
+            throw AudioServiceError.invalidState("Failed to transition to preparingToPlay state")
+        }
+        
         do {
             // Only change category if needed
             if audioSession.category != .playback {
@@ -214,5 +295,80 @@ final class AudioSessionManager: ObservableObject {
             guard let self = self else { return }
             self.isMicrophonePermissionGranted = self.audioSession.recordPermission == .granted
         }
+    }
+    
+    // MARK: - State Management
+    
+    /// Attempts to transition to a new state
+    /// - Parameter newState: The target state
+    /// - Returns: True if the transition was successful, false otherwise
+    @discardableResult
+    func transitionTo(_ newState: AudioSessionState) -> Bool {
+        stateLock.lock()
+        defer { stateLock.unlock() }
+        
+        let oldState = currentState
+        
+        // Check if transition is valid
+        guard oldState.canTransition(to: newState) else {
+            logger.warning("Invalid state transition from \(oldState.rawValue) to \(newState.rawValue)")
+            return false
+        }
+        
+        // Perform the transition
+        logger.info("State transition: \(oldState.rawValue) → \(newState.rawValue)")
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.currentState = newState
+        }
+        
+        return true
+    }
+    
+    /// Force reset to idle state (use only for error recovery)
+    func resetToIdle() {
+        stateLock.lock()
+        defer { stateLock.unlock() }
+        
+        logger.warning("Force resetting audio session to idle state")
+        
+        // Deactivate session first
+        deactivateSession()
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.currentState = .idle
+        }
+    }
+    
+    /// Check if the current state allows recording
+    var canStartRecording: Bool {
+        stateLock.lock()
+        defer { stateLock.unlock() }
+        
+        return currentState == .idle
+    }
+    
+    /// Check if the current state allows playback
+    var canStartPlayback: Bool {
+        stateLock.lock()
+        defer { stateLock.unlock() }
+        
+        return currentState == .idle
+    }
+    
+    /// Check if currently in a recording state
+    var isInRecordingState: Bool {
+        stateLock.lock()
+        defer { stateLock.unlock() }
+        
+        return currentState == .preparingToRecord || currentState == .recording
+    }
+    
+    /// Check if currently in a playback state
+    var isInPlaybackState: Bool {
+        stateLock.lock()
+        defer { stateLock.unlock() }
+        
+        return currentState == .preparingToPlay || currentState == .playing || currentState == .paused
     }
 }
