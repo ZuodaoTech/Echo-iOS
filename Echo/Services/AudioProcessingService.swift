@@ -80,27 +80,30 @@ final class AudioProcessingService {
         let audioURL = fileManager.audioURL(for: scriptId)
         let originalURL = fileManager.originalAudioURL(for: scriptId)
         
-        // First, copy the recorded file to original (for transcription)
-        do {
-            if FileManager.default.fileExists(atPath: originalURL.path) {
-                try FileManager.default.removeItem(at: originalURL)
-            }
-            try FileManager.default.copyItem(at: audioURL, to: originalURL)
-            print("AudioProcessing: Saved original copy for transcription")
-        } catch {
-            print("AudioProcessing: Failed to save original copy: \(error)")
-        }
-        
-        guard FileManager.default.fileExists(atPath: audioURL.path) else {
-            print("AudioProcessing: File doesn't exist")
-            completion(false)
-            return
-        }
-        
+        // Move all file operations to background queue
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let self = self else { 
+            guard let self = self else {
                 completion(false)
-                return 
+                return
+            }
+            
+            // First, copy the recorded file to original (for transcription) on background thread
+            do {
+                if FileManager.default.fileExists(atPath: originalURL.path) {
+                    try FileManager.default.removeItem(at: originalURL)
+                }
+                try FileManager.default.copyItem(at: audioURL, to: originalURL)
+                print("AudioProcessing: Saved original copy for transcription")
+            } catch {
+                print("AudioProcessing: Failed to save original copy: \(error)")
+            }
+            
+            guard FileManager.default.fileExists(atPath: audioURL.path) else {
+                print("AudioProcessing: File doesn't exist")
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+                return
             }
             
             do {
