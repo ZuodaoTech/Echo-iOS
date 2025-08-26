@@ -124,8 +124,9 @@ class PersistenceController: ObservableObject {
                 if error.domain == CKErrorDomain || error.code == 134060 || error.code == 134110 {
                     print("CloudKit/Store error detected, attempting fallback to local storage")
                     
-                    // Reset to use local storage only
-                    UserDefaults.standard.set(false, forKey: "iCloudSyncEnabled")
+                    // Don't automatically disable iCloud sync preference - let user control it
+                    // The error is due to Core Data model constraints, not user preference
+                    // UserDefaults.standard.set(false, forKey: "iCloudSyncEnabled")
                     
                     // Reconfigure for local storage only but keep history tracking
                     for description in self.container.persistentStoreDescriptions {

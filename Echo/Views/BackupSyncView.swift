@@ -4,6 +4,7 @@ struct BackupSyncView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.managedObjectContext) private var viewContext
     
+    // Default to true for fresh installs - user preference persists even if CloudKit fails
     @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = true
     
     
