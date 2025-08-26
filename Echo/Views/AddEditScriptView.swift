@@ -491,10 +491,10 @@ struct AddEditScriptView: View {
                         viewContext.refresh(script, mergeChanges: true)
                         
                         // Stop checking after transcript appears or 10 seconds
-                        if script.transcribedText != nil && !script.transcribedText!.isEmpty {
+                        if let transcribedText = script.transcribedText, !transcribedText.isEmpty {
                             timer.invalidate()
                             transcriptCheckTimer = nil
-                            print("Transcript detected in UI: \(script.transcribedText?.prefix(30) ?? "")")
+                            print("Transcript detected in UI: \(transcribedText.prefix(30))")
                         } else if timer.fireDate.timeIntervalSinceNow < -10 {
                             timer.invalidate()
                             transcriptCheckTimer = nil

@@ -87,7 +87,9 @@ class PersistenceController: ObservableObject {
         container = NSPersistentCloudKitContainer(name: "Echo")
         
         if inMemory {
-            container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+            if let firstDescription = container.persistentStoreDescriptions.first {
+                firstDescription.url = URL(fileURLWithPath: "/dev/null")
+            }
         } else {
             // Configure for CloudKit if enabled (default to true)
             let iCloudEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? true
