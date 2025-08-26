@@ -52,6 +52,28 @@ final class PlaybackService: NSObject, ObservableObject {
         super.init()
     }
     
+    deinit {
+        // Clean up all timers
+        progressTimer?.invalidate()
+        progressTimer = nil
+        
+        intervalTimer?.invalidate()
+        intervalTimer = nil
+        
+        completionTimer?.invalidate()
+        completionTimer = nil
+        
+        // Cancel any pending work items
+        nextRepetitionWorkItem?.cancel()
+        nextRepetitionWorkItem = nil
+        
+        // Clean up audio player
+        audioPlayer?.stop()
+        audioPlayer = nil
+        
+        print("PlaybackService: Deinitialized - all resources cleaned up")
+    }
+    
     // MARK: - Public Methods
     
     /// Start playback for a script

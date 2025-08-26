@@ -54,6 +54,21 @@ final class RecordingService: NSObject, ObservableObject {
         super.init()
     }
     
+    deinit {
+        // Clean up timer
+        recordingTimer?.invalidate()
+        recordingTimer = nil
+        
+        // Clean up audio recorder
+        audioRecorder?.stop()
+        audioRecorder = nil
+        
+        // Clear any pending completion
+        stopRecordingCompletion = nil
+        
+        print("RecordingService: Deinitialized - all resources cleaned up")
+    }
+    
     // MARK: - Public Methods
     
     /// Start recording for a script
