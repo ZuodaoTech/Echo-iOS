@@ -77,6 +77,13 @@ final class RecordingService: NSObject, ObservableObject {
             throw AudioServiceError.permissionDenied
         }
         
+        // Check available disk space before recording
+        do {
+            try FileOperationHelper.checkAvailableDiskSpace()
+        } catch {
+            throw error // Propagate disk space error
+        }
+        
         // Stop any existing recording
         stopRecording()
         
@@ -270,15 +277,14 @@ extension RecordingService: AVAudioRecorderDelegate {
             let audioURL = fileManager.audioURL(for: scriptId)
             let originalURL = fileManager.originalAudioURL(for: scriptId)
             
-            // Copy the original recording before any processing
+            // Copy the original recording before any processing with proper error handling
             do {
-                // Remove existing original if it exists
-                if FileManager.default.fileExists(atPath: originalURL.path) {
-                    try FileManager.default.removeItem(at: originalURL)
-                }
-                // Copy the fresh recording as original
-                try FileManager.default.copyItem(at: audioURL, to: originalURL)
+                // Use helper with retry logic
+                try FileOperationHelper.copyFile(from: audioURL, to: originalURL)
                 print("Saved original audio copy for transcription at: \(originalURL.lastPathComponent)")
+            } catch let error as AudioServiceError {
+                print("Failed to save original audio copy: \(error.errorDescription ?? "")")
+                // Continue even if copy fails - the main recording is still valid
             } catch {
                 print("Failed to save original audio copy: \(error)")
             }
