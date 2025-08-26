@@ -142,76 +142,67 @@ struct ScriptsListView: View {
     }
     
     private func setupInitialData() {
-        // Always remove duplicates first
-        Category.removeDuplicateCategories(context: viewContext)
-        
         // Check if this is first launch
         let hasLaunchedKey = "hasLaunchedBefore"
         let hasLaunched = UserDefaults.standard.bool(forKey: hasLaunchedKey)
         
         if !hasLaunched {
-            // First launch - create default categories and sample scripts
-            Category.createDefaultCategories(context: viewContext)
+            // First launch - create sample scripts with tags
             createSampleScripts()
             UserDefaults.standard.set(true, forKey: hasLaunchedKey)
-        } else {
-            // Check if categories exist
-            let categoryRequest: NSFetchRequest<Category> = Category.fetchRequest()
-            let categoryCount = (try? viewContext.count(for: categoryRequest)) ?? 0
-            if categoryCount == 0 {
-                // Not first launch but no categories - just create categories
-                Category.createDefaultCategories(context: viewContext)
-            }
         }
     }
     
     private func createSampleScripts() {
-        // Wait for categories to be created
         do {
-            try viewContext.save()
-            
             // Get or create the "Now" tag
             let nowTag = Tag.createOrGetNowTag(context: viewContext)
             
-            // Fetch the newly created categories for migration
-            let categoryRequest: NSFetchRequest<Category> = Category.fetchRequest()
-            let allCategories = try viewContext.fetch(categoryRequest)
+            // Create tags for the sample scripts
+            let breakingBadHabitsTag = Tag.create(
+                name: "Breaking Bad Habits",
+                in: viewContext
+            )
+            
+            let buildingGoodHabitsTag = Tag.create(
+                name: "Building Good Habits",
+                in: viewContext
+            )
+            
+            let appropriatePositivityTag = Tag.create(
+                name: "Appropriate Positivity",
+                in: viewContext
+            )
             
             // Sample 1: Breaking Bad Habits (with Now tag)
-            if let breakingBadHabits = allCategories.first(where: { $0.name == NSLocalizedString("category.breaking_bad_habits", comment: "") }) {
-                let script1 = SelftalkScript.create(
-                    scriptText: NSLocalizedString("sample.smoking", comment: ""),
-                    category: breakingBadHabits,
-                    repetitions: 3,
-                    privacyMode: true,
-                    in: viewContext
-                )
-                script1.addToTags(nowTag)
-            }
+            let script1 = SelftalkScript.create(
+                scriptText: "I never smoke, because it stinks, and I hate being controlled.",
+                repetitions: 3,
+                privacyMode: true,
+                in: viewContext
+            )
+            script1.addToTags(nowTag)
+            script1.addToTags(breakingBadHabitsTag)
             
             // Sample 2: Building Good Habits (with Now tag)
-            if let buildingGoodHabits = allCategories.first(where: { $0.name == NSLocalizedString("category.building_good_habits", comment: "") }) {
-                let script2 = SelftalkScript.create(
-                    scriptText: NSLocalizedString("sample.bedtime", comment: ""),
-                    category: buildingGoodHabits,
-                    repetitions: 3,
-                    privacyMode: true,
-                    in: viewContext
-                )
-                script2.addToTags(nowTag)
-            }
+            let script2 = SelftalkScript.create(
+                scriptText: "I always go to bed before 10 p.m., because it's healthier, and I love waking up with a lot of energy.",
+                repetitions: 3,
+                privacyMode: true,
+                in: viewContext
+            )
+            script2.addToTags(nowTag)
+            script2.addToTags(buildingGoodHabitsTag)
             
             // Sample 3: Appropriate Positivity (with Now tag)
-            if let appropriatePositivity = allCategories.first(where: { $0.name == NSLocalizedString("category.appropriate_positivity", comment: "") }) {
-                let script3 = SelftalkScript.create(
-                    scriptText: NSLocalizedString("sample.mistakes", comment: ""),
-                    category: appropriatePositivity,
-                    repetitions: 3,
-                    privacyMode: true,
-                    in: viewContext
-                )
-                script3.addToTags(nowTag)
-            }
+            let script3 = SelftalkScript.create(
+                scriptText: "I made a few mistakes, but I also did several things well. Mistakes are a normal part of learning, and I can use them as an opportunity to improve.",
+                repetitions: 3,
+                privacyMode: true,
+                in: viewContext
+            )
+            script3.addToTags(nowTag)
+            script3.addToTags(appropriatePositivityTag)
             
             try viewContext.save()
         } catch {
