@@ -19,6 +19,14 @@ struct AddEditScriptView: View {
     let script: SelftalkScript?
     let onDelete: ((UUID) -> Void)?  // Callback with script ID only (safer)
     
+    // MARK: - Validation Constants
+    private enum ValidationConstants {
+        static let minimumScriptLength = 1
+        static let maximumScriptLength = 500
+        static let minimumAudioDuration: TimeInterval = 1.0  // 1 second minimum
+        static let maximumAudioDuration: TimeInterval = 60.0 // 60 seconds maximum
+    }
+    
     @State private var scriptText = ""
     @State private var selectedTags: Set<Tag> = []
     @AppStorage("defaultRepetitions") private var defaultRepetitions = 3
@@ -42,6 +50,8 @@ struct AddEditScriptView: View {
     @State private var showingErrorAlert = false
     @State private var errorMessage = ""
     @State private var hasSavedOnDismiss = false
+    @State private var showingValidationAlert = false
+    @State private var validationMessage = ""
     
     // Character guidance
     @AppStorage("characterGuidanceEnabled") private var characterGuidanceEnabled = true
@@ -460,6 +470,11 @@ struct AddEditScriptView: View {
             } message: {
                 Text(errorMessage)
             }
+            .alert(NSLocalizedString("validation.title", comment: "Validation Error"), isPresented: $showingValidationAlert) {
+                Button(NSLocalizedString("action.ok", comment: "OK"), role: .cancel) { }
+            } message: {
+                Text(validationMessage)
+            }
         }
         .onAppear {
             setupInitialValues()
@@ -556,16 +571,78 @@ struct AddEditScriptView: View {
         }
     }
     
-    @discardableResult
-    private func saveScript() -> Bool {
+    // MARK: - Validation Methods
+    
+    private func validateScriptText() -> (isValid: Bool, message: String) {
         let trimmedText = scriptText.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        // For new scripts, only save if there's content
-        if !isEditing && trimmedText.isEmpty {
-            return true // Allow dismissal but don't create empty script
+        // Check if empty or whitespace only
+        if trimmedText.isEmpty {
+            return (false, NSLocalizedString("validation.empty_script", comment: "Script cannot be empty"))
         }
         
-        // For existing scripts, always save (even if emptied - user can delete if needed)
+        // Check minimum length
+        if trimmedText.count < ValidationConstants.minimumScriptLength {
+            return (false, NSLocalizedString("validation.script_too_short", comment: "Script is too short"))
+        }
+        
+        // Check maximum length
+        if trimmedText.count > ValidationConstants.maximumScriptLength {
+            let message = String(format: NSLocalizedString("validation.script_too_long", comment: "Script exceeds maximum length of %d characters"), ValidationConstants.maximumScriptLength)
+            return (false, message)
+        }
+        
+        // Check against character limit if enforced
+        if characterGuidanceEnabled && limitBehavior == "prevent" && trimmedText.count > characterLimit {
+            let message = String(format: NSLocalizedString("validation.exceeds_character_limit", comment: "Script exceeds your character limit of %d"), characterLimit)
+            return (false, message)
+        }
+        
+        return (true, "")
+    }
+    
+    private func validateAudioRecording() -> (isValid: Bool, message: String) {
+        // Only validate if there's supposed to be a recording
+        guard hasRecording, let script = script else {
+            return (true, "") // No recording required for new scripts
+        }
+        
+        // Check audio duration
+        let duration = script.audioDuration
+        if duration > 0 {  // Only validate if there's a duration
+            if duration < ValidationConstants.minimumAudioDuration {
+                return (false, NSLocalizedString("validation.audio_too_short", comment: "Recording is too short. Please record at least 1 second."))
+            }
+            
+            if duration > ValidationConstants.maximumAudioDuration {
+                return (false, NSLocalizedString("validation.audio_too_long", comment: "Recording is too long. Maximum duration is 60 seconds."))
+            }
+        }
+        
+        return (true, "")
+    }
+    
+    @discardableResult
+    private func saveScript() -> Bool {
+        // Validate script text first
+        let textValidation = validateScriptText()
+        if !textValidation.isValid {
+            validationMessage = textValidation.message
+            showingValidationAlert = true
+            return false
+        }
+        
+        // Validate audio if applicable
+        let audioValidation = validateAudioRecording()
+        if !audioValidation.isValid {
+            validationMessage = audioValidation.message
+            showingValidationAlert = true
+            return false
+        }
+        
+        let trimmedText = scriptText.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // For existing scripts, update
         if let existingScript = script {
             // Update existing script
             existingScript.scriptText = trimmedText.isEmpty ? existingScript.scriptText : trimmedText
@@ -583,8 +660,8 @@ struct AddEditScriptView: View {
             existingScript.privateModeEnabled = privateModeEnabled
             existingScript.transcriptionLanguage = transcriptionLanguage
             existingScript.updatedAt = Date()
-        } else if !trimmedText.isEmpty {
-            // Create new script only if there's content
+        } else {
+            // Create new script (already validated)
             let newScript = SelftalkScript.create(
                 scriptText: trimmedText,
                 repetitions: repetitions,
