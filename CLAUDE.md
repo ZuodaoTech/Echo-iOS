@@ -378,6 +378,6 @@ The app now supports CloudKit-based iCloud sync for seamless data synchronizatio
 
 ---
 
-*Last Updated: 2025-08-25*
-*Version: 0.2.0*
+*Last Updated: 2025-08-26*
+*Version: 0.2.2*
 *Author: @xiaolai*

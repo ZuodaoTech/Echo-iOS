@@ -57,12 +57,19 @@ struct MeView: View {
         predicate: NSPredicate(format: "notificationEnabled == YES")
     ) private var notificationEnabledScripts: FetchedResults<SelftalkScript>
     
+    // App Version Info
+    private var appVersion: String {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "Unknown"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "Unknown"
+        return "\(version) (\(build))"
+    }
+    
     var body: some View {
         NavigationView {
             List {
-                // MARK: - Language Section
+                // MARK: - Card Defaults Section
                 Section {
-                    // Transcription Language (Display Language moved to Dev section)
+                    // Transcription Language
                     Button {
                         showingTranscriptionLanguagePicker = true
                     } label: {
@@ -82,12 +89,6 @@ struct MeView: View {
                     }
                     .foregroundColor(.primary)
                     
-                } header: {
-                    Text(NSLocalizedString("settings.language", comment: ""))
-                }
-                
-                // MARK: - Card Defaults Section
-                Section {
                     // Private Mode
                     Toggle(isOn: $privateModeDefault) {
                         HStack {
@@ -139,48 +140,36 @@ struct MeView: View {
                     Text(NSLocalizedString("settings.card_defaults", comment: ""))
                 }
                 
-                // MARK: - Card Preferences Section
+                // MARK: - Tag Settings Section
                 Section {
-                    // Character Limit
-                    Toggle(isOn: $characterGuidanceEnabled) {
+                    HStack {
+                        Image(systemName: "tag.fill")
+                            .font(.system(size: 20))
+                            .foregroundColor(.primary)
+                            .frame(width: 25)
+                        Text(NSLocalizedString("settings.max_now_cards", comment: ""))
+                        Spacer()
+                        Text("\(maxNowCards)")
+                            .foregroundColor(.secondary)
+                        Stepper("", value: $maxNowCards, in: 1...10)
+                            .labelsHidden()
+                    }
+                    
+                    Toggle(isOn: $autoCleanupUnusedTags) {
                         HStack {
-                            Image(systemName: "character.cursor.ibeam")
+                            Image(systemName: "trash.circle")
                                 .font(.system(size: 20))
                                 .foregroundColor(.primary)
                                 .frame(width: 25)
-                            Text(NSLocalizedString("settings.character_guidance", comment: ""))
+                            Text(NSLocalizedString("settings.auto_cleanup_tags", comment: ""))
                                 .foregroundColor(.primary)
-                        }
-                    }
-                    
-                    if characterGuidanceEnabled {
-                        HStack {
-                            Text(NSLocalizedString("settings.character_limit", comment: ""))
-                                .foregroundColor(.primary)
-                            Spacer()
-                            Picker("", selection: $characterLimit) {
-                                Text("70").tag(70)
-                                Text("140").tag(140)
-                                Text("280").tag(280)
-                            }
-                            .pickerStyle(SegmentedPickerStyle())
-                            .frame(width: 180)
-                        }
-                        
-                        HStack {
-                            Text(NSLocalizedString("settings.limit_behavior", comment: ""))
-                                .foregroundColor(.primary)
-                            Spacer()
-                            Picker("", selection: $limitBehavior) {
-                                Text(NSLocalizedString("settings.limit_behavior.warn", comment: "")).tag("warn")
-                                Text(NSLocalizedString("settings.limit_behavior.strict", comment: "")).tag("strict")
-                            }
-                            .pickerStyle(SegmentedPickerStyle())
-                            .frame(width: 180)
                         }
                     }
                 } header: {
-                    Text(NSLocalizedString("settings.card_preferences", comment: ""))
+                    Text(NSLocalizedString("settings.tags", comment: ""))
+                } footer: {
+                    Text(NSLocalizedString("settings.tags.footer", comment: ""))
+                        .font(.caption)
                 }
                 
                 // MARK: - Notification Section
@@ -212,38 +201,6 @@ struct MeView: View {
                         Text(NSLocalizedString("settings.notification_cards.footer", comment: ""))
                             .font(.caption)
                     }
-                }
-                
-                // MARK: - Tag Settings Section
-                Section {
-                    HStack {
-                        Image(systemName: "tag.fill")
-                            .font(.system(size: 20))
-                            .foregroundColor(.primary)
-                            .frame(width: 25)
-                        Text(NSLocalizedString("settings.max_now_cards", comment: ""))
-                        Spacer()
-                        Text("\(maxNowCards)")
-                            .foregroundColor(.secondary)
-                        Stepper("", value: $maxNowCards, in: 1...10)
-                            .labelsHidden()
-                    }
-                    
-                    Toggle(isOn: $autoCleanupUnusedTags) {
-                        HStack {
-                            Image(systemName: "trash.circle")
-                                .font(.system(size: 20))
-                                .foregroundColor(.primary)
-                                .frame(width: 25)
-                            Text(NSLocalizedString("settings.auto_cleanup_tags", comment: ""))
-                                .foregroundColor(.primary)
-                        }
-                    }
-                } header: {
-                    Text(NSLocalizedString("settings.tags", comment: ""))
-                } footer: {
-                    Text(NSLocalizedString("settings.tags.footer", comment: ""))
-                        .font(.caption)
                 }
                 
                 // MARK: - Data & Sync Section
@@ -295,7 +252,7 @@ struct MeView: View {
                             .frame(width: 25)
                         Text(NSLocalizedString("settings.version", comment: ""))
                         Spacer()
-                        Text("0.2.1 (2)")
+                        Text(appVersion)
                             .foregroundColor(.secondary)
                     }
                     
@@ -342,6 +299,17 @@ struct MeView: View {
                     Text(NSLocalizedString("settings.about", comment: ""))
                 }
                 
+                // Empty section for spacing after About
+                if !showDevSection {
+                    Section {
+                        Color.clear
+                            .frame(height: 100)
+                            .listRowInsets(EdgeInsets())
+                    }
+                    .listRowBackground(Color.clear)
+                    .listSectionSeparator(.hidden)
+                }
+                
                 // MARK: - Developer Section (Hidden)
                 if showDevSection {
                     Section {
@@ -364,7 +332,59 @@ struct MeView: View {
                             }
                         }
                         .foregroundColor(.primary)
+                    } header: {
+                        Text("🛠️ Developer Tools")
+                    } footer: {
+                        Text("⚠️ Display Language requires app restart to take effect.")
+                            .font(.caption)
+                    }
+                    
+                    // MARK: - Card Preferences Section (Dev Only)
+                    Section {
+                        // Character Limit
+                        Toggle(isOn: $characterGuidanceEnabled) {
+                            HStack {
+                                Image(systemName: "character.cursor.ibeam")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.primary)
+                                    .frame(width: 25)
+                                Text(NSLocalizedString("settings.character_guidance", comment: ""))
+                                    .foregroundColor(.primary)
+                            }
+                        }
                         
+                        if characterGuidanceEnabled {
+                            HStack {
+                                Text(NSLocalizedString("settings.character_limit", comment: ""))
+                                    .foregroundColor(.primary)
+                                Spacer()
+                                Picker("", selection: $characterLimit) {
+                                    Text("70").tag(70)
+                                    Text("140").tag(140)
+                                    Text("280").tag(280)
+                                }
+                                .pickerStyle(SegmentedPickerStyle())
+                                .frame(width: 180)
+                            }
+                            
+                            HStack {
+                                Text(NSLocalizedString("settings.limit_behavior", comment: ""))
+                                    .foregroundColor(.primary)
+                                Spacer()
+                                Picker("", selection: $limitBehavior) {
+                                    Text(NSLocalizedString("settings.limit_behavior.warn", comment: "")).tag("warn")
+                                    Text(NSLocalizedString("settings.limit_behavior.strict", comment: "")).tag("strict")
+                                }
+                                .pickerStyle(SegmentedPickerStyle())
+                                .frame(width: 180)
+                            }
+                        }
+                    } header: {
+                        Text(NSLocalizedString("settings.card_preferences", comment: ""))
+                    }
+                    
+                    // MARK: - Destructive Actions Section
+                    Section {
                         // Clear iCloud Data
                         Button {
                             showingClearICloudAlert = true
@@ -410,15 +430,24 @@ struct MeView: View {
                             }
                         }
                     } header: {
-                        Text("🛠️ Developer Tools")
+                        Text("⚠️ Destructive Actions")
                     } footer: {
-                        Text("⚠️ These actions are destructive and cannot be undone.")
+                        Text("These actions are destructive and cannot be undone.")
                             .font(.caption)
                     }
+                    
+                    // Empty section for spacing
+                    Section {
+                        Color.clear
+                            .frame(height: 200)
+                            .listRowInsets(EdgeInsets())
+                    }
+                    .listRowBackground(Color.clear)
+                    .listSectionSeparator(.hidden)
                 }
             }
             .gesture(
-                DragGesture(minimumDistance: 50)
+                DragGesture(minimumDistance: 30) // Lowered from 50 for easier detection
                     .onEnded { value in
                         handleSwipe(value: value)
                     }
@@ -473,16 +502,24 @@ struct MeView: View {
         let verticalMovement = value.translation.height
         let horizontalMovement = value.translation.width
         
-        // Determine swipe direction
+        // Determine swipe direction (horizontal swipes are easier to detect with lower threshold)
         let direction: SwipeDirection
-        if abs(verticalMovement) > abs(horizontalMovement) {
-            direction = verticalMovement > 0 ? .down : .up
-        } else {
+        if abs(horizontalMovement) > abs(verticalMovement) {
+            // Prioritize horizontal swipes
             direction = horizontalMovement > 0 ? .right : .left
+        } else {
+            // Vertical swipes
+            direction = verticalMovement > 0 ? .down : .up
         }
+        
+        // Log swipe detection
+        print("🎮 Swipe detected: \(direction)")
         
         // Check if it's been more than 2 seconds since last swipe (reset sequence)
         if Date().timeIntervalSince(lastSwipeTime) > 2 {
+            if !swipeSequence.isEmpty {
+                print("⏰ Swipe sequence timeout - resetting")
+            }
             swipeSequence = []
         }
         
@@ -490,12 +527,28 @@ struct MeView: View {
         swipeSequence.append(direction)
         lastSwipeTime = Date()
         
-        // Check for the Konami code: down, down, up
+        // Log current sequence
+        let sequenceString = swipeSequence.map { 
+            switch $0 {
+            case .up: return "↑"
+            case .down: return "↓"
+            case .left: return "←"
+            case .right: return "→"
+            }
+        }.joined(separator: " ")
+        print("📝 Current sequence: \(sequenceString)")
+        
+        // Check for the Konami code: left, left, right
         if swipeSequence.count >= 3 {
             let recentSwipes = Array(swipeSequence.suffix(3))
-            if recentSwipes == [.down, .down, .up] {
-                // Activate dev section with haptic feedback
-                showDevSection = true
+            if recentSwipes == [.left, .left, .right] {
+                // Toggle dev section with haptic feedback
+                showDevSection.toggle()
+                if showDevSection {
+                    print("🎉 KONAMI CODE DETECTED! Developer mode activated")
+                } else {
+                    print("🔒 KONAMI CODE DETECTED! Developer mode deactivated")
+                }
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 swipeSequence = [] // Reset sequence
             }

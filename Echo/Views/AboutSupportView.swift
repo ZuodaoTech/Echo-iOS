@@ -3,6 +3,15 @@ import SwiftUI
 struct AboutSupportView: View {
     @Environment(\.dismiss) private var dismiss
     
+    // App Version Info
+    private var appVersionNumber: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "Unknown"
+    }
+    
+    private var appBuildNumber: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "Unknown"
+    }
+    
     var body: some View {
         NavigationView {
             List {
@@ -10,21 +19,21 @@ struct AboutSupportView: View {
                     HStack {
                         Text(NSLocalizedString("settings.version", comment: ""))
                         Spacer()
-                        Text("0.2.0")
+                        Text(appVersionNumber)
                             .foregroundColor(.secondary)
                     }
                     
                     HStack {
                         Text(NSLocalizedString("settings.build", comment: ""))
                         Spacer()
-                        Text("2")
+                        Text(appBuildNumber)
                             .foregroundColor(.secondary)
                     }
                 }
                 
                 Section {
                     Button {
-                        if let url = URL(string: "https://github.com/xiaolai/Echo-iOS") {
+                        if let url = URL(string: "https://github.com/ZuoDaoTech/Echo-iOS") {
                             UIApplication.shared.open(url)
                         }
                     } label: {
@@ -35,7 +44,7 @@ struct AboutSupportView: View {
                     }
                     
                     Button {
-                        if let url = URL(string: "mailto:support@echo.app") {
+                        if let url = URL(string: "mailto:support@echopro.app") {
                             UIApplication.shared.open(url)
                         }
                     } label: {
