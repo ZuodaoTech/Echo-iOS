@@ -236,3 +236,26 @@
 "settings.sync" = "同步";
 "settings.backup" = "备份";
 "script.label" = "脚本";
+
+// MARK: - Consolidated Me Page Settings
+"settings.language" = "语言";
+"settings.default_language" = "转写语言";
+"settings.card_preferences" = "卡片偏好";
+"settings.character_limit" = "字符限制";
+"settings.limit_behavior" = "超限行为";
+"settings.limit_behavior.warn" = "警告";
+"settings.limit_behavior.strict" = "严格";
+"settings.notifications" = "通知";
+"settings.max_notification_cards" = "最大通知卡片数";
+"settings.notification_cards_count" = "%d 张卡片已启用通知";
+"settings.notification_cards.footer" = "限制同时发送通知的卡片数量";
+"settings.tags" = "标签";
+"settings.max_now_cards" = "最大「现在」卡片数";
+"settings.auto_cleanup_tags" = "自动清理未使用标签";
+"settings.tags.footer" = "控制标签管理方式";
+"settings.version" = "版本";
+"settings.rate_github" = "在 GitHub 上评分";
+"settings.contact_support" = "联系支持";
+"settings.notification_selection.message" = "选择最多 %d 张卡片保持通知启用";
+"settings.notification_selection.count" = "已选择 %d / %d 张卡片";
+"settings.select_notification_cards" = "选择通知卡片";
