@@ -110,40 +110,6 @@ extension Tag {
         return isSpecial
     }
     
-    static func migrateFromCategories(context: NSManagedObjectContext) {
-        // Check if migration has already been done
-        let tagRequest: NSFetchRequest<Tag> = Tag.fetchRequest()
-        let existingTagCount = (try? context.count(for: tagRequest)) ?? 0
-        
-        if existingTagCount > 0 {
-            print("Tags already exist, skipping migration")
-            return
-        }
-        
-        // Fetch all categories
-        let categoryRequest: NSFetchRequest<Category> = Category.fetchRequest()
-        guard let categories = try? context.fetch(categoryRequest) else { return }
-        
-        // Create a tag for each category
-        for category in categories {
-            let tag = Tag.create(name: category.name, in: context)
-            
-            // Assign the tag to all scripts in this category
-            if let scripts = category.scripts as? Set<SelftalkScript> {
-                for script in scripts {
-                    script.addToTags(tag)
-                }
-            }
-        }
-        
-        // Save the context
-        do {
-            try context.save()
-            print("Successfully migrated \(categories.count) categories to tags")
-        } catch {
-            print("Failed to migrate categories to tags: \(error)")
-        }
-    }
 }
 
 extension Tag: Identifiable {
