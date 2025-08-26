@@ -13,7 +13,11 @@ final class AudioFileManager {
     init() {
         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         self.recordingsDirectory = documentsPath.appendingPathComponent("Recordings")
-        createRecordingsDirectoryIfNeeded()
+        do {
+            try createRecordingsDirectory()
+        } catch {
+            print("AudioFileManager: Failed to create recordings directory: \(error)")
+        }
     }
     
     // MARK: - Public Methods
@@ -33,18 +37,24 @@ final class AudioFileManager {
         FileManager.default.fileExists(atPath: audioURL(for: scriptId).path)
     }
     
-    /// Delete recording for a script
+    /// Delete recording for a script with proper error handling
     func deleteRecording(for scriptId: UUID) throws {
         // Delete the processed audio file
         let url = audioURL(for: scriptId)
-        if FileManager.default.fileExists(atPath: url.path) {
-            try FileManager.default.removeItem(at: url)
+        do {
+            try FileOperationHelper.deleteFile(at: url)
+        } catch {
+            print("AudioFileManager: Warning - Failed to delete processed audio: \(error)")
+            // Continue to try deleting original file even if processed file fails
         }
         
         // Delete the original audio file (used for transcription)
         let originalUrl = originalAudioURL(for: scriptId)
-        if FileManager.default.fileExists(atPath: originalUrl.path) {
-            try FileManager.default.removeItem(at: originalUrl)
+        do {
+            try FileOperationHelper.deleteFile(at: originalUrl)
+        } catch {
+            print("AudioFileManager: Warning - Failed to delete original audio: \(error)")
+            // Don't throw here as the files might already be deleted
         }
     }
     
@@ -76,16 +86,20 @@ final class AudioFileManager {
         return nil
     }
     
-    /// Get all recording URLs
+    /// Get all recording URLs with proper error handling
     func getAllRecordingURLs() -> [URL] {
         do {
+            // First ensure directory exists
+            try createRecordingsDirectory()
+            
             let urls = try FileManager.default.contentsOfDirectory(
                 at: recordingsDirectory,
-                includingPropertiesForKeys: nil,
+                includingPropertiesForKeys: [.fileSizeKey, .isRegularFileKey],
                 options: .skipsHiddenFiles
             )
             return urls.filter { $0.pathExtension == "m4a" }
         } catch {
+            print("AudioFileManager: Failed to get recording URLs: \(error)")
             return []
         }
     }
@@ -105,14 +119,15 @@ final class AudioFileManager {
         return totalSize
     }
     
+    /// Validate if an audio file is accessible and not corrupted
+    func validateAudioFile(for scriptId: UUID) throws {
+        let url = audioURL(for: scriptId)
+        try FileOperationHelper.validateAudioFile(at: url)
+    }
+    
     // MARK: - Private Methods
     
-    private func createRecordingsDirectoryIfNeeded() {
-        if !FileManager.default.fileExists(atPath: recordingsDirectory.path) {
-            try? FileManager.default.createDirectory(
-                at: recordingsDirectory,
-                withIntermediateDirectories: true
-            )
-        }
+    private func createRecordingsDirectory() throws {
+        try FileOperationHelper.createDirectory(at: recordingsDirectory)
     }
 }

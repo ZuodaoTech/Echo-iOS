@@ -385,13 +385,17 @@ final class AudioProcessingService {
         let audioURL = fileManager.audioURL(for: scriptId)
         let originalURL = fileManager.originalAudioURL(for: scriptId)
         
-        // Save original for transcription
+        // Save original for transcription with proper error handling
         do {
-            if FileManager.default.fileExists(atPath: originalURL.path) {
-                try FileManager.default.removeItem(at: originalURL)
-            }
-            try FileManager.default.copyItem(at: audioURL, to: originalURL)
+            // Check disk space before copying
+            try FileOperationHelper.checkAvailableDiskSpace()
+            
+            // Copy file with retry logic
+            try FileOperationHelper.copyFile(from: audioURL, to: originalURL)
             print("AudioProcessing: Saved original copy for transcription")
+        } catch let error as AudioServiceError {
+            print("AudioProcessing: Failed to save original - \(error.errorDescription ?? "")")
+            // Continue processing even if original copy fails
         } catch {
             print("AudioProcessing: Failed to save original: \(error)")
         }
@@ -423,10 +427,16 @@ final class AudioProcessingService {
         session.exportAsynchronously {
             switch session.status {
             case .completed:
-                // Replace original with trimmed version
+                // Replace original with trimmed version using proper error handling
                 do {
-                    try FileManager.default.removeItem(at: audioURL)
-                    try FileManager.default.moveItem(at: tempURL, to: audioURL)
+                    // Delete original file
+                    try FileOperationHelper.deleteFile(at: audioURL)
+                    
+                    // Move trimmed file to original location with retry
+                    try FileOperationHelper.moveFile(from: tempURL, to: audioURL)
+                    
+                    // Validate the new file
+                    try self.fileManager.validateAudioFile(for: scriptId)
                     
                     let duration = CMTimeGetSeconds(asset.duration)
                     let trimmedDuration = endTime - startTime
@@ -434,6 +444,17 @@ final class AudioProcessingService {
                     
                     DispatchQueue.main.async {
                         completion(true)
+                    }
+                } catch let error as AudioServiceError {
+                    print("AudioProcessing: File operation failed - \(error.errorDescription ?? "")")
+                    
+                    // Try to recover by keeping the original file
+                    if FileManager.default.fileExists(atPath: tempURL.path) {
+                        try? FileManager.default.removeItem(at: tempURL)
+                    }
+                    
+                    DispatchQueue.main.async {
+                        completion(false)
                     }
                 } catch {
                     print("AudioProcessing: Failed to replace file: \(error)")
