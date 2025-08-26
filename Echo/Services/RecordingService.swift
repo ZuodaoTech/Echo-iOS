@@ -99,8 +99,13 @@ final class RecordingService: NSObject, ObservableObject {
             audioRecorder?.prepareToRecord()
             
             guard audioRecorder?.record() == true else {
+                // Failed to start recording, reset state
+                sessionManager.transitionTo(.idle)
                 throw AudioServiceError.recordingFailed
             }
+            
+            // Successfully started recording
+            sessionManager.transitionTo(.recording)
             
             // Reset voice activity timestamps
             firstSpeakingTime = nil
@@ -146,6 +151,9 @@ final class RecordingService: NSObject, ObservableObject {
             }
         }
         
+        // Transition to transitioning state
+        sessionManager.transitionTo(.transitioning)
+        
         // This will trigger audioRecorderDidFinishRecording delegate
         recorder.stop()
         
@@ -163,10 +171,16 @@ final class RecordingService: NSObject, ObservableObject {
         let scriptId = currentRecordingScriptId
         let duration = recorder.currentTime
         
+        // Transition to transitioning state
+        sessionManager.transitionTo(.transitioning)
+        
         recorder.stop()
         stopRecordingTimer()
         
         audioRecorder = nil
+        
+        // Transition back to idle after stopping
+        sessionManager.transitionTo(.idle)
         
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -271,6 +285,9 @@ final class RecordingService: NSObject, ObservableObject {
 extension RecordingService: AVAudioRecorderDelegate {
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         print("Recording finished successfully: \(flag)")
+        
+        // Transition to idle state after recording finishes
+        sessionManager.transitionTo(.idle)
         
         // Save a copy of the original audio file for transcription
         if let scriptId = currentRecordingScriptId, flag {

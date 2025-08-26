@@ -171,6 +171,8 @@ final class PlaybackService: NSObject, ObservableObject {
                 
                 guard audioPlayer?.play() == true else {
                     print("PlaybackService: Failed to start playback after recovery attempt")
+                    // Failed to start playback, reset state
+                    sessionManager.transitionTo(.idle)
                     throw AudioServiceError.playbackFailed
                 }
                 
@@ -179,6 +181,9 @@ final class PlaybackService: NSObject, ObservableObject {
             } else {
                 print("PlaybackService: Playback started successfully")
             }
+            
+            // Successfully started playing
+            sessionManager.transitionTo(.playing)
             
             DispatchQueue.main.async {
                 self.isPlaying = true
@@ -198,6 +203,9 @@ final class PlaybackService: NSObject, ObservableObject {
     /// Pause current playback
     func pausePlayback() {
         guard isInPlaybackSession else { return }
+        
+        // Transition to paused state
+        sessionManager.transitionTo(.paused)
         
         if isInInterval {
             // Pausing during interval
@@ -231,6 +239,9 @@ final class PlaybackService: NSObject, ObservableObject {
     func resumePlayback() {
         guard isPaused && isInPlaybackSession else { return }
         
+        // Transition back to playing state
+        sessionManager.transitionTo(.playing)
+        
         if isInInterval {
             resumeInterval()
         } else if let player = audioPlayer {
@@ -254,6 +265,9 @@ final class PlaybackService: NSObject, ObservableObject {
     
     /// Stop playback completely
     func stopPlayback() {
+        // Transition to transitioning, then idle
+        sessionManager.transitionTo(.transitioning)
+        
         audioPlayer?.stop()
         audioPlayer = nil
         
@@ -270,6 +284,9 @@ final class PlaybackService: NSObject, ObservableObject {
         
         stopIntervalTimer()
         stopProgressTimer()
+        
+        // Transition to idle after cleanup
+        sessionManager.transitionTo(.idle)
         
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
