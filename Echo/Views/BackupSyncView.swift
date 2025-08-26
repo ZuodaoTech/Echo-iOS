@@ -1,5 +1,4 @@
 import SwiftUI
-import UniformTypeIdentifiers
 
 struct BackupSyncView: View {
     @Environment(\.dismiss) private var dismiss
@@ -7,11 +6,6 @@ struct BackupSyncView: View {
     
     @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = true
     
-    @State private var showingExportOptions = false
-    @State private var showingDocumentPicker = false
-    @State private var exportProgress: String?
-    @State private var showingImportAlert = false
-    @State private var importAlertMessage = ""
     
     var body: some View {
         NavigationView {
@@ -48,33 +42,7 @@ struct BackupSyncView: View {
                     Text(NSLocalizedString("settings.sync", comment: ""))
                 }
                 
-                Section {
-                    Button {
-                        showingExportOptions = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "square.and.arrow.up")
-                            Text(NSLocalizedString("settings.export_scripts", comment: ""))
-                            Spacer()
-                            if let progress = exportProgress {
-                                Text(progress)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                    }
-                    
-                    Button {
-                        showingDocumentPicker = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "square.and.arrow.down")
-                            Text(NSLocalizedString("settings.import_scripts", comment: ""))
-                        }
-                    }
-                } header: {
-                    Text(NSLocalizedString("settings.backup", comment: ""))
-                }
+                // Import/Export functionality removed
             }
             .navigationTitle(NSLocalizedString("settings.backup_sync", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
@@ -85,42 +53,6 @@ struct BackupSyncView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showingExportOptions) {
-                ExportOptionsView(exportProgress: $exportProgress)
-            }
-            .sheet(isPresented: $showingDocumentPicker) {
-                DocumentPicker(
-                    allowedContentTypes: [
-                        UTType(filenameExtension: "echo") ?? .data
-                    ]
-                ) { url in
-                    Task {
-                        await handleImport(from: url)
-                    }
-                }
-            }
-            .alert(NSLocalizedString("import.complete_title", comment: ""), isPresented: $showingImportAlert) {
-                Button(NSLocalizedString("action.ok", comment: ""), role: .cancel) { }
-            } message: {
-                Text(importAlertMessage)
-            }
-        }
-    }
-    
-    private func handleImport(from url: URL) async {
-        let importService = ImportService()
-        let result = await importService.importBundle(
-            from: url,
-            conflictResolution: .skip,
-            context: viewContext
-        )
-        
-        await MainActor.run {
-            importAlertMessage = result.summary
-            if !result.errors.isEmpty {
-                importAlertMessage += "\n\nErrors:\n" + result.errors.joined(separator: "\n")
-            }
-            showingImportAlert = true
         }
     }
 }

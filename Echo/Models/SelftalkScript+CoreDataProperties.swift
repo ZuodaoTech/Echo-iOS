@@ -17,7 +17,6 @@ extension SelftalkScript: Identifiable {
     @NSManaged public var updatedAt: Date
     @NSManaged public var lastPlayedAt: Date?
     @NSManaged public var playCount: Int32
-    @NSManaged public var category: Category?
     @NSManaged public var transcribedText: String?
     @NSManaged public var transcriptionLanguage: String?
     @NSManaged public var notificationEnabled: Bool

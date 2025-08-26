@@ -77,9 +77,9 @@ class NotificationManager: NSObject, ObservableObject {
                     "hasAudio": script.hasRecording
                 ]
                 
-                // Add subtitle if there's a category
-                if let category = script.category {
-                    content.subtitle = category.name
+                // Add subtitle if there are tags
+                if !script.tagsArray.isEmpty {
+                    content.subtitle = script.tagsArray.map { $0.name }.joined(separator: ", ")
                 }
                 
                 let trigger = UNCalendarNotificationTrigger(

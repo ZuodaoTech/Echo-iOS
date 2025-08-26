@@ -308,8 +308,8 @@ private struct NotificationCardSelectionView: View {
                                 .lineLimit(2)
                                 .font(.subheadline)
                             
-                            if let category = script.category {
-                                Text(category.name)
+                            if !script.tagsArray.isEmpty {
+                                Text(script.tagsArray.map { $0.name }.joined(separator: ", "))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                             }
