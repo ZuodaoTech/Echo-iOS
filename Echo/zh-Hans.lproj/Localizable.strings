@@ -39,7 +39,7 @@
 "script.no_recording" = "无录音";
 "script.repetitions" = "重复次数";
 "script.interval" = "间隔";
-"script.privacy_mode" = "隐私模式";
+"script.private_mode" = "隐私模式";
 "script.delete" = "删除卡片";
 "script.delete.confirm.title" = "删除卡片";
 "script.delete.confirm.message" = "确定要删除这个脚本吗？此操作无法撤销。";
@@ -56,10 +56,10 @@
 "settings.about" = "关于";
 "settings.support" = "支持";
 
-"settings.privacy_mode.title" = "隐私模式";
-"settings.privacy_mode.info" = "音频仅通过耳机播放";
-"settings.privacy_mode.alert.title" = "隐私模式";
-"settings.privacy_mode.alert.message" = "启用隐私模式时，音频录音将仅通过连接的耳机或耳麦播放。这可以防止在公共场所意外通过扬声器播放。";
+"settings.private_mode.title" = "隐私模式";
+"settings.private_mode.info" = "音频仅通过耳机播放";
+"settings.private_mode.alert.title" = "隐私模式";
+"settings.private_mode.alert.message" = "启用隐私模式时，音频录音将仅通过连接的耳机或耳麦播放。这可以防止在公共场所意外通过扬声器播放。";
 
 "settings.character_guidance" = "字符指导";
 "settings.recommended_length" = "推荐长度";

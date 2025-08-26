@@ -1,12 +1,12 @@
 import AVFoundation
 import Combine
 
-/// Manages audio session configuration and privacy mode detection
+/// Manages audio session configuration and private mode detection
 final class AudioSessionManager: ObservableObject {
     
     // MARK: - Published Properties
     
-    @Published var privacyModeActive = false
+    @Published var privateModeActive = false
     @Published var isMicrophonePermissionGranted = false
     
     // MARK: - Properties
@@ -26,7 +26,7 @@ final class AudioSessionManager: ObservableObject {
     init() {
         setupAudioSession()
         setupNotifications()
-        checkPrivacyMode()
+        checkPrivateMode()
         checkMicrophonePermission()
     }
     
@@ -93,8 +93,8 @@ final class AudioSessionManager: ObservableObject {
         }
     }
     
-    /// Check if earphones are connected (for privacy mode)
-    func checkPrivacyMode() {
+    /// Check if earphones are connected (for private mode)
+    func checkPrivateMode() {
         let currentRoute = audioSession.currentRoute
         var hasEarphones = false
         
@@ -110,7 +110,7 @@ final class AudioSessionManager: ObservableObject {
         }
         
         DispatchQueue.main.async {
-            self.privacyModeActive = !hasEarphones
+            self.privateModeActive = !hasEarphones
         }
     }
     
@@ -149,7 +149,7 @@ final class AudioSessionManager: ObservableObject {
     private func setupNotifications() {
         NotificationCenter.default.publisher(for: AVAudioSession.routeChangeNotification)
             .sink { [weak self] _ in
-                self?.checkPrivacyMode()
+                self?.checkPrivateMode()
             }
             .store(in: &cancellables)
         

@@ -39,7 +39,7 @@
 "script.no_recording" = "Geen opname";
 "script.repetitions" = "Herhalingen";
 "script.interval" = "Interval";
-"script.privacy_mode" = "Privacymodus";
+"script.private_mode" = "Privacymodus";
 "script.delete" = "Kaart Verwijderen";
 "script.delete.confirm.title" = "Kaart Verwijderen";
 "script.delete.confirm.message" = "Weet je zeker dat je dit script wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.";
@@ -56,10 +56,10 @@
 "settings.about" = "Over";
 "settings.support" = "Ondersteuning";
 
-"settings.privacy_mode.title" = "Privacymodus";
-"settings.privacy_mode.info" = "Audio speelt alleen af via oortelefoons";
-"settings.privacy_mode.alert.title" = "Privacymodus";
-"settings.privacy_mode.alert.message" = "Wanneer de Privacymodus is ingeschakeld, worden audio-opnames alleen afgespeeld via aangesloten oortelefoons of headsets. Dit voorkomt onbedoelde weergave via luidsprekers in openbare ruimtes.";
+"settings.private_mode.title" = "Privacymodus";
+"settings.private_mode.info" = "Audio speelt alleen af via oortelefoons";
+"settings.private_mode.alert.title" = "Privacymodus";
+"settings.private_mode.alert.message" = "Wanneer de Privacymodus is ingeschakeld, worden audio-opnames alleen afgespeeld via aangesloten oortelefoons of headsets. Dit voorkomt onbedoelde weergave via luidsprekers in openbare ruimtes.";
 
 "settings.character_guidance" = "Karakterbegeleiding";
 "settings.recommended_length" = "Aanbevolen lengte";

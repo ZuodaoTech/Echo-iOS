@@ -39,7 +39,7 @@
 "script.no_recording" = "Ingen opptak";
 "script.repetitions" = "Repetisjoner";
 "script.interval" = "Intervall";
-"script.privacy_mode" = "Personvernmodus";
+"script.private_mode" = "Personvernmodus";
 "script.delete" = "Slett Kort";
 "script.delete.confirm.title" = "Slett Kort";
 "script.delete.confirm.message" = "Er du sikker på at du vil slette dette skriptet? Denne handlingen kan ikke angres.";
@@ -56,10 +56,10 @@
 "settings.about" = "Om";
 "settings.support" = "Støtte";
 
-"settings.privacy_mode.title" = "Personvernmodus";
-"settings.privacy_mode.info" = "Lyd spilles kun gjennom øretelefoner";
-"settings.privacy_mode.alert.title" = "Personvernmodus";
-"settings.privacy_mode.alert.message" = "Når Personvernmodus er aktivert, vil lydopptak kun spilles gjennom tilkoblede øretelefoner eller hodesett. Dette forhindrer utilsiktet avspilling gjennom høyttalere i offentlige rom.";
+"settings.private_mode.title" = "Personvernmodus";
+"settings.private_mode.info" = "Lyd spilles kun gjennom øretelefoner";
+"settings.private_mode.alert.title" = "Personvernmodus";
+"settings.private_mode.alert.message" = "Når Personvernmodus er aktivert, vil lydopptak kun spilles gjennom tilkoblede øretelefoner eller hodesett. Dette forhindrer utilsiktet avspilling gjennom høyttalere i offentlige rom.";
 
 "settings.character_guidance" = "Tegn Veiledning";
 "settings.recommended_length" = "Anbefalt lengde";

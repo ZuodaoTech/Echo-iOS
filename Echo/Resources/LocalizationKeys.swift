@@ -30,7 +30,7 @@ enum L10n {
         static let noRecording = "script.no_recording"
         static let repetitions = "script.repetitions"
         static let interval = "script.interval"
-        static let privacyMode = "script.privacy_mode"
+        static let privateMode = "script.private_mode"
         static let deleteScript = "script.delete"
         static let deleteConfirmTitle = "script.delete.confirm.title"
         static let deleteConfirmMessage = "script.delete.confirm.message"
@@ -46,10 +46,10 @@ enum L10n {
         static let about = "settings.about"
         static let support = "settings.support"
         
-        static let privacyModeTitle = "settings.privacy_mode.title"
-        static let privacyModeInfo = "settings.privacy_mode.info"
-        static let privacyModeAlertTitle = "settings.privacy_mode.alert.title"
-        static let privacyModeAlertMessage = "settings.privacy_mode.alert.message"
+        static let privateModeTitle = "settings.private_mode.title"
+        static let privateModeInfo = "settings.private_mode.info"
+        static let privateModeAlertTitle = "settings.private_mode.alert.title"
+        static let privateModeAlertMessage = "settings.private_mode.alert.message"
         
         static let characterGuidance = "settings.character_guidance"
         static let recommendedLength = "settings.recommended_length"

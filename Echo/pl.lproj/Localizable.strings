@@ -39,7 +39,7 @@
 "script.no_recording" = "Brak nagrania";
 "script.repetitions" = "Powtórzenia";
 "script.interval" = "Interwał";
-"script.privacy_mode" = "Tryb Prywatności";
+"script.private_mode" = "Tryb Prywatności";
 "script.delete" = "Usuń Kartę";
 "script.delete.confirm.title" = "Usuń Kartę";
 "script.delete.confirm.message" = "Czy na pewno chcesz usunąć ten skrypt? Tej akcji nie można cofnąć.";
@@ -56,10 +56,10 @@
 "settings.about" = "O aplikacji";
 "settings.support" = "Wsparcie";
 
-"settings.privacy_mode.title" = "Tryb Prywatności";
-"settings.privacy_mode.info" = "Dźwięk odtwarzany tylko przez słuchawki";
-"settings.privacy_mode.alert.title" = "Tryb Prywatności";
-"settings.privacy_mode.alert.message" = "Kiedy Tryb Prywatności jest włączony, nagrania audio będą odtwarzane tylko przez podłączone słuchawki lub zestaw słuchawkowy. Zapobiega to przypadkowemu odtwarzaniu przez głośniki w miejscach publicznych.";
+"settings.private_mode.title" = "Tryb Prywatności";
+"settings.private_mode.info" = "Dźwięk odtwarzany tylko przez słuchawki";
+"settings.private_mode.alert.title" = "Tryb Prywatności";
+"settings.private_mode.alert.message" = "Kiedy Tryb Prywatności jest włączony, nagrania audio będą odtwarzane tylko przez podłączone słuchawki lub zestaw słuchawkowy. Zapobiega to przypadkowemu odtwarzaniu przez głośniki w miejscach publicznych.";
 
 "settings.character_guidance" = "Poradnik Znaków";
 "settings.recommended_length" = "Zalecana długość";

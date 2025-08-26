@@ -11,7 +11,7 @@
         <attribute name="notificationEnabledAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="notificationFrequency" optional="YES" attributeType="String" defaultValueString="medium"/>
         <attribute name="playCount" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="privacyModeEnabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="privateModeEnabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="repetitions" attributeType="Integer 16" defaultValueString="3" usesScalarValueType="YES"/>
         <attribute name="scriptText" attributeType="String" defaultValueString=""/>
         <attribute name="transcribedText" optional="YES" attributeType="String"/>

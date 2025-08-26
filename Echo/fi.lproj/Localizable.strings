@@ -39,7 +39,7 @@
 "script.no_recording" = "Ei tallennetta";
 "script.repetitions" = "Toistot";
 "script.interval" = "Väli";
-"script.privacy_mode" = "Yksityisyystila";
+"script.private_mode" = "Yksityisyystila";
 "script.delete" = "Poista Kortti";
 "script.delete.confirm.title" = "Poista Kortti";
 "script.delete.confirm.message" = "Oletko varma, että haluat poistaa tämän skriptin? Tätä toimintoa ei voi peruuttaa.";
@@ -56,10 +56,10 @@
 "settings.about" = "Tietoja";
 "settings.support" = "Tuki";
 
-"settings.privacy_mode.title" = "Yksityisyystila";
-"settings.privacy_mode.info" = "Ääni toistuu vain kuulokkeiden kautta";
-"settings.privacy_mode.alert.title" = "Yksityisyystila";
-"settings.privacy_mode.alert.message" = "Kun Yksityisyystila on käytössä, äänitallenteet toistetaan vain liitettyjen kuulokkeiden tai kuulokemikrofonien kautta. Tämä estää tahattoman toiston kaiuttimien kautta julkisissa tiloissa.";
+"settings.private_mode.title" = "Yksityisyystila";
+"settings.private_mode.info" = "Ääni toistuu vain kuulokkeiden kautta";
+"settings.private_mode.alert.title" = "Yksityisyystila";
+"settings.private_mode.alert.message" = "Kun Yksityisyystila on käytössä, äänitallenteet toistetaan vain liitettyjen kuulokkeiden tai kuulokemikrofonien kautta. Tämä estää tahattoman toiston kaiuttimien kautta julkisissa tiloissa.";
 
 "settings.character_guidance" = "Merkkiohjeistus";
 "settings.recommended_length" = "Suositeltu pituus";

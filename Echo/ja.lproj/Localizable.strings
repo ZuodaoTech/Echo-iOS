@@ -39,7 +39,7 @@
 "script.no_recording" = "録音なし";
 "script.repetitions" = "繰り返し回数";
 "script.interval" = "間隔";
-"script.privacy_mode" = "プライベートモード";
+"script.private_mode" = "プライベートモード";
 "script.delete" = "カードを削除";
 "script.delete.confirm.title" = "カードを削除";
 "script.delete.confirm.message" = "このスクリプトを削除してもよろしいですか？この操作は取り消せません。";
@@ -56,10 +56,10 @@
 "settings.about" = "About";
 "settings.support" = "サポート";
 
-"settings.privacy_mode.title" = "プライベートモード";
-"settings.privacy_mode.info" = "音声はヘッドフォンでのみ再生";
-"settings.privacy_mode.alert.title" = "プライベートモード";
-"settings.privacy_mode.alert.message" = "プライベートモードが有効な場合、音声録音は接続されたヘッドフォンやヘッドセットでのみ再生されます。これにより公共の場でスピーカーから誤って再生されることを防げます。";
+"settings.private_mode.title" = "プライベートモード";
+"settings.private_mode.info" = "音声はヘッドフォンでのみ再生";
+"settings.private_mode.alert.title" = "プライベートモード";
+"settings.private_mode.alert.message" = "プライベートモードが有効な場合、音声録音は接続されたヘッドフォンやヘッドセットでのみ再生されます。これにより公共の場でスピーカーから誤って再生されることを防げます。";
 
 "settings.character_guidance" = "文字ガイダンス";
 "settings.recommended_length" = "推奨長さ";

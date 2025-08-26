@@ -6,7 +6,7 @@ struct CardSettingsView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     // Default Settings
-    @AppStorage("privacyModeDefault") private var privacyModeDefault = true
+    @AppStorage("privateModeDefault") private var privateModeDefault = true
     @AppStorage("defaultRepetitions") private var defaultRepetitions = 3
     @AppStorage("defaultInterval") private var defaultInterval = 2.0
     
@@ -33,7 +33,7 @@ struct CardSettingsView: View {
         predicate: NSPredicate(format: "notificationEnabled == YES")
     ) private var notificationEnabledScripts: FetchedResults<SelftalkScript>
     
-    @State private var showingPrivacyModeInfo = false
+    @State private var showingPrivateModeInfo = false
     @State private var showingCardSelection = false
     @State private var cardsToDisable: Set<UUID> = []
     @State private var previousMaxCards = 1
@@ -43,11 +43,11 @@ struct CardSettingsView: View {
             List {
                 // Card Defaults Section
                 Section(NSLocalizedString("settings.card_defaults", comment: "")) {
-                    Toggle(isOn: $privacyModeDefault) {
+                    Toggle(isOn: $privateModeDefault) {
                         HStack {
-                            Text(NSLocalizedString("settings.privacy_mode.title", comment: ""))
+                            Text(NSLocalizedString("settings.private_mode.title", comment: ""))
                             Button {
-                                showingPrivacyModeInfo = true
+                                showingPrivateModeInfo = true
                             } label: {
                                 Image(systemName: "info.circle")
                                     .font(.system(size: 16))
@@ -211,10 +211,10 @@ struct CardSettingsView: View {
                     }
                 }
             }
-            .alert(NSLocalizedString("settings.privacy_mode.title", comment: ""), isPresented: $showingPrivacyModeInfo) {
+            .alert(NSLocalizedString("settings.private_mode.title", comment: ""), isPresented: $showingPrivateModeInfo) {
                 Button(NSLocalizedString("action.got_it", comment: ""), role: .cancel) { }
             } message: {
-                Text(NSLocalizedString("settings.privacy_mode.alert.message", comment: ""))
+                Text(NSLocalizedString("settings.private_mode.alert.message", comment: ""))
             }
             .onChange(of: maxNotificationCards) { newValue in
                 handleMaxCardsChange(from: previousMaxCards, to: newValue)

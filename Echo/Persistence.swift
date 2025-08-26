@@ -39,7 +39,7 @@ class PersistenceController: ObservableObject {
         let script1 = SelftalkScript.create(
             scriptText: NSLocalizedString("sample.smoking", comment: ""),
             repetitions: 3,
-            privacyMode: true,
+            privateMode: true,
             in: viewContext
         )
         script1.addToTags(nowTag)
@@ -48,7 +48,7 @@ class PersistenceController: ObservableObject {
         let script2 = SelftalkScript.create(
             scriptText: NSLocalizedString("sample.bedtime", comment: ""),
             repetitions: 3,
-            privacyMode: true,
+            privateMode: true,
             in: viewContext
         )
         script2.addToTags(nowTag)
@@ -57,7 +57,7 @@ class PersistenceController: ObservableObject {
         let script3 = SelftalkScript.create(
             scriptText: NSLocalizedString("sample.mistakes", comment: ""),
             repetitions: 3,
-            privacyMode: true,
+            privateMode: true,
             in: viewContext
         )
         script3.addToTags(nowTag)

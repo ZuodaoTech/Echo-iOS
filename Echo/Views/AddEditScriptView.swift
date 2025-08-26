@@ -23,7 +23,7 @@ struct AddEditScriptView: View {
     @State private var selectedTags: Set<Tag> = []
     @State private var repetitions: Int16 = 3
     @State private var intervalSeconds: Double = 2.0
-    @State private var privacyModeEnabled = true
+    @State private var privateModeEnabled = true
     @State private var transcriptionLanguage = UserDefaults.standard.string(forKey: "defaultTranscriptionLanguage") ?? "en-US"
     @State private var notificationEnabled = false
     @State private var notificationFrequency = "medium"
@@ -33,7 +33,7 @@ struct AddEditScriptView: View {
     @State private var transcriptCheckTimer: Timer? = nil
     @State private var isRetranscribing = false
     @State private var showingMicPermissionAlert = false
-    @State private var showingPrivacyAlert = false
+    @State private var showingPrivateAlert = false
     @State private var showingDeleteAlert = false
     @State private var showingErrorAlert = false
     @State private var errorMessage = ""
@@ -323,12 +323,12 @@ struct AddEditScriptView: View {
                         }
                     }
                     
-                    // Privacy Mode Toggle
-                    Toggle(isOn: $privacyModeEnabled) {
+                    // Private Mode Toggle
+                    Toggle(isOn: $privateModeEnabled) {
                         HStack {
-                            Text(NSLocalizedString("script.privacy_mode", comment: ""))
+                            Text(NSLocalizedString("script.private_mode", comment: ""))
                             Button {
-                                showingPrivacyAlert = true
+                                showingPrivateAlert = true
                             } label: {
                                 Image(systemName: "info.circle")
                                     .font(.system(size: 16))
@@ -337,14 +337,14 @@ struct AddEditScriptView: View {
                             .buttonStyle(PlainButtonStyle())
                         }
                     }
-                    .onChange(of: privacyModeEnabled) { newValue in
-                        // Apply privacy mode change immediately
+                    .onChange(of: privateModeEnabled) { newValue in
+                        // Apply private mode change immediately
                         if let script = script {
-                            script.privacyModeEnabled = newValue
+                            script.privateModeEnabled = newValue
                             do {
                                 try viewContext.save()
                             } catch {
-                                print("Failed to save privacy mode change: \(error)")
+                                print("Failed to save private mode change: \(error)")
                             }
                         }
                     }
@@ -438,10 +438,10 @@ struct AddEditScriptView: View {
             } message: {
                 Text(NSLocalizedString("recording.microphone_access.message", comment: ""))
             }
-            .alert(NSLocalizedString("settings.privacy_mode.title", comment: ""), isPresented: $showingPrivacyAlert) {
+            .alert(NSLocalizedString("settings.private_mode.title", comment: ""), isPresented: $showingPrivateAlert) {
                 Button(NSLocalizedString("action.got_it", comment: ""), role: .cancel) { }
             } message: {
-                Text(NSLocalizedString("settings.privacy_mode.alert.message", comment: ""))
+                Text(NSLocalizedString("settings.private_mode.alert.message", comment: ""))
             }
             .alert(NSLocalizedString("script.delete.confirm.title", comment: ""), isPresented: $showingDeleteAlert) {
                 Button(NSLocalizedString("action.cancel", comment: ""), role: .cancel) { }
@@ -514,7 +514,7 @@ struct AddEditScriptView: View {
             selectedTags = Set(script.tagsArray)
             repetitions = script.repetitions
             intervalSeconds = script.intervalSeconds
-            privacyModeEnabled = script.privacyModeEnabled
+            privateModeEnabled = script.privateModeEnabled
             notificationEnabled = script.notificationEnabled
             notificationFrequency = script.notificationFrequency ?? "medium"
             // If script has "auto" or nil, default to English
@@ -574,7 +574,7 @@ struct AddEditScriptView: View {
             }
             existingScript.repetitions = repetitions
             existingScript.intervalSeconds = intervalSeconds
-            existingScript.privacyModeEnabled = privacyModeEnabled
+            existingScript.privateModeEnabled = privateModeEnabled
             existingScript.transcriptionLanguage = transcriptionLanguage
             existingScript.updatedAt = Date()
         } else if !trimmedText.isEmpty {
@@ -583,7 +583,7 @@ struct AddEditScriptView: View {
                 scriptText: trimmedText,
                 repetitions: repetitions,
                 intervalSeconds: intervalSeconds,
-                privacyMode: privacyModeEnabled,
+                privateMode: privateModeEnabled,
                 in: viewContext
             )
             // Add selected tags
@@ -747,8 +747,8 @@ struct AddEditScriptView: View {
                 
                 // Restore original repetitions
                 script.repetitions = originalRepetitions
-            } catch AudioServiceError.privacyModeActive {
-                showingPrivacyAlert = true
+            } catch AudioServiceError.privateModeActive {
+                showingPrivateAlert = true
             } catch {
                 // Preview playback error
             }

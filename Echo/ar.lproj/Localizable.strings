@@ -39,7 +39,7 @@
 "script.no_recording" = "لا يوجد تسجيل";
 "script.repetitions" = "التكرارات";
 "script.interval" = "الفاصل الزمني";
-"script.privacy_mode" = "وضع الخصوصية";
+"script.private_mode" = "وضع الخصوصية";
 "script.delete" = "حذف البطاقة";
 "script.delete.confirm.title" = "حذف البطاقة";
 "script.delete.confirm.message" = "هل أنت متأكد من أنك تريد حذف هذا السكريبت؟ هذا الإجراء لا يمكن التراجع عنه.";
@@ -56,10 +56,10 @@
 "settings.about" = "حول";
 "settings.support" = "الدعم";
 
-"settings.privacy_mode.title" = "وضع الخصوصية";
-"settings.privacy_mode.info" = "الصوت يتم تشغيله فقط من خلال سماعات الأذن";
-"settings.privacy_mode.alert.title" = "وضع الخصوصية";
-"settings.privacy_mode.alert.message" = "عندما يكون وضع الخصوصية مُفعلاً، سيتم تشغيل التسجيلات الصوتية فقط من خلال سماعات الأذن أو سماعات الرأس المتصلة. هذا يمنع التشغيل العرضي من خلال مكبرات الصوت في الأماكن العامة.";
+"settings.private_mode.title" = "وضع الخصوصية";
+"settings.private_mode.info" = "الصوت يتم تشغيله فقط من خلال سماعات الأذن";
+"settings.private_mode.alert.title" = "وضع الخصوصية";
+"settings.private_mode.alert.message" = "عندما يكون وضع الخصوصية مُفعلاً، سيتم تشغيل التسجيلات الصوتية فقط من خلال سماعات الأذن أو سماعات الرأس المتصلة. هذا يمنع التشغيل العرضي من خلال مكبرات الصوت في الأماكن العامة.";
 
 "settings.character_guidance" = "إرشادات الأحرف";
 "settings.recommended_length" = "الطول الموصى به";

@@ -59,15 +59,15 @@ final class PlaybackService: NSObject, ObservableObject {
         scriptId: UUID,
         repetitions: Int,
         intervalSeconds: TimeInterval,
-        privacyModeEnabled: Bool
+        privateModeEnabled: Bool
     ) throws {
         print("PlaybackService: Starting playback for script \(scriptId)")
-        print("Privacy mode enabled: \(privacyModeEnabled), active: \(sessionManager.privacyModeActive)")
+        print("Private mode enabled: \(privateModeEnabled), active: \(sessionManager.privateModeActive)")
         
-        // Check privacy mode
-        if privacyModeEnabled && sessionManager.privacyModeActive {
-            print("PlaybackService: Blocked by privacy mode")
-            throw AudioServiceError.privacyModeActive
+        // Check private mode
+        if privateModeEnabled && sessionManager.privateModeActive {
+            print("PlaybackService: Blocked by private mode")
+            throw AudioServiceError.privateModeActive
         }
         
         // Check if file exists

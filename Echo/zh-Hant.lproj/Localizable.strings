@@ -39,7 +39,7 @@
 "script.no_recording" = "無錄音";
 "script.repetitions" = "重複次數";
 "script.interval" = "間隔";
-"script.privacy_mode" = "隱私模式";
+"script.private_mode" = "隱私模式";
 "script.delete" = "刪除卡片";
 "script.delete.confirm.title" = "刪除卡片";
 "script.delete.confirm.message" = "確定要刪除這個腳本嗎？此操作無法撤銷。";
@@ -56,10 +56,10 @@
 "settings.about" = "關於";
 "settings.support" = "支援";
 
-"settings.privacy_mode.title" = "隱私模式";
-"settings.privacy_mode.info" = "音訊僅透過耳機播放";
-"settings.privacy_mode.alert.title" = "隱私模式";
-"settings.privacy_mode.alert.message" = "啟用隱私模式時，音訊錄音將僅透過連接的耳機或耳麥播放。這可以防止在公共場所意外透過揚聲器播放。";
+"settings.private_mode.title" = "隱私模式";
+"settings.private_mode.info" = "音訊僅透過耳機播放";
+"settings.private_mode.alert.title" = "隱私模式";
+"settings.private_mode.alert.message" = "啟用隱私模式時，音訊錄音將僅透過連接的耳機或耳麥播放。這可以防止在公共場所意外透過揚聲器播放。";
 
 "settings.character_guidance" = "字元指導";
 "settings.recommended_length" = "建議長度";

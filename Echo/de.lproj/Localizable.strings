@@ -39,7 +39,7 @@
 "script.no_recording" = "Keine Aufnahme";
 "script.repetitions" = "Wiederholungen";
 "script.interval" = "Intervall";
-"script.privacy_mode" = "Privatsphäre Modus";
+"script.private_mode" = "Privatsphäre Modus";
 "script.delete" = "Karte Löschen";
 "script.delete.confirm.title" = "Karte Löschen";
 "script.delete.confirm.message" = "Sind Sie sicher, dass Sie dieses Skript löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.";
@@ -56,10 +56,10 @@
 "settings.about" = "Über";
 "settings.support" = "Support";
 
-"settings.privacy_mode.title" = "Privatsphäre Modus";
-"settings.privacy_mode.info" = "Audio spielt nur über Kopfhörer";
-"settings.privacy_mode.alert.title" = "Privatsphäre Modus";
-"settings.privacy_mode.alert.message" = "Wenn der Privatsphäre Modus aktiviert ist, werden Audioaufnahmen nur über angeschlossene Kopfhörer oder Headsets abgespielt. Dies verhindert versehentliche Wiedergabe über Lautsprecher in öffentlichen Räumen.";
+"settings.private_mode.title" = "Privatsphäre Modus";
+"settings.private_mode.info" = "Audio spielt nur über Kopfhörer";
+"settings.private_mode.alert.title" = "Privatsphäre Modus";
+"settings.private_mode.alert.message" = "Wenn der Privatsphäre Modus aktiviert ist, werden Audioaufnahmen nur über angeschlossene Kopfhörer oder Headsets abgespielt. Dies verhindert versehentliche Wiedergabe über Lautsprecher in öffentlichen Räumen.";
 
 "settings.character_guidance" = "Zeichen-Führung";
 "settings.recommended_length" = "Empfohlene Länge";
