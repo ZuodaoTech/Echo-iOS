@@ -21,23 +21,23 @@ class PersistenceController: ObservableObject {
         let nowTag = Tag.createOrGetNowTag(context: viewContext)
         
         let breakingBadHabitsTag = Tag.create(
-            name: "Breaking Bad Habits",
+            name: NSLocalizedString("tag.breaking_bad_habits", comment: ""),
             in: viewContext
         )
         
         let buildingGoodHabitsTag = Tag.create(
-            name: "Building Good Habits",
+            name: NSLocalizedString("tag.building_good_habits", comment: ""),
             in: viewContext
         )
         
         let appropriatePositivityTag = Tag.create(
-            name: "Appropriate Positivity",
+            name: NSLocalizedString("tag.appropriate_positivity", comment: ""),
             in: viewContext
         )
         
         // Create sample scripts
         let script1 = SelftalkScript.create(
-            scriptText: "I never smoke, because it stinks, and I hate being controlled.",
+            scriptText: NSLocalizedString("sample.smoking", comment: ""),
             repetitions: 3,
             privacyMode: true,
             in: viewContext
@@ -46,7 +46,7 @@ class PersistenceController: ObservableObject {
         script1.addToTags(breakingBadHabitsTag)
         
         let script2 = SelftalkScript.create(
-            scriptText: "I always go to bed before 10 p.m., because it's healthier, and I love waking up with a lot of energy.",
+            scriptText: NSLocalizedString("sample.bedtime", comment: ""),
             repetitions: 3,
             privacyMode: true,
             in: viewContext
@@ -55,7 +55,7 @@ class PersistenceController: ObservableObject {
         script2.addToTags(buildingGoodHabitsTag)
         
         let script3 = SelftalkScript.create(
-            scriptText: "I made a few mistakes, but I also did several things well. Mistakes are a normal part of learning, and I can use them as an opportunity to improve.",
+            scriptText: NSLocalizedString("sample.mistakes", comment: ""),
             repetitions: 3,
             privacyMode: true,
             in: viewContext

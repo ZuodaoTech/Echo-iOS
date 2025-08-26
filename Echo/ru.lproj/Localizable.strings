@@ -1,53 +1,236 @@
 /* 
   Localizable.strings (Russian)
   Echo
+  
+  Russian localization file for Echo app
 */
 
 // MARK: - Navigation & Titles
 "navigation.cards" = "Карточки";
 "navigation.me" = "Я";
-"navigation.new_script" = "Новый скрипт";
-"navigation.edit_script" = "Редактировать скрипт";
-
-
-
-// MARK: - Tags
-"tag.now" = "Сейчас";
-"tag.untagged" = "Без тегов";
-"tag.edit" = "Редактировать теги";
-"tag.delete.confirm.title" = "Удалить тег";
-"tag.delete.confirm.message" = "Этот тег используется %d скриптами. Удаление удалит тег из этих скриптов.";
-"tag.max_now_cards" = "Макс. карточек 'Сейчас'";
-"tag.now_limit_reached" = "Лимит тега Сейчас";
-"tag.now_limit_message" = "Вы достигли максимального количества карточек 'Сейчас' (%d). Выберите карточку для удаления тега 'Сейчас':";
-"tag.auto_cleanup" = "Автоудаление неиспользуемых тегов";
-
-/* 
-  Localizable.strings (Russian)
-  Echo
-*/
-
-// MARK: - Navigation & Titles
-"navigation.cards" = "Карточки";
-"navigation.me" = "Я";
-"navigation.new_script" = "Новый скрипт";
-"navigation.edit_script" = "Редактировать скрипт";
-
+"navigation.new_script" = "Новая Карточка";
+"navigation.edit_script" = "Редактировать Карточку";
 
 
 // MARK: - Tags
 "tag.now" = "Сейчас";
-"tag.untagged" = "Без тегов";
-"tag.edit" = "Редактировать теги";
-"tag.delete.confirm.title" = "Удалить тег";
+"tag.untagged" = "Без тега";
+"tag.edit" = "Редактировать Тег";
+"tag.delete.confirm.title" = "Удалить Тег";
 "tag.delete.confirm.message" = "Этот тег используется %d скриптами. Удаление удалит тег из этих скриптов.";
-"tag.max_now_cards" = "Макс. карточек 'Сейчас'";
-"tag.now_limit_reached" = "Лимит тега Сейчас";
-"tag.now_limit_message" = "Вы достигли максимального количества карточек 'Сейчас' (%d). Выберите карточку для удаления тега 'Сейчас':";
-"tag.auto_cleanup" = "Автоудаление неиспользуемых тегов";
-"tag.select" = "Выбрать теги";
-"tag.new" = "Новый тег";
+"tag.delete.confirm.empty" = "Этот тег не используется никакими скриптами. Уверены, что хотите его удалить?";
+"tag.max_now_cards" = "Макс. Карточек 'Сейчас'";
+"tag.now_limit_reached" = "Лимит Тега Сейчас";
+"tag.now_limit_message" = "Вы достигли максимального количества карточек 'Сейчас' (%d). Пожалуйста, выберите карточку для удаления тега 'Сейчас':";
+"tag.auto_cleanup" = "Авто-удаление Неиспользуемых Тегов";
+"tag.select" = "Выбрать Теги";
+"tag.new" = "Новый Тег";
 "tag.label" = "Теги";
 "tag.none" = "Нет";
-"tag.count_selected" = "%d выбрано";
+"tag.count_selected" = "Выбрано %d";
+"tag.breaking_bad_habits" = "Избавление от Плохих Привычек";
+"tag.building_good_habits" = "Создание Хороших Привычек";
+"tag.appropriate_positivity" = "Уместная Позитивность";
 
+// MARK: - Script Card
+"script.play_count" = "%d воспроизведений";
+"script.transcript" = "Расшифровка";
+"script.recording" = "Запись";
+"script.no_recording" = "Нет записи";
+"script.repetitions" = "Повторения";
+"script.interval" = "Интервал";
+"script.privacy_mode" = "Режим Конфиденциальности";
+"script.delete" = "Удалить Карточку";
+"script.delete.confirm.title" = "Удалить Карточку";
+"script.delete.confirm.message" = "Уверены, что хотите удалить этот скрипт? Это действие нельзя отменить.";
+
+// MARK: - Settings
+"settings.app_language" = "Язык Приложения";
+"settings.display_language" = "Язык Отображения";
+"settings.restart_to_apply" = "Перезапустите приложение для применения смены языка";
+"settings.default_settings" = "Настройки по Умолчанию";
+"settings.script_preferences" = "Настройки Карточек";
+"settings.transcription" = "Расшифровка";
+"settings.recording" = "Запись";
+"settings.backup_sync" = "Резервное Копирование и Синхронизация";
+"settings.about" = "О программе";
+"settings.support" = "Поддержка";
+
+"settings.privacy_mode.title" = "Режим Конфиденциальности";
+"settings.privacy_mode.info" = "Аудио воспроизводится только через наушники";
+"settings.privacy_mode.alert.title" = "Режим Конфиденциальности";
+"settings.privacy_mode.alert.message" = "Когда Режим Конфиденциальности включен, аудиозаписи будут воспроизводиться только через подключенные наушники или гарнитуру. Это предотвращает случайное воспроизведение через динамики в общественных местах.";
+
+"settings.character_guidance" = "Рекомендации по Символам";
+"settings.recommended_length" = "Рекомендуемая длина";
+"settings.when_exceeded" = "При превышении";
+"settings.just_warn" = "Только предупредить";
+"settings.show_tip_only" = "Показать только совет";
+"settings.character_guidance.info" = "Более короткие скрипты легче запомнить и более эффективны";
+
+"settings.default_language" = "Язык по Умолчанию";
+"settings.voice_enhancement" = "Улучшение Голоса";
+"settings.voice_enhancement.desc" = "Уменьшает фоновый шум и эхо";
+"settings.auto_trim_silence" = "Авто-Обрезка Тишины";
+"settings.auto_trim_silence.desc" = "Удалить тишину в начале и конце";
+"settings.trim_sensitivity" = "Чувствительность Обрезки";
+
+"settings.icloud_sync" = "Синхронизация iCloud";
+"settings.icloud_sync.desc" = "Синхронизировать карточки между устройствами";
+"settings.icloud_sync.info" = "Текст и настройки синхронизируются автоматически. Аудиофайлы остаются локальными.";
+"settings.export_scripts" = "Экспорт Карточек";
+"settings.import_scripts" = "Импорт Карточек";
+
+"settings.version" = "Версия";
+"settings.build" = "Сборка";
+"settings.rate_github" = "Оценить на GitHub";
+"settings.contact_support" = "Связаться с Поддержкой";
+
+// MARK: - Recording
+"recording.start" = "Начать Запись";
+"recording.stop" = "Остановить Запись";
+"recording.re_record" = "Перезаписать";
+"recording.saved" = "Запись сохранена";
+"recording.delete" = "Удалить";
+"recording.preview" = "Предпросмотр";
+"recording.playing_preview" = "Воспроизведение предпросмотра...";
+"recording.preview_paused" = "Предпросмотр приостановлен";
+"recording.plays_once" = "(воспроизвести один раз)";
+"recording.processing" = "Обработка аудио...";
+"recording.listening" = "Прослушивание...";
+"recording.speaking" = "Говорение...";
+"recording.transcribing" = "Расшифровка...";
+"recording.re_transcribing" = "Повторная расшифровка...";
+"recording.microphone_access" = "Доступ к Микрофону";
+"recording.microphone_access.message" = "Пожалуйста, предоставьте доступ к микрофону в Настройках для записи аудио";
+
+// MARK: - Character Guidance
+"guidance.trim_characters" = "Рассмотрите сокращение на %d символов для лучшего запоминания";
+"guidance.script_over" = "Скрипт превышает на %d символов. Попробуйте быть более лаконичным";
+"guidance.script_long" = "Скрипт довольно длинный.";
+"guidance.enter_script" = "Введите здесь свой скрипт самодиалога...";
+
+// MARK: - Notifications
+"notifications.enable" = "Включить Уведомления";
+"notifications.frequency" = "Частота";
+"notifications.frequency.high" = "Высокая (1-2 раза/час)";
+"notifications.frequency.medium" = "Средняя (каждые 2 часа)";
+"notifications.frequency.low" = "Низкая (1-2 раза/день)";
+"notifications.daytime_only" = "Уведомления только днем (8:00 - 21:00)";
+"notifications.settings_title" = "Настройки Уведомлений";
+"notifications.max_cards" = "Максимум карточек с уведомлениями";
+"notifications.burden_warning" = "Слишком много уведомлений могут стать обременительными и снизить их эффективность";
+"notifications.global_settings" = "Глобальные Настройки";
+"notifications.max_cards_footer" = "Ограничивает количество карточек, которые могут отправлять уведомления одновременно";
+"notifications.no_cards_enabled" = "Нет карточек с включенными уведомлениями";
+"notifications.enabled_cards" = "Активные Карточки (%d)";
+"notifications.request_permission" = "Включить Уведомления";
+"notifications.select_to_disable" = "Выберите %d карточек для отключения уведомлений";
+"notifications.select_cards" = "Выбрать Карточки";
+"notifications.reminder_title" = "Время для Самодиалога";
+"notifications.action_play" = "Воспроизвести Аудио";
+"notifications.action_done" = "Отметить как Выполнено";
+
+// MARK: - Common Actions
+"chars" = "символов";
+"action.done" = "Готово";
+"action.cancel" = "Отмена";
+"action.delete" = "Удалить";
+"action.add" = "Добавить";
+"action.save" = "Сохранить";
+"action.ok" = "ОК";
+"action.got_it" = "Понял";
+"action.copy" = "Копировать";
+"action.use_as_script" = "Использовать как Скрипт";
+"action.share" = "Поделиться";
+"action.edit" = "Редактировать";
+
+// MARK: - Errors
+"error.title" = "Ошибка";
+"error.save" = "Не удалось сохранить карточку";
+"error.database" = "Ошибка базы данных";
+"error.restart_app" = "Пожалуйста, перезапустите приложение";
+"error.try_again" = "Пожалуйста, попробуйте еще раз";
+"error.import" = "Импорт не удался";
+"error.export" = "Экспорт не удался";
+
+// MARK: - Time Units
+"time.seconds" = "%@ секунд";
+"time.times_per_hour" = "1-2 раза/час";
+"time.every_hours" = "каждые 2 часа";
+"time.times_per_day" = "1-2 раза/день";
+
+// MARK: - Sensitivity Levels
+"sensitivity.low" = "Низкая";
+"sensitivity.medium" = "Средняя";
+"sensitivity.high" = "Высокая";
+"sensitivity.low.desc" = "Нужен громче голос • буфер 0,5с";
+"sensitivity.medium.desc" = "Сбалансированное обнаружение • буфер 0,3с";
+"sensitivity.high.desc" = "Обнаруживает шепот • буфер 0,15с";
+
+// MARK: - Sample Scripts
+"sample.smoking" = "Я никогда не курю, потому что это воняет, и я ненавижу, когда мной управляют.";
+"sample.bedtime" = "Я всегда ложусь спать до 22:00, потому что это полезнее для здоровья, и я люблю просыпаться с большим запасом энергии.";
+"sample.mistakes" = "Я сделал несколько ошибок, но также сделал несколько вещей хорошо. Ошибки - это нормальная часть обучения, и я могу использовать их как возможность для улучшения.";
+// MARK: - Languages
+"language.english" = "Английский";
+"language.chinese_simplified" = "Китайский (Упрощенный)";
+"language.chinese_traditional" = "Китайский (Традиционный)";
+"language.spanish" = "Испанский";
+"language.french" = "Французский";
+"language.german" = "Немецкий";
+"language.japanese" = "Японский";
+"language.korean" = "Корейский";
+"language.portuguese" = "Португальский";
+"language.russian" = "Русский";
+"language.italian" = "Итальянский";
+"language.dutch" = "Голландский";
+"language.swedish" = "Шведский";
+"language.norwegian" = "Норвежский";
+"language.danish" = "Датский";
+"language.polish" = "Польский";
+"language.turkish" = "Турецкий";
+"language.arabic" = "Арабский";
+"language.hindi" = "Хинди";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Пакет Echo";
+"export.format.text" = "Обычный Текст";
+"export.format.json" = "JSON";
+"export.include_audio" = "Включить Аудиофайлы";
+"export.format_label" = "Формат";
+"export.audio_size_warning" = "Аудиофайлы увеличат размер экспорта";
+"export.options" = "Опции Экспорта";
+"export.select_scripts" = "Выбрать Карточки";
+"export.scripts_selected" = "Карточки (выбрано %d)";
+"export.error_title" = "Ошибка Экспорта";
+"export.error_unknown" = "Произошла неизвестная ошибка";
+"import.complete_title" = "Импорт Завершен";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Совет: Говорите 'точка', 'запятая', или 'вопросительный знак' для пунктуации";
+"recording.no_recording_message" = "Пожалуйста, долго нажмите для редактирования и сначала запишите аудио";
+
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Синхронизировать карточки между устройствами";
+
+// MARK: - Empty State
+"empty.no_cards" = "Пока Нет Карточек";
+"empty.tap_to_create" = "Нажмите кнопку + чтобы создать свою первую карточку самодиалога";
+
+// MARK: - Filter
+"filter.all_cards" = "Все Карточки";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Чувствительность";
+"picker.select_language" = "Выбрать Язык";
+"picker.display_language" = "Язык Отображения";
+"settings.language_settings" = "Языковые Настройки";
+"language.system_default" = "По Умолчанию Системы";
+"settings.card_settings" = "Настройки Карточек";
+"settings.card_defaults" = "По Умолчанию для Карточек";
+"settings.about_support" = "О программе и Поддержка";
+"settings.sync" = "Синхронизация";
+"settings.backup" = "Резервное Копирование";
+"script.label" = "Скрипт";

@@ -1,58 +1,236 @@
 /* 
   Localizable.strings (Dutch)
   Echo
+  
+  Dutch localization file for Echo app
 */
 
 // MARK: - Navigation & Titles
 "navigation.cards" = "Kaarten";
 "navigation.me" = "Ik";
-"navigation.new_script" = "Nieuw Script";
-"navigation.edit_script" = "Script Bewerken";
-
+"navigation.new_script" = "Nieuwe Kaart";
+"navigation.edit_script" = "Kaart Bewerken";
 
 
 // MARK: - Tags
 "tag.now" = "Nu";
-"tag.untagged" = "Zonder tag";
-"tag.edit" = "Tags bewerken";
-"tag.delete.confirm.title" = "Tag verwijderen";
-"tag.delete.confirm.message" = "Deze tag wordt gebruikt door %d scripts. Het verwijderen zal de tag van deze scripts verwijderen.";
-"tag.max_now_cards" = "Max 'Nu' Kaarten";
-"tag.now_limit_reached" = "Nu Tag Limiet";
-"tag.now_limit_message" = "Je hebt het maximum aantal 'Nu' kaarten bereikt (%d). Selecteer een kaart om de 'Nu' tag van te verwijderen:";
-"tag.auto_cleanup" = "Ongebruikte tags automatisch verwijderen";
-"tag.select" = "Tags selecteren";
-"tag.new" = "Nieuwe tag";
-"tag.label" = "Tags";
+"tag.untagged" = "Zonder label";
+"tag.edit" = "Label Bewerken";
+"tag.delete.confirm.title" = "Label Verwijderen";
+"tag.delete.confirm.message" = "Dit label wordt gebruikt door %d scripts. Het verwijderen zal het label van deze scripts verwijderen.";
+"tag.delete.confirm.empty" = "Dit label wordt door geen enkel script gebruikt. Weet je zeker dat je het wilt verwijderen?";
+"tag.max_now_cards" = "Maximum 'Nu' Kaarten";
+"tag.now_limit_reached" = "Nu Label Limiet";
+"tag.now_limit_message" = "Je hebt het maximum aantal 'Nu' kaarten bereikt (%d). Selecteer een kaart om het 'Nu' label te verwijderen:";
+"tag.auto_cleanup" = "Auto-verwijdering Ongebruikte Labels";
+"tag.select" = "Labels Selecteren";
+"tag.new" = "Nieuw Label";
+"tag.label" = "Labels";
 "tag.none" = "Geen";
 "tag.count_selected" = "%d geselecteerd";
+"tag.breaking_bad_habits" = "Slechte Gewoonten Doorbreken";
+"tag.building_good_habits" = "Goede Gewoonten Opbouwen";
+"tag.appropriate_positivity" = "Gepaste Positiviteit";
 
-/* 
-  Localizable.strings (Dutch)
-  Echo
-*/
+// MARK: - Script Card
+"script.play_count" = "%d keer afgespeeld";
+"script.transcript" = "Transcriptie";
+"script.recording" = "Opname";
+"script.no_recording" = "Geen opname";
+"script.repetitions" = "Herhalingen";
+"script.interval" = "Interval";
+"script.privacy_mode" = "Privacymodus";
+"script.delete" = "Kaart Verwijderen";
+"script.delete.confirm.title" = "Kaart Verwijderen";
+"script.delete.confirm.message" = "Weet je zeker dat je dit script wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.";
 
-// MARK: - Navigation & Titles
-"navigation.cards" = "Kaarten";
-"navigation.me" = "Ik";
-"navigation.new_script" = "Nieuw Script";
-"navigation.edit_script" = "Script Bewerken";
+// MARK: - Settings
+"settings.app_language" = "App Taal";
+"settings.display_language" = "Weergavetaal";
+"settings.restart_to_apply" = "Herstart de app om de taalwijziging toe te passen";
+"settings.default_settings" = "Standaardinstellingen";
+"settings.script_preferences" = "Kaart Voorkeuren";
+"settings.transcription" = "Transcriptie";
+"settings.recording" = "Opname";
+"settings.backup_sync" = "Back-up en Synchronisatie";
+"settings.about" = "Over";
+"settings.support" = "Ondersteuning";
+
+"settings.privacy_mode.title" = "Privacymodus";
+"settings.privacy_mode.info" = "Audio speelt alleen af via oortelefoons";
+"settings.privacy_mode.alert.title" = "Privacymodus";
+"settings.privacy_mode.alert.message" = "Wanneer de Privacymodus is ingeschakeld, worden audio-opnames alleen afgespeeld via aangesloten oortelefoons of headsets. Dit voorkomt onbedoelde weergave via luidsprekers in openbare ruimtes.";
+
+"settings.character_guidance" = "Karakterbegeleiding";
+"settings.recommended_length" = "Aanbevolen lengte";
+"settings.when_exceeded" = "Bij overschrijding";
+"settings.just_warn" = "Alleen waarschuwen";
+"settings.show_tip_only" = "Alleen tip tonen";
+"settings.character_guidance.info" = "Kortere scripts zijn makkelijker te onthouden en effectiever";
+
+"settings.default_language" = "Standaardtaal";
+"settings.voice_enhancement" = "Spraakverbetering";
+"settings.voice_enhancement.desc" = "Vermindert achtergrondgeluid en echo";
+"settings.auto_trim_silence" = "Auto-Stilte Bijsnijden";
+"settings.auto_trim_silence.desc" = "Verwijder stilte aan begin en einde";
+"settings.trim_sensitivity" = "Bijsnijd Gevoeligheid";
+
+"settings.icloud_sync" = "iCloud Synchronisatie";
+"settings.icloud_sync.desc" = "Synchroniseer kaarten tussen apparaten";
+"settings.icloud_sync.info" = "Tekst en instellingen synchroniseren automatisch. Audiobestanden blijven lokaal.";
+"settings.export_scripts" = "Kaarten Exporteren";
+"settings.import_scripts" = "Kaarten Importeren";
+
+"settings.version" = "Versie";
+"settings.build" = "Build";
+"settings.rate_github" = "Beoordelen op GitHub";
+"settings.contact_support" = "Contact Opnemen met Ondersteuning";
+
+// MARK: - Recording
+"recording.start" = "Opname Starten";
+"recording.stop" = "Opname Stoppen";
+"recording.re_record" = "Opnieuw opnemen";
+"recording.saved" = "Opname opgeslagen";
+"recording.delete" = "Verwijderen";
+"recording.preview" = "Voorbeeld";
+"recording.playing_preview" = "Voorbeeld afspelen...";
+"recording.preview_paused" = "Voorbeeld gepauzeerd";
+"recording.plays_once" = "(speelt één keer af)";
+"recording.processing" = "Audio verwerken...";
+"recording.listening" = "Luisteren...";
+"recording.speaking" = "Spreken...";
+"recording.transcribing" = "Transcriberen...";
+"recording.re_transcribing" = "Opnieuw transcriberen...";
+"recording.microphone_access" = "Microfoon Toegang";
+"recording.microphone_access.message" = "Geef microfoon toegang in Instellingen om audio op te nemen";
+
+// MARK: - Character Guidance
+"guidance.trim_characters" = "Overweeg %d karakters te korten voor betere onthoudbaarheid";
+"guidance.script_over" = "Script overschrijdt met %d karakters. Probeer beknopter te zijn";
+"guidance.script_long" = "Script is behoorlijk lang.";
+"guidance.enter_script" = "Voer hier je zelfgesprek script in...";
+
+// MARK: - Notifications
+"notifications.enable" = "Meldingen Inschakelen";
+"notifications.frequency" = "Frequentie";
+"notifications.frequency.high" = "Hoog (1-2 keer/uur)";
+"notifications.frequency.medium" = "Gemiddeld (elke 2 uur)";
+"notifications.frequency.low" = "Laag (1-2 keer/dag)";
+"notifications.daytime_only" = "Meldingen alleen overdag (8:00 - 21:00)";
+"notifications.settings_title" = "Melding Instellingen";
+"notifications.max_cards" = "Maximum kaarten met meldingen";
+"notifications.burden_warning" = "Te veel meldingen kunnen belastend worden en hun effectiviteit verminderen";
+"notifications.global_settings" = "Globale Instellingen";
+"notifications.max_cards_footer" = "Beperk hoeveel kaarten tegelijk meldingen kunnen verzenden";
+"notifications.no_cards_enabled" = "Geen kaarten hebben meldingen ingeschakeld";
+"notifications.enabled_cards" = "Ingeschakelde Kaarten (%d)";
+"notifications.request_permission" = "Meldingen Inschakelen";
+"notifications.select_to_disable" = "Selecteer %d kaarten om meldingen uit te schakelen";
+"notifications.select_cards" = "Kaarten Selecteren";
+"notifications.reminder_title" = "Tijd voor Zelfgesprek";
+"notifications.action_play" = "Audio Afspelen";
+"notifications.action_done" = "Markeer als Klaar";
+
+// MARK: - Common Actions
+"chars" = "karakters";
+"action.done" = "Klaar";
+"action.cancel" = "Annuleren";
+"action.delete" = "Verwijderen";
+"action.add" = "Toevoegen";
+"action.save" = "Opslaan";
+"action.ok" = "OK";
+"action.got_it" = "Begrepen";
+"action.copy" = "Kopiëren";
+"action.use_as_script" = "Gebruiken als Script";
+"action.share" = "Delen";
+"action.edit" = "Bewerken";
+
+// MARK: - Errors
+"error.title" = "Fout";
+"error.save" = "Kaart opslaan mislukt";
+"error.database" = "Database fout";
+"error.restart_app" = "Herstart de app";
+"error.try_again" = "Probeer opnieuw";
+"error.import" = "Import mislukt";
+"error.export" = "Export mislukt";
+
+// MARK: - Time Units
+"time.seconds" = "%@ seconden";
+"time.times_per_hour" = "1-2 keer/uur";
+"time.every_hours" = "elke 2 uur";
+"time.times_per_day" = "1-2 keer/dag";
+
+// MARK: - Sensitivity Levels
+"sensitivity.low" = "Laag";
+"sensitivity.medium" = "Gemiddeld";
+"sensitivity.high" = "Hoog";
+"sensitivity.low.desc" = "Heeft hardere stem nodig • 0,5s buffer";
+"sensitivity.medium.desc" = "Gebalanceerde detectie • 0,3s buffer";
+"sensitivity.high.desc" = "Detecteert gefluister • 0,15s buffer";
+
+// MARK: - Sample Scripts
+"sample.smoking" = "Ik rook nooit, omdat het stinkt, en ik haat het om gecontroleerd te worden.";
+"sample.bedtime" = "Ik ga altijd voor 22:00 naar bed, omdat het gezonder is, en ik hou ervan om wakker te worden met veel energie.";
+"sample.mistakes" = "Ik heb een paar fouten gemaakt, maar ik heb ook verschillende dingen goed gedaan. Fouten zijn een normaal onderdeel van het leren, en ik kan ze gebruiken als kans om te verbeteren.";
+// MARK: - Languages
+"language.english" = "Engels";
+"language.chinese_simplified" = "Chinees (Vereenvoudigd)";
+"language.chinese_traditional" = "Chinees (Traditioneel)";
+"language.spanish" = "Spaans";
+"language.french" = "Frans";
+"language.german" = "Duits";
+"language.japanese" = "Japans";
+"language.korean" = "Koreaans";
+"language.portuguese" = "Portugees";
+"language.russian" = "Russisch";
+"language.italian" = "Italiaans";
+"language.dutch" = "Nederlands";
+"language.swedish" = "Zweeds";
+"language.norwegian" = "Noors";
+"language.danish" = "Deens";
+"language.polish" = "Pools";
+"language.turkish" = "Turks";
+"language.arabic" = "Arabisch";
+"language.hindi" = "Hindi";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Echo Bundel";
+"export.format.text" = "Platte Tekst";
+"export.format.json" = "JSON";
+"export.include_audio" = "Audiobestanden Meenemen";
+"export.format_label" = "Formaat";
+"export.audio_size_warning" = "Audiobestanden zullen de exportgrootte vergroten";
+"export.options" = "Export Opties";
+"export.select_scripts" = "Kaarten Selecteren";
+"export.scripts_selected" = "Kaarten (%d geselecteerd)";
+"export.error_title" = "Export Fout";
+"export.error_unknown" = "Een onbekende fout is opgetreden";
+"import.complete_title" = "Import Voltooid";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Tip: Zeg 'punt', 'komma', of 'vraagteken' voor leestekens";
+"recording.no_recording_message" = "Houd ingedrukt om te bewerken en neem eerst audio op";
 
 
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Synchroniseer kaarten tussen apparaten";
 
-// MARK: - Tags
-"tag.now" = "Nu";
-"tag.untagged" = "Zonder tag";
-"tag.edit" = "Tags bewerken";
-"tag.delete.confirm.title" = "Tag verwijderen";
-"tag.delete.confirm.message" = "Deze tag wordt gebruikt door %d scripts. Het verwijderen zal de tag van deze scripts verwijderen.";
-"tag.max_now_cards" = "Max 'Nu' Kaarten";
-"tag.now_limit_reached" = "Nu Tag Limiet";
-"tag.now_limit_message" = "Je hebt het maximum aantal 'Nu' kaarten bereikt (%d). Selecteer een kaart om de 'Nu' tag van te verwijderen:";
-"tag.auto_cleanup" = "Ongebruikte tags automatisch verwijderen";
-"tag.select" = "Select Tags";
-"tag.new" = "New Tag";
-"tag.label" = "Tags";
-"tag.none" = "None";
-"tag.count_selected" = "%d selected";
+// MARK: - Empty State
+"empty.no_cards" = "Nog Geen Kaarten";
+"empty.tap_to_create" = "Tik op de + knop om je eerste zelfgesprek kaart te maken";
 
+// MARK: - Filter
+"filter.all_cards" = "Alle Kaarten";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Gevoeligheid";
+"picker.select_language" = "Taal Selecteren";
+"picker.display_language" = "Weergavetaal";
+"settings.language_settings" = "Taal Instellingen";
+"language.system_default" = "Systeem Standaard";
+"settings.card_settings" = "Kaart Instellingen";
+"settings.card_defaults" = "Kaart Standaarden";
+"settings.about_support" = "Over en Ondersteuning";
+"settings.sync" = "Synchronisatie";
+"settings.backup" = "Back-up";
+"script.label" = "Script";
