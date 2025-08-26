@@ -90,7 +90,9 @@ final class AudioCoordinator: ObservableObject {
         script.audioFilePath = fileManager.audioURL(for: script.id).path
         // Clear old transcript when starting new recording
         script.transcribedText = nil
-        currentRecordingScript = script
+        DispatchQueue.main.async { [weak self] in
+            self?.currentRecordingScript = script
+        }
     }
     
     func stopRecording() {
@@ -145,9 +147,12 @@ final class AudioCoordinator: ObservableObject {
                             print("No transcription received")
                         }
                         
-                        self.currentRecordingScript = nil
-                        self.isProcessingRecording = false
-                        self.processingScriptIds.remove(scriptId)
+                        DispatchQueue.main.async { [weak self] in
+                            guard let self = self else { return }
+                            self.currentRecordingScript = nil
+                            self.isProcessingRecording = false
+                            self.processingScriptIds.remove(scriptId)
+                        }
                     }
                 }
             }

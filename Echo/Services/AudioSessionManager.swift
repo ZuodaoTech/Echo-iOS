@@ -210,6 +210,9 @@ final class AudioSessionManager: ObservableObject {
     }
     
     private func checkMicrophonePermission() {
-        isMicrophonePermissionGranted = audioSession.recordPermission == .granted
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.isMicrophonePermissionGranted = self.audioSession.recordPermission == .granted
+        }
     }
 }
