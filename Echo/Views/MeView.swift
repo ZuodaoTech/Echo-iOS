@@ -105,7 +105,9 @@ struct MeView: View {
                     HStack {
                         Label(NSLocalizedString("script.repetitions", comment: ""), systemImage: "repeat")
                         Spacer()
-                        Stepper("\(defaultRepetitions)", value: $defaultRepetitions, in: 1...10)
+                        Text("\(defaultRepetitions)")
+                            .foregroundColor(.secondary)
+                        Stepper("", value: $defaultRepetitions, in: 1...10)
                             .labelsHidden()
                     }
                     
@@ -113,7 +115,9 @@ struct MeView: View {
                     HStack {
                         Label(NSLocalizedString("script.interval", comment: ""), systemImage: "timer")
                         Spacer()
-                        Stepper(String(format: "%.1fs", defaultInterval), value: $defaultInterval, in: 0.5...10, step: 0.5)
+                        Text(String(format: "%.1fs", defaultInterval))
+                            .foregroundColor(.secondary)
+                        Stepper("", value: $defaultInterval, in: 0.5...10, step: 0.5)
                             .labelsHidden()
                     }
                     
@@ -163,7 +167,9 @@ struct MeView: View {
                     HStack {
                         Label(NSLocalizedString("settings.max_notification_cards", comment: ""), systemImage: "bell.badge")
                         Spacer()
-                        Stepper("\(maxNotificationCards)", value: $maxNotificationCards, in: 0...5) { _ in
+                        Text("\(maxNotificationCards)")
+                            .foregroundColor(.secondary)
+                        Stepper("", value: $maxNotificationCards, in: 0...5) { _ in
                             handleMaxNotificationCardsChange()
                         }
                         .labelsHidden()
@@ -188,7 +194,9 @@ struct MeView: View {
                     HStack {
                         Label(NSLocalizedString("settings.max_now_cards", comment: ""), systemImage: "tag.fill")
                         Spacer()
-                        Stepper("\(maxNowCards)", value: $maxNowCards, in: 1...10)
+                        Text("\(maxNowCards)")
+                            .foregroundColor(.secondary)
+                        Stepper("", value: $maxNowCards, in: 1...10)
                             .labelsHidden()
                     }
                     
