@@ -319,9 +319,9 @@ struct MeView: View {
                         }
                         .foregroundColor(.primary)
                     } header: {
-                        Text("🛠️ Developer Tools")
+                        Text(NSLocalizedString("dev.title", comment: "Developer Tools title"))
                     } footer: {
-                        Text("⚠️ Display Language requires app restart to take effect.")
+                        Text(NSLocalizedString("dev.warning", comment: "Display language warning"))
                             .font(.caption)
                     }
                     
