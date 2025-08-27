@@ -337,6 +337,27 @@ struct AddEditScriptView: View {
                         }
                     }
                     
+                    // Interval Stepper
+                    Stepper(value: $intervalSeconds, in: 0.5...10, step: 0.5) {
+                        HStack {
+                            Text(NSLocalizedString("script.interval", comment: ""))
+                            Spacer()
+                            Text(String(format: "%.1fs", intervalSeconds))
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .onChange(of: intervalSeconds) { newValue in
+                        // Apply interval change immediately
+                        if let script = script {
+                            script.intervalSeconds = newValue
+                            do {
+                                try viewContext.save()
+                            } catch {
+                                print("Failed to save interval change: \(error)")
+                            }
+                        }
+                    }
+                    
                     // Private Mode Toggle
                     Toggle(isOn: $privateModeEnabled) {
                         HStack {
