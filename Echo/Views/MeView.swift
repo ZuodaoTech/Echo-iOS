@@ -616,9 +616,9 @@ struct MeView: View {
             var errors: [String] = []
             
             for recordType in recordTypes {
-                // Use creationDate which is always queryable in CloudKit
+                // Use CD_createdAt which is the Core Data field synced to CloudKit
                 // This fetches all records created after 1970 (essentially all records)
-                let predicate = NSPredicate(format: "creationDate > %@", NSDate(timeIntervalSince1970: 0))
+                let predicate = NSPredicate(format: "CD_createdAt > %@", NSDate(timeIntervalSince1970: 0))
                 let query = CKQuery(recordType: recordType, predicate: predicate)
                 
                 do {
