@@ -35,6 +35,11 @@ final class AudioCoordinator: ObservableObject {
     // Private mode
     @Published var privateModeActive = false
     
+    // Audio session state (for debugging)
+    var audioSessionState: String {
+        sessionManager.currentState.rawValue
+    }
+    
     // MARK: - Services
     
     private let fileManager: AudioFileManager
@@ -83,8 +88,16 @@ final class AudioCoordinator: ObservableObject {
     }
     
     func startRecording(for script: SelftalkScript) throws {
-        // Stop any playback first
-        stopPlayback()
+        // Stop any playback first and ensure clean state
+        if isPlaying || isPaused || isInPlaybackSession {
+            stopPlayback()
+        }
+        
+        // If audio session is in transitioning state, force it to idle
+        // This handles the case where stopPlayback was called but state hasn't settled
+        if sessionManager.currentState == .transitioning {
+            sessionManager.transitionTo(.idle)
+        }
         
         try recordingService.startRecording(for: script.id)
         
@@ -181,15 +194,19 @@ final class AudioCoordinator: ObservableObject {
     // MARK: - Playback Methods
     
     func play(script: SelftalkScript) throws {
+        print("\n🎤 AudioCoordinator.play() called for script \(script.id)")
+        
         // DEFENSIVE: Check script validity
         guard !script.isDeleted,
               !script.isFault,
               script.managedObjectContext != nil else {
+            print("   ❌ Invalid script (deleted/fault/no context)")
             throw AudioServiceError.invalidScript
         }
         
         // Stop any recording first
         if isRecording {
+            print("   🔴 Stopping active recording first")
             stopRecording()
         }
         

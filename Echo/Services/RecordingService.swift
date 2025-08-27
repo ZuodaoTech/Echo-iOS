@@ -284,10 +284,12 @@ final class RecordingService: NSObject, ObservableObject {
 
 extension RecordingService: AVAudioRecorderDelegate {
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-        print("Recording finished successfully: \(flag)")
+        print("🎤 Recording finished successfully: \(flag)")
         
-        // Transition to idle state after recording finishes
+        // IMPORTANT: Transition to idle state immediately after recording finishes
+        // This ensures the audio session is ready for playback
         sessionManager.transitionTo(.idle)
+        print("🟢 Audio session ready for playback")
         
         // Save a copy of the original audio file for transcription
         if let scriptId = currentRecordingScriptId, flag {

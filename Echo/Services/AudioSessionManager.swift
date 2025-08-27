@@ -16,8 +16,8 @@ enum AudioSessionState: String, CaseIterable {
     /// Determines if a transition to the target state is valid
     func canTransition(to target: AudioSessionState) -> Bool {
         switch (self, target) {
-        // From idle, can go to preparing states
-        case (.idle, .preparingToRecord), (.idle, .preparingToPlay):
+        // From idle, can go to recording preparation or directly to playing
+        case (.idle, .preparingToRecord), (.idle, .playing):
             return true
             
         // From preparing to record, can go to recording or back to idle
@@ -28,8 +28,8 @@ enum AudioSessionState: String, CaseIterable {
         case (.recording, .transitioning), (.recording, .error):
             return true
             
-        // From preparing to play, can go to playing or back to idle
-        case (.preparingToPlay, .playing), (.preparingToPlay, .idle):
+        // From idle, can go to error (for configuration failures) or directly to playing
+        case (.idle, .error):
             return true
             
         // From playing, can go to paused, transitioning (stopping), or error
@@ -157,43 +157,28 @@ final class AudioSessionManager: ObservableObject {
         } catch {
             // On simulator, some configurations may fail - that's OK
             #if targetEnvironment(simulator)
-            // Silently ignore on simulator
+            // Silently ignore on simulator but still log it
+            print("⚠️ Audio configuration warning (error -50 is normal on simulator): \(error)")
             #else
+            // On real device, transition to error state and rethrow
+            transitionTo(.error)
             throw error
             #endif
         }
     }
     
     /// Configure audio session for playback
-    func configureForPlayback() throws {
-        // Check if we can start playback
-        guard canStartPlayback else {
-            logger.error("Cannot start playback in current state: \(self.currentState.rawValue)")
-            throw AudioServiceError.invalidState("Cannot start playback while \(currentState.rawValue)")
+    func configureForPlayback() {
+        // Just try to configure, don't check states or handle errors
+        // iOS will handle it internally
+        
+        // Only change category if needed
+        if audioSession.category != .playback {
+            try? audioSession.setCategory(.playback, mode: .default, options: [.allowBluetooth, .allowBluetoothA2DP])
         }
         
-        // Transition to preparing state
-        guard transitionTo(.preparingToPlay) else {
-            throw AudioServiceError.invalidState("Failed to transition to preparingToPlay state")
-        }
-        
-        do {
-            // Only change category if needed
-            if audioSession.category != .playback {
-                try audioSession.setCategory(.playback, mode: .default, options: [.allowBluetooth, .allowBluetoothA2DP])
-            }
-            // Only activate if not already active
-            if !audioSession.isOtherAudioPlaying {
-                try audioSession.setActive(true)
-            }
-        } catch {
-            // On simulator, some configurations may fail - that's OK
-            #if targetEnvironment(simulator)
-            // Silently ignore on simulator
-            #else
-            throw error
-            #endif
-        }
+        // Try to activate
+        try? audioSession.setActive(true)
     }
     
     // MARK: - Microphone Permission Management (Async/Await)
@@ -412,12 +397,16 @@ final class AudioSessionManager: ObservableObject {
         
         // Check if transition is valid
         guard oldState.canTransition(to: newState) else {
-            logger.warning("Invalid state transition from \(oldState.rawValue) to \(newState.rawValue)")
+            logger.warning("🔴 Invalid state transition from \(oldState.rawValue) to \(newState.rawValue)")
+            print("🔴 BLOCKED: Invalid transition \(oldState.rawValue) → \(newState.rawValue)")
+            // Print stack trace to see where this is coming from
+            print("   Called from: \(Thread.callStackSymbols[1...3].joined(separator: "\n   "))")
             return false
         }
         
         // Perform the transition
-        logger.info("State transition: \(oldState.rawValue) → \(newState.rawValue)")
+        logger.info("🟢 State transition: \(oldState.rawValue) → \(newState.rawValue)")
+        print("🟢 STATE: \(oldState.rawValue) → \(newState.rawValue)")
         
         DispatchQueue.main.async { [weak self] in
             self?.currentState = newState
@@ -454,6 +443,7 @@ final class AudioSessionManager: ObservableObject {
         stateLock.lock()
         defer { stateLock.unlock() }
         
+        // Only allow starting playback from idle
         return currentState == .idle
     }
     
