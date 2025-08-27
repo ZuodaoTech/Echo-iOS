@@ -1,151 +1,159 @@
-# Echo - iOS 自我对话练习应用
+# Echo - 你的私人自我对话伙伴
+
+<p align="center">
+  <img src="icon.png" width="120" height="120" alt="Echo 应用图标">
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/平台-iOS%2015.6+-blue.svg" />
-  <img src="https://img.shields.io/badge/Swift-5.0-orange.svg" />
-  <img src="https://img.shields.io/badge/SwiftUI-3.0-green.svg" />
+  <img src="https://img.shields.io/badge/Swift-5.9-orange.svg" />
+  <img src="https://img.shields.io/badge/SwiftUI-5.0-green.svg" />
   <img src="https://img.shields.io/badge/许可证-MIT-lightgrey.svg" />
 </p>
 
-## 📱 概述
+<p align="center">
+  <b>用个性化的自我肯定改变你的内在对话</b>
+</p>
 
-Echo 是一款强大的自我对话练习应用，旨在帮助用户通过个性化的肯定脚本和语音录音建立积极的习惯。该应用让用户能够创建、录制和播放自己的激励脚本，并支持自定义重复模式。
+## 🌟 Echo 是什么？
 
-### ✨ 核心功能
+Echo 是一款精心设计的 iOS 应用，通过个性化的自我对话脚本帮助你建立积极的习惯。用自己的声音录制肯定语、励志演讲或日常提醒，然后通过可自定义的重复模式播放，强化积极思维。
 
-- **📝 脚本管理**：创建和组织个性化的自我对话脚本，支持分类管理
-- **🎙 语音录制**：为每个脚本录制自己的声音，实现真实的练习体验
-- **🔄 智能重复**：自定义重复次数（1-10次）和间隔时间（1-3秒）
-- **🎧 隐私模式**：自动播放保护 - 需要连接耳机才能播放，防止意外公开播放
-- **📊 进度跟踪**：通过播放次数和时间戳监控练习进度
-- **🌍 多语言转录**：支持多种语言的自动语音转文字（英语、中文、西班牙语、法语等）
-- **⚡ 音频处理**：自动裁剪静音部分并优化音频质量
+## ✨ 核心功能
 
-## 🚀 快速开始
+### 📝 **智能脚本管理**
+- 创建无限量的个性化自我对话脚本
+- 使用彩色标签轻松分类整理
+- 美观的卡片界面，颜色随机变化
+- 快速搜索和筛选功能
 
-### 环境要求
+### 🎙️ **专业录音**
+- 高质量音频录制（44.1kHz，AAC 格式）
+- 自动静音裁剪，录音更清晰
+- 60 秒录音限制，让信息更聚焦
+- 高级降噪技术，音质清澈透明
 
-- macOS 13.0 或更高版本
-- Xcode 15.0 或更高版本
-- iOS 15.6+ 部署目标
-- Swift 5.0
+### 🔄 **智能播放**
+- 可自定义重复次数（每个脚本 1-10 次）
+- 可调节重复间隔（0-10 秒）
+- 播放不同卡片时自动停止
+- 支持后台播放
 
-### 安装步骤
+### 🔒 **隐私优先**
+- **隐私模式**：自动扬声器保护 - 需要连接耳机才能播放
+- 本地存储 - 你的录音永远不会离开设备
+- 可选 iCloud 同步，在你的设备间备份
 
-1. 克隆仓库：
+### 🌍 **多语言支持**
+- 界面支持 15+ 种语言
+- 多语言语音转文字
+- 智能语言检测转录
+
+### 📊 **进度跟踪**
+- 跟踪每个脚本的播放次数
+- 最后播放时间戳
+- 播放时的可视化进度指示器
+
+## 📱 开始使用
+
+### 用户指南
+
+1. **从 App Store 下载**（即将推出）
+2. 启动 Echo，点击"+"按钮创建你的第一个脚本
+3. 写下你的肯定语或励志信息
+4. 点击麦克风用自己的声音录制
+5. 使用你喜欢的重复设置播放
+
+### 开发者指南
+
+#### 环境要求
+- macOS 13.0+
+- Xcode 15.0+
+- iOS 设备或模拟器（iOS 15.6+）
+
+#### 安装步骤
+
 ```bash
-git clone https://github.com/xiaolai/echo-ios.git
+# 克隆仓库
+git clone https://github.com/ZuodaoTech/Echo-iOS.git
 cd Echo-iOS
-```
 
-2. 在 Xcode 中打开项目：
-```bash
+# 在 Xcode 中打开
 open Echo.xcodeproj
+
+# 选择你的团队并运行
 ```
 
-3. 在项目设置中选择你的开发团队
+## 🎯 使用场景
 
-4. 构建并运行（⌘R）
+- **早晨肯定语**：用积极的自我对话开始新的一天
+- **建立自信**：在重要事件前强化赋能信念
+- **习惯养成**：为正在培养的新习惯创建提醒
+- **冥想与正念**：录制冥想用的平静咒语
+- **语言学习**：通过重复练习发音
+- **目标可视化**：每天口述并强化你的目标
 
-## 🏗 架构设计
+## 🏗️ 技术架构
 
-应用采用 MVVM 架构，结合 SwiftUI 和 Core Data：
+### 核心技术
+- **SwiftUI 5.0**：现代声明式 UI，流畅动画
+- **Core Data + CloudKit**：持久化存储，可选 iCloud 同步
+- **AVFoundation**：专业音频录制和播放
+- **Speech Framework**：设备端转录，保护隐私
+- **Combine**：响应式状态管理
 
+### 服务架构
 ```
-Echo/
-├── Models/           # Core Data 数据模型（SelftalkScript、Category）
-├── Views/            # SwiftUI 视图
-│   ├── ScriptsListView.swift      # 脚本列表视图
-│   ├── AddEditScriptView.swift     # 添加/编辑脚本视图
-│   └── Components/                 # 可复用组件
-├── Services/         # 音频服务层
-│   ├── AudioCoordinator.swift      # 音频协调器（主控制器）
-│   ├── RecordingService.swift      # 录音管理服务
-│   ├── PlaybackService.swift       # 播放控制服务
-│   ├── AudioProcessingService.swift # 转录和处理服务
-│   └── AudioFileManager.swift      # 文件操作服务
-└── Utilities/        # 工具函数和扩展
-```
-
-### 🎵 音频架构
-
-音频系统采用协调器模式，配合专门的服务模块：
-
-- **AudioCoordinator**：单例协调器，管理所有音频操作
-- **RecordingService**：处理 AVAudioRecorder 和录音状态
-- **PlaybackService**：管理 AVAudioPlayer 及重复逻辑
-- **AudioProcessingService**：静音裁剪和语音转文字
-- **AudioSessionManager**：音频会话配置和隐私模式检测
-- **AudioFileManager**：录音文件的文件系统操作
-
-## 🔧 核心技术
-
-- **SwiftUI**：现代声明式 UI 框架
-- **Core Data**：脚本和分类的持久化存储
-- **AVFoundation**：音频录制和播放
-- **Speech Framework**：设备端和云端转录
-- **Combine**：响应式数据流和状态管理
-
-## 📝 功能详解
-
-### 隐私模式 🔒
-自动检测音频输出路径，防止通过扬声器播放。用户必须连接耳机才能播放录音，保护隐私安全。
-
-### 智能音频处理 🎛
-- 自动裁剪录音开头和结尾的静音
-- 双文件系统：保留原始文件用于转录，处理后的文件用于播放
-- 针对语音识别兼容性的格式优化
-
-### 多语言支持 🌐
-- 支持 10+ 种语言的转录
-- 特定语言的标点符号处理
-- 西方语言的自动大写
-
-## 🧪 测试
-
-项目包含全面的测试覆盖：
-
-```bash
-# 运行所有测试
-xcodebuild test -scheme "Echo" -sdk iphonesimulator
-
-# 运行特定测试套件
-xcodebuild test -scheme "Echo" -only-testing:EchoTests/AudioFileManagerTests
+AudioCoordinator（外观模式）
+├── RecordingService     - 音频采集和编码
+├── PlaybackService      - 带重复的播放
+├── AudioSessionManager  - 隐私模式和路由
+├── AudioFileManager     - 文件操作
+└── AudioProcessingService - 静音裁剪和转录
 ```
 
-### 测试覆盖率
-- **单元测试**：音频服务、Core Data 模型、业务逻辑（约 70%）
-- **UI 测试**：主要用户流程、录音、播放（约 50%）
-- **集成测试**：端到端场景
+## 🔐 隐私与安全
 
-## 🛠 开发
+- **无分析**：零跟踪或分析
+- **本地优先**：所有数据存储在设备本地
+- **隐私模式**：自动扬声器保护
+- **iCloud 加密**：可选同步使用 Apple 的加密 CloudKit
+- **无第三方服务**：仅使用纯 Apple 框架
 
-### 构建项目
+## 🎨 最近更新
 
-```bash
-# Debug 构建
-xcodebuild -scheme "Echo" -configuration Debug build
+### 版本 0.3.0（最新）
+- ✅ 每次启动应用时刷新的动态卡片颜色
+- ✅ 修复 CloudKit 同步，改进 iCloud 数据管理
+- ✅ 改进音频播放稳定性
+- ✅ 添加重复间隔设置
+- ✅ 增强标签管理系统
+- ✅ 应用启动性能优化
 
-# Release 构建
-xcodebuild -scheme "Echo" -configuration Release build
-```
+### 版本 0.2.0
+- ✅ 完整的标签系统实现
+- ✅ 隐私模式（原隐私模式）
+- ✅ 60 秒录音限制，带可视化反馈
+- ✅ 高级降噪
+- ✅ 自动静音裁剪
 
-### 代码规范
+## 🛠️ 开发功能
 
-项目使用 SwiftLint 保持代码一致性。规则定义在 `.swiftlint.yml` 文件中。
+### 隐藏开发者菜单
+在"我"标签页向下-向下-向上滑动以访问：
+- 性能指标
+- CloudKit 同步状态
+- 调试选项
+- 数据管理工具
 
-## 📚 文档
+## 🤝 贡献
 
-- [CLAUDE.md](CLAUDE.md) - 详细的开发指南和架构文档
-- [API 文档](docs/api.md) - 服务层 API 参考（即将推出）
+我们欢迎贡献！详情请查看我们的[贡献指南](CONTRIBUTING.md)。
 
-## 🤝 贡献指南
-
-欢迎贡献！请随时提交 Pull Request。
-
-1. Fork 项目
-2. 创建功能分支（`git checkout -b feature/AmazingFeature`）
-3. 提交更改（`git commit -m '添加某个很棒的功能'`）
+### 如何贡献
+1. Fork 仓库
+2. 创建你的功能分支（`git checkout -b feature/AmazingFeature`）
+3. 提交你的更改（`git commit -m '添加 AmazingFeature'`）
 4. 推送到分支（`git push origin feature/AmazingFeature`）
 5. 开启 Pull Request
 
@@ -153,18 +161,26 @@ xcodebuild -scheme "Echo" -configuration Release build
 
 本项目基于 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件。
 
-## 👨‍💻 作者
+## 👥 团队
 
-**笑来** - [GitHub](https://github.com/xiaolai)
+- **创建者**：[笑来](https://github.com/xiaolai)
+- **贡献者**：[查看所有贡献者](https://github.com/ZuodaoTech/Echo-iOS/graphs/contributors)
 
 ## 🙏 致谢
 
-- 使用 SwiftUI 构建，致力于自我提升
-- 特别感谢所有贡献者和测试者
-- 基于 Apple 语音识别框架强力驱动
+- 使用 SwiftUI 构建，致力于心理健康
+- 受积极自我对话力量的启发
+- 感谢所有 beta 测试者和贡献者
+
+## 📞 支持
+
+- **问题**：[GitHub Issues](https://github.com/ZuodaoTech/Echo-iOS/issues)
+- **讨论**：[GitHub Discussions](https://github.com/ZuodaoTech/Echo-iOS/discussions)
+- **邮箱**：support@zuodao.tech
 
 ---
 
 <p align="center">
-用 ❤️ 为个人成长和积极的自我对话练习而制作
+  <b>Echo</b> - 放大你的内心声音<br>
+  用 ❤️ 为个人成长而制作
 </p>
