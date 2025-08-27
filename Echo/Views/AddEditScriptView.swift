@@ -437,9 +437,13 @@ struct AddEditScriptView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(NSLocalizedString("action.done", comment: "")) {
+                        print("💾 AddEditScriptView: Done pressed")
+                        print("   Audio session state: \(audioService.audioSessionState)")
+                        print("   Is processing: \(audioService.isProcessingRecording)")
                         handleDone()
                     }
                     .font(.body.weight(.medium))
+                    .disabled(isProcessingAudio || audioService.isProcessingRecording)
                 }
             }
             .interactiveDismissDisabled(false)
@@ -624,6 +628,23 @@ struct AddEditScriptView: View {
     
     @discardableResult
     private func saveScript() -> Bool {
+        // Don't save while audio is being processed
+        if isProcessingAudio || audioService.isProcessingRecording {
+            validationMessage = NSLocalizedString("validation.audio_processing", comment: "Please wait for audio processing to complete")
+            showingValidationAlert = true
+            return false
+        }
+        
+        // If recording is in progress, stop it first
+        if isRecording {
+            audioService.stopRecording()
+            isRecording = false
+            // Return false to prevent saving - user needs to wait for processing
+            validationMessage = NSLocalizedString("validation.recording_in_progress", comment: "Please wait for recording to finish processing")
+            showingValidationAlert = true
+            return false
+        }
+        
         // Validate script text first
         let textValidation = validateScriptText()
         if !textValidation.isValid {
@@ -1011,11 +1032,17 @@ struct RecordingButton: View {
                 onRecord()
             } label: {
                 HStack {
-                    Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
-                        .font(.title2)
-                        .foregroundColor(isRecording ? .red : .blue)
+                    if isProcessing {
+                        ProgressView()
+                            .scaleEffect(0.8)
+                            .frame(width: 20, height: 20)
+                    } else {
+                        Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
+                            .font(.title2)
+                            .foregroundColor(isRecording ? .red : .blue)
+                    }
                     
-                    Text(isRecording ? NSLocalizedString("recording.stop", comment: "") : (hasRecording ? NSLocalizedString("recording.re_record", comment: "") : NSLocalizedString("recording.start", comment: "")))
+                    Text(isProcessing ? NSLocalizedString("recording.processing", comment: "Processing...") : (isRecording ? NSLocalizedString("recording.stop", comment: "") : (hasRecording ? NSLocalizedString("recording.re_record", comment: "") : NSLocalizedString("recording.start", comment: ""))))
                         .fontWeight(.medium)
                 }
                 .frame(maxWidth: .infinity)
@@ -1026,6 +1053,7 @@ struct RecordingButton: View {
                 )
             }
             .buttonStyle(PlainButtonStyle())
+            .disabled(isProcessing)
             
             if isRecording {
                 let duration = Int(AudioCoordinator.shared.recordingDuration)

@@ -83,8 +83,11 @@ final class PlaybackService: NSObject, ObservableObject {
         intervalSeconds: TimeInterval,
         privateModeEnabled: Bool
     ) throws {
-        print("PlaybackService: Starting playback for script \(scriptId)")
-        print("Private mode enabled: \(privateModeEnabled), active: \(sessionManager.privateModeActive)")
+        print("\n🎵 PlaybackService.startPlayback() called")
+        print("   Script ID: \(scriptId)")
+        print("   Repetitions: \(repetitions), Interval: \(intervalSeconds)s")
+        print("   Private mode enabled: \(privateModeEnabled), active: \(sessionManager.privateModeActive)")
+        print("   Current audio session state: \(sessionManager.currentState.rawValue)")
         
         // Check private mode
         if privateModeEnabled && sessionManager.privateModeActive {
@@ -112,8 +115,8 @@ final class PlaybackService: NSObject, ObservableObject {
             stopPlayback()
         }
         
-        // Configure session for playback
-        try sessionManager.configureForPlayback()
+        // Configure session for playback (no need to check result)
+        sessionManager.configureForPlayback()
         
         let audioURL = fileManager.audioURL(for: scriptId)
         
@@ -167,28 +170,41 @@ final class PlaybackService: NSObject, ObservableObject {
                 self.totalRepetitions = repetitions
             }
             
-            if audioPlayer?.play() != true {
-                print("PlaybackService: Failed to start playback - attempting recovery")
+            let playStarted = audioPlayer?.play() ?? false
+            print("   AVAudioPlayer.play() returned: \(playStarted)")
+            
+            if !playStarted {
+                print("   🔄 Failed to start playback - attempting recovery")
                 
                 // Try once more after re-preparing
                 audioPlayer?.prepareToPlay()
                 Thread.sleep(forTimeInterval: 0.2)
                 
-                guard audioPlayer?.play() == true else {
-                    print("PlaybackService: Failed to start playback after recovery attempt")
-                    // Failed to start playback, reset state
+                let recoveryPlayStarted = audioPlayer?.play() ?? false
+                print("   Recovery attempt play() returned: \(recoveryPlayStarted)")
+                
+                guard recoveryPlayStarted else {
+                    print("   ❌ Failed to start playback after recovery attempt")
+                    // Failed to start playback, reset state to idle for future attempts
                     sessionManager.transitionTo(.idle)
+                    
+                    // Clean up
+                    audioPlayer = nil
+                    playbackSessionID = nil
+                    
                     throw AudioServiceError.playbackFailed
                 }
                 
                 // If we reach here, recovery succeeded
-                print("PlaybackService: Playback recovered successfully")
+                print("   ✅ Playback recovered successfully")
             } else {
-                print("PlaybackService: Playback started successfully")
+                print("   ✅ Playback started successfully")
             }
             
             // Successfully started playing
+            // Direct transition from Idle to Playing (no preparingToPlay needed)
             sessionManager.transitionTo(.playing)
+            print("   Transitioned to Playing state")
             
             DispatchQueue.main.async {
                 self.isPlaying = true
@@ -201,6 +217,18 @@ final class PlaybackService: NSObject, ObservableObject {
             startCompletionMonitor()
             
         } catch {
+            print("   ❌ Error creating audio player: \(error)")
+            print("   Error code: \((error as NSError).code)")
+            print("   Resetting session to idle state")
+            // Ensure we're back in idle state after any failure
+            sessionManager.transitionTo(.idle)
+            
+            // Clean up
+            audioPlayer = nil
+            playbackSessionID = nil
+            currentScriptRepetitions = 1
+            currentScriptIntervalSeconds = 3
+            
             throw AudioServiceError.playbackFailed
         }
     }
@@ -270,41 +298,51 @@ final class PlaybackService: NSObject, ObservableObject {
     
     /// Stop playback completely
     func stopPlayback() {
-        // Transition to transitioning, then idle
-        sessionManager.transitionTo(.transitioning)
+        // Guard against multiple calls
+        guard playbackSessionID != nil else { return }
         
-        // Invalidate current session to cancel all orphaned operations
+        // Invalidate session first to prevent any pending operations
         let oldSessionID = playbackSessionID
-        playbackSessionID = nil  // Immediately invalidate to prevent any pending operations
+        playbackSessionID = nil
         
-        // Stop audio player
+        // Handle state transition based on current state
+        switch sessionManager.currentState {
+        case .playing, .paused:
+            // Normal playback stopping: go through transitioning state
+            sessionManager.transitionTo(.transitioning)
+        case .idle, .transitioning:
+            // Already idle or transitioning, no action needed
+            break
+        default:
+            // Any other state, try to reset to idle
+            sessionManager.transitionTo(.idle)
+        }
+        
+        // Clean up resources
         audioPlayer?.stop()
         audioPlayer = nil
         
-        // Reset all state
         pausedTime = 0
         intervalPausedTime = 0
         isHandlingCompletion = false
         intervalStartTime = nil
         
-        // Cancel all timers and work items
+        // Cancel all timers
         completionTimer?.invalidate()
         completionTimer = nil
-        
         progressTimer?.invalidate()
         progressTimer = nil
-        
         intervalTimer?.invalidate()
         intervalTimer = nil
         
-        // Cancel any pending repetition work
-        if let workItem = nextRepetitionWorkItem {
-            workItem.cancel()
-            nextRepetitionWorkItem = nil
-        }
+        // Cancel pending work
+        nextRepetitionWorkItem?.cancel()
+        nextRepetitionWorkItem = nil
         
-        // Transition to idle after cleanup
-        sessionManager.transitionTo(.idle)
+        // Final transition to idle (only if we were transitioning)
+        if sessionManager.currentState == .transitioning {
+            sessionManager.transitionTo(.idle)
+        }
         
         // Update UI state on main thread
         DispatchQueue.main.async { [weak self] in

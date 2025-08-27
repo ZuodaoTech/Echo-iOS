@@ -1,6 +1,6 @@
-analyze code base, find out all possible bugs that are needed human attention. provide a list, have me check one by one.
+Analyze code base, find out all possible bugs that are needed for human attention. Provide a list, have me check one by one.
 
-try harder... not only identify potential threats, but also provide details (inlcuding files, lines, or whatever), and possible solutions.
+Try harder... not only identify potential threats, but also provide details (inlcuding files, lines, or whatever), and possible solutions.
 
 \> Ready to start with Step 1 (fixing the critical crashes)?
 

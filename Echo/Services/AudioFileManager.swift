@@ -34,7 +34,21 @@ final class AudioFileManager {
     
     /// Check if audio file exists for a script
     func audioFileExists(for scriptId: UUID) -> Bool {
-        FileManager.default.fileExists(atPath: audioURL(for: scriptId).path)
+        let url = audioURL(for: scriptId)
+        let exists = FileManager.default.fileExists(atPath: url.path)
+        
+        if exists {
+            // Also check if file has non-zero size (not corrupted/incomplete)
+            if let attributes = try? FileManager.default.attributesOfItem(atPath: url.path),
+               let fileSize = attributes[.size] as? Int64 {
+                if fileSize == 0 {
+                    print("⚠️ AudioFileManager: Audio file exists but has zero size: \(url.lastPathComponent)")
+                    return false
+                }
+            }
+        }
+        
+        return exists
     }
     
     /// Check if audio file exists for a script (async version)
