@@ -616,7 +616,10 @@ struct MeView: View {
             var errors: [String] = []
             
             for recordType in recordTypes {
-                let query = CKQuery(recordType: recordType, predicate: NSPredicate(value: true))
+                // Use creationDate which is always queryable in CloudKit
+                // This fetches all records created after 1970 (essentially all records)
+                let predicate = NSPredicate(format: "creationDate > %@", NSDate(timeIntervalSince1970: 0))
+                let query = CKQuery(recordType: recordType, predicate: predicate)
                 
                 do {
                     let records = try await privateDB.records(matching: query)
