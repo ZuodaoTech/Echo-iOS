@@ -2,47 +2,43 @@
   Localizable.strings (Korean)
   Echo
   
-  Korean localization file for Echo app
+  Korean localization with cultural context
 */
 
 // MARK: - Navigation & Titles
 "navigation.cards" = "카드";
-"navigation.me" = "나";
+"navigation.me" = "내 정보";
 "navigation.new_script" = "새 카드";
 "navigation.edit_script" = "카드 편집";
 
-
 // MARK: - Tags
-"tag.now" = "지금";
 "tag.untagged" = "태그 없음";
-"tag.edit" = "태그 편집";
+"tag.edit" = "태그 수정";
 "tag.delete.confirm.title" = "태그 삭제";
-"tag.delete.confirm.message" = "이 태그는 %d개의 스크립트에서 사용됩니다. 삭제하면 해당 스크립트에서 태그가 제거됩니다.";
-"tag.delete.confirm.empty" = "이 태그는 어떤 스크립트에서도 사용되지 않습니다. 정말 삭제하시겠습니까?";
-"tag.max_now_cards" = "최대 '지금' 카드 수";
-"tag.now_limit_reached" = "지금 태그 제한";
-"tag.now_limit_message" = "'지금' 카드의 최대 수(%d)에 도달했습니다. '지금' 태그를 제거할 카드를 선택하세요:";
-"tag.auto_cleanup" = "사용하지 않는 태그 자동 삭제";
+"tag.delete.confirm.message" = "이 태그는 %d개의 스크립트에서 사용 중입니다. 삭제하면 해당 스크립트에서 태그가 제거됩니다.";
+"tag.delete.confirm.empty" = "이 태그를 사용하는 스크립트가 없습니다. 정말 삭제하시겠습니까?";
+"tag.auto_cleanup" = "미사용 태그 자동 제거";
 "tag.select" = "태그 선택";
 "tag.new" = "새 태그";
 "tag.label" = "태그";
 "tag.none" = "없음";
 "tag.count_selected" = "%d개 선택됨";
-"tag.breaking_bad_habits" = "나쁜 습관 끊기";
+"tag.breaking_bad_habits" = "나쁜 습관 고치기";
 "tag.building_good_habits" = "좋은 습관 만들기";
-"tag.appropriate_positivity" = "적절한 긍정성";
+"tag.appropriate_positivity" = "긍정적 사고";
 
 // MARK: - Script Card
 "script.play_count" = "%d회 재생";
-"script.transcript" = "전사";
+"script.transcript" = "텍스트";
 "script.recording" = "녹음";
 "script.no_recording" = "녹음 없음";
 "script.repetitions" = "반복 횟수";
 "script.interval" = "간격";
-"script.private_mode" = "프라이버시 모드";
+"script.private_mode" = "프라이빗 모드";
 "script.delete" = "카드 삭제";
 "script.delete.confirm.title" = "카드 삭제";
 "script.delete.confirm.message" = "이 스크립트를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.";
+"script.label" = "스크립트";
 
 // MARK: - Settings
 "settings.app_language" = "앱 언어";
@@ -50,89 +46,91 @@
 "settings.restart_to_apply" = "언어 변경을 적용하려면 앱을 다시 시작하세요";
 "settings.default_settings" = "기본 설정";
 "settings.script_preferences" = "카드 설정";
-"settings.transcription" = "전사";
+"settings.transcription" = "음성 인식";
 "settings.recording" = "녹음";
 "settings.backup_sync" = "백업 및 동기화";
 "settings.about" = "정보";
 "settings.support" = "지원";
+"settings.sync" = "동기화";
+"settings.backup" = "백업";
 
-"settings.private_mode.title" = "프라이버시 모드";
-"settings.private_mode.info" = "오디오가 이어폰을 통해서만 재생됩니다";
-"settings.private_mode.alert.title" = "프라이버시 모드";
-"settings.private_mode.alert.message" = "프라이버시 모드가 활성화되면 오디오 녹음은 연결된 이어폰이나 헤드셋을 통해서만 재생됩니다. 이를 통해 공공장소에서 스피커를 통한 우발적 재생을 방지할 수 있습니다.";
+"settings.private_mode.title" = "프라이빗 모드";
+"settings.private_mode.info" = "이어폰 연결 시에만 재생";
+"settings.private_mode.alert.title" = "프라이빗 모드";
+"settings.private_mode.alert.message" = "프라이빗 모드가 켜져 있으면 이어폰이나 헤드폰이 연결된 경우에만 녹음이 재생됩니다. 공공장소에서 실수로 스피커로 재생되는 것을 방지합니다.";
 
-"settings.character_guidance" = "문자 가이드";
+"settings.character_guidance" = "글자 수 안내";
 "settings.recommended_length" = "권장 길이";
-"settings.when_exceeded" = "초과시";
+"settings.when_exceeded" = "초과 시";
 "settings.just_warn" = "경고만 표시";
 "settings.show_tip_only" = "팁만 표시";
-"settings.character_guidance.info" = "짧은 스크립트가 기억하기 쉽고 더 효과적입니다";
+"settings.character_guidance.info" = "짧은 스크립트가 기억하기 쉽고 효과적입니다";
 
-"settings.default_language" = "기본 언어";
 "settings.voice_enhancement" = "음성 향상";
-"settings.voice_enhancement.desc" = "배경 소음과 에코를 줄입니다";
-"settings.auto_trim_silence" = "자동 무음 제거";
-"settings.auto_trim_silence.desc" = "시작과 끝의 무음을 제거합니다";
-"settings.trim_sensitivity" = "제거 민감도";
+"settings.voice_enhancement.desc" = "배경 소음과 반향 감소";
+"settings.auto_trim_silence" = "무음 자동 제거";
+"settings.auto_trim_silence.desc" = "시작과 끝의 무음 제거";
+"settings.trim_sensitivity" = "트림 감도";
 
 "settings.icloud_sync" = "iCloud 동기화";
-"settings.icloud_sync.desc" = "기기 간 카드 동기화";
-"settings.icloud_sync.info" = "텍스트와 설정이 자동으로 동기화됩니다. 오디오 파일은 로컬에 유지됩니다.";
+"settings.icloud_sync.desc" = "모든 기기에서 카드 동기화";
+"settings.icloud_sync_desc" = "모든 기기에서 카드 동기화";
+"settings.icloud_sync.info" = "텍스트와 설정은 자동으로 동기화됩니다. 오디오 파일은 로컬에 유지됩니다.";
 "settings.export_scripts" = "카드 내보내기";
 "settings.import_scripts" = "카드 가져오기";
 
 "settings.version" = "버전";
 "settings.build" = "빌드";
 "settings.rate_github" = "GitHub에서 평가";
-"settings.contact_support" = "지원 문의";
+"settings.contact_support" = "지원팀 문의";
 
 // MARK: - Recording
 "recording.start" = "녹음 시작";
 "recording.stop" = "녹음 중지";
 "recording.re_record" = "다시 녹음";
-"recording.saved" = "녹음이 저장되었습니다";
+"recording.saved" = "녹음 저장됨";
 "recording.delete" = "삭제";
-"recording.preview" = "미리보기";
-"recording.playing_preview" = "미리보기 재생 중...";
-"recording.preview_paused" = "미리보기 일시정지";
-"recording.plays_once" = "(한 번 재생)";
+"recording.preview" = "미리듣기";
+"recording.playing_preview" = "미리듣기 재생 중...";
+"recording.preview_paused" = "미리듣기 일시정지";
+"recording.plays_once" = "(1회 재생)";
 "recording.processing" = "오디오 처리 중...";
 "recording.listening" = "듣는 중...";
 "recording.speaking" = "말하는 중...";
-"recording.transcribing" = "전사 중...";
-"recording.re_transcribing" = "다시 전사 중...";
-"recording.microphone_access" = "마이크 접근";
+"recording.transcribing" = "텍스트 변환 중...";
+"recording.re_transcribing" = "다시 변환 중...";
+"recording.microphone_access" = "마이크 접근 권한";
 "recording.microphone_access.message" = "오디오를 녹음하려면 설정에서 마이크 접근을 허용해 주세요";
 
 // MARK: - Character Guidance
-"guidance.trim_characters" = "기억하기 쉽도록 %d자를 줄이는 것을 고려해보세요";
-"guidance.script_over" = "스크립트가 %d자를 초과합니다. 더 간결하게 작성해보세요";
-"guidance.script_long" = "스크립트가 상당히 깁니다.";
-"guidance.enter_script" = "여기에 셀프토크 스크립트를 입력하세요...";
+"guidance.trim_characters" = "기억하기 쉽도록 %d자를 줄이는 것을 고려하세요";
+"guidance.script_over" = "스크립트가 %d자 초과입니다. 더 간결하게 작성해 보세요";
+"guidance.script_long" = "스크립트가 꽤 깁니다.";
+"guidance.enter_script" = "셀프토크 스크립트를 입력하세요...";
 
 // MARK: - Notifications
-"notifications.enable" = "알림 사용";
+"notifications.enable" = "알림 켜기";
 "notifications.frequency" = "빈도";
 "notifications.frequency.high" = "높음 (시간당 1-2회)";
 "notifications.frequency.medium" = "보통 (2시간마다)";
 "notifications.frequency.low" = "낮음 (하루 1-2회)";
-"notifications.daytime_only" = "낮시간에만 알림 (오전 8시 - 오후 9시)";
+"notifications.daytime_only" = "주간에만 알림 (오전 8시 - 오후 9시)";
 "notifications.settings_title" = "알림 설정";
-"notifications.max_cards" = "알림이 있는 최대 카드 수";
-"notifications.burden_warning" = "너무 많은 알림은 부담이 될 수 있으며 효과를 감소시킬 수 있습니다";
-"notifications.global_settings" = "전역 설정";
-"notifications.max_cards_footer" = "동시에 알림을 보낼 수 있는 카드 수를 제한합니다";
-"notifications.no_cards_enabled" = "알림이 활성화된 카드가 없습니다";
-"notifications.enabled_cards" = "활성화된 카드 (%d)";
-"notifications.request_permission" = "알림 사용";
-"notifications.select_to_disable" = "알림을 비활성화할 %d개의 카드를 선택하세요";
+"notifications.max_cards" = "최대 알림 카드 수";
+"notifications.burden_warning" = "너무 많은 알림은 부담이 되고 효과를 감소시킬 수 있습니다";
+"notifications.global_settings" = "전체 설정";
+"notifications.max_cards_footer" = "동시에 알림을 보낼 수 있는 카드 수 제한";
+"notifications.no_cards_enabled" = "알림이 켜진 카드가 없습니다";
+"notifications.enabled_cards" = "알림 카드 (%d개)";
+"notifications.request_permission" = "알림 허용";
+"notifications.select_to_disable" = "알림을 끌 카드 %d개 선택";
 "notifications.select_cards" = "카드 선택";
 "notifications.reminder_title" = "셀프토크 시간";
 "notifications.action_play" = "오디오 재생";
 "notifications.action_done" = "완료로 표시";
 
 // MARK: - Common Actions
-"chars" = "글자";
+"chars" = "자";
 "action.done" = "완료";
 "action.cancel" = "취소";
 "action.delete" = "삭제";
@@ -153,6 +151,42 @@
 "error.try_again" = "다시 시도해 주세요";
 "error.import" = "가져오기 실패";
 "error.export" = "내보내기 실패";
+"error.private_mode" = "오디오를 재생하려면 이어폰을 연결하세요";
+"error.recording_failed" = "오디오 녹음 실패";
+"error.playback_failed" = "오디오 재생 실패";
+"error.no_recording" = "사용 가능한 녹음이 없습니다";
+"error.permission_denied" = "마이크 권한이 거부되었습니다";
+"error.invalid_script" = "스크립트를 더 이상 사용할 수 없습니다";
+"error.file_not_found" = "파일을 찾을 수 없습니다: %@";
+"error.insufficient_disk_space" = "저장 공간이 부족합니다. 공간을 확보한 후 다시 시도하세요.";
+"error.file_permission_denied" = "권한이 거부되었습니다. 파일에 접근할 수 없습니다.";
+"error.file_corrupted" = "파일이 손상되었습니다: %@";
+"error.directory_creation_failed" = "녹음 디렉토리 생성 실패";
+"error.file_copy_failed" = "파일 복사 실패: %@";
+"error.file_move_failed" = "파일 이동 실패: %@";
+"error.file_delete_failed" = "파일 삭제 실패: %@";
+"error.invalid_state" = "잘못된 오디오 상태: %@";
+
+// MARK: - Error Suggestions
+"error.suggestion.free_space" = "공간을 확보하려면 녹음이나 다른 파일들을 삭제하세요.";
+"error.suggestion.restart_app" = "앱을 다시 시작해 보세요.";
+"error.suggestion.rerecord" = "다시 녹음해 보세요.";
+
+// MARK: - Validation Messages
+"validation.title" = "유효성 검사 오류";
+"validation.empty_script" = "저장하기 전에 스크립트를 입력하세요";
+"validation.script_too_short" = "스크립트는 최소 5자 이상이어야 합니다";
+"validation.script_too_long" = "스크립트가 최대 길이 500자를 초과했습니다";
+"validation.exceeds_character_limit" = "스크립트가 글자 수 제한 %d자를 초과했습니다";
+"validation.audio_too_short" = "녹음은 최소 1초 이상이어야 합니다";
+"validation.audio_too_long" = "녹음이 최대 길이 60초를 초과했습니다";
+"validation.audio_processing" = "오디오가 아직 처리 중입니다. 잠시 기다려 주세요";
+"validation.recording_in_progress" = "녹음이 진행 중입니다. 먼저 녹음을 중지하세요";
+
+// MARK: - Processing Messages  
+"processing.stopping_recording" = "녹음 중지 중...";
+"processing.trimming_silence" = "무음 제거 중...";
+"processing.transcribing" = "오디오 변환 중...";
 
 // MARK: - Time Units
 "time.seconds" = "%@초";
@@ -164,14 +198,15 @@
 "sensitivity.low" = "낮음";
 "sensitivity.medium" = "보통";
 "sensitivity.high" = "높음";
-"sensitivity.low.desc" = "더 큰 목소리 필요 • 0.5초 버퍼";
-"sensitivity.medium.desc" = "균형된 검출 • 0.3초 버퍼";
-"sensitivity.high.desc" = "속삭임도 검출 • 0.15초 버퍼";
+"sensitivity.low.desc" = "큰 목소리 필요 • 0.5초 버퍼";
+"sensitivity.medium.desc" = "균형잡힌 감지 • 0.3초 버퍼";
+"sensitivity.high.desc" = "속삭임도 감지 • 0.15초 버퍼";
 
-// MARK: - Sample Scripts
-"sample.smoking" = "나는 절대 담배를 피지 않는다. 냄새가 나고, 통제받는 것이 싫기 때문이다.";
-"sample.bedtime" = "나는 항상 밤 10시 전에 잠자리에 든다. 더 건강하고, 활력 넘치게 깨어나는 것을 좋아하기 때문이다.";
-"sample.mistakes" = "나는 몇 가지 실수를 했지만, 여러 가지를 잘 해냈다. 실수는 학습의 정상적인 부분이며, 개선의 기회로 활용할 수 있다.";
+// MARK: - Sample Scripts  
+"sample.smoking" = "나는 절대 담배를 피우지 않습니다. 냄새가 나고, 무언가에 지배당하는 것이 싫기 때문입니다.";
+"sample.bedtime" = "나는 항상 밤 10시 전에 잠자리에 듭니다. 더 건강하고, 활력 넘치는 아침을 맞이하는 것을 좋아하기 때문입니다.";
+"sample.mistakes" = "나는 몇 가지 실수를 했지만, 잘한 일도 여러 가지 있습니다. 실수는 배움의 정상적인 과정이며, 발전할 수 있는 기회로 활용할 수 있습니다.";
+
 // MARK: - Languages
 "language.english" = "영어";
 "language.chinese_simplified" = "중국어 (간체)";
@@ -192,6 +227,7 @@
 "language.turkish" = "터키어";
 "language.arabic" = "아랍어";
 "language.hindi" = "힌디어";
+"language.system_default" = "시스템 기본값";
 
 // MARK: - Export/Import
 "export.format.bundle" = "Echo 번들";
@@ -199,7 +235,7 @@
 "export.format.json" = "JSON";
 "export.include_audio" = "오디오 파일 포함";
 "export.format_label" = "형식";
-"export.audio_size_warning" = "오디오 파일은 내보내기 크기를 증가시킵니다";
+"export.audio_size_warning" = "오디오 파일이 포함되면 내보내기 크기가 증가합니다";
 "export.options" = "내보내기 옵션";
 "export.select_scripts" = "카드 선택";
 "export.scripts_selected" = "카드 (%d개 선택됨)";
@@ -208,58 +244,77 @@
 "import.complete_title" = "가져오기 완료";
 
 // MARK: - Recording Tips
-"recording.punctuation_tip" = "팁: 문장부호는 '마침표', '쉼표', '물음표'라고 말하세요";
-"recording.no_recording_message" = "편집하려면 길게 누르고 먼저 오디오를 녹음해 주세요";
-
-
-// MARK: - iCloud & Sync
-"settings.icloud_sync_desc" = "기기 간 카드 동기화";
+"recording.punctuation_tip" = "팁: 구두점을 위해 '마침표', '쉼표', '물음표'라고 말하세요";
+"recording.no_recording_message" = "먼저 길게 눌러 편집하고 오디오를 녹음하세요";
+"recording.time_warning" = "%d초 남음";
+"recording.max_duration_reached" = "최대 시간 도달";
 
 // MARK: - Empty State
 "empty.no_cards" = "아직 카드가 없습니다";
 "empty.tap_to_create" = "+ 버튼을 눌러 첫 번째 셀프토크 카드를 만드세요";
 
 // MARK: - Filter
+"filter.title" = "태그로 필터";
 "filter.all_cards" = "모든 카드";
+"filter.tags_section" = "태그";
 
 // MARK: - Picker Labels
-"picker.sensitivity" = "민감도";
+"picker.sensitivity" = "감도";
 "picker.select_language" = "언어 선택";
 "picker.display_language" = "표시 언어";
+
+// MARK: - Consolidated Me Page Settings
 "settings.language_settings" = "언어 설정";
-"language.system_default" = "시스템 기본값";
 "settings.card_settings" = "카드 설정";
 "settings.card_defaults" = "카드 기본값";
 "settings.about_support" = "정보 및 지원";
-"settings.sync" = "동기화";
-"settings.backup" = "백업";
-"script.label" = "스크립트";
+"settings.language" = "언어";
+"settings.default_language" = "음성 인식 언어";
+"settings.card_preferences" = "카드 설정";
+"settings.character_limit" = "글자 수 제한";
+"settings.limit_behavior" = "제한 초과 시 동작";
+"settings.limit_behavior.warn" = "경고";
+"settings.limit_behavior.strict" = "엄격";
+"settings.notifications" = "알림";
+"settings.max_notification_cards" = "최대 알림 카드";
+"settings.notification_cards_count" = "%d개 카드에 알림이 켜져 있습니다";
+"settings.notification_cards.footer" = "동시에 알림을 보낼 수 있는 카드 수 제한";
+"settings.tags" = "태그";
+"settings.auto_cleanup_tags" = "미사용 태그 자동 정리";
+"settings.tags.footer" = "컬렉션의 태그 관리 방법 설정";
+"settings.notification_selection.message" = "알림을 유지할 카드를 최대 %d개까지 선택하세요";
+"settings.notification_selection.count" = "%d/%d개 카드 선택됨";
+"settings.select_notification_cards" = "알림 카드 선택";
+
 // MARK: - Developer Tools
-"dev.title" = "🛠️ Developer Tools";
-"dev.warning" = "⚠️ Display Language requires app restart to take effect.";
-"dev.destructive_actions" = "⚠️ Destructive Actions";
-"dev.destructive_warning" = "These actions are destructive and cannot be undone.";
-"dev.clear_icloud" = "Clear iCloud Data";
-"dev.clear_icloud.confirm" = "Clear iCloud Data?";
-"dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
-"dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
-"dev.remove_duplicates.confirm" = "Remove Duplicates?";
-"dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
-"dev.remove_duplicates.button" = "Remove";
-"dev.operation_complete" = "Operation Complete";
-"dev.clear" = "Clear";
+"dev.title" = "🛠️ 개발자 도구";
+"dev.warning" = "⚠️ 표시 언어 변경은 앱 재시작이 필요합니다.";
+"dev.destructive_actions" = "⚠️ 위험한 작업";
+"dev.destructive_warning" = "이 작업들은 되돌릴 수 없습니다.";
+"dev.clear_icloud" = "iCloud 데이터 삭제";
+"dev.clear_icloud.confirm" = "iCloud 데이터를 삭제하시겠습니까?";
+"dev.clear_icloud.message" = "iCloud의 모든 Echo 데이터가 삭제됩니다. 로컬 데이터는 유지됩니다.";
+"dev.clear_local" = "모든 로컬 데이터 삭제";
+"dev.clear_local.confirm" = "모든 로컬 데이터를 삭제하시겠습니까?";
+"dev.clear_local.message" = "모든 스크립트, 녹음, 태그가 삭제됩니다. 되돌릴 수 없습니다!";
+"dev.clear_local.button" = "모두 삭제";
+"dev.remove_duplicates" = "중복 태그 및 카드 제거";
+"dev.remove_duplicates.confirm" = "중복을 제거하시겠습니까?";
+"dev.remove_duplicates.message" = "중복 태그를 병합하고 같은 내용의 중복 스크립트를 제거합니다.";
+"dev.remove_duplicates.button" = "제거";
+"dev.operation_complete" = "작업 완료";
+"dev.clear" = "삭제";
 
 // MARK: - Formatting
-"format.seconds_of_60" = "%ds / 60s";
-"format.repetitions" = "%dx";
+"format.seconds_of_60" = "%d초 / 60초";
+"format.repetitions" = "%d회";
 "format.progress" = "%d/%d";
 "format.plus_count" = "+%d";
-"format.interval_seconds" = "%.1fs";
+"format.interval_seconds" = "%.1f초";
 
-// MARK: - Additional Alerts
-"alert.new_tag" = "New Tag";
-"alert.remove" = "Remove";
+// MARK: - Alerts
+"alert.new_tag" = "새 태그";
+"alert.cancel" = "취소";
+"alert.add" = "추가";
+"alert.remove" = "제거";
+"alert.ok" = "확인";

@@ -2,39 +2,35 @@
   Localizable.strings (Traditional Chinese)
   Echo
   
-  Traditional Chinese localization file for Echo app
+  Traditional Chinese localization with cultural context
 */
 
 // MARK: - Navigation & Titles
 "navigation.cards" = "卡片";
-"navigation.me" = "我";
-"navigation.new_script" = "新建卡片";
+"navigation.me" = "我的";
+"navigation.new_script" = "新增卡片";
 "navigation.edit_script" = "編輯卡片";
 
 
 // MARK: - Tags
-"tag.now" = "現在";
 "tag.untagged" = "無標籤";
 "tag.edit" = "編輯標籤";
 "tag.delete.confirm.title" = "刪除標籤";
 "tag.delete.confirm.message" = "此標籤被%d個腳本使用。刪除它將從這些腳本中移除該標籤。";
 "tag.delete.confirm.empty" = "此標籤未被任何腳本使用。確定要刪除嗎？";
-"tag.max_now_cards" = "最大'現在'卡片數";
-"tag.now_limit_reached" = "現在標籤限制";
-"tag.now_limit_message" = "您已達到'現在'卡片的最大數量（%d）。請選擇一個卡片來移除'現在'標籤：";
 "tag.auto_cleanup" = "自動清理未使用的標籤";
 "tag.select" = "選擇標籤";
-"tag.new" = "新建標籤";
+"tag.new" = "新增標籤";
 "tag.label" = "標籤";
 "tag.none" = "無";
 "tag.count_selected" = "已選擇%d個";
 "tag.breaking_bad_habits" = "改掉壞習慣";
 "tag.building_good_habits" = "培養好習慣";
-"tag.appropriate_positivity" = "適度積極";
+"tag.appropriate_positivity" = "適度正向";
 
 // MARK: - Script Card
 "script.play_count" = "%d次播放";
-"script.transcript" = "轉錄文本";
+"script.transcript" = "轉錄文字";
 "script.recording" = "錄音";
 "script.no_recording" = "無錄音";
 "script.repetitions" = "重複次數";
@@ -42,12 +38,12 @@
 "script.private_mode" = "隱私模式";
 "script.delete" = "刪除卡片";
 "script.delete.confirm.title" = "刪除卡片";
-"script.delete.confirm.message" = "確定要刪除這個腳本嗎？此操作無法撤銷。";
+"script.delete.confirm.message" = "確定要刪除這個腳本嗎？此動作無法復原。";
 
 // MARK: - Settings
 "settings.app_language" = "應用程式語言";
 "settings.display_language" = "顯示語言";
-"settings.restart_to_apply" = "重啟應用程式以套用語言更改";
+"settings.restart_to_apply" = "重新啟動應用程式以套用語言變更";
 "settings.default_settings" = "預設設定";
 "settings.script_preferences" = "卡片偏好";
 "settings.transcription" = "轉錄";
@@ -59,31 +55,31 @@
 "settings.private_mode.title" = "隱私模式";
 "settings.private_mode.info" = "音訊僅透過耳機播放";
 "settings.private_mode.alert.title" = "隱私模式";
-"settings.private_mode.alert.message" = "啟用隱私模式時，音訊錄音將僅透過連接的耳機或耳麥播放。這可以防止在公共場所意外透過揚聲器播放。";
+"settings.private_mode.alert.message" = "啟用隱私模式後，音訊錄音只能透過連接的耳機或頭戴式耳機播放。這可以防止在公共場所意外透過揚聲器播放。";
 
-"settings.character_guidance" = "字元指導";
+"settings.character_guidance" = "字數指引";
 "settings.recommended_length" = "建議長度";
 "settings.when_exceeded" = "超出時";
 "settings.just_warn" = "僅警告";
 "settings.show_tip_only" = "僅顯示提示";
-"settings.character_guidance.info" = "較短的腳本更容易記憶且更有效果";
+"settings.character_guidance.info" = "較短的腳本更容易記住並更有影響力";
 
-"settings.default_language" = "預設語言";
+"settings.default_language" = "轉錄語言";
 "settings.voice_enhancement" = "語音增強";
-"settings.voice_enhancement.desc" = "減少背景噪音和回音";
+"settings.voice_enhancement.desc" = "減少背景噪音和迴響";
 "settings.auto_trim_silence" = "自動修剪靜音";
-"settings.auto_trim_silence.desc" = "移除開頭和結尾的靜音";
+"settings.auto_trim_silence.desc" = "移除開始和結尾的靜音";
 "settings.trim_sensitivity" = "修剪敏感度";
 
-"settings.icloud_sync" = "iCloud同步";
-"settings.icloud_sync.desc" = "跨裝置同步卡片";
-"settings.icloud_sync.info" = "文字和設定自動同步。音訊檔案保持本機。";
+"settings.icloud_sync" = "iCloud 同步";
+"settings.icloud_sync.desc" = "在所有裝置間同步卡片";
+"settings.icloud_sync.info" = "文字和設定自動同步。音訊檔案保持本機儲存。";
 "settings.export_scripts" = "匯出卡片";
 "settings.import_scripts" = "匯入卡片";
 
 "settings.version" = "版本";
 "settings.build" = "建置";
-"settings.rate_github" = "在GitHub上評分";
+"settings.rate_github" = "在 GitHub 上評價";
 "settings.contact_support" = "聯絡支援";
 
 // MARK: - Recording
@@ -97,16 +93,21 @@
 "recording.preview_paused" = "預覽已暫停";
 "recording.plays_once" = "（播放一次）";
 "recording.processing" = "正在處理音訊...";
-"recording.listening" = "正在聽取...";
+"recording.listening" = "正在聆聽...";
 "recording.speaking" = "正在說話...";
 "recording.transcribing" = "正在轉錄...";
 "recording.re_transcribing" = "正在重新轉錄...";
 "recording.microphone_access" = "麥克風存取";
-"recording.microphone_access.message" = "請在設定中授予麥克風存取權限以錄製音訊";
+"recording.microphone_access.message" = "請在設定中授權麥克風存取以錄製音訊";
+
+// MARK: - Processing Messages  
+"processing.stopping_recording" = "正在停止錄音...";
+"processing.trimming_silence" = "正在修剪靜音...";
+"processing.transcribing" = "正在轉錄音訊...";
 
 // MARK: - Character Guidance
-"guidance.trim_characters" = "建議修剪%d個字元以提高記憶效果";
-"guidance.script_over" = "腳本超出%d個字元。儘量簡潔些";
+"guidance.trim_characters" = "考慮刪減%d個字元以提高記憶性";
+"guidance.script_over" = "腳本超出%d個字元。嘗試更簡潔一些";
 "guidance.script_long" = "腳本相當長。";
 "guidance.enter_script" = "在此輸入您的自我對話腳本...";
 
@@ -114,18 +115,18 @@
 "notifications.enable" = "啟用通知";
 "notifications.frequency" = "頻率";
 "notifications.frequency.high" = "高（每小時1-2次）";
-"notifications.frequency.medium" = "中（每2小時一次）";
+"notifications.frequency.medium" = "中（每2小時）";
 "notifications.frequency.low" = "低（每天1-2次）";
-"notifications.daytime_only" = "僅在白天通知（上午8點-晚上9點）";
+"notifications.daytime_only" = "僅在白天通知（上午8點 - 晚上9點）";
 "notifications.settings_title" = "通知設定";
-"notifications.max_cards" = "最大通知卡片數";
-"notifications.burden_warning" = "過多的通知可能成為負擔並降低其效果";
+"notifications.max_cards" = "最多通知卡片數";
+"notifications.burden_warning" = "太多通知可能成為負擔並降低效果";
 "notifications.global_settings" = "全域設定";
-"notifications.max_cards_footer" = "限制可同時傳送通知的卡片數量";
-"notifications.no_cards_enabled" = "沒有啟用通知的卡片";
-"notifications.enabled_cards" = "已啟用的卡片（%d）";
+"notifications.max_cards_footer" = "限制同時可以發送通知的卡片數量";
+"notifications.no_cards_enabled" = "沒有卡片啟用通知";
+"notifications.enabled_cards" = "已啟用卡片（%d個）";
 "notifications.request_permission" = "啟用通知";
-"notifications.select_to_disable" = "選擇%d個卡片以停用通知";
+"notifications.select_to_disable" = "選擇%d張卡片以停用通知";
 "notifications.select_cards" = "選擇卡片";
 "notifications.reminder_title" = "自我對話時間";
 "notifications.action_play" = "播放音訊";
@@ -138,7 +139,7 @@
 "action.delete" = "刪除";
 "action.add" = "新增";
 "action.save" = "儲存";
-"action.ok" = "好的";
+"action.ok" = "確定";
 "action.got_it" = "知道了";
 "action.copy" = "複製";
 "action.use_as_script" = "用作腳本";
@@ -149,10 +150,41 @@
 "error.title" = "錯誤";
 "error.save" = "儲存卡片失敗";
 "error.database" = "資料庫錯誤";
-"error.restart_app" = "請重啟應用程式";
+"error.restart_app" = "請重新啟動應用程式";
 "error.try_again" = "請重試";
 "error.import" = "匯入失敗";
 "error.export" = "匯出失敗";
+"error.private_mode" = "請連接耳機播放音訊";
+"error.recording_failed" = "錄音失敗";
+"error.playback_failed" = "播放失敗";
+"error.no_recording" = "沒有可用的錄音";
+"error.permission_denied" = "麥克風權限被拒絕";
+"error.invalid_script" = "腳本不再可用";
+"error.file_not_found" = "檔案未找到：%@";
+"error.insufficient_disk_space" = "儲存空間不足。請釋放一些空間後重試。";
+"error.file_permission_denied" = "權限被拒絕。無法存取檔案。";
+"error.file_corrupted" = "檔案損壞：%@";
+"error.directory_creation_failed" = "建立錄音目錄失敗";
+"error.file_copy_failed" = "複製檔案失敗：%@";
+"error.file_move_failed" = "移動檔案失敗：%@";
+"error.file_delete_failed" = "刪除檔案失敗：%@";
+"error.invalid_state" = "音訊狀態無效：%@";
+
+// MARK: - Error Suggestions
+"error.suggestion.free_space" = "刪除一些錄音或其他檔案來釋放空間。";
+"error.suggestion.restart_app" = "嘗試重新啟動應用程式。";
+"error.suggestion.rerecord" = "嘗試重新錄音。";
+
+// MARK: - Validation Messages
+"validation.title" = "驗證錯誤";
+"validation.empty_script" = "儲存前請輸入腳本";
+"validation.script_too_short" = "腳本必須至少5個字元";
+"validation.script_too_long" = "腳本超過500個字元的最大長度";
+"validation.exceeds_character_limit" = "腳本超過字元限制%d個字元";
+"validation.audio_too_short" = "錄音必須至少1秒";
+"validation.audio_too_long" = "錄音超過60秒的最大時長";
+"validation.audio_processing" = "音訊仍在處理中，請等待";
+"validation.recording_in_progress" = "錄音正在進行中，請先停止";
 
 // MARK: - Time Units
 "time.seconds" = "%@秒";
@@ -164,14 +196,15 @@
 "sensitivity.low" = "低";
 "sensitivity.medium" = "中";
 "sensitivity.high" = "高";
-"sensitivity.low.desc" = "需要更大聲音 • 0.5秒緩衝";
-"sensitivity.medium.desc" = "平衡檢測 • 0.3秒緩衝";
-"sensitivity.high.desc" = "檢測輕語 • 0.15秒緩衝";
+"sensitivity.low.desc" = "需要較大聲音 • 0.5秒緩衝";
+"sensitivity.medium.desc" = "平衡偵測 • 0.3秒緩衝";
+"sensitivity.high.desc" = "偵測輕聲 • 0.15秒緩衝";
 
 // MARK: - Sample Scripts
-"sample.smoking" = "我從不吸煙，因為它很臭，我討厭被控制。";
-"sample.bedtime" = "我總是在晚上10點前睡覺，因為這更健康，我喜歡精力充沛地醒來。";
-"sample.mistakes" = "我犯了一些錯誤，但我也做對了幾件事。錯誤是學習的正常部分，我可以把它們當作改進的機會。";
+"sample.smoking" = "我絕不抽菸，因為它有異味，我討厭被控制。";
+"sample.bedtime" = "我總是在晚上10點前上床睡覺，因為這更健康，我喜歡充滿活力地醒來。";
+"sample.mistakes" = "我犯了一些錯誤，但也做了幾件好事。錯誤是學習的正常部分，我可以將它們作為改進的機會。";
+
 // MARK: - Languages
 "language.english" = "英語";
 "language.chinese_simplified" = "中文（簡體）";
@@ -194,7 +227,7 @@
 "language.hindi" = "印地語";
 
 // MARK: - Export/Import
-"export.format.bundle" = "Echo套件";
+"export.format.bundle" = "Echo 封包";
 "export.format.text" = "純文字";
 "export.format.json" = "JSON";
 "export.include_audio" = "包含音訊檔案";
@@ -208,19 +241,22 @@
 "import.complete_title" = "匯入完成";
 
 // MARK: - Recording Tips
-"recording.punctuation_tip" = "提示：說'句號'、'逗號'或'問號'來新增標點符號";
+"recording.punctuation_tip" = "提示：說「句號」、「逗號」或「問號」來新增標點";
 "recording.no_recording_message" = "請長按編輯並先錄製音訊";
-
+"recording.time_warning" = "剩餘%d秒";
+"recording.max_duration_reached" = "已達最大時長";
 
 // MARK: - iCloud & Sync
-"settings.icloud_sync_desc" = "跨裝置同步卡片";
+"settings.icloud_sync_desc" = "在所有裝置間同步卡片";
 
 // MARK: - Empty State
-"empty.no_cards" = "還沒有卡片";
+"empty.no_cards" = "尚無卡片";
 "empty.tap_to_create" = "點選+按鈕建立您的第一張自我對話卡片";
 
 // MARK: - Filter
+"filter.title" = "按標籤篩選";
 "filter.all_cards" = "所有卡片";
+"filter.tags_section" = "標籤";
 
 // MARK: - Picker Labels
 "picker.sensitivity" = "敏感度";
@@ -234,32 +270,54 @@
 "settings.sync" = "同步";
 "settings.backup" = "備份";
 "script.label" = "腳本";
+
+// MARK: - Consolidated Me Page Settings
+"settings.language" = "語言";
+"settings.card_preferences" = "卡片偏好";
+"settings.character_limit" = "字元限制";
+"settings.limit_behavior" = "超限行為";
+"settings.limit_behavior.warn" = "警告";
+"settings.limit_behavior.strict" = "嚴格";
+"settings.notifications" = "通知";
+"settings.max_notification_cards" = "最大通知卡片數";
+"settings.notification_cards_count" = "%d張卡片已啟用通知";
+"settings.notification_cards.footer" = "限制同時可以發送通知的卡片數量";
+"settings.tags" = "標籤";
+"settings.auto_cleanup_tags" = "自動清理未使用的標籤";
+"settings.tags.footer" = "控制收藏中標籤的管理方式";
+"settings.notification_selection.message" = "選擇最多%d張卡片保持通知啟用";
+"settings.notification_selection.count" = "已選擇%d/%d張卡片";
+"settings.select_notification_cards" = "選擇通知卡片";
+
 // MARK: - Developer Tools
-"dev.title" = "🛠️ Developer Tools";
-"dev.warning" = "⚠️ Display Language requires app restart to take effect.";
-"dev.destructive_actions" = "⚠️ Destructive Actions";
-"dev.destructive_warning" = "These actions are destructive and cannot be undone.";
-"dev.clear_icloud" = "Clear iCloud Data";
-"dev.clear_icloud.confirm" = "Clear iCloud Data?";
-"dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
-"dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
-"dev.remove_duplicates.confirm" = "Remove Duplicates?";
-"dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
-"dev.remove_duplicates.button" = "Remove";
-"dev.operation_complete" = "Operation Complete";
-"dev.clear" = "Clear";
+"dev.title" = "🛠️ 開發者工具";
+"dev.warning" = "⚠️ 顯示語言需要重新啟動應用程式才能生效。";
+"dev.destructive_actions" = "⚠️ 危險操作";
+"dev.destructive_warning" = "這些操作是破壞性的且無法復原。";
+"dev.clear_icloud" = "清除 iCloud 資料";
+"dev.clear_icloud.confirm" = "清除 iCloud 資料？";
+"dev.clear_icloud.message" = "這將從 iCloud 中刪除所有 Echo 資料。本機資料將保持完整。";
+"dev.clear_local" = "清除所有本機資料";
+"dev.clear_local.confirm" = "清除所有本機資料？";
+"dev.clear_local.message" = "這將刪除所有腳本、錄音和標籤。此動作無法復原！";
+"dev.clear_local.button" = "刪除全部";
+"dev.remove_duplicates" = "刪除重複標籤和卡片";
+"dev.remove_duplicates.confirm" = "刪除重複項目？";
+"dev.remove_duplicates.message" = "這將合併重複標籤並刪除內容相同的重複腳本。";
+"dev.remove_duplicates.button" = "刪除";
+"dev.operation_complete" = "操作完成";
+"dev.clear" = "清除";
 
 // MARK: - Formatting
-"format.seconds_of_60" = "%ds / 60s";
-"format.repetitions" = "%dx";
+"format.seconds_of_60" = "%d秒 / 60秒";
+"format.repetitions" = "%d次";
 "format.progress" = "%d/%d";
 "format.plus_count" = "+%d";
-"format.interval_seconds" = "%.1fs";
+"format.interval_seconds" = "%.1f秒";
 
-// MARK: - Additional Alerts
-"alert.new_tag" = "New Tag";
-"alert.remove" = "Remove";
+// MARK: - Alerts
+"alert.new_tag" = "新增標籤";
+"alert.cancel" = "取消";
+"alert.add" = "新增";
+"alert.remove" = "移除";
+"alert.ok" = "確定";
