@@ -13,15 +13,11 @@
 
 
 // MARK: - Tags
-"tag.now" = "Jetzt";
 "tag.untagged" = "Ohne Tag";
 "tag.edit" = "Tag Bearbeiten";
 "tag.delete.confirm.title" = "Tag Löschen";
 "tag.delete.confirm.message" = "Dieses Tag wird von %d Skripten verwendet. Das Löschen entfernt das Tag von diesen Skripten.";
 "tag.delete.confirm.empty" = "Dieses Tag wird von keinem Skript verwendet. Sind Sie sicher, dass Sie es löschen möchten?";
-"tag.max_now_cards" = "Maximum 'Jetzt' Karten";
-"tag.now_limit_reached" = "Jetzt Tag Limit";
-"tag.now_limit_message" = "Sie haben die maximale Anzahl von 'Jetzt' Karten erreicht (%d). Bitte wählen Sie eine Karte aus, um das 'Jetzt' Tag zu entfernen:";
 "tag.auto_cleanup" = "Auto-Entfernung Ungenutzter Tags";
 "tag.select" = "Tags Auswählen";
 "tag.new" = "Neues Tag";
@@ -145,6 +141,11 @@
 "action.share" = "Teilen";
 "action.edit" = "Bearbeiten";
 
+// MARK: - Processing Messages  
+"processing.stopping_recording" = "Aufnahme wird gestoppt...";
+"processing.trimming_silence" = "Stille wird getrimmt...";
+"processing.transcribing" = "Audio wird transkribiert...";
+
 // MARK: - Errors
 "error.title" = "Fehler";
 "error.save" = "Karte speichern fehlgeschlagen";
@@ -153,6 +154,37 @@
 "error.try_again" = "Bitte versuchen Sie es erneut";
 "error.import" = "Import fehlgeschlagen";
 "error.export" = "Export fehlgeschlagen";
+"error.private_mode" = "Bitte Kopfhörer anschließen, um Audio abzuspielen";
+"error.recording_failed" = "Audioaufnahme fehlgeschlagen";
+"error.playback_failed" = "Audio-Wiedergabe fehlgeschlagen";
+"error.no_recording" = "Keine Aufnahme verfügbar";
+"error.permission_denied" = "Mikrofon-Berechtigung verweigert";
+"error.invalid_script" = "Skript ist nicht mehr verfügbar";
+"error.file_not_found" = "Datei nicht gefunden: %@";
+"error.insufficient_disk_space" = "Nicht genügend Speicherplatz. Bitte schaffen Sie Platz und versuchen Sie es erneut.";
+"error.file_permission_denied" = "Berechtigung verweigert. Kann nicht auf die Datei zugreifen.";
+"error.file_corrupted" = "Datei ist beschädigt: %@";
+"error.directory_creation_failed" = "Aufnahmeverzeichnis konnte nicht erstellt werden";
+"error.file_copy_failed" = "Datei kopieren fehlgeschlagen: %@";
+"error.file_move_failed" = "Datei verschieben fehlgeschlagen: %@";
+"error.file_delete_failed" = "Datei löschen fehlgeschlagen: %@";
+"error.invalid_state" = "Ungültiger Audio-Status: %@";
+
+// MARK: - Error Suggestions
+"error.suggestion.free_space" = "Löschen Sie einige Aufnahmen oder andere Dateien, um Speicherplatz freizugeben.";
+"error.suggestion.restart_app" = "Versuchen Sie die App neu zu starten.";
+"error.suggestion.rerecord" = "Versuchen Sie erneut aufzunehmen.";
+
+// MARK: - Validation Messages
+"validation.title" = "Validierungsfehler";
+"validation.empty_script" = "Bitte geben Sie ein Skript ein, bevor Sie speichern";
+"validation.script_too_short" = "Skript muss mindestens 5 Zeichen lang sein";
+"validation.script_too_long" = "Skript überschreitet die maximale Länge von 500 Zeichen";
+"validation.exceeds_character_limit" = "Skript überschreitet das Zeichenlimit von %d";
+"validation.audio_too_short" = "Aufnahme muss mindestens 1 Sekunde lang sein";
+"validation.audio_too_long" = "Aufnahme überschreitet die maximale Dauer von 60 Sekunden";
+"validation.audio_processing" = "Audio wird noch verarbeitet, bitte warten";
+"validation.recording_in_progress" = "Aufnahme läuft, bitte stoppen Sie sie zuerst";
 
 // MARK: - Time Units
 "time.seconds" = "%@ Sekunden";
@@ -210,6 +242,8 @@
 // MARK: - Recording Tips
 "recording.punctuation_tip" = "Tipp: Sagen Sie 'Punkt', 'Komma', oder 'Fragezeichen' für Interpunktion";
 "recording.no_recording_message" = "Bitte lange drücken zum Bearbeiten und zuerst Audio aufnehmen";
+"recording.time_warning" = "%d Sekunden verbleibend";
+"recording.max_duration_reached" = "Maximale Dauer erreicht";
 
 
 // MARK: - iCloud & Sync
@@ -220,7 +254,9 @@
 "empty.tap_to_create" = "Tippen Sie auf den + Button, um Ihre erste Selbstgespräch-Karte zu erstellen";
 
 // MARK: - Filter
+"filter.title" = "Nach Tags Filtern";
 "filter.all_cards" = "Alle Karten";
+"filter.tags_section" = "Tags";
 
 // MARK: - Picker Labels
 "picker.sensitivity" = "Empfindlichkeit";
@@ -234,24 +270,47 @@
 "settings.sync" = "Synchronisation";
 "settings.backup" = "Backup";
 "script.label" = "Skript";
+
+// MARK: - Consolidated Me Page Settings
+"settings.language" = "Sprache";
+"settings.default_language" = "Transkriptionssprache";
+"settings.card_preferences" = "Karten-Einstellungen";
+"settings.character_limit" = "Zeichenlimit";
+"settings.limit_behavior" = "Verhalten bei Überschreitung";
+"settings.limit_behavior.warn" = "Warnen";
+"settings.limit_behavior.strict" = "Streng";
+"settings.notifications" = "Benachrichtigungen";
+"settings.max_notification_cards" = "Max Benachrichtigungs-Karten";
+"settings.notification_cards_count" = "%d Karten haben Benachrichtigungen aktiviert";
+"settings.notification_cards.footer" = "Begrenzen Sie, wie viele Karten gleichzeitig Benachrichtigungen senden können";
+"settings.tags" = "Tags";
+"settings.auto_cleanup_tags" = "Ungenutzte Tags Automatisch Aufräumen";
+"settings.tags.footer" = "Steuern Sie, wie Tags in Ihrer Sammlung verwaltet werden";
+"settings.version" = "Version";
+"settings.rate_github" = "Auf GitHub Bewerten";
+"settings.contact_support" = "Support Kontaktieren";
+"settings.notification_selection.message" = "Wählen Sie bis zu %d Karten aus, um Benachrichtigungen aktiviert zu lassen";
+"settings.notification_selection.count" = "%d von %d Karten ausgewählt";
+"settings.select_notification_cards" = "Benachrichtigungs-Karten Auswählen";
+
 // MARK: - Developer Tools
-"dev.title" = "🛠️ Developer Tools";
-"dev.warning" = "⚠️ Display Language requires app restart to take effect.";
-"dev.destructive_actions" = "⚠️ Destructive Actions";
-"dev.destructive_warning" = "These actions are destructive and cannot be undone.";
-"dev.clear_icloud" = "Clear iCloud Data";
-"dev.clear_icloud.confirm" = "Clear iCloud Data?";
-"dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
-"dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
-"dev.remove_duplicates.confirm" = "Remove Duplicates?";
-"dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
-"dev.remove_duplicates.button" = "Remove";
-"dev.operation_complete" = "Operation Complete";
-"dev.clear" = "Clear";
+"dev.title" = "🛠️ Entwickler-Tools";
+"dev.warning" = "⚠️ Anzeigesprache erfordert App-Neustart, um wirksam zu werden.";
+"dev.destructive_actions" = "⚠️ Destruktive Aktionen";
+"dev.destructive_warning" = "Diese Aktionen sind destruktiv und können nicht rückgängig gemacht werden.";
+"dev.clear_icloud" = "iCloud Daten Löschen";
+"dev.clear_icloud.confirm" = "iCloud Daten Löschen?";
+"dev.clear_icloud.message" = "Dies entfernt alle Echo Daten aus iCloud. Lokale Daten bleiben erhalten.";
+"dev.clear_local" = "Alle Lokalen Daten Löschen";
+"dev.clear_local.confirm" = "Alle Lokalen Daten Löschen?";
+"dev.clear_local.message" = "Dies löscht ALLE Skripte, Aufnahmen und Tags. Dies kann nicht rückgängig gemacht werden!";
+"dev.clear_local.button" = "Alles Löschen";
+"dev.remove_duplicates" = "Doppelte Tags & Karten Entfernen";
+"dev.remove_duplicates.confirm" = "Duplikate Entfernen?";
+"dev.remove_duplicates.message" = "Dies wird doppelte Tags zusammenfügen und doppelte Skripte mit gleichem Inhalt entfernen.";
+"dev.remove_duplicates.button" = "Entfernen";
+"dev.operation_complete" = "Vorgang Abgeschlossen";
+"dev.clear" = "Löschen";
 
 // MARK: - Formatting
 "format.seconds_of_60" = "%ds / 60s";
@@ -260,6 +319,9 @@
 "format.plus_count" = "+%d";
 "format.interval_seconds" = "%.1fs";
 
-// MARK: - Additional Alerts
-"alert.new_tag" = "New Tag";
-"alert.remove" = "Remove";
+// MARK: - Alerts
+"alert.new_tag" = "Neues Tag";
+"alert.cancel" = "Abbrechen";
+"alert.add" = "Hinzufügen";
+"alert.remove" = "Entfernen";
+"alert.ok" = "OK";

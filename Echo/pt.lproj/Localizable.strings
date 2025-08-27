@@ -13,15 +13,11 @@
 
 
 // MARK: - Tags
-"tag.now" = "Agora";
 "tag.untagged" = "Sem etiqueta";
 "tag.edit" = "Editar Etiqueta";
 "tag.delete.confirm.title" = "Excluir Etiqueta";
 "tag.delete.confirm.message" = "Esta etiqueta é usada por %d scripts. Excluí-la removerá a etiqueta desses scripts.";
 "tag.delete.confirm.empty" = "Esta etiqueta não é usada por nenhum script. Tem certeza de que deseja excluí-la?";
-"tag.max_now_cards" = "Máximo de Cartões 'Agora'";
-"tag.now_limit_reached" = "Limite da Etiqueta Agora";
-"tag.now_limit_message" = "Você atingiu o número máximo de cartões 'Agora' (%d). Selecione um cartão para remover a etiqueta 'Agora':";
 "tag.auto_cleanup" = "Auto-remover Etiquetas Não Utilizadas";
 "tag.select" = "Selecionar Etiquetas";
 "tag.new" = "Nova Etiqueta";
@@ -145,6 +141,11 @@
 "action.share" = "Compartilhar";
 "action.edit" = "Editar";
 
+// MARK: - Processing Messages  
+"processing.stopping_recording" = "Parando gravação...";
+"processing.trimming_silence" = "Cortando silêncio...";
+"processing.transcribing" = "Transcrevendo áudio...";
+
 // MARK: - Errors
 "error.title" = "Erro";
 "error.save" = "Falha ao salvar cartão";
@@ -153,6 +154,37 @@
 "error.try_again" = "Por favor tente novamente";
 "error.import" = "Falha na importação";
 "error.export" = "Falha na exportação";
+"error.private_mode" = "Por favor conecte fones de ouvido para reproduzir áudio";
+"error.recording_failed" = "Falha ao gravar áudio";
+"error.playback_failed" = "Falha ao reproduzir áudio";
+"error.no_recording" = "Nenhuma gravação disponível";
+"error.permission_denied" = "Permissão do microfone negada";
+"error.invalid_script" = "Script não está mais disponível";
+"error.file_not_found" = "Arquivo não encontrado: %@";
+"error.insufficient_disk_space" = "Espaço de armazenamento insuficiente. Por favor libere algum espaço e tente novamente.";
+"error.file_permission_denied" = "Permissão negada. Não é possível acessar o arquivo.";
+"error.file_corrupted" = "Arquivo corrompido: %@";
+"error.directory_creation_failed" = "Falha ao criar diretório de gravações";
+"error.file_copy_failed" = "Falha ao copiar arquivo: %@";
+"error.file_move_failed" = "Falha ao mover arquivo: %@";
+"error.file_delete_failed" = "Falha ao excluir arquivo: %@";
+"error.invalid_state" = "Estado de áudio inválido: %@";
+
+// MARK: - Error Suggestions
+"error.suggestion.free_space" = "Exclua algumas gravações ou outros arquivos para liberar espaço.";
+"error.suggestion.restart_app" = "Tente reiniciar o app.";
+"error.suggestion.rerecord" = "Tente gravar novamente.";
+
+// MARK: - Validation Messages
+"validation.title" = "Erro de Validação";
+"validation.empty_script" = "Por favor insira um script antes de salvar";
+"validation.script_too_short" = "Script deve ter pelo menos 5 caracteres";
+"validation.script_too_long" = "Script excede o comprimento máximo de 500 caracteres";
+"validation.exceeds_character_limit" = "Script excede o limite de caracteres de %d";
+"validation.audio_too_short" = "Gravação deve durar pelo menos 1 segundo";
+"validation.audio_too_long" = "Gravação excede a duração máxima de 60 segundos";
+"validation.audio_processing" = "Áudio ainda está sendo processado, por favor aguarde";
+"validation.recording_in_progress" = "Gravação em andamento, por favor pare primeiro";
 
 // MARK: - Time Units
 "time.seconds" = "%@ segundos";
@@ -210,6 +242,8 @@
 // MARK: - Recording Tips
 "recording.punctuation_tip" = "Dica: Diga 'ponto', 'vírgula', ou 'ponto de interrogação' para pontuação";
 "recording.no_recording_message" = "Por favor pressione e segure para editar e gravar áudio primeiro";
+"recording.time_warning" = "%d segundos restantes";
+"recording.max_duration_reached" = "Duração máxima atingida";
 
 
 // MARK: - iCloud & Sync
@@ -220,7 +254,9 @@
 "empty.tap_to_create" = "Toque no botão + para criar seu primeiro cartão de autodiálogo";
 
 // MARK: - Filter
+"filter.title" = "Filtrar por Etiquetas";
 "filter.all_cards" = "Todos os Cartões";
+"filter.tags_section" = "Etiquetas";
 
 // MARK: - Picker Labels
 "picker.sensitivity" = "Sensibilidade";
@@ -234,24 +270,47 @@
 "settings.sync" = "Sincronização";
 "settings.backup" = "Backup";
 "script.label" = "Script";
+
+// MARK: - Consolidated Me Page Settings
+"settings.language" = "Idioma";
+"settings.default_language" = "Idioma de Transcrição";
+"settings.card_preferences" = "Preferências de Cartões";
+"settings.character_limit" = "Limite de Caracteres";
+"settings.limit_behavior" = "Comportamento ao Exceder Limite";
+"settings.limit_behavior.warn" = "Avisar";
+"settings.limit_behavior.strict" = "Rigoroso";
+"settings.notifications" = "Notificações";
+"settings.max_notification_cards" = "Máx Cartões de Notificação";
+"settings.notification_cards_count" = "%d cartões têm notificações ativadas";
+"settings.notification_cards.footer" = "Limita quantos cartões podem enviar notificações simultaneamente";
+"settings.tags" = "Etiquetas";
+"settings.auto_cleanup_tags" = "Auto-limpeza de Etiquetas Não Usadas";
+"settings.tags.footer" = "Controla como as etiquetas são gerenciadas em sua coleção";
+"settings.version" = "Versão";
+"settings.rate_github" = "Avaliar no GitHub";
+"settings.contact_support" = "Contatar Suporte";
+"settings.notification_selection.message" = "Selecione até %d cartões para manter notificações ativadas";
+"settings.notification_selection.count" = "%d de %d cartões selecionados";
+"settings.select_notification_cards" = "Selecionar Cartões de Notificação";
+
 // MARK: - Developer Tools
-"dev.title" = "🛠️ Developer Tools";
-"dev.warning" = "⚠️ Display Language requires app restart to take effect.";
-"dev.destructive_actions" = "⚠️ Destructive Actions";
-"dev.destructive_warning" = "These actions are destructive and cannot be undone.";
-"dev.clear_icloud" = "Clear iCloud Data";
-"dev.clear_icloud.confirm" = "Clear iCloud Data?";
-"dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
-"dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
-"dev.remove_duplicates.confirm" = "Remove Duplicates?";
-"dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
-"dev.remove_duplicates.button" = "Remove";
-"dev.operation_complete" = "Operation Complete";
-"dev.clear" = "Clear";
+"dev.title" = "🛠️ Ferramentas do Desenvolvedor";
+"dev.warning" = "⚠️ Idioma de Exibição requer reiniciar o app para ter efeito.";
+"dev.destructive_actions" = "⚠️ Ações Destrutivas";
+"dev.destructive_warning" = "Essas ações são destrutivas e não podem ser desfeitas.";
+"dev.clear_icloud" = "Limpar Dados do iCloud";
+"dev.clear_icloud.confirm" = "Limpar Dados do iCloud?";
+"dev.clear_icloud.message" = "Isso removerá todos os dados do Echo do iCloud. Os dados locais permanecerão intactos.";
+"dev.clear_local" = "Limpar Todos os Dados Locais";
+"dev.clear_local.confirm" = "Limpar Todos os Dados Locais?";
+"dev.clear_local.message" = "Isso excluirá TODOS os scripts, gravações e etiquetas. Isso não pode ser desfeito!";
+"dev.clear_local.button" = "Excluir Tudo";
+"dev.remove_duplicates" = "Remover Etiquetas e Cartões Duplicados";
+"dev.remove_duplicates.confirm" = "Remover Duplicados?";
+"dev.remove_duplicates.message" = "Isso mesclará etiquetas duplicadas e removerá scripts duplicados com o mesmo conteúdo.";
+"dev.remove_duplicates.button" = "Remover";
+"dev.operation_complete" = "Operação Concluída";
+"dev.clear" = "Limpar";
 
 // MARK: - Formatting
 "format.seconds_of_60" = "%ds / 60s";
@@ -260,6 +319,9 @@
 "format.plus_count" = "+%d";
 "format.interval_seconds" = "%.1fs";
 
-// MARK: - Additional Alerts
-"alert.new_tag" = "New Tag";
-"alert.remove" = "Remove";
+// MARK: - Alerts
+"alert.new_tag" = "Nova Etiqueta";
+"alert.cancel" = "Cancelar";
+"alert.add" = "Adicionar";
+"alert.remove" = "Remover";
+"alert.ok" = "OK";

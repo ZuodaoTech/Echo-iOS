@@ -13,23 +13,19 @@
 
 
 // MARK: - Tags
-"tag.now" = "Ahora";
 "tag.untagged" = "Sin etiqueta";
 "tag.edit" = "Editar Etiqueta";
 "tag.delete.confirm.title" = "Eliminar Etiqueta";
-"tag.delete.confirm.message" = "Esta etiqueta es usada por %d guiones. Eliminarla quitará la etiqueta de estos guiones.";
-"tag.delete.confirm.empty" = "Esta etiqueta no es usada por ningún guión. ¿Estás seguro de que quieres eliminarla?";
-"tag.max_now_cards" = "Máximo de Tarjetas 'Ahora'";
-"tag.now_limit_reached" = "Límite de Etiqueta Ahora";
-"tag.now_limit_message" = "Has alcanzado el número máximo de tarjetas 'Ahora' (%d). Por favor selecciona una tarjeta para quitar la etiqueta 'Ahora':";
+"tag.delete.confirm.message" = "Esta etiqueta es usada por %d scripts. Eliminarla quitará la etiqueta de estos scripts.";
+"tag.delete.confirm.empty" = "Esta etiqueta no es usada por ningún script. ¿Estás seguro de que quieres eliminarla?";
 "tag.auto_cleanup" = "Auto-eliminar Etiquetas No Usadas";
 "tag.select" = "Seleccionar Etiquetas";
 "tag.new" = "Nueva Etiqueta";
 "tag.label" = "Etiquetas";
 "tag.none" = "Ninguna";
 "tag.count_selected" = "%d seleccionadas";
-"tag.breaking_bad_habits" = "Romper Malos Hábitos";
-"tag.building_good_habits" = "Crear Buenos Hábitos";
+"tag.breaking_bad_habits" = "Rompiendo Malos Hábitos";
+"tag.building_good_habits" = "Construyendo Buenos Hábitos";
 "tag.appropriate_positivity" = "Positividad Apropiada";
 
 // MARK: - Script Card
@@ -145,6 +141,11 @@
 "action.share" = "Compartir";
 "action.edit" = "Editar";
 
+// MARK: - Processing Messages  
+"processing.stopping_recording" = "Deteniendo grabación...";
+"processing.trimming_silence" = "Recortando silencio...";
+"processing.transcribing" = "Transcribiendo audio...";
+
 // MARK: - Errors
 "error.title" = "Error";
 "error.save" = "Falló al guardar tarjeta";
@@ -153,6 +154,37 @@
 "error.try_again" = "Por favor intenta de nuevo";
 "error.import" = "Importación falló";
 "error.export" = "Exportación falló";
+"error.private_mode" = "Por favor conecta auriculares para reproducir audio";
+"error.recording_failed" = "Falló al grabar audio";
+"error.playback_failed" = "Falló al reproducir audio";
+"error.no_recording" = "No hay grabación disponible";
+"error.permission_denied" = "Permiso de micrófono denegado";
+"error.invalid_script" = "El script ya no está disponible";
+"error.file_not_found" = "Archivo no encontrado: %@";
+"error.insufficient_disk_space" = "No hay suficiente espacio de almacenamiento. Por favor libera algo de espacio e intenta de nuevo.";
+"error.file_permission_denied" = "Permiso denegado. No se puede acceder al archivo.";
+"error.file_corrupted" = "El archivo está corrupto: %@";
+"error.directory_creation_failed" = "Falló al crear directorio de grabaciones";
+"error.file_copy_failed" = "Falló al copiar archivo: %@";
+"error.file_move_failed" = "Falló al mover archivo: %@";
+"error.file_delete_failed" = "Falló al eliminar archivo: %@";
+"error.invalid_state" = "Estado de audio inválido: %@";
+
+// MARK: - Error Suggestions
+"error.suggestion.free_space" = "Elimina algunas grabaciones u otros archivos para liberar espacio.";
+"error.suggestion.restart_app" = "Intenta reiniciar la app.";
+"error.suggestion.rerecord" = "Intenta grabar de nuevo.";
+
+// MARK: - Validation Messages
+"validation.title" = "Error de Validación";
+"validation.empty_script" = "Por favor ingresa un script antes de guardar";
+"validation.script_too_short" = "El script debe tener al menos 5 caracteres";
+"validation.script_too_long" = "El script excede la longitud máxima de 500 caracteres";
+"validation.exceeds_character_limit" = "El script excede el límite de caracteres de %d";
+"validation.audio_too_short" = "La grabación debe durar al menos 1 segundo";
+"validation.audio_too_long" = "La grabación excede la duración máxima de 60 segundos";
+"validation.audio_processing" = "El audio aún se está procesando, por favor espera";
+"validation.recording_in_progress" = "La grabación está en progreso, por favor deténla primero";
 
 // MARK: - Time Units
 "time.seconds" = "%@ segundos";
@@ -210,6 +242,8 @@
 // MARK: - Recording Tips
 "recording.punctuation_tip" = "Consejo: Di 'punto', 'coma', o 'signo de interrogación' para puntuación";
 "recording.no_recording_message" = "Por favor mantén presionado para editar y grabar audio primero";
+"recording.time_warning" = "%d segundos restantes";
+"recording.max_duration_reached" = "Duración máxima alcanzada";
 
 
 // MARK: - iCloud & Sync
@@ -220,7 +254,9 @@
 "empty.tap_to_create" = "Toca el botón + para crear tu primera tarjeta de autodiálogo";
 
 // MARK: - Filter
+"filter.title" = "Filtrar por Etiquetas";
 "filter.all_cards" = "Todas las Tarjetas";
+"filter.tags_section" = "Etiquetas";
 
 // MARK: - Picker Labels
 "picker.sensitivity" = "Sensibilidad";
@@ -234,24 +270,47 @@
 "settings.sync" = "Sincronización";
 "settings.backup" = "Respaldo";
 "script.label" = "Guión";
+
+// MARK: - Consolidated Me Page Settings
+"settings.language" = "Idioma";
+"settings.default_language" = "Idioma de Transcripción";
+"settings.card_preferences" = "Preferencias de Tarjetas";
+"settings.character_limit" = "Límite de Caracteres";
+"settings.limit_behavior" = "Comportamiento al Exceder Límite";
+"settings.limit_behavior.warn" = "Advertir";
+"settings.limit_behavior.strict" = "Estricto";
+"settings.notifications" = "Notificaciones";
+"settings.max_notification_cards" = "Máximas Tarjetas de Notificación";
+"settings.notification_cards_count" = "%d tarjetas tienen notificaciones habilitadas";
+"settings.notification_cards.footer" = "Limita cuántas tarjetas pueden enviar notificaciones simultáneamente";
+"settings.tags" = "Etiquetas";
+"settings.auto_cleanup_tags" = "Auto-limpiar Etiquetas No Usadas";
+"settings.tags.footer" = "Controla cómo se manejan las etiquetas en tu colección";
+"settings.version" = "Versión";
+"settings.rate_github" = "Calificar en GitHub";
+"settings.contact_support" = "Contactar Soporte";
+"settings.notification_selection.message" = "Selecciona hasta %d tarjetas para mantener notificaciones habilitadas";
+"settings.notification_selection.count" = "%d de %d tarjetas seleccionadas";
+"settings.select_notification_cards" = "Seleccionar Tarjetas de Notificación";
+
 // MARK: - Developer Tools
-"dev.title" = "🛠️ Developer Tools";
-"dev.warning" = "⚠️ Display Language requires app restart to take effect.";
-"dev.destructive_actions" = "⚠️ Destructive Actions";
-"dev.destructive_warning" = "These actions are destructive and cannot be undone.";
-"dev.clear_icloud" = "Clear iCloud Data";
-"dev.clear_icloud.confirm" = "Clear iCloud Data?";
-"dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
-"dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
-"dev.remove_duplicates.confirm" = "Remove Duplicates?";
-"dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
-"dev.remove_duplicates.button" = "Remove";
-"dev.operation_complete" = "Operation Complete";
-"dev.clear" = "Clear";
+"dev.title" = "🛠️ Herramientas de Desarrollador";
+"dev.warning" = "⚠️ El Idioma de Pantalla requiere reiniciar la app para tomar efecto.";
+"dev.destructive_actions" = "⚠️ Acciones Destructivas";
+"dev.destructive_warning" = "Estas acciones son destructivas y no se pueden deshacer.";
+"dev.clear_icloud" = "Limpiar Datos de iCloud";
+"dev.clear_icloud.confirm" = "¿Limpiar Datos de iCloud?";
+"dev.clear_icloud.message" = "Esto eliminará todos los datos de Echo de iCloud. Los datos locales permanecerán intactos.";
+"dev.clear_local" = "Limpiar Todos los Datos Locales";
+"dev.clear_local.confirm" = "¿Limpiar Todos los Datos Locales?";
+"dev.clear_local.message" = "Esto eliminará TODOS los scripts, grabaciones y etiquetas. ¡Esto no se puede deshacer!";
+"dev.clear_local.button" = "Eliminar Todo";
+"dev.remove_duplicates" = "Remover Etiquetas y Tarjetas Duplicadas";
+"dev.remove_duplicates.confirm" = "¿Remover Duplicados?";
+"dev.remove_duplicates.message" = "Esto combinará etiquetas duplicadas y removerá scripts duplicados con el mismo contenido.";
+"dev.remove_duplicates.button" = "Remover";
+"dev.operation_complete" = "Operación Completa";
+"dev.clear" = "Limpiar";
 
 // MARK: - Formatting
 "format.seconds_of_60" = "%ds / 60s";
@@ -260,6 +319,9 @@
 "format.plus_count" = "+%d";
 "format.interval_seconds" = "%.1fs";
 
-// MARK: - Additional Alerts
-"alert.new_tag" = "New Tag";
-"alert.remove" = "Remove";
+// MARK: - Alerts
+"alert.new_tag" = "Nueva Etiqueta";
+"alert.cancel" = "Cancelar";
+"alert.add" = "Agregar";
+"alert.remove" = "Remover";
+"alert.ok" = "OK";

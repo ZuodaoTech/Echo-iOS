@@ -2,39 +2,35 @@
   Localizable.strings (Japanese)
   Echo
   
-  Japanese localization file for Echo app
+  Base localization file for Echo app
 */
 
 // MARK: - Navigation & Titles
 "navigation.cards" = "カード";
-"navigation.me" = "私";
+"navigation.me" = "設定";
 "navigation.new_script" = "新しいカード";
 "navigation.edit_script" = "カードを編集";
 
 
 // MARK: - Tags
-"tag.now" = "今";
 "tag.untagged" = "タグなし";
 "tag.edit" = "タグを編集";
 "tag.delete.confirm.title" = "タグを削除";
-"tag.delete.confirm.message" = "このタグは%d個のスクリプトで使用されています。削除するとこれらのスクリプトからタグが削除されます。";
+"tag.delete.confirm.message" = "このタグは%d個のスクリプトで使用されています。削除すると、これらのスクリプトからタグが削除されます。";
 "tag.delete.confirm.empty" = "このタグはどのスクリプトでも使用されていません。本当に削除しますか？";
-"tag.max_now_cards" = "最大「今」カード数";
-"tag.now_limit_reached" = "今タグの制限";
-"tag.now_limit_message" = "「今」カードの最大数（%d）に達しました。「今」タグを削除するカードを選択してください：";
 "tag.auto_cleanup" = "未使用タグの自動削除";
 "tag.select" = "タグを選択";
 "tag.new" = "新しいタグ";
 "tag.label" = "タグ";
 "tag.none" = "なし";
-"tag.count_selected" = "%d個選択";
+"tag.count_selected" = "%d個選択済み";
 "tag.breaking_bad_habits" = "悪い習慣を断つ";
-"tag.building_good_habits" = "良い習慣を築く";
-"tag.appropriate_positivity" = "適切な前向きさ";
+"tag.building_good_habits" = "良い習慣を作る";
+"tag.appropriate_positivity" = "適切な前向き思考";
 
 // MARK: - Script Card
 "script.play_count" = "%d回再生";
-"script.transcript" = "転写";
+"script.transcript" = "トランスクリプト";
 "script.recording" = "録音";
 "script.no_recording" = "録音なし";
 "script.repetitions" = "繰り返し回数";
@@ -42,94 +38,99 @@
 "script.private_mode" = "プライベートモード";
 "script.delete" = "カードを削除";
 "script.delete.confirm.title" = "カードを削除";
-"script.delete.confirm.message" = "このスクリプトを削除してもよろしいですか？この操作は取り消せません。";
+"script.delete.confirm.message" = "本当にこのスクリプトを削除しますか？この操作は取り消せません。";
 
 // MARK: - Settings
 "settings.app_language" = "アプリの言語";
 "settings.display_language" = "表示言語";
-"settings.restart_to_apply" = "言語変更を適用するにはアプリを再起動してください";
+"settings.restart_to_apply" = "言語変更を適用するには、アプリを再起動してください";
 "settings.default_settings" = "デフォルト設定";
-"settings.script_preferences" = "カード設定";
-"settings.transcription" = "転写";
+"settings.script_preferences" = "カードの設定";
+"settings.transcription" = "音声認識";
 "settings.recording" = "録音";
-"settings.backup_sync" = "バックアップ&同期";
-"settings.about" = "About";
+"settings.backup_sync" = "バックアップと同期";
+"settings.about" = "アプリについて";
 "settings.support" = "サポート";
 
 "settings.private_mode.title" = "プライベートモード";
-"settings.private_mode.info" = "音声はヘッドフォンでのみ再生";
+"settings.private_mode.info" = "イヤホンでのみ音声を再生";
 "settings.private_mode.alert.title" = "プライベートモード";
-"settings.private_mode.alert.message" = "プライベートモードが有効な場合、音声録音は接続されたヘッドフォンやヘッドセットでのみ再生されます。これにより公共の場でスピーカーから誤って再生されることを防げます。";
+"settings.private_mode.alert.message" = "プライベートモードが有効な場合、音声録音はイヤホンまたはヘッドホン経由でのみ再生されます。これにより、公共の場でのスピーカー経由での意図しない再生を防ぎます。";
 
-"settings.character_guidance" = "文字ガイダンス";
+"settings.character_guidance" = "文字数ガイド";
 "settings.recommended_length" = "推奨長さ";
-"settings.when_exceeded" = "超過時";
+"settings.when_exceeded" = "超過時の動作";
 "settings.just_warn" = "警告のみ";
 "settings.show_tip_only" = "ヒントのみ表示";
-"settings.character_guidance.info" = "短いスクリプトは記憶しやすく、より効果的です";
+"settings.character_guidance.info" = "短いスクリプトは覚えやすく、より効果的です";
 
 "settings.default_language" = "デフォルト言語";
 "settings.voice_enhancement" = "音声強化";
-"settings.voice_enhancement.desc" = "背景雑音とエコーを減少";
-"settings.auto_trim_silence" = "自動無音トリミング";
-"settings.auto_trim_silence.desc" = "開始と終了の無音を削除";
+"settings.voice_enhancement.desc" = "背景ノイズとエコーを軽減";
+"settings.auto_trim_silence" = "無音部分の自動トリミング";
+"settings.auto_trim_silence.desc" = "開始と終了の無音部分を削除";
 "settings.trim_sensitivity" = "トリミング感度";
 
 "settings.icloud_sync" = "iCloud同期";
 "settings.icloud_sync.desc" = "デバイス間でカードを同期";
-"settings.icloud_sync.info" = "テキストと設定は自動的に同期されます。音声ファイルはローカルに残ります。";
+"settings.icloud_sync.info" = "テキストと設定は自動的に同期されます。音声ファイルはローカルに保存されます。";
 "settings.export_scripts" = "カードをエクスポート";
 "settings.import_scripts" = "カードをインポート";
 
 "settings.version" = "バージョン";
 "settings.build" = "ビルド";
 "settings.rate_github" = "GitHubで評価";
-"settings.contact_support" = "サポートに問い合わせ";
+"settings.contact_support" = "サポートに連絡";
 
 // MARK: - Recording
 "recording.start" = "録音開始";
 "recording.stop" = "録音停止";
 "recording.re_record" = "再録音";
-"recording.saved" = "録音が保存されました";
+"recording.saved" = "録音を保存しました";
 "recording.delete" = "削除";
 "recording.preview" = "プレビュー";
-"recording.playing_preview" = "プレビューを再生中...";
-"recording.preview_paused" = "プレビューが一時停止";
-"recording.plays_once" = "（1回再生）";
-"recording.processing" = "音声を処理中...";
-"recording.listening" = "聞き取り中...";
-"recording.speaking" = "話し中...";
-"recording.transcribing" = "転写中...";
-"recording.re_transcribing" = "再転写中...";
+"recording.playing_preview" = "プレビュー再生中...";
+"recording.preview_paused" = "プレビュー一時停止中";
+"recording.plays_once" = "(1回再生)";
+"recording.processing" = "音声処理中...";
+"recording.listening" = "聞いています...";
+"recording.speaking" = "話しています...";
+"recording.transcribing" = "音声認識中...";
+"recording.re_transcribing" = "音声認識をやり直し中...";
 "recording.microphone_access" = "マイクアクセス";
-"recording.microphone_access.message" = "音声を録音するため、設定でマイクアクセスを許可してください";
+"recording.microphone_access.message" = "音声を録音するには、設定でマイクアクセスを許可してください";
+
+// MARK: - Processing Messages  
+"processing.stopping_recording" = "録音を停止中...";
+"processing.trimming_silence" = "無音部分をトリミング中...";
+"processing.transcribing" = "音声を認識中...";
 
 // MARK: - Character Guidance
-"guidance.trim_characters" = "記憶しやすくするため%d文字の削減を検討してください";
-"guidance.script_over" = "スクリプトが%d文字超過しています。もっと簡潔にしてみてください";
+"guidance.trim_characters" = "記憶しやすくするため、%d文字削減することをお勧めします";
+"guidance.script_over" = "スクリプトが%d文字超過しています。もう少し簡潔にしてください";
 "guidance.script_long" = "スクリプトがかなり長いです。";
-"guidance.enter_script" = "セルフトークスクリプトをここに入力...";
+"guidance.enter_script" = "セルフトークスクリプトを入力してください...";
 
 // MARK: - Notifications
 "notifications.enable" = "通知を有効にする";
 "notifications.frequency" = "頻度";
-"notifications.frequency.high" = "高（毎時1-2回）";
-"notifications.frequency.medium" = "中（2時間毎）";
-"notifications.frequency.low" = "低（1日1-2回）";
-"notifications.daytime_only" = "日中のみ通知（午前8時-午後9時）";
+"notifications.frequency.high" = "高頻度 (1時間に1-2回)";
+"notifications.frequency.medium" = "中頻度 (2時間ごと)";
+"notifications.frequency.low" = "低頻度 (1日に1-2回)";
+"notifications.daytime_only" = "日中のみ通知 (午前8時 - 午後9時)";
 "notifications.settings_title" = "通知設定";
 "notifications.max_cards" = "通知可能な最大カード数";
-"notifications.burden_warning" = "通知が多すぎると負担となり効果が減少する可能性があります";
-"notifications.global_settings" = "グローバル設定";
+"notifications.burden_warning" = "通知が多すぎると負担になり、効果が減少する可能性があります";
+"notifications.global_settings" = "全体設定";
 "notifications.max_cards_footer" = "同時に通知を送信できるカード数を制限";
 "notifications.no_cards_enabled" = "通知が有効なカードがありません";
-"notifications.enabled_cards" = "有効なカード（%d）";
+"notifications.enabled_cards" = "有効なカード (%d)";
 "notifications.request_permission" = "通知を有効にする";
-"notifications.select_to_disable" = "%d個のカードを選択して通知を無効にしてください";
+"notifications.select_to_disable" = "%dのカードを選択して通知を無効にしてください";
 "notifications.select_cards" = "カードを選択";
-"notifications.reminder_title" = "セルフトークの時間";
+"notifications.reminder_title" = "セルフトークの時間です";
 "notifications.action_play" = "音声を再生";
-"notifications.action_done" = "完了としてマーク";
+"notifications.action_done" = "完了とマーク";
 
 // MARK: - Common Actions
 "chars" = "文字";
@@ -139,7 +140,7 @@
 "action.add" = "追加";
 "action.save" = "保存";
 "action.ok" = "OK";
-"action.got_it" = "わかりました";
+"action.got_it" = "了解";
 "action.copy" = "コピー";
 "action.use_as_script" = "スクリプトとして使用";
 "action.share" = "共有";
@@ -147,119 +148,180 @@
 
 // MARK: - Errors
 "error.title" = "エラー";
-"error.save" = "カードの保存に失敗";
+"error.save" = "カードの保存に失敗しました";
 "error.database" = "データベースエラー";
 "error.restart_app" = "アプリを再起動してください";
-"error.try_again" = "もう一度お試しください";
-"error.import" = "インポートに失敗";
-"error.export" = "エクスポートに失敗";
+"error.try_again" = "もう一度試してください";
+"error.import" = "インポートに失敗しました";
+"error.export" = "エクスポートに失敗しました";
+"error.private_mode" = "音声を再生するにはイヤホンを接続してください";
+"error.recording_failed" = "音声の録音に失敗しました";
+"error.playback_failed" = "音声の再生に失敗しました";
+"error.no_recording" = "録音がありません";
+"error.permission_denied" = "マイクの使用許可が拒否されました";
+"error.invalid_script" = "スクリプトが利用できません";
+"error.file_not_found" = "ファイルが見つかりません: %@";
+"error.insufficient_disk_space" = "ストレージ容量が不足しています。容量を確保してもう一度試してください。";
+"error.file_permission_denied" = "アクセス許可が拒否されました。ファイルにアクセスできません。";
+"error.file_corrupted" = "ファイルが破損しています: %@";
+"error.directory_creation_failed" = "録音ディレクトリの作成に失敗しました";
+"error.file_copy_failed" = "ファイルのコピーに失敗しました: %@";
+"error.file_move_failed" = "ファイルの移動に失敗しました: %@";
+"error.file_delete_failed" = "ファイルの削除に失敗しました: %@";
+"error.invalid_state" = "無効な音声状態: %@";
+
+// MARK: - Error Suggestions
+"error.suggestion.free_space" = "録音や他のファイルを削除して容量を確保してください。";
+"error.suggestion.restart_app" = "アプリを再起動してみてください。";
+"error.suggestion.rerecord" = "もう一度録音してみてください。";
+
+// MARK: - Validation Messages
+"validation.title" = "検証エラー";
+"validation.empty_script" = "保存前にスクリプトを入力してください";
+"validation.script_too_short" = "スクリプトは5文字以上である必要があります";
+"validation.script_too_long" = "スクリプトが最大長500文字を超えています";
+"validation.exceeds_character_limit" = "スクリプトが文字制限%dを超えています";
+"validation.audio_too_short" = "録音は1秒以上である必要があります";
+"validation.audio_too_long" = "録音が最大長60秒を超えています";
+"validation.audio_processing" = "音声がまだ処理中です。お待ちください";
+"validation.recording_in_progress" = "録音中です。まず停止してください";
 
 // MARK: - Time Units
 "time.seconds" = "%@秒";
-"time.times_per_hour" = "毎時1-2回";
-"time.every_hours" = "2時間毎";
-"time.times_per_day" = "1日1-2回";
+"time.times_per_hour" = "1時間に1-2回";
+"time.every_hours" = "2時間ごと";
+"time.times_per_day" = "1日に1-2回";
 
 // MARK: - Sensitivity Levels
 "sensitivity.low" = "低";
 "sensitivity.medium" = "中";
 "sensitivity.high" = "高";
 "sensitivity.low.desc" = "大きな声が必要 • 0.5秒バッファ";
-"sensitivity.medium.desc" = "バランス検出 • 0.3秒バッファ";
+"sensitivity.medium.desc" = "バランスの取れた検出 • 0.3秒バッファ";
 "sensitivity.high.desc" = "ささやき声も検出 • 0.15秒バッファ";
 
 // MARK: - Sample Scripts
-"sample.smoking" = "私は絶対にタバコを吸いません。臭いし、支配されるのが嫌いだからです。";
-"sample.bedtime" = "私はいつも午後10時前に寝ます。それがより健康的で、エネルギーに満ちて目覚めるのが好きだからです。";
-"sample.mistakes" = "私はいくつか間違いを犯しましたが、いくつかのことはうまくやりました。間違いは学習の正常な部分であり、改善の機会として使うことができます。";
+"sample.smoking" = "私は絶対にタバコを吸いません。臭いが嫌いですし、何かに支配されるのが嫌だからです。";
+"sample.bedtime" = "私は必ず午後10時前に寝ます。健康のためですし、エネルギーに満ちた状態で目覚めるのが好きだからです。";
+"sample.mistakes" = "いくつか間違いを犯しましたが、うまくできたこともいくつかあります。間違いは学習の正常な一部であり、改善の機会として活用できます。";
 // MARK: - Languages
-"language.english" = "英語";
-"language.chinese_simplified" = "中国語（簡体字）";
-"language.chinese_traditional" = "中国語（繁体字）";
-"language.spanish" = "スペイン語";
-"language.french" = "フランス語";
-"language.german" = "ドイツ語";
+"language.english" = "English";
+"language.chinese_simplified" = "中文 (简体)";
+"language.chinese_traditional" = "中文 (繁體)";
+"language.spanish" = "Español";
+"language.french" = "Français";
+"language.german" = "Deutsch";
 "language.japanese" = "日本語";
-"language.korean" = "韓国語";
-"language.portuguese" = "ポルトガル語";
-"language.russian" = "ロシア語";
-"language.italian" = "イタリア語";
-"language.dutch" = "オランダ語";
-"language.swedish" = "スウェーデン語";
-"language.norwegian" = "ノルウェー語";
-"language.danish" = "デンマーク語";
-"language.polish" = "ポーランド語";
-"language.turkish" = "トルコ語";
-"language.arabic" = "アラビア語";
-"language.hindi" = "ヒンディー語";
+"language.korean" = "한국어";
+"language.portuguese" = "Português";
+"language.russian" = "Русский";
+"language.italian" = "Italiano";
+"language.dutch" = "Nederlands";
+"language.swedish" = "Svenska";
+"language.norwegian" = "Norsk";
+"language.danish" = "Dansk";
+"language.polish" = "Polski";
+"language.turkish" = "Türkçe";
+"language.arabic" = "العربية";
+"language.hindi" = "हिन्दी";
 
 // MARK: - Export/Import
 "export.format.bundle" = "Echoバンドル";
 "export.format.text" = "プレーンテキスト";
 "export.format.json" = "JSON";
 "export.include_audio" = "音声ファイルを含める";
-"export.format_label" = "フォーマット";
+"export.format_label" = "形式";
 "export.audio_size_warning" = "音声ファイルはエクスポートサイズを増加させます";
 "export.options" = "エクスポートオプション";
 "export.select_scripts" = "カードを選択";
-"export.scripts_selected" = "カード（%d個選択）";
+"export.scripts_selected" = "カード (%d個選択済み)";
 "export.error_title" = "エクスポートエラー";
 "export.error_unknown" = "不明なエラーが発生しました";
 "import.complete_title" = "インポート完了";
 
 // MARK: - Recording Tips
-"recording.punctuation_tip" = "ヒント：句読点には「句点」「読点」「疑問符」と言ってください";
-"recording.no_recording_message" = "長押しして編集し、まず音声を録音してください";
+"recording.punctuation_tip" = "ヒント: 句読点には「句点」「読点」「疑問符」と言ってください";
+"recording.no_recording_message" = "まず長押しして編集し、音声を録音してください";
+"recording.time_warning" = "残り%d秒";
+"recording.max_duration_reached" = "最大時間に達しました";
 
 
 // MARK: - iCloud & Sync
 "settings.icloud_sync_desc" = "デバイス間でカードを同期";
 
 // MARK: - Empty State
-"empty.no_cards" = "まだカードがありません";
-"empty.tap_to_create" = "+ボタンをタップして最初のセルフトークカードを作成";
+"empty.no_cards" = "カードがまだありません";
+"empty.tap_to_create" = "+ボタンをタップして最初のセルフトークカードを作成してください";
 
 // MARK: - Filter
+"filter.title" = "タグで絞り込み";
 "filter.all_cards" = "すべてのカード";
+"filter.tags_section" = "タグ";
 
 // MARK: - Picker Labels
 "picker.sensitivity" = "感度";
 "picker.select_language" = "言語を選択";
 "picker.display_language" = "表示言語";
 "settings.language_settings" = "言語設定";
-"language.system_default" = "システムデフォルト";
+"language.system_default" = "システムのデフォルト";
 "settings.card_settings" = "カード設定";
-"settings.card_defaults" = "カードデフォルト";
-"settings.about_support" = "Aboutとサポート";
+"settings.card_defaults" = "カードのデフォルト";
+"settings.about_support" = "情報とサポート";
 "settings.sync" = "同期";
 "settings.backup" = "バックアップ";
 "script.label" = "スクリプト";
+
+// MARK: - Consolidated Me Page Settings
+"settings.language" = "言語";
+"settings.default_language" = "音声認識言語";
+"settings.card_preferences" = "カードの設定";
+"settings.character_limit" = "文字数制限";
+"settings.limit_behavior" = "制限超過時の動作";
+"settings.limit_behavior.warn" = "警告";
+"settings.limit_behavior.strict" = "厳格";
+"settings.notifications" = "通知";
+"settings.max_notification_cards" = "最大通知カード数";
+"settings.notification_cards_count" = "%d個のカードで通知が有効";
+"settings.notification_cards.footer" = "同時に通知を送信できるカード数を制限";
+"settings.tags" = "タグ";
+"settings.auto_cleanup_tags" = "未使用タグの自動整理";
+"settings.tags.footer" = "コレクション内のタグの管理方法を制御";
+"settings.version" = "バージョン";
+"settings.rate_github" = "GitHubで評価";
+"settings.contact_support" = "サポートに連絡";
+"settings.notification_selection.message" = "最大%d個のカードを選択して通知を有効にしてください";
+"settings.notification_selection.count" = "%d / %d個のカードを選択済み";
+"settings.select_notification_cards" = "通知カードを選択";
+
 // MARK: - Developer Tools
-"dev.title" = "🛠️ Developer Tools";
-"dev.warning" = "⚠️ Display Language requires app restart to take effect.";
-"dev.destructive_actions" = "⚠️ Destructive Actions";
-"dev.destructive_warning" = "These actions are destructive and cannot be undone.";
-"dev.clear_icloud" = "Clear iCloud Data";
-"dev.clear_icloud.confirm" = "Clear iCloud Data?";
-"dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
-"dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
-"dev.remove_duplicates.confirm" = "Remove Duplicates?";
-"dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
-"dev.remove_duplicates.button" = "Remove";
-"dev.operation_complete" = "Operation Complete";
-"dev.clear" = "Clear";
+"dev.title" = "🛠️ 開発者ツール";
+"dev.warning" = "⚠️ 表示言語の変更にはアプリの再起動が必要です。";
+"dev.destructive_actions" = "⚠️ 破壊的な操作";
+"dev.destructive_warning" = "これらの操作は破壊的であり、元に戻すことができません。";
+"dev.clear_icloud" = "iCloudデータをクリア";
+"dev.clear_icloud.confirm" = "iCloudデータをクリアしますか？";
+"dev.clear_icloud.message" = "これによりiCloudからすべてのEchoデータが削除されます。ローカルデータは残ります。";
+"dev.clear_local" = "すべてのローカルデータをクリア";
+"dev.clear_local.confirm" = "すべてのローカルデータをクリアしますか？";
+"dev.clear_local.message" = "これによりすべてのスクリプト、録音、タグが削除されます。この操作は元に戻せません！";
+"dev.clear_local.button" = "すべて削除";
+"dev.remove_duplicates" = "重複するタグとカードを削除";
+"dev.remove_duplicates.confirm" = "重複を削除しますか？";
+"dev.remove_duplicates.message" = "重複するタグを統合し、同じ内容の重複スクリプトを削除します。";
+"dev.remove_duplicates.button" = "削除";
+"dev.operation_complete" = "操作完了";
+"dev.clear" = "クリア";
 
 // MARK: - Formatting
-"format.seconds_of_60" = "%ds / 60s";
-"format.repetitions" = "%dx";
+"format.seconds_of_60" = "%d秒 / 60秒";
+"format.repetitions" = "%d回";
 "format.progress" = "%d/%d";
 "format.plus_count" = "+%d";
-"format.interval_seconds" = "%.1fs";
+"format.interval_seconds" = "%.1f秒";
 
-// MARK: - Additional Alerts
-"alert.new_tag" = "New Tag";
-"alert.remove" = "Remove";
+// MARK: - Alerts
+"alert.new_tag" = "新しいタグ";
+"alert.cancel" = "キャンセル";
+"alert.add" = "追加";
+"alert.remove" = "削除";
+"alert.ok" = "OK";
