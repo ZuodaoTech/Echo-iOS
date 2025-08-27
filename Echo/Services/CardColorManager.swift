@@ -2,10 +2,10 @@ import SwiftUI
 
 /// Manages random color assignment for script cards
 /// Colors are randomized on each app launch but remain consistent during the session
-class CardColorManager: ObservableObject {
+class CardColorManager {
     static let shared = CardColorManager()
     
-    @Published private var colorMap: [UUID: Color] = [:]
+    private var colorMap: [UUID: Color] = [:]
     
     private let colorPalette: [Color] = [
         Color.blue.opacity(0.6),
@@ -61,7 +61,6 @@ class CardColorManager: ObservableObject {
     func refreshColors() {
         print("🔄 Refreshing all card colors")
         colorMap.removeAll()
-        objectWillChange.send()
     }
     
     /// Clear color for a specific script (when deleted)
