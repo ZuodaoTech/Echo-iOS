@@ -5,6 +5,7 @@ import UIKit
 struct ScriptCard: View {
     @ObservedObject var script: SelftalkScript
     @StateObject private var audioService = AudioCoordinator.shared
+    @StateObject private var colorManager = CardColorManager.shared
     @State private var showingPrivateAlert = false
     @State private var showingNoRecordingAlert = false
     @State private var showingErrorAlert = false
@@ -33,23 +34,10 @@ struct ScriptCard: View {
         return audioService.isProcessing(script: script)
     }
     
-    // Predefined subtle color palette
-    private let colorPalette: [Color] = [
-        Color.blue.opacity(0.6),
-        Color.purple.opacity(0.6),
-        Color.pink.opacity(0.6),
-        Color.orange.opacity(0.6),
-        Color.green.opacity(0.6),
-        Color.teal.opacity(0.6),
-        Color.indigo.opacity(0.6),
-        Color.mint.opacity(0.6)
-    ]
-    
-    // Get consistent color for this script
+    // Get randomized color for this script (consistent within session)
     private var cardAccentColor: Color {
-        guard isScriptValid else { return colorPalette[0] }  // Default to first color if invalid
-        let index = abs(script.id.hashValue) % colorPalette.count
-        return colorPalette[index]
+        guard isScriptValid else { return Color.blue.opacity(0.6) }  // Default if invalid
+        return colorManager.getColor(for: script.id)
     }
     
     var body: some View {
