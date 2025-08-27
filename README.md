@@ -1,151 +1,159 @@
-# Echo - Self-Talk Practice App for iOS
+# Echo - Your Personal Self-Talk Companion
+
+<p align="center">
+  <img src="icon.png" width="120" height="120" alt="Echo App Icon">
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Platform-iOS%2015.6+-blue.svg" />
-  <img src="https://img.shields.io/badge/Swift-5.0-orange.svg" />
-  <img src="https://img.shields.io/badge/SwiftUI-3.0-green.svg" />
+  <img src="https://img.shields.io/badge/Swift-5.9-orange.svg" />
+  <img src="https://img.shields.io/badge/SwiftUI-5.0-green.svg" />
   <img src="https://img.shields.io/badge/License-MIT-lightgrey.svg" />
 </p>
 
-## 📱 Overview
+<p align="center">
+  <b>Transform your inner dialogue with personalized affirmations</b>
+</p>
 
-Echo is a powerful self-talk practice app designed to help users build positive habits through personalized affirmation scripts and voice recordings. The app empowers users to create, record, and playback their own motivational scripts with customizable repetition patterns.
+## 🌟 What is Echo?
 
-### ✨ Key Features
+Echo is a beautifully crafted iOS app that helps you build positive habits through personalized self-talk scripts. Record your own affirmations, motivational speeches, or daily reminders in your own voice, then play them back with customizable repetition patterns to reinforce positive thinking.
 
-- **📝 Script Management**: Create and organize personalized self-talk scripts with categories
-- **🎙 Voice Recording**: Record your own voice reading each script for authentic practice
-- **🔄 Smart Repetition**: Customize repetition count (1-10x) and intervals (1-3 seconds)
-- **🎧 Privacy Mode**: Automatic playback protection - requires headphones to prevent accidental public playback
-- **📊 Progress Tracking**: Monitor your practice sessions with play counts and timestamps
-- **🌍 Multi-language Transcription**: Automatic speech-to-text in multiple languages (English, Chinese, Spanish, French, etc.)
-- **⚡ Audio Processing**: Automatic silence trimming and audio optimization
+## ✨ Key Features
 
-## 🚀 Getting Started
+### 📝 **Smart Script Management**
+- Create unlimited personalized self-talk scripts
+- Organize with colorful tags for easy categorization
+- Beautiful card-based interface with randomized colors
+- Quick search and filter capabilities
 
-### Prerequisites
+### 🎙️ **Professional Recording**
+- High-quality audio recording (44.1kHz, AAC format)
+- Automatic silence trimming for clean recordings
+- 60-second recording limit for focused messages
+- Advanced noise reduction for crystal-clear audio
 
-- macOS 13.0 or later
-- Xcode 15.0 or later
-- iOS 15.6+ deployment target
-- Swift 5.0
+### 🔄 **Intelligent Playback**
+- Customizable repetitions (1-10 times per script)
+- Adjustable intervals between repetitions (0-10 seconds)
+- Auto-stop when playing different cards
+- Background playback support
 
-### Installation
+### 🔒 **Privacy First**
+- **Private Mode**: Automatic speaker protection - requires headphones for playback
+- Local storage - your recordings never leave your device
+- Optional iCloud sync for backup across your devices
 
-1. Clone the repository:
+### 🌍 **Multilingual Support**
+- Interface available in 15+ languages
+- Speech-to-text transcription in multiple languages
+- Smart language detection for transcription
+
+### 📊 **Progress Tracking**
+- Track play counts for each script
+- Last played timestamps
+- Visual progress indicators during playback
+
+## 📱 Getting Started
+
+### For Users
+
+1. **Download from App Store** (Coming Soon)
+2. Launch Echo and tap the "+" button to create your first script
+3. Write your affirmation or motivational message
+4. Tap the microphone to record in your own voice
+5. Play back with your preferred repetition settings
+
+### For Developers
+
+#### Prerequisites
+- macOS 13.0+
+- Xcode 15.0+
+- iOS Device or Simulator (iOS 15.6+)
+
+#### Installation
+
 ```bash
-git clone https://github.com/xiaolai/echo-ios.git
+# Clone the repository
+git clone https://github.com/ZuodaoTech/Echo-iOS.git
 cd Echo-iOS
-```
 
-2. Open the project in Xcode:
-```bash
+# Open in Xcode
 open Echo.xcodeproj
+
+# Select your team and run
 ```
 
-3. Select your development team in the project settings
+## 🎯 Use Cases
 
-4. Build and run (⌘R)
+- **Morning Affirmations**: Start your day with positive self-talk
+- **Confidence Building**: Reinforce empowering beliefs before important events
+- **Habit Formation**: Create reminders for new habits you're building
+- **Meditation & Mindfulness**: Record calming mantras for meditation
+- **Language Learning**: Practice pronunciation with repetition
+- **Goal Visualization**: Verbalize and reinforce your goals daily
 
-## 🏗 Architecture
+## 🏗️ Technical Architecture
 
-The app follows MVVM architecture with SwiftUI and Core Data:
+### Core Technologies
+- **SwiftUI 5.0**: Modern declarative UI with smooth animations
+- **Core Data + CloudKit**: Persistent storage with optional iCloud sync
+- **AVFoundation**: Professional audio recording and playback
+- **Speech Framework**: On-device transcription for privacy
+- **Combine**: Reactive state management
 
+### Service Architecture
 ```
-Echo/
-├── Models/           # Core Data models (SelftalkScript, Category)
-├── Views/            # SwiftUI views
-│   ├── ScriptsListView.swift
-│   ├── AddEditScriptView.swift
-│   └── Components/
-├── Services/         # Audio services layer
-│   ├── AudioCoordinator.swift    # Main audio orchestrator
-│   ├── RecordingService.swift    # Recording management
-│   ├── PlaybackService.swift     # Playback control
-│   ├── AudioProcessingService.swift  # Transcription & processing
-│   └── AudioFileManager.swift    # File operations
-└── Utilities/        # Helper functions and extensions
-```
-
-### 🎵 Audio Architecture
-
-The audio system uses a coordinator pattern with specialized services:
-
-- **AudioCoordinator**: Singleton orchestrator managing all audio operations
-- **RecordingService**: Handles AVAudioRecorder and recording state
-- **PlaybackService**: Manages AVAudioPlayer with repetition logic
-- **AudioProcessingService**: Silence trimming and speech-to-text transcription
-- **AudioSessionManager**: Audio session configuration and privacy mode detection
-- **AudioFileManager**: File system operations for recordings
-
-## 🔧 Core Technologies
-
-- **SwiftUI**: Modern declarative UI framework
-- **Core Data**: Persistent storage for scripts and categories
-- **AVFoundation**: Audio recording and playback
-- **Speech Framework**: On-device and cloud transcription
-- **Combine**: Reactive data flow and state management
-
-## 📝 Features in Detail
-
-### Privacy Mode 🔒
-Automatically detects audio output route and prevents playback through speakers. Users must connect headphones/earphones to play recordings, protecting privacy.
-
-### Smart Audio Processing 🎛
-- Automatic silence trimming at beginning/end of recordings
-- Dual-file system: keeps original for transcription, processed for playback
-- Format optimization for Speech Recognition compatibility
-
-### Multi-language Support 🌐
-- Transcription available in 10+ languages
-- Language-specific punctuation handling
-- Automatic capitalization for Western languages
-
-## 🧪 Testing
-
-The project includes comprehensive test coverage:
-
-```bash
-# Run all tests
-xcodebuild test -scheme "Echo" -sdk iphonesimulator
-
-# Run specific test suite
-xcodebuild test -scheme "Echo" -only-testing:EchoTests/AudioFileManagerTests
+AudioCoordinator (Facade Pattern)
+├── RecordingService     - Audio capture & encoding
+├── PlaybackService      - Playback with repetitions
+├── AudioSessionManager  - Privacy mode & routing
+├── AudioFileManager     - File operations
+└── AudioProcessingService - Silence trimming & transcription
 ```
 
-### Test Coverage
-- **Unit Tests**: Audio services, Core Data models, business logic (~70%)
-- **UI Tests**: Main user flows, recording, playback (~50%)
-- **Integration Tests**: End-to-end scenarios
+## 🔐 Privacy & Security
 
-## 🛠 Development
+- **No Analytics**: Zero tracking or analytics
+- **Local First**: All data stored locally on device
+- **Private Mode**: Automatic speaker protection
+- **iCloud Encryption**: Optional sync uses Apple's encrypted CloudKit
+- **No Third-Party Services**: Pure Apple frameworks only
 
-### Building
+## 🎨 Recent Updates
 
-```bash
-# Debug build
-xcodebuild -scheme "Echo" -configuration Debug build
+### Version 0.3.0 (Latest)
+- ✅ Dynamic card colors that refresh on each app launch
+- ✅ Fixed CloudKit sync for iCloud data management
+- ✅ Improved audio playback stability
+- ✅ Added interval settings between repetitions
+- ✅ Enhanced tag management system
+- ✅ Performance optimizations for app launch
 
-# Release build
-xcodebuild -scheme "Echo" -configuration Release build
-```
+### Version 0.2.0
+- ✅ Complete tag system implementation
+- ✅ Private mode (formerly Privacy mode)
+- ✅ 60-second recording limit with visual feedback
+- ✅ Advanced noise reduction
+- ✅ Automatic silence trimming
 
-### Code Style
+## 🛠️ Development Features
 
-The project uses SwiftLint for code consistency. Rules are defined in `.swiftlint.yml`.
-
-## 📚 Documentation
-
-- [CLAUDE.md](CLAUDE.md) - Detailed development guide and architecture documentation
-- [API Documentation](docs/api.md) - Service layer API reference (coming soon)
+### Hidden Developer Menu
+Swipe down-down-up on the Me tab to access:
+- Performance metrics
+- CloudKit sync status
+- Debug options
+- Data management tools
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
-1. Fork the project
+### How to Contribute
+1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
@@ -153,18 +161,26 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Author
+## 👥 Team
 
-**Xiaolai** - [GitHub](https://github.com/xiaolai)
+- **Creator**: [Xiaolai](https://github.com/xiaolai)
+- **Contributors**: [View all contributors](https://github.com/ZuodaoTech/Echo-iOS/graphs/contributors)
 
 ## 🙏 Acknowledgments
 
-- Built with SwiftUI and love for self-improvement
-- Special thanks to all contributors and testers
-- Powered by Apple's Speech Recognition framework
+- Built with SwiftUI and dedication to mental wellness
+- Inspired by the power of positive self-talk
+- Thanks to all our beta testers and contributors
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/ZuodaoTech/Echo-iOS/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/ZuodaoTech/Echo-iOS/discussions)
+- **Email**: support@zuodao.tech
 
 ---
 
 <p align="center">
-Made with ❤️ for personal growth and positive self-talk practice
+  <b>Echo</b> - Amplify your inner voice<br>
+  Made with ❤️ for personal growth
 </p>
