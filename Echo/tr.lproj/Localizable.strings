@@ -234,3 +234,32 @@
 "settings.sync" = "Senkronizasyon";
 "settings.backup" = "Yedekleme";
 "script.label" = "Betik";
+// MARK: - Developer Tools
+"dev.title" = "🛠️ Developer Tools";
+"dev.warning" = "⚠️ Display Language requires app restart to take effect.";
+"dev.destructive_actions" = "⚠️ Destructive Actions";
+"dev.destructive_warning" = "These actions are destructive and cannot be undone.";
+"dev.clear_icloud" = "Clear iCloud Data";
+"dev.clear_icloud.confirm" = "Clear iCloud Data?";
+"dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
+"dev.clear_local" = "Clear All Local Data";
+"dev.clear_local.confirm" = "Clear All Local Data?";
+"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
+"dev.clear_local.button" = "Delete Everything";
+"dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
+"dev.remove_duplicates.confirm" = "Remove Duplicates?";
+"dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
+"dev.remove_duplicates.button" = "Remove";
+"dev.operation_complete" = "Operation Complete";
+"dev.clear" = "Clear";
+
+// MARK: - Formatting
+"format.seconds_of_60" = "%ds / 60s";
+"format.repetitions" = "%dx";
+"format.progress" = "%d/%d";
+"format.plus_count" = "+%d";
+"format.interval_seconds" = "%.1fs";
+
+// MARK: - Additional Alerts
+"alert.new_tag" = "New Tag";
+"alert.remove" = "Remove";
