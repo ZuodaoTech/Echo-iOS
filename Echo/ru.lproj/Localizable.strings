@@ -231,23 +231,23 @@
 "settings.backup" = "Резервное Копирование";
 "script.label" = "Скрипт";
 // MARK: - Developer Tools
-"dev.title" = "🛠️ Developer Tools";
-"dev.warning" = "⚠️ Display Language requires app restart to take effect.";
-"dev.destructive_actions" = "⚠️ Destructive Actions";
-"dev.destructive_warning" = "These actions are destructive and cannot be undone.";
-"dev.clear_icloud" = "Clear iCloud Data";
-"dev.clear_icloud.confirm" = "Clear iCloud Data?";
-"dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
-"dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
-"dev.remove_duplicates.confirm" = "Remove Duplicates?";
-"dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
-"dev.remove_duplicates.button" = "Remove";
-"dev.operation_complete" = "Operation Complete";
-"dev.clear" = "Clear";
+"dev.title" = "🛠️ Инструменты разработчика";
+"dev.warning" = "⚠️ Изменение языка интерфейса требует перезапуска приложения.";
+"dev.destructive_actions" = "⚠️ Разрушительные действия";
+"dev.destructive_warning" = "Эти действия разрушительны и не могут быть отменены.";
+"dev.clear_icloud" = "Очистить данные iCloud";
+"dev.clear_icloud.confirm" = "Очистить данные iCloud?";
+"dev.clear_icloud.message" = "Это удалит все данные Echo из iCloud. Локальные данные останутся нетронутыми.";
+"dev.clear_local" = "Очистить все локальные данные";
+"dev.clear_local.confirm" = "Очистить все локальные данные?";
+"dev.clear_local.message" = "Это удалит ВСЕ скрипты, записи и теги. Это действие нельзя отменить!";
+"dev.clear_local.button" = "Удалить всё";
+"dev.remove_duplicates" = "Удалить дубликаты тегов и карточек";
+"dev.remove_duplicates.confirm" = "Удалить дубликаты?";
+"dev.remove_duplicates.message" = "Это объединит дублирующиеся теги и удалит дублирующиеся скрипты с одинаковым содержимым.";
+"dev.remove_duplicates.button" = "Удалить";
+"dev.operation_complete" = "Операция завершена";
+"dev.clear" = "Очистить";
 
 // MARK: - Formatting
 "format.seconds_of_60" = "%ds / 60s";
@@ -257,14 +257,12 @@
 "format.interval_seconds" = "%.1fs";
 
 // MARK: - Additional Alerts
-"alert.new_tag" = "New Tag";
-"alert.remove" = "Remove";
-
+"alert.new_tag" = "Новый тег";
+"alert.remove" = "Удалить";
 // MARK: - Processing Messages
-"processing.stopping_recording" = "Stopping recording...";
-"processing.trimming_silence" = "Trimming silence...";
-"processing.transcribing" = "Transcribing audio...";
-
+"processing.stopping_recording" = "Остановка записи...";
+"processing.trimming_silence" = "Обрезка тишины...";
+"processing.transcribing" = "Транскрибирование аудио...";
 // MARK: - Errors
 "error.private_mode" = "Please connect earphones to play audio";
 "error.recording_failed" = "Failed to record audio";
@@ -329,6 +327,6 @@
 "tag.name.placeholder" = "Название тега";
 
 // MARK: - Alerts
-"alert.cancel" = "Cancel";
-"alert.add" = "Add";
+"alert.cancel" = "Отмена";
+"alert.add" = "Добавить";
 "alert.ok" = "OK";

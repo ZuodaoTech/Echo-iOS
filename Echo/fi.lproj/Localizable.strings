@@ -231,23 +231,23 @@
 "settings.backup" = "Varmuuskopio";
 "script.label" = "Skripti";
 // MARK: - Developer Tools
-"dev.title" = "🛠️ Developer Tools";
-"dev.warning" = "⚠️ Display Language requires app restart to take effect.";
-"dev.destructive_actions" = "⚠️ Destructive Actions";
-"dev.destructive_warning" = "These actions are destructive and cannot be undone.";
-"dev.clear_icloud" = "Clear iCloud Data";
-"dev.clear_icloud.confirm" = "Clear iCloud Data?";
-"dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
-"dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
-"dev.remove_duplicates.confirm" = "Remove Duplicates?";
-"dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
-"dev.remove_duplicates.button" = "Remove";
-"dev.operation_complete" = "Operation Complete";
-"dev.clear" = "Clear";
+"dev.title" = "🛠️ Kehittäjätyökalut";
+"dev.warning" = "⚠️ Näyttökielen vaihto vaatii sovelluksen uudelleenkäynnistyksen.";
+"dev.destructive_actions" = "⚠️ Tuhoavat toiminnot";
+"dev.destructive_warning" = "Nämä toiminnot ovat tuhoavia eikä niitä voi perua.";
+"dev.clear_icloud" = "Tyhjennä iCloud-tiedot";
+"dev.clear_icloud.confirm" = "Tyhjennä iCloud-tiedot?";
+"dev.clear_icloud.message" = "Tämä poistaa kaikki Echo-tiedot iCloudista. Paikalliset tiedot säilyvät ennallaan.";
+"dev.clear_local" = "Tyhjennä kaikki paikalliset tiedot";
+"dev.clear_local.confirm" = "Tyhjennä kaikki paikalliset tiedot?";
+"dev.clear_local.message" = "Tämä poistaa KAIKKI skriptit, tallenteet ja tagit. Tätä ei voi perua!";
+"dev.clear_local.button" = "Poista kaikki";
+"dev.remove_duplicates" = "Poista kaksoistagit ja -kortit";
+"dev.remove_duplicates.confirm" = "Poista kaksoiskappalet?";
+"dev.remove_duplicates.message" = "Tämä yhdistää kaksoistagit ja poistaa samansisältöiset kaksoisskriptit.";
+"dev.remove_duplicates.button" = "Poista";
+"dev.operation_complete" = "Toiminto valmis";
+"dev.clear" = "Tyhjennä";
 
 // MARK: - Formatting
 "format.seconds_of_60" = "%ds / 60s";
@@ -257,14 +257,12 @@
 "format.interval_seconds" = "%.1fs";
 
 // MARK: - Additional Alerts
-"alert.new_tag" = "New Tag";
-"alert.remove" = "Remove";
-
+"alert.new_tag" = "Uusi tagi";
+"alert.remove" = "Poista";
 // MARK: - Processing Messages
-"processing.stopping_recording" = "Stopping recording...";
-"processing.trimming_silence" = "Trimming silence...";
-"processing.transcribing" = "Transcribing audio...";
-
+"processing.stopping_recording" = "Pysäytetään tallennusta...";
+"processing.trimming_silence" = "Poistetaan hiljaisuutta...";
+"processing.transcribing" = "Litteroidaan ääntä...";
 // MARK: - Errors
 "error.private_mode" = "Please connect earphones to play audio";
 "error.recording_failed" = "Failed to record audio";
@@ -329,6 +327,6 @@
 "tag.name.placeholder" = "Tagin nimi";
 
 // MARK: - Alerts
-"alert.cancel" = "Cancel";
-"alert.add" = "Add";
+"alert.cancel" = "Peruuta";
+"alert.add" = "Lisää";
 "alert.ok" = "OK";

@@ -231,23 +231,23 @@
 "settings.backup" = "Back-up";
 "script.label" = "Script";
 // MARK: - Developer Tools
-"dev.title" = "🛠️ Developer Tools";
-"dev.warning" = "⚠️ Display Language requires app restart to take effect.";
-"dev.destructive_actions" = "⚠️ Destructive Actions";
-"dev.destructive_warning" = "These actions are destructive and cannot be undone.";
-"dev.clear_icloud" = "Clear iCloud Data";
-"dev.clear_icloud.confirm" = "Clear iCloud Data?";
-"dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
-"dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
-"dev.remove_duplicates.confirm" = "Remove Duplicates?";
-"dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
-"dev.remove_duplicates.button" = "Remove";
-"dev.operation_complete" = "Operation Complete";
-"dev.clear" = "Clear";
+"dev.title" = "🛠️ Ontwikkelaarstools";
+"dev.warning" = "⚠️ Weergavetaal vereist herstart van de app.";
+"dev.destructive_actions" = "⚠️ Destructieve acties";
+"dev.destructive_warning" = "Deze acties zijn destructief en kunnen niet ongedaan worden gemaakt.";
+"dev.clear_icloud" = "iCloud-gegevens wissen";
+"dev.clear_icloud.confirm" = "iCloud-gegevens wissen?";
+"dev.clear_icloud.message" = "Dit verwijdert alle Echo-gegevens uit iCloud. Lokale gegevens blijven behouden.";
+"dev.clear_local" = "Alle lokale gegevens wissen";
+"dev.clear_local.confirm" = "Alle lokale gegevens wissen?";
+"dev.clear_local.message" = "Dit verwijdert ALLE scripts, opnames en tags. Dit kan niet ongedaan worden gemaakt!";
+"dev.clear_local.button" = "Alles verwijderen";
+"dev.remove_duplicates" = "Dubbele tags en kaarten verwijderen";
+"dev.remove_duplicates.confirm" = "Duplicaten verwijderen?";
+"dev.remove_duplicates.message" = "Dit voegt dubbele tags samen en verwijdert dubbele scripts met dezelfde inhoud.";
+"dev.remove_duplicates.button" = "Verwijderen";
+"dev.operation_complete" = "Bewerking voltooid";
+"dev.clear" = "Wissen";
 
 // MARK: - Formatting
 "format.seconds_of_60" = "%ds / 60s";
@@ -257,14 +257,12 @@
 "format.interval_seconds" = "%.1fs";
 
 // MARK: - Additional Alerts
-"alert.new_tag" = "New Tag";
-"alert.remove" = "Remove";
-
+"alert.new_tag" = "Nieuwe tag";
+"alert.remove" = "Verwijderen";
 // MARK: - Processing Messages
-"processing.stopping_recording" = "Stopping recording...";
-"processing.trimming_silence" = "Trimming silence...";
-"processing.transcribing" = "Transcribing audio...";
-
+"processing.stopping_recording" = "Opname stoppen...";
+"processing.trimming_silence" = "Stilte verwijderen...";
+"processing.transcribing" = "Audio transcriberen...";
 // MARK: - Errors
 "error.private_mode" = "Please connect earphones to play audio";
 "error.recording_failed" = "Failed to record audio";
@@ -329,6 +327,6 @@
 "tag.name.placeholder" = "Tag naam";
 
 // MARK: - Alerts
-"alert.cancel" = "Cancel";
-"alert.add" = "Add";
+"alert.cancel" = "Annuleren";
+"alert.add" = "Toevoegen";
 "alert.ok" = "OK";
