@@ -44,9 +44,6 @@ struct MeView: View {
     @State private var showingRemoveDuplicatesAlert = false
     @State private var devActionMessage = ""
     @State private var showingDevActionResult = false
-    @State private var duplicatesRemoving = false
-    @State private var duplicatesRemoved = 0
-    @State private var showingDuplicatesResult = false
     
     enum SwipeDirection {
         case up, down, left, right
@@ -226,30 +223,6 @@ struct MeView: View {
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
-                        
-                        // Remove duplicates button
-                        Button {
-                            Task {
-                                await removeDuplicates()
-                            }
-                        } label: {
-                            HStack {
-                                if duplicatesRemoving {
-                                    ProgressView()
-                                        .scaleEffect(0.8)
-                                        .frame(width: 25)
-                                } else {
-                                    Image(systemName: "doc.on.doc")
-                                        .font(.system(size: 20))
-                                        .foregroundColor(.blue)
-                                        .frame(width: 25)
-                                }
-                                Text(duplicatesRemoving ? "Removing Duplicates..." : "Remove Duplicate Cards")
-                                    .foregroundColor(duplicatesRemoving ? .secondary : .blue)
-                                Spacer()
-                            }
-                        }
-                        .disabled(duplicatesRemoving)
                     }
                 } header: {
                     Text(NSLocalizedString("settings.sync", comment: ""))
@@ -508,11 +481,6 @@ struct MeView: View {
             } message: {
                 Text(devActionMessage)
             }
-            .alert("Deduplication Complete", isPresented: $showingDuplicatesResult) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                Text("Duplicate cards have been removed. Your cards are now synced properly.")
-            }
         }
     }
     
@@ -729,8 +697,6 @@ struct MeView: View {
     }
     
     private func removeDuplicates() async {
-        duplicatesRemoving = true
-        
         // First clean up duplicate tags
         Tag.cleanupDuplicateTags(in: viewContext)
         
@@ -738,8 +704,8 @@ struct MeView: View {
         await DeduplicationService.deduplicateScripts(in: viewContext)
         DeduplicationService.markDeduplicationComplete()
         
-        duplicatesRemoving = false
-        showingDuplicatesResult = true
+        devActionMessage = "Duplicate cards have been removed successfully."
+        showingDevActionResult = true
     }
 }
 
