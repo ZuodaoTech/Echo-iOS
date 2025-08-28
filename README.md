@@ -1,4 +1,4 @@
-# Echo - Your Personal Self-Talk Companion
+# Echo - Subliminal Evolution
 
 <p align="center">
   <img src="icon.png" width="120" height="120" alt="Echo App Icon">
