@@ -11,11 +11,20 @@ import Combine
 import SwiftUI
 
 class PersistenceController: ObservableObject {
-    // Singleton instance - ensure only one Core Data stack
-    static let shared: PersistenceController = {
-        let instance = PersistenceController()
-        return instance
-    }()
+    // Lazy singleton - only created when first accessed
+    private static var _shared: PersistenceController?
+    
+    static var shared: PersistenceController {
+        if _shared == nil {
+            _shared = PersistenceController()
+        }
+        return _shared!
+    }
+    
+    // Check if shared exists without creating it
+    static func getSharedIfExists() throws -> PersistenceController? {
+        return _shared
+    }
     
     // Track if Core Data is ready
     @Published var isReady = false
@@ -122,13 +131,19 @@ class PersistenceController: ObservableObject {
             }
         }
         
-        // Load stores asynchronously with high priority for first launch
-        Task(priority: .high) {
-            await loadStores(inMemory: inMemory, iCloudEnabled: UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? false)
+        // Core Data loading will be triggered from the view after static samples render
+        // This ensures users see content immediately
+        if !inMemory {
+            print("Core Data: Waiting for view trigger to load stores...")
+        } else {
+            // For preview/in-memory, load immediately
+            Task {
+                await loadStores(inMemory: true, iCloudEnabled: false)
+            }
         }
     }
     
-    private func loadStores(inMemory: Bool, iCloudEnabled: Bool) async {
+    func loadStores(inMemory: Bool, iCloudEnabled: Bool) async {
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -189,6 +204,21 @@ class PersistenceController: ObservableObject {
                     withAnimation(.easeInOut(duration: 0.3)) {
                         self.dataLoadingState = .coreDataReady
                     }
+                    
+                    // Initialize CloudKit schema AFTER Core Data is ready
+                    #if DEBUG
+                    if iCloudEnabled && !self.container.persistentStoreCoordinator.persistentStores.isEmpty {
+                        Task(priority: .background) {
+                            do {
+                                try await Task.sleep(nanoseconds: 2_000_000_000) // Small delay to ensure stability
+                                try self.container.initializeCloudKitSchema()
+                                print("CloudKit schema initialized successfully (after Core Data ready)")
+                            } catch {
+                                print("CloudKit schema initialization error: \(error)")
+                            }
+                        }
+                    }
+                    #endif
                 }
             }
             continuation.resume()
@@ -197,27 +227,23 @@ class PersistenceController: ObservableObject {
         
         container.viewContext.automaticallyMergesChangesFromParent = true
         
-        // Defer CloudKit schema initialization to after launch
-        #if DEBUG
-        Task(priority: .background) { @MainActor in
-            // Wait a bit after launch to initialize CloudKit schema
-            try? await Task.sleep(nanoseconds: 5_000_000_000) // 5 seconds
-            
-            // Wait for stores to be ready
-            while !isReady {
-                try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 second
-            }
-            
-            if iCloudEnabled && !self.container.persistentStoreCoordinator.persistentStores.isEmpty {
-                do {
-                    try self.container.initializeCloudKitSchema()
-                    print("CloudKit schema initialized successfully")
-                } catch {
-                    print("CloudKit schema initialization error: \(error)")
-                }
-            }
+        // CloudKit initialization will happen after Core Data loads
+        // Moved to after isReady = true in loadStores completion
+    }
+    
+    // MARK: - View-Triggered Loading
+    
+    /// Start Core Data loading when the view is ready
+    /// This ensures static samples are rendered first
+    func startCoreDataLoading() {
+        guard !isReady else { return } // Already loaded
+        
+        Task(priority: .background) {
+            print("Core Data: Starting load after view rendered...")
+            let inMemory = container.persistentStoreDescriptions.first?.url == URL(fileURLWithPath: "/dev/null")
+            let iCloudEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? false
+            await loadStores(inMemory: inMemory, iCloudEnabled: iCloudEnabled)
         }
-        #endif
     }
     
     // MARK: - Sample Data Import
