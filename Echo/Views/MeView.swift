@@ -264,7 +264,7 @@ struct MeView: View {
                     
                     // Contact Support
                     Button {
-                        if let url = URL(string: "mailto:support@echopro.app") {
+                        if let url = URL(string: "https://github.com/ZuodaoTech/Echo-iOS/issues") {
                             UIApplication.shared.open(url)
                         }
                     } label: {

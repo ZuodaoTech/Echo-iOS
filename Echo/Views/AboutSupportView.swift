@@ -44,7 +44,7 @@ struct AboutSupportView: View {
                     }
                     
                     Button {
-                        if let url = URL(string: "mailto:support@echopro.app") {
+                        if let url = URL(string: "https://github.com/ZuodaoTech/Echo-iOS/issues") {
                             UIApplication.shared.open(url)
                         }
                     } label: {
