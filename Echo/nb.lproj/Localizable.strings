@@ -231,23 +231,23 @@
 "settings.backup" = "Sikkerhetskopi";
 "script.label" = "Skript";
 // MARK: - Developer Tools
-"dev.title" = "🛠️ Developer Tools";
-"dev.warning" = "⚠️ Display Language requires app restart to take effect.";
-"dev.destructive_actions" = "⚠️ Destructive Actions";
-"dev.destructive_warning" = "These actions are destructive and cannot be undone.";
-"dev.clear_icloud" = "Clear iCloud Data";
-"dev.clear_icloud.confirm" = "Clear iCloud Data?";
-"dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
-"dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
-"dev.remove_duplicates.confirm" = "Remove Duplicates?";
-"dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
-"dev.remove_duplicates.button" = "Remove";
-"dev.operation_complete" = "Operation Complete";
-"dev.clear" = "Clear";
+"dev.title" = "🛠️ Utviklerverktøy";
+"dev.warning" = "⚠️ Visningsspråk krever omstart av appen.";
+"dev.destructive_actions" = "⚠️ Destruktive handlinger";
+"dev.destructive_warning" = "Disse handlingene er destruktive og kan ikke angres.";
+"dev.clear_icloud" = "Slett iCloud-data";
+"dev.clear_icloud.confirm" = "Slette iCloud-data?";
+"dev.clear_icloud.message" = "Dette vil fjerne alle Echo-data fra iCloud. Lokale data forblir intakte.";
+"dev.clear_local" = "Slett alle lokale data";
+"dev.clear_local.confirm" = "Slette alle lokale data?";
+"dev.clear_local.message" = "Dette vil slette ALLE skript, opptak og merkelapper. Dette kan ikke angres!";
+"dev.clear_local.button" = "Slett alt";
+"dev.remove_duplicates" = "Fjern dupliserte merkelapper og kort";
+"dev.remove_duplicates.confirm" = "Fjerne duplikater?";
+"dev.remove_duplicates.message" = "Dette vil slå sammen dupliserte merkelapper og fjerne dupliserte skript med samme innhold.";
+"dev.remove_duplicates.button" = "Fjern";
+"dev.operation_complete" = "Operasjon fullført";
+"dev.clear" = "Slett";
 
 // MARK: - Formatting
 "format.seconds_of_60" = "%ds / 60s";
@@ -257,14 +257,12 @@
 "format.interval_seconds" = "%.1fs";
 
 // MARK: - Additional Alerts
-"alert.new_tag" = "New Tag";
-"alert.remove" = "Remove";
-
+"alert.new_tag" = "Ny merkelapp";
+"alert.remove" = "Fjern";
 // MARK: - Processing Messages
-"processing.stopping_recording" = "Stopping recording...";
-"processing.trimming_silence" = "Trimming silence...";
-"processing.transcribing" = "Transcribing audio...";
-
+"processing.stopping_recording" = "Stopper opptak...";
+"processing.trimming_silence" = "Fjerner stillhet...";
+"processing.transcribing" = "Transkriberer lyd...";
 // MARK: - Errors
 "error.private_mode" = "Please connect earphones to play audio";
 "error.recording_failed" = "Failed to record audio";
@@ -329,6 +327,6 @@
 "tag.name.placeholder" = "Taggnavn";
 
 // MARK: - Alerts
-"alert.cancel" = "Cancel";
-"alert.add" = "Add";
+"alert.cancel" = "Avbryt";
+"alert.add" = "Legg til";
 "alert.ok" = "OK";

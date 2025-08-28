@@ -231,23 +231,23 @@
 "settings.backup" = "Yedekleme";
 "script.label" = "Betik";
 // MARK: - Developer Tools
-"dev.title" = "🛠️ Developer Tools";
-"dev.warning" = "⚠️ Display Language requires app restart to take effect.";
-"dev.destructive_actions" = "⚠️ Destructive Actions";
-"dev.destructive_warning" = "These actions are destructive and cannot be undone.";
-"dev.clear_icloud" = "Clear iCloud Data";
-"dev.clear_icloud.confirm" = "Clear iCloud Data?";
-"dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
-"dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
-"dev.remove_duplicates.confirm" = "Remove Duplicates?";
-"dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
-"dev.remove_duplicates.button" = "Remove";
-"dev.operation_complete" = "Operation Complete";
-"dev.clear" = "Clear";
+"dev.title" = "🛠️ Geliştirici Araçları";
+"dev.warning" = "⚠️ Görüntü dili değişikliği için uygulama yeniden başlatılmalıdır.";
+"dev.destructive_actions" = "⚠️ Yıkıcı işlemler";
+"dev.destructive_warning" = "Bu işlemler geri alınamaz ve yıkıcıdır.";
+"dev.clear_icloud" = "iCloud verilerini temizle";
+"dev.clear_icloud.confirm" = "iCloud verileri temizlensin mi?";
+"dev.clear_icloud.message" = "Bu, tüm Echo verilerini iCloud'dan kaldıracaktır. Yerel veriler korunacaktır.";
+"dev.clear_local" = "Tüm yerel verileri temizle";
+"dev.clear_local.confirm" = "Tüm yerel veriler temizlensin mi?";
+"dev.clear_local.message" = "Bu TÜM betikleri, kayıtları ve etiketleri silecektir. Bu geri alınamaz!";
+"dev.clear_local.button" = "Her şeyi sil";
+"dev.remove_duplicates" = "Yinelenen etiketleri ve kartları kaldır";
+"dev.remove_duplicates.confirm" = "Yinelenenler kaldırılsın mı?";
+"dev.remove_duplicates.message" = "Bu, yinelenen etiketleri birleştirecek ve aynı içeriğe sahip yinelenen betikleri kaldıracaktır.";
+"dev.remove_duplicates.button" = "Kaldır";
+"dev.operation_complete" = "İşlem tamamlandı";
+"dev.clear" = "Temizle";
 
 // MARK: - Formatting
 "format.seconds_of_60" = "%ds / 60s";
@@ -257,14 +257,12 @@
 "format.interval_seconds" = "%.1fs";
 
 // MARK: - Additional Alerts
-"alert.new_tag" = "New Tag";
-"alert.remove" = "Remove";
-
+"alert.new_tag" = "Yeni etiket";
+"alert.remove" = "Kaldır";
 // MARK: - Processing Messages
-"processing.stopping_recording" = "Stopping recording...";
-"processing.trimming_silence" = "Trimming silence...";
-"processing.transcribing" = "Transcribing audio...";
-
+"processing.stopping_recording" = "Kayıt durduruluyor...";
+"processing.trimming_silence" = "Sessizlik kırpılıyor...";
+"processing.transcribing" = "Ses yazıya dönüştürülüyor...";
 // MARK: - Errors
 "error.private_mode" = "Please connect earphones to play audio";
 "error.recording_failed" = "Failed to record audio";
@@ -329,6 +327,6 @@
 "tag.name.placeholder" = "Etiket adı";
 
 // MARK: - Alerts
-"alert.cancel" = "Cancel";
-"alert.add" = "Add";
-"alert.ok" = "OK";
+"alert.cancel" = "İptal";
+"alert.add" = "Ekle";
+"alert.ok" = "Tamam";

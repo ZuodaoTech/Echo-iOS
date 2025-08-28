@@ -231,23 +231,23 @@
 "settings.backup" = "النسخ الاحتياطي";
 "script.label" = "السكريبت";
 // MARK: - Developer Tools
-"dev.title" = "🛠️ Developer Tools";
-"dev.warning" = "⚠️ Display Language requires app restart to take effect.";
-"dev.destructive_actions" = "⚠️ Destructive Actions";
-"dev.destructive_warning" = "These actions are destructive and cannot be undone.";
-"dev.clear_icloud" = "Clear iCloud Data";
-"dev.clear_icloud.confirm" = "Clear iCloud Data?";
-"dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
-"dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
-"dev.remove_duplicates.confirm" = "Remove Duplicates?";
-"dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
-"dev.remove_duplicates.button" = "Remove";
-"dev.operation_complete" = "Operation Complete";
-"dev.clear" = "Clear";
+"dev.title" = "🛠️ أدوات المطور";
+"dev.warning" = "⚠️ تغيير لغة العرض يتطلب إعادة تشغيل التطبيق.";
+"dev.destructive_actions" = "⚠️ إجراءات تدميرية";
+"dev.destructive_warning" = "هذه الإجراءات مدمرة ولا يمكن التراجع عنها.";
+"dev.clear_icloud" = "مسح بيانات iCloud";
+"dev.clear_icloud.confirm" = "مسح بيانات iCloud؟";
+"dev.clear_icloud.message" = "سيؤدي هذا إلى إزالة جميع بيانات Echo من iCloud. ستبقى البيانات المحلية سليمة.";
+"dev.clear_local" = "مسح جميع البيانات المحلية";
+"dev.clear_local.confirm" = "مسح جميع البيانات المحلية؟";
+"dev.clear_local.message" = "سيؤدي هذا إلى حذف جميع النصوص والتسجيلات والعلامات. لا يمكن التراجع عن هذا!";
+"dev.clear_local.button" = "حذف كل شيء";
+"dev.remove_duplicates" = "إزالة العلامات والبطاقات المكررة";
+"dev.remove_duplicates.confirm" = "إزالة المكررات؟";
+"dev.remove_duplicates.message" = "سيؤدي هذا إلى دمج العلامات المكررة وإزالة النصوص المكررة بنفس المحتوى.";
+"dev.remove_duplicates.button" = "إزالة";
+"dev.operation_complete" = "اكتملت العملية";
+"dev.clear" = "مسح";
 
 // MARK: - Formatting
 "format.seconds_of_60" = "%ds / 60s";
@@ -257,14 +257,12 @@
 "format.interval_seconds" = "%.1fs";
 
 // MARK: - Additional Alerts
-"alert.new_tag" = "New Tag";
-"alert.remove" = "Remove";
-
+"alert.new_tag" = "علامة جديدة";
+"alert.remove" = "إزالة";
 // MARK: - Processing Messages
-"processing.stopping_recording" = "Stopping recording...";
-"processing.trimming_silence" = "Trimming silence...";
-"processing.transcribing" = "Transcribing audio...";
-
+"processing.stopping_recording" = "إيقاف التسجيل...";
+"processing.trimming_silence" = "إزالة الصمت...";
+"processing.transcribing" = "نسخ الصوت...";
 // MARK: - Errors
 "error.private_mode" = "Please connect earphones to play audio";
 "error.recording_failed" = "Failed to record audio";
@@ -329,6 +327,6 @@
 "tag.name.placeholder" = "اسم العلامة";
 
 // MARK: - Alerts
-"alert.cancel" = "Cancel";
-"alert.add" = "Add";
-"alert.ok" = "OK";
+"alert.cancel" = "إلغاء";
+"alert.add" = "إضافة";
+"alert.ok" = "موافق";

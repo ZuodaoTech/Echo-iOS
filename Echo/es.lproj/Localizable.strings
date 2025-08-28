@@ -319,7 +319,7 @@
 "alert.new_tag" = "Nueva Etiqueta";
 "alert.cancel" = "Cancelar";
 "alert.add" = "Agregar";
-"alert.remove" = "Remover";
+"alert.remove" = "Eliminar";
 "alert.ok" = "OK";
 
 // MARK: - Search & Input Placeholders

@@ -231,23 +231,23 @@
 "settings.backup" = "Backup";
 "script.label" = "Script";
 // MARK: - Developer Tools
-"dev.title" = "🛠️ Developer Tools";
-"dev.warning" = "⚠️ Display Language requires app restart to take effect.";
-"dev.destructive_actions" = "⚠️ Destructive Actions";
-"dev.destructive_warning" = "These actions are destructive and cannot be undone.";
-"dev.clear_icloud" = "Clear iCloud Data";
-"dev.clear_icloud.confirm" = "Clear iCloud Data?";
-"dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
-"dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
-"dev.remove_duplicates.confirm" = "Remove Duplicates?";
-"dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
-"dev.remove_duplicates.button" = "Remove";
-"dev.operation_complete" = "Operation Complete";
-"dev.clear" = "Clear";
+"dev.title" = "🛠️ Strumenti per sviluppatori";
+"dev.warning" = "⚠️ La lingua di visualizzazione richiede il riavvio dell'app.";
+"dev.destructive_actions" = "⚠️ Azioni distruttive";
+"dev.destructive_warning" = "Queste azioni sono distruttive e non possono essere annullate.";
+"dev.clear_icloud" = "Cancella dati iCloud";
+"dev.clear_icloud.confirm" = "Cancellare dati iCloud?";
+"dev.clear_icloud.message" = "Questo rimuoverà tutti i dati di Echo da iCloud. I dati locali rimarranno intatti.";
+"dev.clear_local" = "Cancella tutti i dati locali";
+"dev.clear_local.confirm" = "Cancellare tutti i dati locali?";
+"dev.clear_local.message" = "Questo cancellerà TUTTI gli script, le registrazioni e i tag. Non può essere annullato!";
+"dev.clear_local.button" = "Elimina tutto";
+"dev.remove_duplicates" = "Rimuovi tag e schede duplicate";
+"dev.remove_duplicates.confirm" = "Rimuovere duplicati?";
+"dev.remove_duplicates.message" = "Questo unirà i tag duplicati e rimuoverà gli script duplicati con lo stesso contenuto.";
+"dev.remove_duplicates.button" = "Rimuovi";
+"dev.operation_complete" = "Operazione completata";
+"dev.clear" = "Cancella";
 
 // MARK: - Formatting
 "format.seconds_of_60" = "%ds / 60s";
@@ -257,14 +257,12 @@
 "format.interval_seconds" = "%.1fs";
 
 // MARK: - Additional Alerts
-"alert.new_tag" = "New Tag";
-"alert.remove" = "Remove";
-
+"alert.new_tag" = "Nuovo tag";
+"alert.remove" = "Rimuovi";
 // MARK: - Processing Messages
-"processing.stopping_recording" = "Stopping recording...";
-"processing.trimming_silence" = "Trimming silence...";
-"processing.transcribing" = "Transcribing audio...";
-
+"processing.stopping_recording" = "Arresto registrazione...";
+"processing.trimming_silence" = "Rimozione silenzio...";
+"processing.transcribing" = "Trascrizione audio...";
 // MARK: - Errors
 "error.private_mode" = "Please connect earphones to play audio";
 "error.recording_failed" = "Failed to record audio";
@@ -329,6 +327,6 @@
 "tag.name.placeholder" = "Nome tag";
 
 // MARK: - Alerts
-"alert.cancel" = "Cancel";
-"alert.add" = "Add";
+"alert.cancel" = "Annulla";
+"alert.add" = "Aggiungi";
 "alert.ok" = "OK";
