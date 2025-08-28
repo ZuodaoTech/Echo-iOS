@@ -14,7 +14,7 @@ struct ViewHeightKey: PreferenceKey {
 struct AddEditScriptView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var audioService = AudioCoordinator.shared
+    @ObservedObject private var audioService = AudioCoordinator.shared
     
     let script: SelftalkScript?
     let onDelete: ((UUID) -> Void)?  // Callback with script ID only (safer)
