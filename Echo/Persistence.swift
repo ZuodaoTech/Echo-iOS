@@ -75,7 +75,17 @@ class PersistenceController: ObservableObject {
         return result
     }()
 
-    let container: NSPersistentCloudKitContainer
+    private var _container: NSPersistentCloudKitContainer?
+    private var isInMemory: Bool = false
+    
+    var container: NSPersistentCloudKitContainer {
+        if _container == nil {
+            // Lazy create container only when needed
+            _container = NSPersistentCloudKitContainer(name: "Echo")
+            configureContainer()
+        }
+        return _container!
+    }
     
     // Track iCloud sync status (default to false for fresh installs)
     @Published var iCloudSyncEnabled: Bool = {
@@ -98,10 +108,14 @@ class PersistenceController: ObservableObject {
             Self.hasInitialized = true
         }
         
-        // Use NSPersistentCloudKitContainer for CloudKit support
-        container = NSPersistentCloudKitContainer(name: "Echo")
+        self.isInMemory = inMemory
+        // Don't create container here - it will be created lazily when accessed
+    }
+    
+    private func configureContainer() {
+        guard let container = _container else { return }
         
-        if inMemory {
+        if isInMemory {
             if let firstDescription = container.persistentStoreDescriptions.first {
                 firstDescription.url = URL(fileURLWithPath: "/dev/null")
             }
@@ -128,17 +142,6 @@ class PersistenceController: ObservableObject {
                     // Disable CloudKit but keep history tracking
                     storeDescription.cloudKitContainerOptions = nil
                 }
-            }
-        }
-        
-        // Core Data loading will be triggered from the view after static samples render
-        // This ensures users see content immediately
-        if !inMemory {
-            print("Core Data: Waiting for view trigger to load stores...")
-        } else {
-            // For preview/in-memory, load immediately
-            Task {
-                await loadStores(inMemory: true, iCloudEnabled: false)
             }
         }
     }

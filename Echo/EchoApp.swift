@@ -11,16 +11,9 @@ import UserNotifications
 
 @main
 struct EchoApp: App {
-    // NO persistence controller property - removed to prevent blocking!
-    
     init() {
         // Track launch start time
         AppLaunchOptimizer.LaunchMetrics.appInitStart = Date()
-        
-        // Minimal init only - everything else deferred
-        #if DEBUG
-        SimulatorWarningFixes.configure()
-        #endif
     }
     
     var body: some Scene {

@@ -9,100 +9,103 @@ import SwiftUI
 import CoreData
 
 struct RootView: View {
-    // Start with no persistence controller
-    @State private var persistenceController: PersistenceController?
-    @State private var showingFullApp = false
-    @State private var hasStartedInit = false
+    @State private var phase: AppPhase = .showingSamples
     
-    var body: some View {
-        Group {
-            if showingFullApp, let controller = persistenceController {
-                // Full app with Core Data ready
-                ContentView()
-                    .environment(\.managedObjectContext, controller.container.viewContext)
-                    .environmentObject(controller)
-                    .transition(.opacity.combined(with: .scale(scale: 1.0)))
-            } else {
-                // Instant sample cards - NO dependencies, renders immediately!
-                NavigationView {
-                    StaticSampleCardsView(onlyShowSamples: true)
-                        .navigationTitle("")
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                // Show loading indicator
-                                ProgressView()
-                                    .scaleEffect(0.8)
-                            }
-                        }
-                }
-            }
-        }
-        .animation(.easeInOut(duration: 0.3), value: showingFullApp)
-        .onAppear {
-            // Start Core Data initialization AFTER first frame renders
-            if !hasStartedInit {
-                hasStartedInit = true
-                print("🚀 RootView appeared - starting deferred initialization")
-                
-                // Small delay to ensure first frame is completely rendered
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                    Task {
-                        await initializePersistenceInBackground()
-                    }
-                }
-            }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            // Refresh permission states when app becomes active
-            if persistenceController != nil {
-                EchoApp.refreshPermissionStates()
+    enum AppPhase: Equatable {
+        case showingSamples
+        case loadingCoreData
+        case ready(PersistenceController)
+        
+        static func == (lhs: AppPhase, rhs: AppPhase) -> Bool {
+            switch (lhs, rhs) {
+            case (.showingSamples, .showingSamples),
+                 (.loadingCoreData, .loadingCoreData):
+                return true
+            case (.ready(_), .ready(_)):
+                return true
+            default:
+                return false
             }
         }
     }
     
-    private func initializePersistenceInBackground() async {
-        print("🔄 Starting Core Data initialization in background...")
+    var body: some View {
+        switch phase {
+        case .showingSamples, .loadingCoreData:
+            // Show sample cards instantly - this renders in first frame
+            NavigationView {
+                StaticSampleCardsView(onlyShowSamples: true)
+                    .navigationTitle("")
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            if phase == .loadingCoreData {
+                                ProgressView()
+                                    .scaleEffect(0.8)
+                            }
+                        }
+                    }
+            }
+            .onAppear {
+                // Track UI ready as soon as sample cards appear
+                if phase == .showingSamples {
+                    AppLaunchOptimizer.LaunchMetrics.uiReady = Date()
+                    print("✅ Sample cards visible - UI Ready at \(AppLaunchOptimizer.LaunchMetrics.uiReady!.timeIntervalSince(AppLaunchOptimizer.LaunchMetrics.appInitStart))s")
+                    
+                    // Start loading Core Data after UI is visible
+                    phase = .loadingCoreData
+                    Task.detached(priority: .background) {
+                        await loadCoreData()
+                    }
+                }
+            }
+            
+        case .ready(let controller):
+            // Full app with Core Data ready
+            ContentView()
+                .environment(\.managedObjectContext, controller.container.viewContext)
+                .environmentObject(controller)
+                .transition(.opacity)
+                .onAppear {
+                    #if DEBUG
+                    AppLaunchOptimizer.LaunchMetrics.fullyLoaded = Date()
+                    AppLaunchOptimizer.LaunchMetrics.printReport()
+                    #endif
+                }
+        }
+    }
+    
+    @MainActor
+    private func loadCoreData() async {
+        print("🔄 Starting Core Data initialization...")
         
-        // Create and initialize PersistenceController
-        let controller = await Task(priority: .background) { () -> PersistenceController in
+        // Do ALL heavy lifting in background
+        let controller = await Task.detached(priority: .background) {
+            // Apply simulator warning fixes
+            #if DEBUG
+            SimulatorWarningFixes.configure()
+            #endif
+            
+            // Create persistence controller
             let pc = PersistenceController()
             
-            // Wait for stores to load
-            let inMemory = pc.container.persistentStoreDescriptions.first?.url == URL(fileURLWithPath: "/dev/null")
+            // Load stores
+            let inMemory = false
             let iCloudEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? false
-            
             await pc.loadStores(inMemory: inMemory, iCloudEnabled: iCloudEnabled)
             
-            print("✅ Core Data fully initialized")
+            // Track Core Data ready
+            AppLaunchOptimizer.LaunchMetrics.coreDataReady = Date()
+            print("✅ Core Data ready at \(AppLaunchOptimizer.LaunchMetrics.coreDataReady!.timeIntervalSince(AppLaunchOptimizer.LaunchMetrics.appInitStart))s")
+            
             return pc
         }.value
         
-        // Perform deferred app setup
-        await MainActor.run {
-            EchoApp.performDeferredAppSetup()
-        }
+        // Perform app setup on main thread
+        EchoApp.performDeferredAppSetup()
         
-        // Add a small delay to ensure smooth transition
-        try? await Task.sleep(nanoseconds: 200_000_000) // 0.2 seconds
-        
-        // Switch to full app
-        await MainActor.run {
-            print("🎯 Transitioning to full app")
-            self.persistenceController = controller
-            withAnimation {
-                self.showingFullApp = true
-            }
-            
-            // Track UI ready
-            AppLaunchOptimizer.LaunchMetrics.uiReady = Date()
-            
-            #if DEBUG
-            // Print launch performance report
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                AppLaunchOptimizer.LaunchMetrics.fullyLoaded = Date()
-                AppLaunchOptimizer.LaunchMetrics.printReport()
-            }
-            #endif
+        // Transition to full app
+        withAnimation(.easeInOut(duration: 0.3)) {
+            phase = .ready(controller)
         }
     }
 }
