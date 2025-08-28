@@ -64,7 +64,9 @@ final class AudioCoordinator: ObservableObject {
     private func ensureInitialized() {
         guard !hasInitializedServices else { return }
         hasInitializedServices = true
-        // Binding is now done lazily in ensureInitialized()
+
+        createServices()
+        bindPublishedProperties()
     }
     // MARK: - Private Methods
     
