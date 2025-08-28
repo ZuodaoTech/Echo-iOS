@@ -137,7 +137,7 @@ struct CardSettingsView: View {
                 Section {
                     Toggle(NSLocalizedString("tag.auto_cleanup", comment: ""), isOn: $autoCleanupUnusedTags)
                 } header: {
-                    Text("Tags")
+                    Text(NSLocalizedString("tag.label", comment: "Tags"))
                 }
             }
             .navigationTitle(NSLocalizedString("settings.card_settings", comment: ""))

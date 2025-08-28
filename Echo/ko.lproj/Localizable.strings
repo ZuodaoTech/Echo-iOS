@@ -318,3 +318,7 @@
 "alert.add" = "추가";
 "alert.remove" = "제거";
 "alert.ok" = "확인";
+
+// MARK: - Search & Input Placeholders
+"tag.search.placeholder" = "태그 검색...";
+"tag.name.placeholder" = "태그 이름";

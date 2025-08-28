@@ -321,3 +321,7 @@
 "alert.add" = "新增";
 "alert.remove" = "移除";
 "alert.ok" = "確定";
+
+// MARK: - Search & Input Placeholders
+"tag.search.placeholder" = "搜尋標籤...";
+"tag.name.placeholder" = "標籤名稱";

@@ -286,9 +286,6 @@
 "settings.tags" = "Tags";
 "settings.auto_cleanup_tags" = "Auto-cleanup Unused Tags";
 "settings.tags.footer" = "Control how tags are managed in your collection";
-"settings.version" = "Version";
-"settings.rate_github" = "Rate on GitHub";
-"settings.contact_support" = "Contact Support";
 "settings.notification_selection.message" = "Select up to %d cards to keep notifications enabled";
 "settings.notification_selection.count" = "%d of %d cards selected";
 "settings.select_notification_cards" = "Select Notification Cards";
@@ -311,6 +308,10 @@
 "dev.remove_duplicates.button" = "Remove";
 "dev.operation_complete" = "Operation Complete";
 "dev.clear" = "Clear";
+
+// MARK: - Search & Input Placeholders
+"tag.search.placeholder" = "Search tags...";
+"tag.name.placeholder" = "Tag name";
 
 // MARK: - Formatting
 "format.seconds_of_60" = "%ds / 60s";

@@ -35,7 +35,7 @@ struct TagSelectionView: View {
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.secondary)
-                TextField("Search tags...", text: $searchText)
+                TextField(NSLocalizedString("tag.search.placeholder", comment: "Search tags..."), text: $searchText)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
             }
             .padding(.horizontal)
@@ -88,12 +88,12 @@ struct TagSelectionView: View {
                 .padding(.horizontal)
             }
         }
-        .alert("New Tag", isPresented: $showingNewTagAlert) {
-            TextField("Tag name", text: $newTagName)
-            Button("Cancel", role: .cancel) {
+        .alert(NSLocalizedString("alert.new_tag", comment: "New Tag"), isPresented: $showingNewTagAlert) {
+            TextField(NSLocalizedString("tag.name.placeholder", comment: "Tag name"), text: $newTagName)
+            Button(NSLocalizedString("action.cancel", comment: "Cancel"), role: .cancel) {
                 newTagName = ""
             }
-            Button("Add") {
+            Button(NSLocalizedString("action.add", comment: "Add")) {
                 createNewTag()
             }
         }

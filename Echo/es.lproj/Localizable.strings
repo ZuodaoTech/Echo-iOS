@@ -325,3 +325,7 @@
 "alert.add" = "Agregar";
 "alert.remove" = "Remover";
 "alert.ok" = "OK";
+
+// MARK: - Search & Input Placeholders
+"tag.search.placeholder" = "Buscar etiquetas...";
+"tag.name.placeholder" = "Nombre de etiqueta";

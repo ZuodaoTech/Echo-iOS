@@ -325,3 +325,7 @@
 "alert.add" = "Adicionar";
 "alert.remove" = "Remover";
 "alert.ok" = "OK";
+
+// MARK: - Search & Input Placeholders
+"tag.search.placeholder" = "Pesquisar tags...";
+"tag.name.placeholder" = "Nome da tag";
