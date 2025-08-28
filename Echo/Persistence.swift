@@ -11,7 +11,11 @@ import Combine
 import SwiftUI
 
 class PersistenceController: ObservableObject {
-    static let shared = PersistenceController()
+    // Singleton instance - ensure only one Core Data stack
+    static let shared: PersistenceController = {
+        let instance = PersistenceController()
+        return instance
+    }()
     
     // Track if Core Data is ready
     @Published var isReady = false
@@ -19,8 +23,17 @@ class PersistenceController: ObservableObject {
     // Track the current data loading state for UI
     @Published var dataLoadingState: DataLoadingState = .staticSamples
     
+    // Only create preview controller when actually in preview mode
     @MainActor
-    static let preview: PersistenceController = {
+    static var preview: PersistenceController = {
+        #if DEBUG
+        // Guard against creating preview outside of SwiftUI previews
+        guard ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" else {
+            // Return shared instance if not in preview
+            return PersistenceController.shared
+        }
+        #endif
+        
         let result = PersistenceController(inMemory: true)
         
         // Only create sample data in DEBUG builds to avoid overhead
@@ -65,7 +78,17 @@ class PersistenceController: ObservableObject {
         return UserDefaults.standard.bool(forKey: "iCloudSyncEnabled")
     }()
 
+    private static var hasInitialized = false
+    
     init(inMemory: Bool = false) {
+        // Prevent multiple Core Data stacks
+        if !inMemory && Self.hasInitialized {
+            fatalError("PersistenceController should only be initialized once. Use .shared instance.")
+        }
+        if !inMemory {
+            Self.hasInitialized = true
+        }
+        
         // Use NSPersistentCloudKitContainer for CloudKit support
         container = NSPersistentCloudKitContainer(name: "Echo")
         
