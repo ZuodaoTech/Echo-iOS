@@ -273,7 +273,6 @@
 
 // MARK: - Consolidated Me Page Settings
 "settings.language" = "言語";
-"settings.default_language" = "音声認識言語";
 "settings.card_preferences" = "カードの設定";
 "settings.character_limit" = "文字数制限";
 "settings.limit_behavior" = "制限超過時の動作";
@@ -286,9 +285,6 @@
 "settings.tags" = "タグ";
 "settings.auto_cleanup_tags" = "未使用タグの自動整理";
 "settings.tags.footer" = "コレクション内のタグの管理方法を制御";
-"settings.version" = "バージョン";
-"settings.rate_github" = "GitHubで評価";
-"settings.contact_support" = "サポートに連絡";
 "settings.notification_selection.message" = "最大%d個のカードを選択して通知を有効にしてください";
 "settings.notification_selection.count" = "%d / %d個のカードを選択済み";
 "settings.select_notification_cards" = "通知カードを選択";

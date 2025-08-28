@@ -13,15 +13,11 @@
 
 
 // MARK: - Tags
-"tag.now" = "Nyt";
 "tag.untagged" = "Ilman tagia";
 "tag.edit" = "Muokkaa Tagia";
 "tag.delete.confirm.title" = "Poista Tagi";
 "tag.delete.confirm.message" = "Tätä tagia käyttää %d skriptiä. Poistaminen poistaa tagin näistä skripteistä.";
 "tag.delete.confirm.empty" = "Yksikään skripti ei käytä tätä tagia. Oletko varma, että haluat poistaa sen?";
-"tag.max_now_cards" = "Enimmäis 'Nyt' Kortit";
-"tag.now_limit_reached" = "Nyt Tagin Raja";
-"tag.now_limit_message" = "Olet saavuttanut 'Nyt' korttien enimmäismäärän (%d). Valitse kortti, josta poistat 'Nyt' tagin:";
 "tag.auto_cleanup" = "Automaattinen Käyttämättömien Tagien Poisto";
 "tag.select" = "Valitse Tagit";
 "tag.new" = "Uusi Tagi";

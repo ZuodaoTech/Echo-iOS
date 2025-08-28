@@ -13,15 +13,11 @@
 
 
 // MARK: - Tags
-"tag.now" = "Nu";
 "tag.untagged" = "Zonder label";
 "tag.edit" = "Label Bewerken";
 "tag.delete.confirm.title" = "Label Verwijderen";
 "tag.delete.confirm.message" = "Dit label wordt gebruikt door %d scripts. Het verwijderen zal het label van deze scripts verwijderen.";
 "tag.delete.confirm.empty" = "Dit label wordt door geen enkel script gebruikt. Weet je zeker dat je het wilt verwijderen?";
-"tag.max_now_cards" = "Maximum 'Nu' Kaarten";
-"tag.now_limit_reached" = "Nu Label Limiet";
-"tag.now_limit_message" = "Je hebt het maximum aantal 'Nu' kaarten bereikt (%d). Selecteer een kaart om het 'Nu' label te verwijderen:";
 "tag.auto_cleanup" = "Auto-verwijdering Ongebruikte Labels";
 "tag.select" = "Labels Selecteren";
 "tag.new" = "Nieuw Label";

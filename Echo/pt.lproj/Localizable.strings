@@ -273,7 +273,6 @@
 
 // MARK: - Consolidated Me Page Settings
 "settings.language" = "Idioma";
-"settings.default_language" = "Idioma de Transcrição";
 "settings.card_preferences" = "Preferências de Cartões";
 "settings.character_limit" = "Limite de Caracteres";
 "settings.limit_behavior" = "Comportamento ao Exceder Limite";
@@ -286,9 +285,6 @@
 "settings.tags" = "Etiquetas";
 "settings.auto_cleanup_tags" = "Auto-limpeza de Etiquetas Não Usadas";
 "settings.tags.footer" = "Controla como as etiquetas são gerenciadas em sua coleção";
-"settings.version" = "Versão";
-"settings.rate_github" = "Avaliar no GitHub";
-"settings.contact_support" = "Contatar Suporte";
 "settings.notification_selection.message" = "Selecione até %d cartões para manter notificações ativadas";
 "settings.notification_selection.count" = "%d de %d cartões selecionados";
 "settings.select_notification_cards" = "Selecionar Cartões de Notificação";

@@ -13,15 +13,11 @@
 
 
 // MARK: - Tags
-"tag.now" = "Nu";
 "tag.untagged" = "Uden tag";
 "tag.edit" = "Rediger Tag";
 "tag.delete.confirm.title" = "Slet Tag";
 "tag.delete.confirm.message" = "Dette tag bruges af %d scripts. At slette det vil fjerne tagget fra disse scripts.";
 "tag.delete.confirm.empty" = "Dette tag bruges ikke af nogen scripts. Er du sikker på, at du vil slette det?";
-"tag.max_now_cards" = "Maks 'Nu' Kort";
-"tag.now_limit_reached" = "Nu Tag Grænse";
-"tag.now_limit_message" = "Du har nået det maksimale antal 'Nu' kort (%d). Vælg et kort for at fjerne 'Nu' tagget:";
 "tag.auto_cleanup" = "Auto-fjernelse Ubrugte Tags";
 "tag.select" = "Vælg Tags";
 "tag.new" = "Nyt Tag";

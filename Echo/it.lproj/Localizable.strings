@@ -13,15 +13,11 @@
 
 
 // MARK: - Tags
-"tag.now" = "Adesso";
 "tag.untagged" = "Senza tag";
 "tag.edit" = "Modifica Tag";
 "tag.delete.confirm.title" = "Elimina Tag";
 "tag.delete.confirm.message" = "Questo tag è usato da %d script. Eliminarlo rimuoverà il tag da questi script.";
 "tag.delete.confirm.empty" = "Questo tag non è usato da nessuno script. Sei sicuro di volerlo eliminare?";
-"tag.max_now_cards" = "Massimo Schede 'Adesso'";
-"tag.now_limit_reached" = "Limite Tag Adesso";
-"tag.now_limit_message" = "Hai raggiunto il numero massimo di schede 'Adesso' (%d). Seleziona una scheda per rimuovere il tag 'Adesso':";
 "tag.auto_cleanup" = "Rimozione Auto Tag Non Utilizzati";
 "tag.select" = "Seleziona Tag";
 "tag.new" = "Nuovo Tag";

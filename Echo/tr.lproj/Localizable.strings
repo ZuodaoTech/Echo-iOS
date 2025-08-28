@@ -13,15 +13,11 @@
 
 
 // MARK: - Tags
-"tag.now" = "Şimdi";
 "tag.untagged" = "Etiketsiz";
 "tag.edit" = "Etiketi Düzenle";
 "tag.delete.confirm.title" = "Etiketi Sil";
 "tag.delete.confirm.message" = "Bu etiket %d betik tarafından kullanılıyor. Silmek, bu betiklerden etiketi kaldıracak.";
 "tag.delete.confirm.empty" = "Bu etiket hiçbir betik tarafından kullanılmıyor. Silmek istediğinden emin misin?";
-"tag.max_now_cards" = "Maksimum 'Şimdi' Kartları";
-"tag.now_limit_reached" = "Şimdi Etiket Sınırı";
-"tag.now_limit_message" = "Maksimum 'Şimdi' kart sayısına ulaştın (%d). 'Şimdi' etiketini kaldırmak için bir kart seç:";
 "tag.auto_cleanup" = "Kullanılmayan Etiketleri Otomatik Temizle";
 "tag.select" = "Etiket Seç";
 "tag.new" = "Yeni Etiket";

@@ -13,15 +13,11 @@
 
 
 // MARK: - Tags
-"tag.now" = "Nu";
 "tag.untagged" = "Otaggad";
 "tag.edit" = "Redigera Tagg";
 "tag.delete.confirm.title" = "Ta Bort Tagg";
 "tag.delete.confirm.message" = "Denna tagg används av %d skript. Att ta bort den kommer att ta bort taggen från dessa skript.";
 "tag.delete.confirm.empty" = "Denna tagg används inte av något skript. Är du säker på att du vill ta bort den?";
-"tag.max_now_cards" = "Max 'Nu' Kort";
-"tag.now_limit_reached" = "Nu Tagg Gräns";
-"tag.now_limit_message" = "Du har nått det maximala antalet 'Nu' kort (%d). Välj ett kort för att ta bort 'Nu' taggen:";
 "tag.auto_cleanup" = "Auto-borttagning Oanvända Taggar";
 "tag.select" = "Välj Taggar";
 "tag.new" = "Ny Tagg";

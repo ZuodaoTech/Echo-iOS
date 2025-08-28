@@ -1,0 +1,596 @@
+{
+  "total_hardcoded": 74,
+  "by_file": {
+    "CardSettingsView.swift": [
+      {
+        "line": 140,
+        "string": "Tags",
+        "type": "Text"
+      },
+      {
+        "line": 140,
+        "string": "Tags",
+        "type": "Text with modifiers"
+      }
+    ],
+    "MeView.swift": [
+      {
+        "line": 383,
+        "string": "Clear iCloud Data",
+        "type": "Text"
+      },
+      {
+        "line": 383,
+        "string": "Clear iCloud Data",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 398,
+        "string": "Clear All Local Data",
+        "type": "Text"
+      },
+      {
+        "line": 398,
+        "string": "Clear All Local Data",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 413,
+        "string": "Remove Duplicate Tags & Cards",
+        "type": "Text"
+      },
+      {
+        "line": 413,
+        "string": "Remove Duplicate Tags & Cards",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 419,
+        "string": "\u26a0\ufe0f Destructive Actions",
+        "type": "Text"
+      },
+      {
+        "line": 419,
+        "string": "\u26a0\ufe0f Destructive Actions",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 421,
+        "string": "These actions are destructive and cannot be undone.",
+        "type": "Text"
+      },
+      {
+        "line": 421,
+        "string": "These actions are destructive and cannot be undone.",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 453,
+        "string": "Clear iCloud Data?",
+        "type": "Alert title"
+      },
+      {
+        "line": 454,
+        "string": "Cancel",
+        "type": "Button with action"
+      },
+      {
+        "line": 455,
+        "string": "Clear",
+        "type": "Button with action"
+      },
+      {
+        "line": 459,
+        "string": "This will remove all Echo data from iCloud. Local data will remain intact.",
+        "type": "Text"
+      },
+      {
+        "line": 459,
+        "string": "This will remove all Echo data from iCloud. Local data will remain intact.",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 461,
+        "string": "Clear All Local Data?",
+        "type": "Alert title"
+      },
+      {
+        "line": 462,
+        "string": "Cancel",
+        "type": "Button with action"
+      },
+      {
+        "line": 463,
+        "string": "Delete Everything",
+        "type": "Button with action"
+      },
+      {
+        "line": 467,
+        "string": "This will delete ALL scripts, recordings, and tags. This cannot be undone!",
+        "type": "Text"
+      },
+      {
+        "line": 467,
+        "string": "This will delete ALL scripts, recordings, and tags. This cannot be undone!",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 469,
+        "string": "Remove Duplicates?",
+        "type": "Alert title"
+      },
+      {
+        "line": 470,
+        "string": "Cancel",
+        "type": "Button with action"
+      },
+      {
+        "line": 471,
+        "string": "Remove",
+        "type": "Button with action"
+      },
+      {
+        "line": 475,
+        "string": "This will merge duplicate tags and remove duplicate scripts with the same content.",
+        "type": "Text"
+      },
+      {
+        "line": 475,
+        "string": "This will merge duplicate tags and remove duplicate scripts with the same content.",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 477,
+        "string": "Operation Complete",
+        "type": "Alert title"
+      },
+      {
+        "line": 478,
+        "string": "OK",
+        "type": "Button with action"
+      }
+    ],
+    "AddEditScriptView.swift": [
+      {
+        "line": 93,
+        "string": "Placeholder\\nPlaceholder\\nPlaceholder\\nPlaceholder\\nPlaceholder\\nPlaceholder",
+        "type": "String with interpolation"
+      },
+      {
+        "line": 168,
+        "string": "English",
+        "type": "Text"
+      },
+      {
+        "line": 168,
+        "string": "English",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 169,
+        "string": "\u4e2d\u6587 (\u7b80\u4f53)",
+        "type": "Text"
+      },
+      {
+        "line": 169,
+        "string": "\u4e2d\u6587 (\u7b80\u4f53)",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 170,
+        "string": "\u4e2d\u6587 (\u7e41\u9ad4)",
+        "type": "Text"
+      },
+      {
+        "line": 170,
+        "string": "\u4e2d\u6587 (\u7e41\u9ad4)",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 171,
+        "string": "Espa\u00f1ol",
+        "type": "Text"
+      },
+      {
+        "line": 171,
+        "string": "Espa\u00f1ol",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 172,
+        "string": "Fran\u00e7ais",
+        "type": "Text"
+      },
+      {
+        "line": 172,
+        "string": "Fran\u00e7ais",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 173,
+        "string": "Deutsch",
+        "type": "Text"
+      },
+      {
+        "line": 173,
+        "string": "Deutsch",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 174,
+        "string": "\u65e5\u672c\u8a9e",
+        "type": "Text"
+      },
+      {
+        "line": 174,
+        "string": "\u65e5\u672c\u8a9e",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 175,
+        "string": "\ud55c\uad6d\uc5b4",
+        "type": "Text"
+      },
+      {
+        "line": 175,
+        "string": "\ud55c\uad6d\uc5b4",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 176,
+        "string": "Portugu\u00eas",
+        "type": "Text"
+      },
+      {
+        "line": 176,
+        "string": "Portugu\u00eas",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 177,
+        "string": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "type": "Text"
+      },
+      {
+        "line": 177,
+        "string": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 178,
+        "string": "Italiano",
+        "type": "Text"
+      },
+      {
+        "line": 178,
+        "string": "Italiano",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 179,
+        "string": "Nederlands",
+        "type": "Text"
+      },
+      {
+        "line": 179,
+        "string": "Nederlands",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 180,
+        "string": "Svenska",
+        "type": "Text"
+      },
+      {
+        "line": 180,
+        "string": "Svenska",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 181,
+        "string": "Norsk",
+        "type": "Text"
+      },
+      {
+        "line": 181,
+        "string": "Norsk",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 182,
+        "string": "Dansk",
+        "type": "Text"
+      },
+      {
+        "line": 182,
+        "string": "Dansk",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 183,
+        "string": "Polski",
+        "type": "Text"
+      },
+      {
+        "line": 183,
+        "string": "Polski",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 184,
+        "string": "T\u00fcrk\u00e7e",
+        "type": "Text"
+      },
+      {
+        "line": 184,
+        "string": "T\u00fcrk\u00e7e",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 185,
+        "string": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+        "type": "Text"
+      },
+      {
+        "line": 185,
+        "string": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+        "type": "Text with modifiers"
+      },
+      {
+        "line": 186,
+        "string": "\u0939\u093f\u0928\u094d\u0926\u0940",
+        "type": "Text"
+      },
+      {
+        "line": 186,
+        "string": "\u0939\u093f\u0928\u094d\u0926\u0940",
+        "type": "Text with modifiers"
+      }
+    ],
+    "TagSelectionView.swift": [
+      {
+        "line": 38,
+        "string": "Search tags...",
+        "type": "TextField placeholder"
+      },
+      {
+        "line": 91,
+        "string": "New Tag",
+        "type": "Alert title"
+      },
+      {
+        "line": 92,
+        "string": "Tag name",
+        "type": "TextField placeholder"
+      },
+      {
+        "line": 93,
+        "string": "Cancel",
+        "type": "Button with action"
+      },
+      {
+        "line": 96,
+        "string": "Add",
+        "type": "Button label"
+      },
+      {
+        "line": 96,
+        "string": "Add",
+        "type": "Button with action"
+      }
+    ]
+  },
+  "unique_strings": "{'Operation Complete', 'Remove', 'Search tags...', 'Nederlands', '\u0939\u093f\u0928\u094d\u0926\u0940', 'This will remove all Echo data from iCloud. Local data will remain intact.', '\u26a0\ufe0f Destructive Actions', 'Clear', 'These actions are destructive and cannot be undone.', '\u65e5\u672c\u8a9e', 'Portugu\u00eas', 'This will delete ALL scripts, recordings, and tags. This cannot be undone!', '\u4e2d\u6587 (\u7b80\u4f53)', 'Cancel', 'Espa\u00f1ol', 'Clear iCloud Data?', '\ud55c\uad6d\uc5b4', 'Norsk', 'Svenska', 'OK', 'Dansk', 'Tags', 'Remove Duplicate Tags & Cards', 'Remove Duplicates?', 'New Tag', 'Add', '\u0420\u0443\u0441\u0441\u043a\u0438\u0439', 'Placeholder\\\\nPlaceholder\\\\nPlaceholder\\\\nPlaceholder\\\\nPlaceholder\\\\nPlaceholder', 'Italiano', '\u0627\u0644\u0639\u0631\u0628\u064a\u0629', 'Fran\u00e7ais', '\u4e2d\u6587 (\u7e41\u9ad4)', 'Polski', 'Deutsch', 'T\u00fcrk\u00e7e', 'Tag name', 'Clear iCloud Data', 'Clear All Local Data?', 'This will merge duplicate tags and remove duplicate scripts with the same content.', 'Delete Everything', 'Clear All Local Data', 'English'}",
+  "recommended_keys": [
+    {
+      "string": "Add",
+      "suggested_key": "ui.add",
+      "already_localized": false
+    },
+    {
+      "string": "Cancel",
+      "suggested_key": "ui.cancel",
+      "already_localized": false
+    },
+    {
+      "string": "Clear",
+      "suggested_key": "ui.clear",
+      "already_localized": false
+    },
+    {
+      "string": "Clear All Local Data",
+      "suggested_key": "ui.clear_all_local_data",
+      "already_localized": false
+    },
+    {
+      "string": "Clear All Local Data?",
+      "suggested_key": "ui.clear_all_local_data",
+      "already_localized": false
+    },
+    {
+      "string": "Clear iCloud Data",
+      "suggested_key": "ui.clear_icloud_data",
+      "already_localized": false
+    },
+    {
+      "string": "Clear iCloud Data?",
+      "suggested_key": "ui.clear_icloud_data",
+      "already_localized": false
+    },
+    {
+      "string": "Dansk",
+      "suggested_key": "ui.dansk",
+      "already_localized": false
+    },
+    {
+      "string": "Delete Everything",
+      "suggested_key": "ui.delete_everything",
+      "already_localized": false
+    },
+    {
+      "string": "Deutsch",
+      "suggested_key": "ui.deutsch",
+      "already_localized": false
+    },
+    {
+      "string": "English",
+      "suggested_key": "ui.english",
+      "already_localized": false
+    },
+    {
+      "string": "Espa\u00f1ol",
+      "suggested_key": "ui.espa_ol",
+      "already_localized": false
+    },
+    {
+      "string": "Fran\u00e7ais",
+      "suggested_key": "ui.fran_ais",
+      "already_localized": false
+    },
+    {
+      "string": "Italiano",
+      "suggested_key": "ui.italiano",
+      "already_localized": false
+    },
+    {
+      "string": "Nederlands",
+      "suggested_key": "ui.nederlands",
+      "already_localized": false
+    },
+    {
+      "string": "New Tag",
+      "suggested_key": "ui.new_tag",
+      "already_localized": false
+    },
+    {
+      "string": "Norsk",
+      "suggested_key": "ui.norsk",
+      "already_localized": false
+    },
+    {
+      "string": "OK",
+      "suggested_key": "ui.ok",
+      "already_localized": false
+    },
+    {
+      "string": "Operation Complete",
+      "suggested_key": "ui.operation_complete",
+      "already_localized": false
+    },
+    {
+      "string": "Placeholder\\nPlaceholder\\nPlaceholder\\nPlaceholder\\nPlaceholder\\nPlaceholder",
+      "suggested_key": "ui.placeholder_nplaceholder_nplac",
+      "already_localized": false
+    },
+    {
+      "string": "Polski",
+      "suggested_key": "ui.polski",
+      "already_localized": false
+    },
+    {
+      "string": "Portugu\u00eas",
+      "suggested_key": "ui.portugu_s",
+      "already_localized": false
+    },
+    {
+      "string": "Remove",
+      "suggested_key": "ui.remove",
+      "already_localized": false
+    },
+    {
+      "string": "Remove Duplicate Tags & Cards",
+      "suggested_key": "ui.remove_duplicate_tags_cards",
+      "already_localized": false
+    },
+    {
+      "string": "Remove Duplicates?",
+      "suggested_key": "ui.remove_duplicates",
+      "already_localized": false
+    },
+    {
+      "string": "Search tags...",
+      "suggested_key": "ui.search_tags",
+      "already_localized": false
+    },
+    {
+      "string": "Svenska",
+      "suggested_key": "ui.svenska",
+      "already_localized": false
+    },
+    {
+      "string": "Tag name",
+      "suggested_key": "ui.tag_name",
+      "already_localized": false
+    },
+    {
+      "string": "Tags",
+      "suggested_key": "ui.tags",
+      "already_localized": false
+    },
+    {
+      "string": "These actions are destructive and cannot be undone.",
+      "suggested_key": "ui.these_actions_are_destructive_",
+      "already_localized": false
+    },
+    {
+      "string": "This will delete ALL scripts, recordings, and tags. This cannot be undone!",
+      "suggested_key": "ui.this_will_delete_all_scripts_r",
+      "already_localized": false
+    },
+    {
+      "string": "This will merge duplicate tags and remove duplicate scripts with the same content.",
+      "suggested_key": "ui.this_will_merge_duplicate_tags",
+      "already_localized": false
+    },
+    {
+      "string": "This will remove all Echo data from iCloud. Local data will remain intact.",
+      "suggested_key": "ui.this_will_remove_all_echo_data",
+      "already_localized": false
+    },
+    {
+      "string": "T\u00fcrk\u00e7e",
+      "suggested_key": "ui.t_rk_e",
+      "already_localized": false
+    },
+    {
+      "string": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+      "suggested_key": "ui.",
+      "already_localized": false
+    },
+    {
+      "string": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+      "suggested_key": "ui.",
+      "already_localized": false
+    },
+    {
+      "string": "\u0939\u093f\u0928\u094d\u0926\u0940",
+      "suggested_key": "ui.",
+      "already_localized": false
+    },
+    {
+      "string": "\u26a0\ufe0f Destructive Actions",
+      "suggested_key": "ui.destructive_actions",
+      "already_localized": false
+    },
+    {
+      "string": "\u4e2d\u6587 (\u7b80\u4f53)",
+      "suggested_key": "ui.",
+      "already_localized": false
+    },
+    {
+      "string": "\u4e2d\u6587 (\u7e41\u9ad4)",
+      "suggested_key": "ui.",
+      "already_localized": false
+    },
+    {
+      "string": "\u65e5\u672c\u8a9e",
+      "suggested_key": "ui.",
+      "already_localized": false
+    },
+    {
+      "string": "\ud55c\uad6d\uc5b4",
+      "suggested_key": "ui.",
+      "already_localized": false
+    }
+  ]
+}

@@ -13,15 +13,11 @@
 
 
 // MARK: - Tags
-"tag.now" = "Teraz";
 "tag.untagged" = "Bez tagu";
 "tag.edit" = "Edytuj Tag";
 "tag.delete.confirm.title" = "Usuń Tag";
 "tag.delete.confirm.message" = "Ten tag jest używany przez %d skryptów. Usunięcie go usunie tag z tych skryptów.";
 "tag.delete.confirm.empty" = "Ten tag nie jest używany przez żaden skrypt. Czy na pewno chcesz go usunąć?";
-"tag.max_now_cards" = "Maksymalnie Kart 'Teraz'";
-"tag.now_limit_reached" = "Limit Tagu Teraz";
-"tag.now_limit_message" = "Osiągnąłeś maksymalną liczbę kart 'Teraz' (%d). Wybierz kartę, aby usunąć tag 'Teraz':";
 "tag.auto_cleanup" = "Auto-usuwanie Nieużywanych Tagów";
 "tag.select" = "Wybierz Tagi";
 "tag.new" = "Nowy Tag";
