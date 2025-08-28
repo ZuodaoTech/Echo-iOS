@@ -42,25 +42,17 @@ final class AudioCoordinator: ObservableObject {
     
     // MARK: - Services (Lazy initialization for performance)
     
-    private lazy var fileManager: AudioFileManager = AudioFileManager()
-    private lazy var sessionManager: AudioSessionManager = AudioSessionManager()
-    private lazy var recordingService: RecordingService = RecordingService(
-        fileManager: self.fileManager,
-        sessionManager: self.sessionManager
-    )
-    private lazy var playbackService: PlaybackService = PlaybackService(
-        fileManager: self.fileManager,
-        sessionManager: self.sessionManager
-    )
-    private lazy var processingService: AudioProcessingService = AudioProcessingService(
-        fileManager: self.fileManager
-    )
+    private var fileManager: AudioFileManager!
+    private var sessionManager: AudioSessionManager!
+    private var recordingService: RecordingService!
+    private var playbackService: PlaybackService!
+    private var processingService: AudioProcessingService!
     
     // MARK: - Private Properties
     
     private var currentRecordingScript: SelftalkScript?
     private var cancellables = Set<AnyCancellable>()
-    private var hasInitialized = false
+    private var hasInitializedServices = false // Track service initialization
     
     // MARK: - Initialization
     
@@ -70,11 +62,21 @@ final class AudioCoordinator: ObservableObject {
     }
     
     private func ensureInitialized() {
-        guard !hasInitialized else { return }
-        hasInitialized = true
-        bindPublishedProperties()
+        guard !hasInitializedServices else { return }
+        hasInitializedServices = true
+        // Binding is now done lazily in ensureInitialized()
     }
+    // MARK: - Private Methods
     
+    private func createServices() {
+        fileManager = AudioFileManager()
+        sessionManager = AudioSessionManager()
+        recordingService = RecordingService(fileManager: fileManager, sessionManager: sessionManager)
+        playbackService = PlaybackService(fileManager: fileManager, sessionManager: sessionManager)
+        processingService = AudioProcessingService(fileManager: fileManager)
+    }
+
+
     // MARK: - Recording Methods
     
     func requestMicrophonePermission(completion: @escaping (Bool) -> Void) {
@@ -242,6 +244,7 @@ final class AudioCoordinator: ObservableObject {
     // MARK: - File Management Methods
     
     func deleteRecording(for script: SelftalkScript) {
+        ensureInitialized()
         // Stop playback if playing this script
         if currentPlayingScriptId == script.id {
             stopPlayback()
@@ -257,6 +260,7 @@ final class AudioCoordinator: ObservableObject {
     }
     
     func checkPrivateMode() {
+        ensureInitialized()
         sessionManager.checkPrivateMode()
     }
     

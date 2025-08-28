@@ -5,9 +5,7 @@ struct ScriptsListView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     // Lazy initialize AudioCoordinator only when needed
-    private var audioService: AudioCoordinator {
-        AudioCoordinator.shared
-    }
+    @StateObject private var audioService = AudioCoordinator.shared
     
     // FetchRequests - only executed when this view is created (Core Data ready)
     @FetchRequest(
