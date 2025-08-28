@@ -10,11 +10,12 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
+    @EnvironmentObject var persistenceController: PersistenceController
     @State private var selectedTab = 0
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            MainScriptsView()
+            ScriptsListView()
                 .tabItem {
                     Image(systemName: "rectangle.stack")
                 }
@@ -25,18 +26,6 @@ struct ContentView: View {
                     Image(systemName: "person.circle")
                 }
                 .tag(1)
-        }
-        .onAppear {
-            // Track when UI is ready
-            AppLaunchOptimizer.LaunchMetrics.uiReady = Date()
-            
-            #if DEBUG
-            // Print launch performance report in debug
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                AppLaunchOptimizer.LaunchMetrics.fullyLoaded = Date()
-                AppLaunchOptimizer.LaunchMetrics.printReport()
-            }
-            #endif
         }
     }
 }

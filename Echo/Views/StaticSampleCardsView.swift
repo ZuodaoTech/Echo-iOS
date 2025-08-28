@@ -10,6 +10,12 @@ import SwiftUI
 struct StaticSampleCardsView: View {
     private let samples = StaticSampleProvider.shared.getSamples()
     @State private var showingSampleAlert = false
+    @State private var hasTriggeredCoreData = false
+    let onlyShowSamples: Bool
+    
+    init(onlyShowSamples: Bool = false) {
+        self.onlyShowSamples = onlyShowSamples
+    }
     
     var body: some View {
         ScrollView {
@@ -28,6 +34,20 @@ struct StaticSampleCardsView: View {
             Button("OK", role: .cancel) { }
         } message: {
             Text("This is a sample card. You can create your own cards using the + button.")
+        }
+        .onAppear {
+            // Only trigger Core Data if we're in MainScriptsView context
+            if !onlyShowSamples && !hasTriggeredCoreData {
+                hasTriggeredCoreData = true
+                print("Static samples rendered, triggering Core Data load...")
+                
+                // Small delay to ensure the view has fully rendered
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    if let _ = try? PersistenceController.getSharedIfExists() {
+                        PersistenceController.shared.startCoreDataLoading()
+                    }
+                }
+            }
         }
     }
 }

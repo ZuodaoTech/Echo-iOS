@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct MainScriptsView: View {
-    @ObservedObject private var persistenceController = PersistenceController.shared
+    @EnvironmentObject var persistenceController: PersistenceController
     
     var body: some View {
         Group {

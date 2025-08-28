@@ -11,23 +11,41 @@ import UserNotifications
 
 @main
 struct EchoApp: App {
-    let persistenceController = PersistenceController.shared
-
+    // NO persistence controller property - removed to prevent blocking!
+    
     init() {
         // Track launch start time
         AppLaunchOptimizer.LaunchMetrics.appInitStart = Date()
         
-        // Only apply language preference if changed from system default
+        // Minimal init only - everything else deferred
+        #if DEBUG
+        SimulatorWarningFixes.configure()
+        #endif
+    }
+    
+    var body: some Scene {
+        WindowGroup {
+            RootView()  // Ultra-lightweight root with no dependencies
+        }
+    }
+    
+    // These methods will be called from RootView after Core Data is ready
+    static func performDeferredAppSetup() {
+        // Apply language preference if changed from system default
         if let appLanguage = UserDefaults.standard.string(forKey: "appLanguage"), appLanguage != "system" {
             UserDefaults.standard.set([appLanguage], forKey: "AppleLanguages")
-            // Remove unnecessary synchronize() call - it's automatic now
         }
         
-        // Defer non-critical initialization to background with lower priority
+        // Configure notification delegate
+        UNUserNotificationCenter.current().delegate = NotificationManager.shared
+        
+        // Perform other deferred initialization
+        AppLaunchOptimizer.performDeferredInitialization()
+        
+        // Setup background tasks
         Task.detached(priority: .background) {
             // Set default language preferences on first launch
             if UserDefaults.standard.object(forKey: "defaultTranscriptionLanguage") == nil {
-                // Don't initialize LocalizationHelper until actually needed
                 await Task {
                     let defaultLanguage = LocalizationHelper.shared.getDefaultTranscriptionLanguage()
                     UserDefaults.standard.set(defaultLanguage, forKey: "defaultTranscriptionLanguage")
@@ -36,22 +54,11 @@ struct EchoApp: App {
             
             // Configure audio session after launch (only if user has recorded before)
             if UserDefaults.standard.bool(forKey: "hasRecordedBefore") {
-                await EchoApp.configureAudioSessionAsync()
+                await configureAudioSessionAsync()
             }
         }
         
-        // Configure notification center (lightweight)
-        configureNotifications()
-        
-        // Apply simulator warning fixes
-        #if DEBUG
-        SimulatorWarningFixes.configure()
-        #endif
-        
-        // Perform deferred initialization
-        AppLaunchOptimizer.performDeferredInitialization()
-        
-        // Defer notification observer setup
+        // Setup notification observer for iCloud changes
         Task { @MainActor in
             NotificationCenter.default.addObserver(
                 forName: Notification.Name("RestartCoreDataForICloud"),
@@ -65,28 +72,10 @@ struct EchoApp: App {
         }
     }
     
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-                    // Refresh permission states when app becomes active
-                    refreshPermissionStates()
-                }
-        }
-    }
-    
-    private func refreshPermissionStates() {
-        // Refresh notification permissions
-        NotificationManager.shared.refreshPermissionState()
-        // AudioSessionManager permissions are refreshed via AudioCoordinator
-        // which checks permissions on each recording attempt
-    }
-    
     private static func configureAudioSessionAsync() async {
         do {
             let audioSession = AVAudioSession.sharedInstance()
-            try audioSession.setCategory(.playAndRecord, 
+            try audioSession.setCategory(.playAndRecord,
                                         mode: .default,
                                         options: [.defaultToSpeaker, .allowBluetooth])
         } catch {
@@ -94,7 +83,10 @@ struct EchoApp: App {
         }
     }
     
-    private func configureNotifications() {
-        UNUserNotificationCenter.current().delegate = NotificationManager.shared
+    static func refreshPermissionStates() {
+        // Refresh notification permissions
+        NotificationManager.shared.refreshPermissionState()
+        // AudioSessionManager permissions are refreshed via AudioCoordinator
+        // which checks permissions on each recording attempt
     }
 }
