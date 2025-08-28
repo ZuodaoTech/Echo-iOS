@@ -12,6 +12,21 @@
 "navigation.edit_script" = "Редактировать Карточку";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Добро пожаловать в Echo";
+"welcome.page1.subtitle" = "Подсознательная эволюция, управляемая вашим собственным голосом";
+"welcome.page1.description" = "Ваша жизнь должна всегда быть под вашим контролем";
+"welcome.page2.title" = "Как Это Работает";
+"welcome.page2.subtitle" = "Три Простых Шага";
+"welcome.page2.description" = "• Пишите сценарии своими словами\n• Записывайте своим голосом\n• Слушайте многократно, чтобы сделать подсознательным";
+"welcome.page3.title" = "ВЫ — это КЛЮЧ";
+"welcome.page3.subtitle" = "Ваш мозг любит вас больше всего";
+"welcome.page3.description" = "Знакомство — это ключ: ваши собственные слова и ваш собственный голос легче переводятся в ваши собственные действия";
+"welcome.button.continue" = "Продолжить";
+"welcome.button.getStarted" = "Начать";
+"welcome.button.skip" = "Пропустить";
+
+
 // MARK: - Tags
 "tag.untagged" = "Без тега";
 "tag.edit" = "Редактировать Тег";

@@ -12,6 +12,21 @@
 "navigation.edit_script" = "Muokkaa Korttia";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Tervetuloa Echoon";
+"welcome.page1.subtitle" = "Alitajuinen evoluutio oman äänesi ohjaamana";
+"welcome.page1.description" = "Elämäsi tulisi aina olla sinun hallinnassasi";
+"welcome.page2.title" = "Miten Se Toimii";
+"welcome.page2.subtitle" = "Kolme Yksinkertaista Vaihetta";
+"welcome.page2.description" = "• Kirjoita skriptit omin sanoin\n• Nauhoita omalla äänelläsi\n• Kuuntele toistuvasti tehdäksesi siitä alitajuista";
+"welcome.page3.title" = "SINÄ olet AVAIN";
+"welcome.page3.subtitle" = "Aivosi rakastavat sinua eniten";
+"welcome.page3.description" = "Tuttuus on avain: omat sanasi ja oma äänesi muuttuvat helpommin omiksi teoiksesi";
+"welcome.button.continue" = "Jatka";
+"welcome.button.getStarted" = "Aloita";
+"welcome.button.skip" = "Ohita";
+
+
 // MARK: - Tags
 "tag.untagged" = "Ilman tagia";
 "tag.edit" = "Muokkaa Tagia";

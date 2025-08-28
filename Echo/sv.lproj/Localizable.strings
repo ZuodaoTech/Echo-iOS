@@ -12,6 +12,21 @@
 "navigation.edit_script" = "Redigera Kort";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Välkommen till Echo";
+"welcome.page1.subtitle" = "Subliminal evolution driven av din egen röst";
+"welcome.page1.description" = "Ditt liv bör alltid vara under din kontroll";
+"welcome.page2.title" = "Hur Det Fungerar";
+"welcome.page2.subtitle" = "Tre Enkla Steg";
+"welcome.page2.description" = "• Skriv manus med dina egna ord\n• Spela in med din egen röst\n• Lyssna upprepade gånger för att göra det subliminalt";
+"welcome.page3.title" = "DU är NYCKELN";
+"welcome.page3.subtitle" = "Din hjärna älskar dig själv mest";
+"welcome.page3.description" = "Förtrogenhet är nyckeln: dina egna ord och din egen röst översätts lättare till dina egna handlingar";
+"welcome.button.continue" = "Fortsätt";
+"welcome.button.getStarted" = "Kom igång";
+"welcome.button.skip" = "Hoppa över";
+
+
 // MARK: - Tags
 "tag.untagged" = "Otaggad";
 "tag.edit" = "Redigera Tagg";

@@ -18,7 +18,7 @@ struct EchoApp: App {
     
     var body: some Scene {
         WindowGroup {
-            RootView()  // Ultra-lightweight root with no dependencies
+            RootView()  // Root view handles initialization and welcome
         }
     }
     

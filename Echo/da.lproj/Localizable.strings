@@ -12,6 +12,21 @@
 "navigation.edit_script" = "Rediger Kort";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Velkommen til Echo";
+"welcome.page1.subtitle" = "Subliminal evolution drevet af din egen stemme";
+"welcome.page1.description" = "Dit liv bør altid være under din kontrol";
+"welcome.page2.title" = "Sådan Virker Det";
+"welcome.page2.subtitle" = "Tre Simple Trin";
+"welcome.page2.description" = "• Skriv manuskripter med dine egne ord\n• Optag med din egen stemme\n• Lyt gentagne gange for at gøre det subliminalt";
+"welcome.page3.title" = "DU er NØGLEN";
+"welcome.page3.subtitle" = "Din hjerne elsker dig selv mest";
+"welcome.page3.description" = "Fortrolighed er nøglen: dine egne ord og din egen stemme oversættes lettere til dine egne handlinger";
+"welcome.button.continue" = "Fortsæt";
+"welcome.button.getStarted" = "Kom i gang";
+"welcome.button.skip" = "Spring over";
+
+
 // MARK: - Tags
 "tag.untagged" = "Uden tag";
 "tag.edit" = "Rediger Tag";

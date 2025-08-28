@@ -12,6 +12,21 @@
 "navigation.edit_script" = "Modifier Carte";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Bienvenue dans Echo";
+"welcome.page1.subtitle" = "Évolution subliminale guidée par votre propre voix";
+"welcome.page1.description" = "Votre vie devrait toujours être sous votre contrôle";
+"welcome.page2.title" = "Comment Ça Marche";
+"welcome.page2.subtitle" = "Trois Étapes Simples";
+"welcome.page2.description" = "• Rédigez des scripts avec vos propres mots\n• Enregistrez avec votre propre voix\n• Écoutez de manière répétée pour en faire du subliminal";
+"welcome.page3.title" = "VOUS êtes la CLÉ";
+"welcome.page3.subtitle" = "Votre cerveau vous aime plus que tout";
+"welcome.page3.description" = "La familiarité est la clé : vos propres mots et votre propre voix se transforment plus facilement en vos propres actions";
+"welcome.button.continue" = "Continuer";
+"welcome.button.getStarted" = "Commencer";
+"welcome.button.skip" = "Passer";
+
+
 // MARK: - Tags
 "tag.untagged" = "Sans étiquette";
 "tag.edit" = "Modifier l'Étiquette";

@@ -12,6 +12,21 @@
 "navigation.edit_script" = "Edytuj Kartę";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Witaj w Echo";
+"welcome.page1.subtitle" = "Podświadoma ewolucja napędzana twoim własnym głosem";
+"welcome.page1.description" = "Twoje życie powinno zawsze być pod twoją kontrolą";
+"welcome.page2.title" = "Jak To Działa";
+"welcome.page2.subtitle" = "Trzy Proste Kroki";
+"welcome.page2.description" = "• Pisz skrypty własnymi słowami\n• Nagrywaj własnym głosem\n• Słuchaj wielokrotnie, aby uczynić to podświadomym";
+"welcome.page3.title" = "TY jesteś KLUCZEM";
+"welcome.page3.subtitle" = "Twój mózg kocha ciebie najbardziej";
+"welcome.page3.description" = "Znajomość jest kluczem: twoje własne słowa i twój własny głos łatwiej przekładają się na twoje własne działania";
+"welcome.button.continue" = "Kontynuuj";
+"welcome.button.getStarted" = "Rozpocznij";
+"welcome.button.skip" = "Pomiń";
+
+
 // MARK: - Tags
 "tag.untagged" = "Bez tagu";
 "tag.edit" = "Edytuj Tag";

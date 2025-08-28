@@ -12,6 +12,21 @@
 "navigation.edit_script" = "تحرير البطاقة";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "مرحباً بك في Echo";
+"welcome.page1.subtitle" = "تطور اللاوعي بقيادة صوتك الخاص";
+"welcome.page1.description" = "حياتك يجب أن تكون دائماً تحت سيطرتك";
+"welcome.page2.title" = "كيف يعمل";
+"welcome.page2.subtitle" = "ثلاث خطوات بسيطة";
+"welcome.page2.description" = "• اكتب النصوص بكلماتك الخاصة\n• سجّل بصوتك الخاص\n• استمع مراراً لجعلها لا شعورية";
+"welcome.page3.title" = "أنت المفتاح";
+"welcome.page3.subtitle" = "عقلك يحبك أكثر من أي شيء";
+"welcome.page3.description" = "الألفة هي المفتاح: كلماتك وصوتك الخاص يترجمان بسهولة أكبر إلى أفعالك";
+"welcome.button.continue" = "متابعة";
+"welcome.button.getStarted" = "ابدأ الآن";
+"welcome.button.skip" = "تخطي";
+
+
 // MARK: - Tags
 "tag.untagged" = "بدون علامة";
 "tag.edit" = "تحرير العلامة";

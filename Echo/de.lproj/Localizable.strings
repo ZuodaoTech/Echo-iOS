@@ -12,6 +12,21 @@
 "navigation.edit_script" = "Karte Bearbeiten";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Willkommen bei Echo";
+"welcome.page1.subtitle" = "Subliminale Evolution durch deine eigene Stimme";
+"welcome.page1.description" = "Dein Leben sollte immer in deiner Hand sein";
+"welcome.page2.title" = "So Funktioniert's";
+"welcome.page2.subtitle" = "Drei Einfache Schritte";
+"welcome.page2.description" = "• Schreibe Skripte in deinen eigenen Worten\n• Nimm mit deiner eigenen Stimme auf\n• Höre wiederholt zu, um es subliminal zu machen";
+"welcome.page3.title" = "DU bist der SCHLÜSSEL";
+"welcome.page3.subtitle" = "Dein Gehirn liebt dich selbst am meisten";
+"welcome.page3.description" = "Vertrautheit ist der Schlüssel: deine eigenen Worte und deine eigene Stimme lassen sich leichter in deine eigenen Handlungen umsetzen";
+"welcome.button.continue" = "Weiter";
+"welcome.button.getStarted" = "Loslegen";
+"welcome.button.skip" = "Überspringen";
+
+
 // MARK: - Tags
 "tag.untagged" = "Ohne Tag";
 "tag.edit" = "Tag Bearbeiten";
