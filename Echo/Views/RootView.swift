@@ -9,16 +9,20 @@ import SwiftUI
 import CoreData
 
 struct RootView: View {
-    @State private var phase: AppPhase = .showingSamples
+    @State private var phase: AppPhase = .instant
+    @State private var hardcodedSamples: [StaticSampleCard] = []
+    @State private var localizedSamples: [StaticSampleCard] = []
     
     enum AppPhase: Equatable {
-        case showingSamples
-        case loadingCoreData
-        case ready(PersistenceController)
+        case instant                          // Show something immediately
+        case showingSamples                   // Show proper sample cards
+        case loadingCoreData                  // Loading Core Data
+        case ready(PersistenceController)     // Full app ready
         
         static func == (lhs: AppPhase, rhs: AppPhase) -> Bool {
             switch (lhs, rhs) {
-            case (.showingSamples, .showingSamples),
+            case (.instant, .instant),
+                 (.showingSamples, .showingSamples),
                  (.loadingCoreData, .loadingCoreData):
                 return true
             case (.ready(_), .ready(_)):
@@ -31,27 +35,44 @@ struct RootView: View {
     
     var body: some View {
         switch phase {
+        case .instant:
+            // INSTANT render - no localization, no NavigationView, just cards!
+            InstantSampleView(samples: hardcodedSamples)
+                .onAppear {
+                    // Track UI ready IMMEDIATELY
+                    AppLaunchOptimizer.LaunchMetrics.uiReady = Date()
+                    print("✅ First frame rendered - UI Ready at \(AppLaunchOptimizer.LaunchMetrics.uiReady!.timeIntervalSince(AppLaunchOptimizer.LaunchMetrics.appInitStart))s")
+                    
+                    // Start loading everything else after first frame
+                    Task {
+                        await loadLocalizedSamples()
+                    }
+                }
+            
         case .showingSamples, .loadingCoreData:
-            // Show sample cards instantly - this renders in first frame
+            // Now show proper UI with navigation
             NavigationView {
-                StaticSampleCardsView(onlyShowSamples: true)
-                    .navigationTitle("")
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            if phase == .loadingCoreData {
-                                ProgressView()
-                                    .scaleEffect(0.8)
-                            }
+                ScrollView {
+                    VStack(spacing: 12) {
+                        ForEach(localizedSamples) { sample in
+                            StaticCardView(sample: sample)
                         }
                     }
+                    .padding(.horizontal)
+                    .padding(.top, 8)
+                }
+                .navigationTitle("")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        if phase == .loadingCoreData {
+                            ProgressView()
+                                .scaleEffect(0.8)
+                        }
+                    }
+                }
             }
             .onAppear {
-                // Track UI ready as soon as sample cards appear
                 if phase == .showingSamples {
-                    AppLaunchOptimizer.LaunchMetrics.uiReady = Date()
-                    print("✅ Sample cards visible - UI Ready at \(AppLaunchOptimizer.LaunchMetrics.uiReady!.timeIntervalSince(AppLaunchOptimizer.LaunchMetrics.appInitStart))s")
-                    
-                    // Start loading Core Data after UI is visible
                     phase = .loadingCoreData
                     Task.detached(priority: .background) {
                         await loadCoreData()
@@ -71,6 +92,47 @@ struct RootView: View {
                     AppLaunchOptimizer.LaunchMetrics.printReport()
                     #endif
                 }
+        }
+    }
+    
+    init() {
+        // Create hardcoded samples IMMEDIATELY - no localization!
+        self.hardcodedSamples = [
+            StaticSampleCard(
+                id: StaticSampleCard.smokingSampleID,
+                scriptText: "I never smoke, because it stinks, and I hate being controlled.",
+                category: "Breaking Bad Habits",
+                repetitions: 3,
+                intervalSeconds: 1.0
+            ),
+            StaticSampleCard(
+                id: StaticSampleCard.bedtimeSampleID,
+                scriptText: "I wind down by 10 PM, and I'm in bed by 11 PM.",
+                category: "Building Good Habits",
+                repetitions: 3,
+                intervalSeconds: 1.0
+            ),
+            StaticSampleCard(
+                id: StaticSampleCard.mistakesSampleID,
+                scriptText: "Making mistakes is the best way for me to learn, so I view each one as a valuable lesson.",
+                category: "Appropriate Positivity",
+                repetitions: 3,
+                intervalSeconds: 1.0
+            )
+        ]
+    }
+    
+    @MainActor
+    private func loadLocalizedSamples() async {
+        // Small delay to ensure first frame is painted
+        try? await Task.sleep(nanoseconds: 16_000_000) // One frame
+        
+        // Now load localized samples
+        localizedSamples = StaticSampleProvider.shared.getSamples()
+        
+        // Transition to proper UI
+        withAnimation(.easeInOut(duration: 0.2)) {
+            phase = .showingSamples
         }
     }
     
@@ -107,6 +169,70 @@ struct RootView: View {
         withAnimation(.easeInOut(duration: 0.3)) {
             phase = .ready(controller)
         }
+    }
+}
+
+/// Ultra-light view for instant rendering - NO NavigationView, NO localization
+struct InstantSampleView: View {
+    let samples: [StaticSampleCard]
+    
+    var body: some View {
+        // Simple ZStack with basic styling - renders INSTANTLY
+        ZStack {
+            Color(.systemBackground)
+            
+            ScrollView {
+                VStack(spacing: 12) {
+                    // Empty space for navigation bar
+                    Color.clear.frame(height: 44)
+                    
+                    ForEach(samples) { sample in
+                        InstantCardView(sample: sample)
+                    }
+                }
+                .padding(.horizontal)
+            }
+        }
+    }
+}
+
+/// Simplified card for instant rendering
+struct InstantCardView: View {
+    let sample: StaticSampleCard
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            // Category - plain text, no localization
+            Text(sample.category)
+                .font(.caption)
+                .fontWeight(.medium)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Color.blue.opacity(0.1))
+                .foregroundColor(.blue)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+            
+            // Script text
+            Text(sample.scriptText)
+                .font(.body)
+                .lineLimit(3)
+            
+            // Bottom row - simplified
+            HStack {
+                Text("\(sample.repetitions)x")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Text("\(String(format: "%.1f", sample.intervalSeconds))s")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+            }
+        }
+        .padding()
+        .background(Color(.systemGray6))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
 
