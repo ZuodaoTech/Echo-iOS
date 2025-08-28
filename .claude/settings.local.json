@@ -3,7 +3,12 @@
     "allow": [
       "Bash(git commit:*)",
       "Bash(grep:*)",
-      "Bash(xcodebuild:*)"
+      "Bash(xcodebuild:*)",
+      "Bash(xcrun simctl list:*)",
+      "Bash(xcrun simctl boot:*)",
+      "Bash(xcrun simctl install:*)",
+      "Bash(xcrun simctl launch:*)",
+      "Bash(xcrun simctl shutdown:*)"
     ],
     "deny": [],
     "ask": []
