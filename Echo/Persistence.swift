@@ -280,6 +280,9 @@ class PersistenceController: ObservableObject {
         do {
             try context.save()
             print("Successfully imported \(samples.count) sample scripts")
+            
+            // Mark that we've launched before (to coordinate with other first-launch checks)
+            UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
         } catch {
             print("Failed to save sample scripts: \(error)")
         }
