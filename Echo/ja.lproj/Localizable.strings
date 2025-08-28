@@ -12,6 +12,21 @@
 "navigation.edit_script" = "カードを編集";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Echoへようこそ";
+"welcome.page1.subtitle" = "あなた自身の声で潜在意識を進化させる";
+"welcome.page1.description" = "あなたの人生は常にあなた自身のコントロール下にあるべきです";
+"welcome.page2.title" = "仕組み";
+"welcome.page2.subtitle" = "シンプルな3ステップ";
+"welcome.page2.description" = "• あなた自身の言葉でスクリプトを作成\n• あなた自身の声で録音\n• 繰り返し聞いて潜在意識に刷り込む";
+"welcome.page3.title" = "あなたが鍵";
+"welcome.page3.subtitle" = "あなたの脳はあなた自身を最も愛している";
+"welcome.page3.description" = "親しみやすさが鍵：あなた自身の言葉と声は、あなた自身の行動により変換されやすいのです";
+"welcome.button.continue" = "続ける";
+"welcome.button.getStarted" = "始める";
+"welcome.button.skip" = "スキップ";
+
+
 // MARK: - Tags
 "tag.untagged" = "タグなし";
 "tag.edit" = "タグを編集";

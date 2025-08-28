@@ -12,6 +12,21 @@
 "navigation.edit_script" = "Editar Tarjeta";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Bienvenido a Echo";
+"welcome.page1.subtitle" = "Evolución subliminal impulsada por tu propia voz";
+"welcome.page1.description" = "Tu vida debe estar siempre bajo tu control";
+"welcome.page2.title" = "Cómo Funciona";
+"welcome.page2.subtitle" = "Tres Pasos Sencillos";
+"welcome.page2.description" = "• Escribe guiones con tus propias palabras\n• Graba con tu propia voz\n• Escucha repetidamente para volverlo subliminal";
+"welcome.page3.title" = "TÚ eres la CLAVE";
+"welcome.page3.subtitle" = "Tu cerebro se ama a sí mismo más que nada";
+"welcome.page3.description" = "La familiaridad es clave: tus propias palabras y tu propia voz se traducen más fácilmente en tus propias acciones";
+"welcome.button.continue" = "Continuar";
+"welcome.button.getStarted" = "Comenzar";
+"welcome.button.skip" = "Omitir";
+
+
 // MARK: - Tags
 "tag.untagged" = "Sin etiqueta";
 "tag.edit" = "Editar Etiqueta";

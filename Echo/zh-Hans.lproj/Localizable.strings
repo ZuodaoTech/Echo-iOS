@@ -12,6 +12,21 @@
 "navigation.edit_script" = "编辑卡片";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "欢迎使用 Echo";
+"welcome.page1.subtitle" = "用你自己的声音驱动潜意识进化";
+"welcome.page1.description" = "你的人生应该始终在你的掌控之中";
+"welcome.page2.title" = "工作原理";
+"welcome.page2.subtitle" = "简单三步";
+"welcome.page2.description" = "• 用你自己的话编写脚本\n• 用你自己的声音录制\n• 反复聆听，让它变成潜意识";
+"welcome.page3.title" = "你就是关键";
+"welcome.page3.subtitle" = "你的大脑最爱你自己";
+"welcome.page3.description" = "熟悉感是关键：你自己的话语和声音更容易转化为你自己的行动";
+"welcome.button.continue" = "继续";
+"welcome.button.getStarted" = "开始使用";
+"welcome.button.skip" = "跳过";
+
+
 // MARK: - Tags
 "tag.untagged" = "无标签";
 "tag.edit" = "编辑标签";
@@ -201,7 +216,7 @@
 "sensitivity.high.desc" = "检测轻声 • 0.15秒缓冲";
 
 // MARK: - Sample Scripts
-"sample.smoking" = "我绝不抽烟，因为它有异味，我讨厌被控制。";
+"sample.smoking" = "我绝不抽烟，因为它有异味，并且，我也讨厌被控制。";
 "sample.bedtime" = "我总是在晚上10点前上床睡觉，因为这更健康，我喜欢充满活力地醒来。";
 "sample.mistakes" = "我犯了一些错误，但也做了几件好事。错误是学习的正常部分，我可以将它们作为改进的机会。";
 

@@ -12,6 +12,21 @@
 "navigation.edit_script" = "Rediger Kort";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Velkommen til Echo";
+"welcome.page1.subtitle" = "Subliminal evolusjon drevet av din egen stemme";
+"welcome.page1.description" = "Ditt liv bør alltid være under din kontroll";
+"welcome.page2.title" = "Hvordan Det Fungerer";
+"welcome.page2.subtitle" = "Tre Enkle Steg";
+"welcome.page2.description" = "• Skriv manus med dine egne ord\n• Ta opp med din egen stemme\n• Lytt gjentatte ganger for å gjøre det subliminalt";
+"welcome.page3.title" = "DU er NØKKELEN";
+"welcome.page3.subtitle" = "Hjernen din elsker deg selv mest";
+"welcome.page3.description" = "Kjennskap er nøkkelen: dine egne ord og din egen stemme oversettes lettere til dine egne handlinger";
+"welcome.button.continue" = "Fortsett";
+"welcome.button.getStarted" = "Kom i gang";
+"welcome.button.skip" = "Hopp over";
+
+
 // MARK: - Tags
 "tag.untagged" = "Uten merkelapp";
 "tag.edit" = "Rediger Merkelapp";

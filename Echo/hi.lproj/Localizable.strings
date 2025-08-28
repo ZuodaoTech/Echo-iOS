@@ -12,6 +12,21 @@
 "navigation.edit_script" = "कार्ड संपादित करें";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Echo में आपका स्वागत है";
+"welcome.page1.subtitle" = "आपकी अपनी आवाज़ से संचालित अवचेतन विकास";
+"welcome.page1.description" = "आपका जीवन हमेशा आपके नियंत्रण में होना चाहिए";
+"welcome.page2.title" = "यह कैसे काम करता है";
+"welcome.page2.subtitle" = "तीन सरल चरण";
+"welcome.page2.description" = "• अपने शब्दों में स्क्रिप्ट लिखें\n• अपनी आवाज़ में रिकॉर्ड करें\n• बार-बार सुनकर अवचेतन बनाएं";
+"welcome.page3.title" = "आप ही कुंजी हैं";
+"welcome.page3.subtitle" = "आपका मस्तिष्क आपसे सबसे ज्यादा प्यार करता है";
+"welcome.page3.description" = "परिचय महत्वपूर्ण है: आपके अपने शब्द और आवाज़ आपके कार्यों में आसानी से बदल जाते हैं";
+"welcome.button.continue" = "जारी रखें";
+"welcome.button.getStarted" = "शुरू करें";
+"welcome.button.skip" = "छोड़ें";
+
+
 // MARK: - Tags
 "tag.untagged" = "बिना टैग";
 "tag.edit" = "टैग संपादित करें";

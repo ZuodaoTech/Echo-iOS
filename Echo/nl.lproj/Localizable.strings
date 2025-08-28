@@ -12,6 +12,21 @@
 "navigation.edit_script" = "Kaart Bewerken";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Welkom bij Echo";
+"welcome.page1.subtitle" = "Subliminale evolutie gedreven door je eigen stem";
+"welcome.page1.description" = "Jouw leven moet altijd onder jouw controle zijn";
+"welcome.page2.title" = "Hoe Het Werkt";
+"welcome.page2.subtitle" = "Drie Simpele Stappen";
+"welcome.page2.description" = "• Schrijf scripts in je eigen woorden\n• Neem op met je eigen stem\n• Luister herhaaldelijk om het subliminaal te maken";
+"welcome.page3.title" = "JIJ bent de SLEUTEL";
+"welcome.page3.subtitle" = "Je brein houdt het meest van jezelf";
+"welcome.page3.description" = "Vertrouwdheid is de sleutel: je eigen woorden en stem vertalen zich makkelijker naar je eigen acties";
+"welcome.button.continue" = "Doorgaan";
+"welcome.button.getStarted" = "Beginnen";
+"welcome.button.skip" = "Overslaan";
+
+
 // MARK: - Tags
 "tag.untagged" = "Zonder label";
 "tag.edit" = "Label Bewerken";

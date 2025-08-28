@@ -11,6 +11,21 @@
 "navigation.new_script" = "새 카드";
 "navigation.edit_script" = "카드 편집";
 
+
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Echo에 오신 것을 환영합니다";
+"welcome.page1.subtitle" = "당신만의 목소리로 이끄는 잠재의식의 진화";
+"welcome.page1.description" = "당신의 삶은 항상 당신이 주도해야 합니다";
+"welcome.page2.title" = "작동 원리";
+"welcome.page2.subtitle" = "간단한 3단계";
+"welcome.page2.description" = "• 당신만의 언어로 스크립트 작성\n• 당신만의 목소리로 녹음\n• 반복해서 들으며 잠재의식화";
+"welcome.page3.title" = "당신이 핵심입니다";
+"welcome.page3.subtitle" = "당신의 뇌는 당신 자신을 가장 사랑합니다";
+"welcome.page3.description" = "친숙함이 핵심입니다: 당신만의 언어와 목소리가 당신만의 행동으로 더 쉽게 전환됩니다";
+"welcome.button.continue" = "계속";
+"welcome.button.getStarted" = "시작하기";
+"welcome.button.skip" = "건너뛰기";
+
 // MARK: - Tags
 "tag.untagged" = "태그 없음";
 "tag.edit" = "태그 수정";

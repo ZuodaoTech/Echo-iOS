@@ -11,6 +11,20 @@
 "navigation.new_script" = "New Card";
 "navigation.edit_script" = "Edit Card";
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Welcome to Echo";
+"welcome.page1.subtitle" = "Subliminal evolution driven by your own voice";
+"welcome.page1.description" = "Your life should be always in your control";
+"welcome.page2.title" = "How It Works";
+"welcome.page2.subtitle" = "Three Simple Steps";
+"welcome.page2.description" = "• Write scripts in your own words\n• Record in your own voice\n• Listen repeatedly to make it subliminal";
+"welcome.page3.title" = "YOU is the KEY";
+"welcome.page3.subtitle" = "Your brain loves yourself most";
+"welcome.page3.description" = "Familiarity is the key: your own words and your own voice are easier to translate into your own actions";
+"welcome.button.continue" = "Continue";
+"welcome.button.getStarted" = "Get Started";
+"welcome.button.skip" = "Skip";
+
 
 // MARK: - Tags
 "tag.untagged" = "Untagged";

@@ -12,6 +12,21 @@
 "navigation.edit_script" = "編輯卡片";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "歡迎使用 Echo";
+"welcome.page1.subtitle" = "用你自己的聲音驅動潛意識進化";
+"welcome.page1.description" = "你的人生應該始終在你的掌控之中";
+"welcome.page2.title" = "運作原理";
+"welcome.page2.subtitle" = "簡單三步";
+"welcome.page2.description" = "• 用你自己的話編寫腳本\n• 用你自己的聲音錄製\n• 反覆聆聽，讓它變成潛意識";
+"welcome.page3.title" = "你就是關鍵";
+"welcome.page3.subtitle" = "你的大腦最愛你自己";
+"welcome.page3.description" = "熟悉感是關鍵：你自己的話語和聲音更容易轉化為你自己的行動";
+"welcome.button.continue" = "繼續";
+"welcome.button.getStarted" = "開始使用";
+"welcome.button.skip" = "跳過";
+
+
 // MARK: - Tags
 "tag.untagged" = "無標籤";
 "tag.edit" = "編輯標籤";

@@ -12,6 +12,21 @@
 "navigation.edit_script" = "Kartı Düzenle";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Echo'ya Hoş Geldiniz";
+"welcome.page1.subtitle" = "Kendi sesinizle yönlendirilen bilinçaltı evrimi";
+"welcome.page1.description" = "Hayatınız her zaman kontrolünüzde olmalı";
+"welcome.page2.title" = "Nasıl Çalışır";
+"welcome.page2.subtitle" = "Üç Basit Adım";
+"welcome.page2.description" = "• Kendi sözlerinizle senaryolar yazın\n• Kendi sesinizle kaydedin\n• Bilinçaltına işlemesi için tekrar tekrar dinleyin";
+"welcome.page3.title" = "ANAHTAR SİZSİNİZ";
+"welcome.page3.subtitle" = "Beyniniz sizi her şeyden çok sever";
+"welcome.page3.description" = "Aşinalık anahtardır: kendi sözleriniz ve kendi sesiniz, kendi eylemlerinize daha kolay dönüşür";
+"welcome.button.continue" = "Devam";
+"welcome.button.getStarted" = "Başla";
+"welcome.button.skip" = "Atla";
+
+
 // MARK: - Tags
 "tag.untagged" = "Etiketsiz";
 "tag.edit" = "Etiketi Düzenle";

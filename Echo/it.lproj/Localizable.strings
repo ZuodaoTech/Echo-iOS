@@ -12,6 +12,21 @@
 "navigation.edit_script" = "Modifica Scheda";
 
 
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Benvenuto in Echo";
+"welcome.page1.subtitle" = "Evoluzione subliminale guidata dalla tua voce";
+"welcome.page1.description" = "La tua vita dovrebbe essere sempre sotto il tuo controllo";
+"welcome.page2.title" = "Come Funziona";
+"welcome.page2.subtitle" = "Tre Semplici Passaggi";
+"welcome.page2.description" = "• Scrivi script con le tue parole\n• Registra con la tua voce\n• Ascolta ripetutamente per renderlo subliminale";
+"welcome.page3.title" = "TU sei la CHIAVE";
+"welcome.page3.subtitle" = "Il tuo cervello ama te stesso più di tutto";
+"welcome.page3.description" = "La familiarità è la chiave: le tue parole e la tua voce si traducono più facilmente nelle tue azioni";
+"welcome.button.continue" = "Continua";
+"welcome.button.getStarted" = "Inizia";
+"welcome.button.skip" = "Salta";
+
+
 // MARK: - Tags
 "tag.untagged" = "Senza tag";
 "tag.edit" = "Modifica Tag";
