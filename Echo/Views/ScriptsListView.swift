@@ -3,13 +3,13 @@ import CoreData
 
 struct ScriptsListView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @ObservedObject private var persistenceController = PersistenceController.shared
     
     // Lazy initialize AudioCoordinator only when needed
     private var audioService: AudioCoordinator {
         AudioCoordinator.shared
     }
     
+    // FetchRequests - only executed when this view is created (Core Data ready)
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \SelftalkScript.createdAt, ascending: false)],
         animation: .default
@@ -50,89 +50,43 @@ struct ScriptsListView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                // Show different content based on data loading state
-                switch persistenceController.dataLoadingState {
-                case .staticSamples:
-                    // Show static samples instantly
-                    StaticSampleCardsView()
-                        .transition(.opacity)
-                    
-                case .transitioningToCore:
-                    // Brief loading state during transition
-                    VStack {
-                        ProgressView()
-                            .scaleEffect(1.2)
-                        Text("Loading your cards...")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .padding(.top, 8)
-                    }
-                    .transition(.opacity)
-                    
-                case .coreDataReady:
-                    // Full Core Data functionality
-                    if scripts.isEmpty {
-                        EmptyStateView()
-                    } else {
-                        List {
-                            ForEach(filteredScripts, id: \.id) { script in
-                                ScriptCard(
-                                    script: script,
-                                    onEdit: {
-                                        audioService.stopPlayback()  // Stop any playing audio
-                                        scriptToEdit = script
-                                    }
-                                )
-                                .listRowSeparator(.hidden)
-                                .listRowBackground(Color.clear)
-                                .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                            }
+                // Simple view - Core Data is guaranteed to be ready
+                if scripts.isEmpty {
+                    EmptyStateView()
+                } else {
+                    List {
+                        ForEach(filteredScripts, id: \.id) { script in
+                            ScriptCard(
+                                script: script,
+                                onEdit: {
+                                    audioService.stopPlayback()  // Stop any playing audio
+                                    scriptToEdit = script
+                                }
+                            )
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                         }
-                        .listStyle(PlainListStyle())
                     }
-                    
-                case .error(let message):
-                    // Error state with retry option
-                    VStack(spacing: 16) {
-                        Image(systemName: "exclamationmark.triangle")
-                            .font(.largeTitle)
-                            .foregroundColor(.orange)
-                        Text("Unable to load cards")
-                            .font(.headline)
-                        Text(message)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                        Button("Show Sample Cards") {
-                            persistenceController.dataLoadingState = .staticSamples
-                        }
-                        .buttonStyle(.bordered)
-                    }
-                    .padding()
+                    .listStyle(PlainListStyle())
                 }
             }
             .navigationTitle("")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    // Only show filter button when Core Data is ready
-                    if persistenceController.dataLoadingState == .coreDataReady {
-                        Button {
-                            showingFilterSheet = true
-                        } label: {
-                            Image(systemName: "line.3.horizontal.decrease.circle")
-                        }
+                    Button {
+                        showingFilterSheet = true
+                    } label: {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
                     }
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    // Only show add button when Core Data is ready
-                    if persistenceController.dataLoadingState == .coreDataReady {
-                        Button {
-                            audioService.stopPlayback()  // Stop any playing audio
-                            showingAddScript = true
-                        } label: {
-                            Image(systemName: "plus")
-                        }
+                    Button {
+                        audioService.stopPlayback()  // Stop any playing audio
+                        showingAddScript = true
+                    } label: {
+                        Image(systemName: "plus")
                     }
                 }
             }
