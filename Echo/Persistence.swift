@@ -203,6 +203,12 @@ class PersistenceController: ObservableObject {
                 Task { @MainActor in
                     await self.importSamplesIfNeeded()
                     
+                    // Run deduplication if iCloud is enabled and it's time to check
+                    if iCloudEnabled && DeduplicationService.shouldCheckForDuplicates() {
+                        await DeduplicationService.deduplicateScripts(in: self.container.viewContext)
+                        DeduplicationService.markDeduplicationComplete()
+                    }
+                    
                     // Final transition to ready state
                     withAnimation(.easeInOut(duration: 0.3)) {
                         self.dataLoadingState = .coreDataReady
@@ -256,30 +262,52 @@ class PersistenceController: ObservableObject {
     private func importSamplesIfNeeded() async {
         let context = container.viewContext
         
-        // Check if we have any existing scripts
-        let request = SelftalkScript.fetchRequest()
-        let existingCount = (try? context.count(for: request)) ?? 0
+        // Wait a moment for iCloud sync to potentially bring in existing data
+        if iCloudSyncEnabled {
+            print("iCloud sync enabled, waiting for potential sync...")
+            try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+        }
         
-        // If we have existing data, skip samples
-        guard existingCount == 0 else {
-            print("Found \(existingCount) existing scripts, skipping sample import")
+        // Check if we already have the sample scripts (by their fixed IDs)
+        let sampleIDs = [
+            StaticSampleCard.smokingSampleID,
+            StaticSampleCard.bedtimeSampleID,
+            StaticSampleCard.mistakesSampleID
+        ]
+        
+        let fetchRequest = SelftalkScript.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id IN %@", sampleIDs)
+        let existingSamples = (try? context.fetch(fetchRequest)) ?? []
+        
+        if existingSamples.count >= 3 {
+            print("Sample scripts already exist (likely from iCloud sync), skipping import")
             return
         }
         
-        print("No existing scripts found, importing samples...")
+        print("Importing missing sample scripts...")
         
         // Get static samples
         let samples = StaticSampleProvider.shared.getSamples()
         
         for sample in samples {
-            // Check if sample already exists (by ID)
+            // Check if this specific sample already exists (by ID or content)
             let fetchRequest = SelftalkScript.fetchRequest()
+            
+            // Check by ID first
             fetchRequest.predicate = NSPredicate(format: "id == %@", sample.id as CVarArg)
             fetchRequest.fetchLimit = 1
             
-            let existing = try? context.fetch(fetchRequest).first
+            var existing = try? context.fetch(fetchRequest).first
+            
+            // If not found by ID, check by content to avoid content duplicates
+            if existing == nil {
+                let normalizedText = sample.scriptText.trimmingCharacters(in: .whitespacesAndNewlines)
+                fetchRequest.predicate = NSPredicate(format: "scriptText CONTAINS[c] %@", normalizedText)
+                existing = try? context.fetch(fetchRequest).first
+            }
+            
             guard existing == nil else {
-                print("Sample \(sample.id) already exists, skipping")
+                print("Sample '\(sample.category)' already exists, skipping")
                 continue
             }
             
