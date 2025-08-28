@@ -31,15 +31,13 @@ struct AppLaunchOptimizer {
     }
     
     private static func performHighPriorityTasks() async {
-        // Initialize audio session when likely to be used
-        if UserDefaults.standard.bool(forKey: "hasRecordedBefore") {
-            _ = AudioCoordinator.shared // Trigger lazy initialization
-        }
+        // Don't initialize AudioCoordinator on launch anymore
+        // It will be initialized lazily when first needed
     }
     
     private static func performNormalPriorityTasks() async {
-        // Pre-warm localization if needed
-        _ = LocalizationHelper.shared
+        // Don't pre-warm localization on launch
+        // It will be initialized when actually needed
         
         // Check for app updates or migrations
         await checkForDataMigration()

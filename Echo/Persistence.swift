@@ -18,55 +18,34 @@ class PersistenceController: ObservableObject {
     @MainActor
     static let preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
+        
+        // Only create sample data in DEBUG builds to avoid overhead
+        #if DEBUG
         let viewContext = result.container.viewContext
         
-        // Create sample data for previews using Tags
+        // Create minimal sample data for previews using Tags
         let breakingBadHabitsTag = Tag.findOrCreateNormalized(
-            name: NSLocalizedString("tag.breaking_bad_habits", comment: ""),
+            name: "Breaking Bad Habits",
             in: viewContext
         )
         
-        let buildingGoodHabitsTag = Tag.findOrCreateNormalized(
-            name: NSLocalizedString("tag.building_good_habits", comment: ""),
-            in: viewContext
-        )
-        
-        let appropriatePositivityTag = Tag.findOrCreateNormalized(
-            name: NSLocalizedString("tag.appropriate_positivity", comment: ""),
-            in: viewContext
-        )
-        
-        // Create sample scripts
+        // Create a single sample script
         let script1 = SelftalkScript.create(
-            scriptText: NSLocalizedString("sample.smoking", comment: ""),
+            scriptText: "I never smoke, because it stinks, and I hate being controlled.",
             repetitions: 3,
             privateMode: true,
             in: viewContext
         )
         script1.addToTags(breakingBadHabitsTag)
         
-        let script2 = SelftalkScript.create(
-            scriptText: NSLocalizedString("sample.bedtime", comment: ""),
-            repetitions: 3,
-            privateMode: true,
-            in: viewContext
-        )
-        script2.addToTags(buildingGoodHabitsTag)
-        
-        let script3 = SelftalkScript.create(
-            scriptText: NSLocalizedString("sample.mistakes", comment: ""),
-            repetitions: 3,
-            privateMode: true,
-            in: viewContext
-        )
-        script3.addToTags(appropriatePositivityTag)
-        
         do {
             try viewContext.save()
         } catch {
             let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            print("Preview data error: \(nsError), \(nsError.userInfo)")
         }
+        #endif
+        
         return result
     }()
 
@@ -116,8 +95,8 @@ class PersistenceController: ObservableObject {
             }
         }
         
-        // Load stores asynchronously to not block app launch
-        Task {
+        // Load stores asynchronously with high priority for first launch
+        Task(priority: .high) {
             await loadStores(inMemory: inMemory, iCloudEnabled: UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? true)
         }
     }
@@ -178,9 +157,12 @@ class PersistenceController: ObservableObject {
         
         container.viewContext.automaticallyMergesChangesFromParent = true
         
-        // Set up CloudKit schema initialization only if CloudKit is enabled and in DEBUG
+        // Defer CloudKit schema initialization to after launch
         #if DEBUG
-        Task { @MainActor in
+        Task(priority: .background) { @MainActor in
+            // Wait a bit after launch to initialize CloudKit schema
+            try? await Task.sleep(nanoseconds: 5_000_000_000) // 5 seconds
+            
             // Wait for stores to be ready
             while !isReady {
                 try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 second

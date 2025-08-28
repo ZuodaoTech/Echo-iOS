@@ -3,7 +3,10 @@ import CoreData
 
 struct ScriptsListView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @StateObject private var audioService = AudioCoordinator.shared
+    // Lazy initialize AudioCoordinator only when needed
+    private var audioService: AudioCoordinator {
+        AudioCoordinator.shared
+    }
     
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \SelftalkScript.createdAt, ascending: false)],
