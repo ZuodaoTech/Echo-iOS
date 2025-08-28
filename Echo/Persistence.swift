@@ -55,12 +55,12 @@ class PersistenceController: ObservableObject {
 
     let container: NSPersistentCloudKitContainer
     
-    // Track iCloud sync status (default to true)
+    // Track iCloud sync status (default to false for fresh installs)
     @Published var iCloudSyncEnabled: Bool = {
         if UserDefaults.standard.object(forKey: "iCloudSyncEnabled") == nil {
-            // First time - set default to true
-            UserDefaults.standard.set(true, forKey: "iCloudSyncEnabled")
-            return true
+            // First time - set default to false (disabled)
+            UserDefaults.standard.set(false, forKey: "iCloudSyncEnabled")
+            return false
         }
         return UserDefaults.standard.bool(forKey: "iCloudSyncEnabled")
     }()
@@ -74,8 +74,8 @@ class PersistenceController: ObservableObject {
                 firstDescription.url = URL(fileURLWithPath: "/dev/null")
             }
         } else {
-            // Configure for CloudKit if enabled (default to true)
-            let iCloudEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? true
+            // Configure for CloudKit if enabled (default to false for fresh installs)
+            let iCloudEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? false
             
             container.persistentStoreDescriptions.forEach { storeDescription in
                 // Always enable history tracking to avoid read-only mode
@@ -101,7 +101,7 @@ class PersistenceController: ObservableObject {
         
         // Load stores asynchronously with high priority for first launch
         Task(priority: .high) {
-            await loadStores(inMemory: inMemory, iCloudEnabled: UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? true)
+            await loadStores(inMemory: inMemory, iCloudEnabled: UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? false)
         }
     }
     
