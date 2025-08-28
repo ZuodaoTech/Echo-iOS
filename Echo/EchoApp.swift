@@ -23,16 +23,21 @@ struct EchoApp: App {
             // Remove unnecessary synchronize() call - it's automatic now
         }
         
-        // Defer non-critical initialization to background
-        Task.detached {
+        // Defer non-critical initialization to background with lower priority
+        Task.detached(priority: .background) {
             // Set default language preferences on first launch
             if UserDefaults.standard.object(forKey: "defaultTranscriptionLanguage") == nil {
-                let defaultLanguage = LocalizationHelper.shared.getDefaultTranscriptionLanguage()
-                UserDefaults.standard.set(defaultLanguage, forKey: "defaultTranscriptionLanguage")
+                // Don't initialize LocalizationHelper until actually needed
+                await Task {
+                    let defaultLanguage = LocalizationHelper.shared.getDefaultTranscriptionLanguage()
+                    UserDefaults.standard.set(defaultLanguage, forKey: "defaultTranscriptionLanguage")
+                }.value
             }
             
-            // Configure audio session after launch
-            await EchoApp.configureAudioSessionAsync()
+            // Configure audio session after launch (only if user has recorded before)
+            if UserDefaults.standard.bool(forKey: "hasRecordedBefore") {
+                await EchoApp.configureAudioSessionAsync()
+            }
         }
         
         // Configure notification center (lightweight)

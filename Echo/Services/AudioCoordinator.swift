@@ -40,54 +40,50 @@ final class AudioCoordinator: ObservableObject {
         sessionManager.currentState.rawValue
     }
     
-    // MARK: - Services
+    // MARK: - Services (Lazy initialization for performance)
     
-    private let fileManager: AudioFileManager
-    private let sessionManager: AudioSessionManager
-    private let recordingService: RecordingService
-    private let playbackService: PlaybackService
-    private let processingService: AudioProcessingService
+    private lazy var fileManager: AudioFileManager = AudioFileManager()
+    private lazy var sessionManager: AudioSessionManager = AudioSessionManager()
+    private lazy var recordingService: RecordingService = RecordingService(
+        fileManager: self.fileManager,
+        sessionManager: self.sessionManager
+    )
+    private lazy var playbackService: PlaybackService = PlaybackService(
+        fileManager: self.fileManager,
+        sessionManager: self.sessionManager
+    )
+    private lazy var processingService: AudioProcessingService = AudioProcessingService(
+        fileManager: self.fileManager
+    )
     
     // MARK: - Private Properties
     
     private var currentRecordingScript: SelftalkScript?
     private var cancellables = Set<AnyCancellable>()
+    private var hasInitialized = false
     
     // MARK: - Initialization
     
     private init() {
-        // Initialize only essential services
-        self.fileManager = AudioFileManager()
-        self.sessionManager = AudioSessionManager()
-        
-        // Lazy initialize recording and playback services
-        self.recordingService = RecordingService(
-            fileManager: fileManager,
-            sessionManager: sessionManager
-        )
-        self.playbackService = PlaybackService(
-            fileManager: fileManager,
-            sessionManager: sessionManager
-        )
-        self.processingService = AudioProcessingService(
-            fileManager: fileManager
-        )
-        
-        // Defer property binding to first use
-        Task {
-            await MainActor.run {
-                self.bindPublishedProperties()
-            }
-        }
+        // Services are now lazy-initialized, nothing to do here
+        // Property binding is also deferred to first actual use
+    }
+    
+    private func ensureInitialized() {
+        guard !hasInitialized else { return }
+        hasInitialized = true
+        bindPublishedProperties()
     }
     
     // MARK: - Recording Methods
     
     func requestMicrophonePermission(completion: @escaping (Bool) -> Void) {
+        ensureInitialized()
         sessionManager.requestMicrophonePermission(completion: completion)
     }
     
     func startRecording(for script: SelftalkScript) throws {
+        ensureInitialized()
         // Stop any playback first and ensure clean state
         if isPlaying || isPaused || isInPlaybackSession {
             stopPlayback()
@@ -194,6 +190,7 @@ final class AudioCoordinator: ObservableObject {
     // MARK: - Playback Methods
     
     func play(script: SelftalkScript) throws {
+        ensureInitialized()
         print("\n🎤 AudioCoordinator.play() called for script \(script.id)")
         
         // DEFENSIVE: Check script validity
