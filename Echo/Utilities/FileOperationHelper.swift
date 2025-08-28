@@ -158,8 +158,8 @@ final class FileOperationHelper {
             }
         }
         
-        // All retries failed
-        throw AudioServiceError.directoryCreationFailed
+        // All retries failed - throw the last error or a generic error
+        throw lastError ?? AudioServiceError.directoryCreationFailed
     }
     
     /// Validate audio file integrity
