@@ -112,7 +112,8 @@ struct ScriptsListView: View {
             // Check first launch status before any setup
             let isFirstLaunch = !UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
             
-            setupInitialData()
+            // Note: Sample data is now created in PersistenceController.importSamplesIfNeeded()
+            // No need to call setupInitialData() anymore
             setupInitialFilter(isFirstLaunch: isFirstLaunch)
         }
         .onChange(of: selectedTags) { newTags in
@@ -135,70 +136,6 @@ struct ScriptsListView: View {
             }
         }
         // First launch - default to All (empty set)
-    }
-    
-    private func setupInitialData() {
-        // Check if this is first launch
-        let hasLaunchedKey = "hasLaunchedBefore"
-        let hasLaunched = UserDefaults.standard.bool(forKey: hasLaunchedKey)
-        
-        if !hasLaunched {
-            // First launch - create sample scripts with tags
-            createSampleScripts()
-            UserDefaults.standard.set(true, forKey: hasLaunchedKey)
-        }
-    }
-    
-    private func createSampleScripts() {
-        do {
-            // Create tags for the sample scripts using localized names
-            // Use findOrCreateNormalized to avoid duplicates
-            let breakingBadHabitsTag = Tag.findOrCreateNormalized(
-                name: NSLocalizedString("tag.breaking_bad_habits", comment: ""),
-                in: viewContext
-            )
-            
-            let buildingGoodHabitsTag = Tag.findOrCreateNormalized(
-                name: NSLocalizedString("tag.building_good_habits", comment: ""),
-                in: viewContext
-            )
-            
-            let appropriatePositivityTag = Tag.findOrCreateNormalized(
-                name: NSLocalizedString("tag.appropriate_positivity", comment: ""),
-                in: viewContext
-            )
-            
-            // Sample 1: Breaking Bad Habits
-            let script1 = SelftalkScript.create(
-                scriptText: NSLocalizedString("sample.smoking", comment: ""),
-                repetitions: 3,
-                privateMode: true,
-                in: viewContext
-            )
-            script1.addToTags(breakingBadHabitsTag)
-            
-            // Sample 2: Building Good Habits
-            let script2 = SelftalkScript.create(
-                scriptText: NSLocalizedString("sample.bedtime", comment: ""),
-                repetitions: 3,
-                privateMode: true,
-                in: viewContext
-            )
-            script2.addToTags(buildingGoodHabitsTag)
-            
-            // Sample 3: Appropriate Positivity
-            let script3 = SelftalkScript.create(
-                scriptText: NSLocalizedString("sample.mistakes", comment: ""),
-                repetitions: 3,
-                privateMode: true,
-                in: viewContext
-            )
-            script3.addToTags(appropriatePositivityTag)
-            
-            try viewContext.save()
-        } catch {
-            print("Error creating sample scripts: \(error)")
-        }
     }
     
     private func cleanupAfterDeletion(_ scriptId: UUID) {
