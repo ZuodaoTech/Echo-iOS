@@ -273,7 +273,6 @@
 
 // MARK: - Consolidated Me Page Settings
 "settings.language" = "भाषा";
-"settings.default_language" = "प्रतिलेखन भाषा";
 "settings.card_preferences" = "कार्ड प्राथमिकताएं";
 "settings.character_limit" = "वर्ण सीमा";
 "settings.limit_behavior" = "सीमा पार व्यवहार";
@@ -286,9 +285,6 @@
 "settings.tags" = "टैग";
 "settings.auto_cleanup_tags" = "अनुपयोगी टैग स्वतः साफ करें";
 "settings.tags.footer" = "नियंत्रित करें कि आपके संग्रह में टैग कैसे प्रबंधित होते हैं";
-"settings.version" = "संस्करण";
-"settings.rate_github" = "GitHub पर रेट करें";
-"settings.contact_support" = "सहायता से संपर्क करें";
 "settings.notification_selection.message" = "सूचनाएं सक्षम रखने के लिए %d तक कार्ड चुनें";
 "settings.notification_selection.count" = "%d में से %d कार्ड चयनित";
 "settings.select_notification_cards" = "सूचना कार्ड चुनें";

@@ -273,7 +273,6 @@
 
 // MARK: - Consolidated Me Page Settings
 "settings.language" = "Language";
-"settings.default_language" = "Transcription Language";
 "settings.card_preferences" = "Card Preferences";
 "settings.character_limit" = "Character Limit";
 "settings.limit_behavior" = "Over Limit Behavior";

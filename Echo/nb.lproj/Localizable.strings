@@ -13,15 +13,11 @@
 
 
 // MARK: - Tags
-"tag.now" = "Nå";
 "tag.untagged" = "Uten merkelapp";
 "tag.edit" = "Rediger Merkelapp";
 "tag.delete.confirm.title" = "Slett Merkelapp";
 "tag.delete.confirm.message" = "Denne merkelappen brukes av %d skript. Sletting vil fjerne merkelappen fra disse skriptene.";
 "tag.delete.confirm.empty" = "Denne merkelappen brukes ikke av noen skript. Er du sikker på at du vil slette den?";
-"tag.max_now_cards" = "Maks 'Nå' Kort";
-"tag.now_limit_reached" = "Nå Merkelapp Grense";
-"tag.now_limit_message" = "Du har nådd maksimalt antall 'Nå' kort (%d). Velg et kort for å fjerne 'Nå' merkelappen:";
 "tag.auto_cleanup" = "Auto-fjerning Ubrukte Merkelapper";
 "tag.select" = "Velg Merkelapper";
 "tag.new" = "Ny Merkelapp";
