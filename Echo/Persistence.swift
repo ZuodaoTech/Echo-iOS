@@ -8,12 +8,16 @@
 import CoreData
 import CloudKit
 import Combine
+import SwiftUI
 
 class PersistenceController: ObservableObject {
     static let shared = PersistenceController()
     
     // Track if Core Data is ready
     @Published var isReady = false
+    
+    // Track the current data loading state for UI
+    @Published var dataLoadingState: DataLoadingState = .staticSamples
     
     @MainActor
     static let preview: PersistenceController = {
@@ -102,7 +106,7 @@ class PersistenceController: ObservableObject {
     }
     
     private func loadStores(inMemory: Bool, iCloudEnabled: Bool) async {
-        await withCheckedContinuation { continuation in
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 print("Core Data error: \(error), \(error.userInfo)")
@@ -145,11 +149,24 @@ class PersistenceController: ObservableObject {
                 print("CloudKit enabled: \(storeDescription.cloudKitContainerOptions != nil)")
             }
             
-            // Mark as ready and continue
+            // Mark as ready and check if we need to import samples
             DispatchQueue.main.async {
                 self.isReady = true
                 // Track Core Data ready time
                 AppLaunchOptimizer.LaunchMetrics.coreDataReady = Date()
+                
+                // Transition to Core Data state
+                self.dataLoadingState = .transitioningToCore
+                
+                // Check if we need to import samples
+                Task { @MainActor in
+                    await self.importSamplesIfNeeded()
+                    
+                    // Final transition to ready state
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        self.dataLoadingState = .coreDataReady
+                    }
+                }
             }
             continuation.resume()
         })
@@ -178,5 +195,70 @@ class PersistenceController: ObservableObject {
             }
         }
         #endif
+    }
+    
+    // MARK: - Sample Data Import
+    
+    /// Import sample cards if this is a fresh install
+    @MainActor
+    private func importSamplesIfNeeded() async {
+        let context = container.viewContext
+        
+        // Check if we have any existing scripts
+        let request = SelftalkScript.fetchRequest()
+        let existingCount = (try? context.count(for: request)) ?? 0
+        
+        // If we have existing data, skip samples
+        guard existingCount == 0 else {
+            print("Found \(existingCount) existing scripts, skipping sample import")
+            return
+        }
+        
+        print("No existing scripts found, importing samples...")
+        
+        // Get static samples
+        let samples = StaticSampleProvider.shared.getSamples()
+        
+        for sample in samples {
+            // Check if sample already exists (by ID)
+            let fetchRequest = SelftalkScript.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", sample.id as CVarArg)
+            fetchRequest.fetchLimit = 1
+            
+            let existing = try? context.fetch(fetchRequest).first
+            guard existing == nil else {
+                print("Sample \(sample.id) already exists, skipping")
+                continue
+            }
+            
+            // Find or create the category/tag
+            let tag = Tag.findOrCreateNormalized(
+                name: sample.category,
+                in: context
+            )
+            
+            // Create the script
+            let script = SelftalkScript.create(
+                scriptText: sample.scriptText,
+                repetitions: Int16(sample.repetitions),
+                privateMode: true,
+                in: context
+            )
+            
+            // Use the fixed sample ID for deduplication
+            script.id = sample.id
+            script.intervalSeconds = sample.intervalSeconds
+            script.addToTags(tag)
+            
+            print("Created sample script: \(sample.category)")
+        }
+        
+        // Save the context
+        do {
+            try context.save()
+            print("Successfully imported \(samples.count) sample scripts")
+        } catch {
+            print("Failed to save sample scripts: \(error)")
+        }
     }
 }

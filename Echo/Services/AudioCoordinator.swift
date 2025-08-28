@@ -112,6 +112,9 @@ final class AudioCoordinator: ObservableObject {
             return 
         }
         
+        // Mark that user has recorded before (for optimizations)
+        UserDefaults.standard.set(true, forKey: "hasRecordedBefore")
+        
         // Show processing state
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
