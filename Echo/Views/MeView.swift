@@ -380,7 +380,7 @@ struct MeView: View {
                                     .font(.system(size: 20))
                                     .foregroundColor(.red)
                                     .frame(width: 25)
-                                Text("Clear iCloud Data")
+                                Text(NSLocalizedString("dev.clear_icloud", comment: "Clear iCloud Data"))
                                     .foregroundColor(.red)
                                 Spacer()
                             }
@@ -395,7 +395,7 @@ struct MeView: View {
                                     .font(.system(size: 20))
                                     .foregroundColor(.red)
                                     .frame(width: 25)
-                                Text("Clear All Local Data")
+                                Text(NSLocalizedString("dev.clear_local", comment: "Clear All Local Data"))
                                     .foregroundColor(.red)
                                 Spacer()
                             }
@@ -410,15 +410,15 @@ struct MeView: View {
                                     .font(.system(size: 20))
                                     .foregroundColor(.orange)
                                     .frame(width: 25)
-                                Text("Remove Duplicate Tags & Cards")
+                                Text(NSLocalizedString("dev.remove_duplicates", comment: "Remove Duplicate Tags & Cards"))
                                     .foregroundColor(.orange)
                                 Spacer()
                             }
                         }
                     } header: {
-                        Text("⚠️ Destructive Actions")
+                        Text(NSLocalizedString("dev.destructive_actions", comment: "Destructive Actions"))
                     } footer: {
-                        Text("These actions are destructive and cannot be undone.")
+                        Text(NSLocalizedString("dev.destructive_warning", comment: "These actions are destructive and cannot be undone."))
                             .font(.caption)
                     }
                     
@@ -450,32 +450,32 @@ struct MeView: View {
             } message: {
                 Text(NSLocalizedString("settings.private_mode.alert.message", comment: ""))
             }
-            .alert("Clear iCloud Data?", isPresented: $showingClearICloudAlert) {
-                Button("Cancel", role: .cancel) { }
-                Button("Clear", role: .destructive) {
+            .alert(NSLocalizedString("dev.clear_icloud.confirm", comment: "Clear iCloud Data?"), isPresented: $showingClearICloudAlert) {
+                Button(NSLocalizedString("action.cancel", comment: "Cancel"), role: .cancel) { }
+                Button(NSLocalizedString("dev.clear", comment: "Clear"), role: .destructive) {
                     clearICloudData()
                 }
             } message: {
-                Text("This will remove all Echo data from iCloud. Local data will remain intact.")
+                Text(NSLocalizedString("dev.clear_icloud.message", comment: "This will remove all Echo data from iCloud. Local data will remain intact."))
             }
-            .alert("Clear All Local Data?", isPresented: $showingClearLocalDataAlert) {
-                Button("Cancel", role: .cancel) { }
-                Button("Delete Everything", role: .destructive) {
+            .alert(NSLocalizedString("dev.clear_local.confirm", comment: "Clear All Local Data?"), isPresented: $showingClearLocalDataAlert) {
+                Button(NSLocalizedString("action.cancel", comment: "Cancel"), role: .cancel) { }
+                Button(NSLocalizedString("dev.clear_local.button", comment: "Delete Everything"), role: .destructive) {
                     clearAllLocalData()
                 }
             } message: {
-                Text("This will delete ALL scripts, recordings, and tags. This cannot be undone!")
+                Text(NSLocalizedString("dev.clear_local.message", comment: "This will delete ALL scripts, recordings, and tags. This cannot be undone!"))
             }
-            .alert("Remove Duplicates?", isPresented: $showingRemoveDuplicatesAlert) {
-                Button("Cancel", role: .cancel) { }
-                Button("Remove", role: .destructive) {
+            .alert(NSLocalizedString("dev.remove_duplicates.confirm", comment: "Remove Duplicates?"), isPresented: $showingRemoveDuplicatesAlert) {
+                Button(NSLocalizedString("action.cancel", comment: "Cancel"), role: .cancel) { }
+                Button(NSLocalizedString("dev.remove_duplicates.button", comment: "Remove"), role: .destructive) {
                     removeDuplicates()
                 }
             } message: {
-                Text("This will merge duplicate tags and remove duplicate scripts with the same content.")
+                Text(NSLocalizedString("dev.remove_duplicates.message", comment: "This will merge duplicate tags and remove duplicate scripts with the same content."))
             }
-            .alert("Operation Complete", isPresented: $showingDevActionResult) {
-                Button("OK", role: .cancel) { }
+            .alert(NSLocalizedString("dev.operation_complete", comment: "Operation Complete"), isPresented: $showingDevActionResult) {
+                Button(NSLocalizedString("action.ok", comment: "OK"), role: .cancel) { }
             } message: {
                 Text(devActionMessage)
             }

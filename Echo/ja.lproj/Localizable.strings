@@ -325,3 +325,7 @@
 "alert.add" = "追加";
 "alert.remove" = "削除";
 "alert.ok" = "OK";
+
+// MARK: - Search & Input Placeholders
+"tag.search.placeholder" = "タグを検索...";
+"tag.name.placeholder" = "タグ名";

@@ -325,3 +325,7 @@
 "alert.add" = "जोड़ें";
 "alert.remove" = "हटाएं";
 "alert.ok" = "ठीक";
+
+// MARK: - Search & Input Placeholders
+"tag.search.placeholder" = "टैग खोजें...";
+"tag.name.placeholder" = "टैग का नाम";

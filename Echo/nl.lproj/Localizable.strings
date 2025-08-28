@@ -263,3 +263,76 @@
 // MARK: - Additional Alerts
 "alert.new_tag" = "New Tag";
 "alert.remove" = "Remove";
+
+// MARK: - Processing Messages
+"processing.stopping_recording" = "Stopping recording...";
+"processing.trimming_silence" = "Trimming silence...";
+"processing.transcribing" = "Transcribing audio...";
+
+// MARK: - Errors
+"error.private_mode" = "Please connect earphones to play audio";
+"error.recording_failed" = "Failed to record audio";
+"error.playback_failed" = "Failed to play audio";
+"error.no_recording" = "No recording available";
+"error.permission_denied" = "Microphone permission denied";
+"error.invalid_script" = "Script is no longer available";
+"error.file_not_found" = "File not found: %@";
+"error.insufficient_disk_space" = "Not enough storage space. Please free up some space and try again.";
+"error.file_permission_denied" = "Permission denied. Unable to access the file.";
+"error.file_corrupted" = "File is corrupted: %@";
+"error.directory_creation_failed" = "Failed to create recordings directory";
+"error.file_copy_failed" = "Failed to copy file: %@";
+"error.file_move_failed" = "Failed to move file: %@";
+"error.file_delete_failed" = "Failed to delete file: %@";
+"error.invalid_state" = "Invalid audio state: %@";
+
+// MARK: - Error Suggestions
+"error.suggestion.free_space" = "Delete some recordings or other files to free up space.";
+"error.suggestion.restart_app" = "Try restarting the app.";
+"error.suggestion.rerecord" = "Try recording again.";
+
+// MARK: - Validation Messages
+"validation.title" = "Validation Error";
+"validation.empty_script" = "Please enter a script before saving";
+"validation.script_too_short" = "Script must be at least 5 characters";
+"validation.script_too_long" = "Script exceeds maximum length of 500 characters";
+"validation.exceeds_character_limit" = "Script exceeds the character limit of %d";
+"validation.audio_too_short" = "Recording must be at least 1 second";
+"validation.audio_too_long" = "Recording exceeds maximum duration of 60 seconds";
+"validation.audio_processing" = "Audio is still processing, please wait";
+"validation.recording_in_progress" = "Recording is in progress, please stop it first";
+
+// MARK: - Recording Tips
+"recording.time_warning" = "%d seconds remaining";
+"recording.max_duration_reached" = "Maximum duration reached";
+
+// MARK: - Filter
+"filter.title" = "Filter by Tags";
+"filter.tags_section" = "Tags";
+
+// MARK: - Consolidated Me Page Settings
+"settings.language" = "Language";
+"settings.card_preferences" = "Card Preferences";
+"settings.character_limit" = "Character Limit";
+"settings.limit_behavior" = "Over Limit Behavior";
+"settings.limit_behavior.warn" = "Warn";
+"settings.limit_behavior.strict" = "Strict";
+"settings.notifications" = "Notifications";
+"settings.max_notification_cards" = "Max Notification Cards";
+"settings.notification_cards_count" = "%d cards have notifications enabled";
+"settings.notification_cards.footer" = "Limit how many cards can send notifications simultaneously";
+"settings.tags" = "Tags";
+"settings.auto_cleanup_tags" = "Auto-cleanup Unused Tags";
+"settings.tags.footer" = "Control how tags are managed in your collection";
+"settings.notification_selection.message" = "Select up to %d cards to keep notifications enabled";
+"settings.notification_selection.count" = "%d of %d cards selected";
+"settings.select_notification_cards" = "Select Notification Cards";
+
+// MARK: - Search & Input Placeholders
+"tag.search.placeholder" = "Zoek tags...";
+"tag.name.placeholder" = "Tag naam";
+
+// MARK: - Alerts
+"alert.cancel" = "Cancel";
+"alert.add" = "Add";
+"alert.ok" = "OK";
