@@ -228,18 +228,22 @@ final class AudioCoordinator: ObservableObject {
     }
     
     func pausePlayback() {
+        ensureInitialized()
         playbackService.pausePlayback()
     }
     
     func resumePlayback() {
+        ensureInitialized()
         playbackService.resumePlayback()
     }
     
     func stopPlayback() {
+        ensureInitialized()
         playbackService.stopPlayback()
     }
     
     func setPlaybackSpeed(_ speed: Float) {
+        ensureInitialized()
         playbackService.setPlaybackSpeed(speed)
     }
     
