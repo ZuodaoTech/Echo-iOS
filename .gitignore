@@ -114,3 +114,6 @@ Temporary Items
 .apdisk
 
 .aider*
+
+# Claude Code settings
+.claude/*
