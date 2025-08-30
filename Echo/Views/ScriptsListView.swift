@@ -138,7 +138,9 @@ struct ScriptsListView: View {
     
     private func cleanupAfterDeletion(_ scriptId: UUID) {
         // Clear any lingering references to prevent crashes
-        print("  🧹 Cleaning up references for deleted script...")
+        #if DEBUG
+        SecureLogger.debug("Cleaning up references for deleted script")
+        #endif
         
         // Clear from audio service if it was playing
         if audioService.currentPlayingScriptId == scriptId {
@@ -150,11 +152,15 @@ struct ScriptsListView: View {
     }
     
     private func deleteScript(withId scriptId: UUID) {
-        print("🗑️ ScriptsListView: Starting safe deletion for script ID: \(scriptId)")
+        #if DEBUG
+        SecureLogger.debug("ScriptsListView: Starting safe deletion for script")
+        #endif
         
         // CRITICAL STEP 1: Remove from UI immediately by marking as deleting
         // This causes filteredScripts to exclude it, destroying the ScriptCard
-        print("  🎯 Removing script from UI first...")
+        #if DEBUG
+        SecureLogger.debug("Removing script from UI first")
+        #endif
         deletingScriptIds.insert(scriptId)
         
         // Clear the edit sheet reference if it's this script
@@ -164,7 +170,9 @@ struct ScriptsListView: View {
         
         // STEP 2: Wait for UI to update and destroy the ScriptCard
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            print("  ⏳ UI updated, proceeding with deletion...")
+            #if DEBUG
+            SecureLogger.debug("UI updated, proceeding with deletion")
+            #endif
             
             // Fetch the script fresh from Core Data
             let fetchRequest: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
@@ -174,7 +182,7 @@ struct ScriptsListView: View {
             do {
                 let scripts = try self.viewContext.fetch(fetchRequest)
                 guard let script = scripts.first else {
-                    print("  ❌ Script not found with ID: \(scriptId)")
+                    SecureLogger.warning("Script not found for deletion")
                     // Remove from deleting set since it doesn't exist
                     self.deletingScriptIds.remove(scriptId)
                     return
@@ -185,11 +193,15 @@ struct ScriptsListView: View {
                 let hasRecording = script.hasRecording
                 let notificationEnabled = script.notificationEnabled
                 
-                print("  📝 Deleting script from database: \(scriptText)...")
+                #if DEBUG
+                SecureLogger.debug("Deleting script from database")
+                #endif
                 
                 // Step 3: Stop any active audio operations
                 if self.audioService.currentPlayingScriptId == scriptId {
-                    print("  ⏸️ Stopping playback...")
+                    #if DEBUG
+                    SecureLogger.debug("Stopping playback")
+                    #endif
                     self.audioService.stopPlayback()
                 }
                 
@@ -197,24 +209,32 @@ struct ScriptsListView: View {
                 
                 // 4a. Cancel notifications if enabled
                 if notificationEnabled {
-                    print("  🔔 Cancelling notifications...")
+                    #if DEBUG
+                    SecureLogger.debug("Cancelling notifications")
+                    #endif
                     NotificationManager.shared.cancelNotifications(for: script)
                 }
                 
                 // 4b. Delete audio files if they exist
                 if hasRecording {
-                    print("  🎵 Deleting audio files...")
+                    #if DEBUG
+                    SecureLogger.debug("Deleting audio files")
+                    #endif
                     self.audioService.deleteRecording(for: script)
                 }
                 
                 // Step 5: Delete from Core Data
-                print("  💾 Deleting from database...")
+                #if DEBUG
+                SecureLogger.debug("Deleting from database")
+                #endif
                 self.viewContext.delete(script)
                 
                 // Step 6: Save the context
                 try self.viewContext.save()
                 
-                print("  ✅ Successfully deleted script: \(scriptText)")
+                #if DEBUG
+                SecureLogger.debug("Successfully deleted script")
+                #endif
                 
                 // Step 7: Complete cleanup of all references
                 self.cleanupAfterDeletion(scriptId)
@@ -223,7 +243,7 @@ struct ScriptsListView: View {
                 self.deletingScriptIds.remove(scriptId)
                 
             } catch {
-                print("  ❌ Failed to delete script: \(error.localizedDescription)")
+                SecureLogger.error("Failed to delete script: \(error.localizedDescription)")
                 // Remove from deleting set to show the script again
                 self.deletingScriptIds.remove(scriptId)
                 // TODO: Show error alert to user

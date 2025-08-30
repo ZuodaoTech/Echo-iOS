@@ -91,7 +91,7 @@ extension Tag {
         request.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
         
         guard let allTags = try? context.fetch(request) else {
-            print("Failed to fetch tags for cleanup")
+            SecureLogger.error("Failed to fetch tags for cleanup")
             return
         }
         
@@ -110,7 +110,9 @@ extension Tag {
         
         // Merge duplicates
         for (normalizedName, tags) in tagsByNormalizedName where tags.count > 1 {
-            print("Found \(tags.count) duplicate tags for '\(normalizedName)'")
+            #if DEBUG
+            SecureLogger.debug("Found \(tags.count) duplicate tags for normalized name")
+            #endif
             
             // Keep the first (oldest) tag
             let keepTag = tags[0]
@@ -119,7 +121,9 @@ extension Tag {
             for duplicateTag in tags.dropFirst() {
                 if let scripts = duplicateTag.scripts {
                     keepTag.addToScripts(scripts)
-                    print("  Merging scripts from '\(duplicateTag.name)' to '\(keepTag.name)'")
+                    #if DEBUG
+                    SecureLogger.debug("Merging scripts between tags")
+                    #endif
                 }
                 context.delete(duplicateTag)
                 mergeCount += 1
@@ -127,15 +131,21 @@ extension Tag {
         }
         
         if mergeCount > 0 {
-            print("Cleaned up \(mergeCount) duplicate tags")
+            #if DEBUG
+            SecureLogger.debug("Cleaned up \(mergeCount) duplicate tags")
+            #endif
             do {
                 try context.save()
-                print("Successfully saved tag cleanup")
+                #if DEBUG
+                SecureLogger.debug("Successfully saved tag cleanup")
+                #endif
             } catch {
-                print("Failed to save tag cleanup: \(error)")
+                SecureLogger.error("Failed to save tag cleanup: \(error.localizedDescription)")
             }
         } else {
-            print("No duplicate tags found")
+            #if DEBUG
+            SecureLogger.debug("No duplicate tags found")
+            #endif
         }
     }
     

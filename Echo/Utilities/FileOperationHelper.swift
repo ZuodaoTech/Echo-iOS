@@ -30,7 +30,7 @@ final class FileOperationHelper {
             }
         } catch {
             // If we can't check, continue anyway
-            print("Warning: Could not check disk space: \(error)")
+            SecureLogger.warning("Could not check disk space: \(error.localizedDescription)")
         }
     }
     

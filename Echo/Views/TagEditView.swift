@@ -82,7 +82,7 @@ struct TagEditView: View {
             try viewContext.save()
             dismiss()
         } catch {
-            print("Failed to save tag changes: \(error)")
+            SecureLogger.error("Failed to save tag changes: \(error.localizedDescription)")
         }
     }
     
@@ -104,7 +104,7 @@ struct TagEditView: View {
             do {
                 try viewContext.save()
             } catch {
-                print("Failed to delete tag: \(error)")
+                SecureLogger.error("Failed to delete tag: \(error.localizedDescription)")
             }
         }
     }

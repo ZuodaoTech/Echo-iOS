@@ -501,12 +501,16 @@ struct MeView: View {
         }
         
         // Log swipe detection
-        print("🎮 Swipe detected: \(direction)")
+        #if DEBUG
+        SecureLogger.debug("Swipe detected: \(direction)")
+        #endif
         
         // Check if it's been more than 2 seconds since last swipe (reset sequence)
         if Date().timeIntervalSince(lastSwipeTime) > 2 {
             if !swipeSequence.isEmpty {
-                print("⏰ Swipe sequence timeout - resetting")
+                #if DEBUG
+                SecureLogger.debug("Swipe sequence timeout - resetting")
+                #endif
             }
             swipeSequence = []
         }
@@ -524,7 +528,9 @@ struct MeView: View {
             case .right: return "→"
             }
         }.joined(separator: " ")
-        print("📝 Current sequence: \(sequenceString)")
+        #if DEBUG
+        SecureLogger.debug("Current sequence: \(sequenceString)")
+        #endif
         
         // Check for the Konami code: left, left, right
         if swipeSequence.count >= 3 {
@@ -533,9 +539,13 @@ struct MeView: View {
                 // Toggle dev section with haptic feedback
                 showDevSection.toggle()
                 if showDevSection {
-                    print("🎉 KONAMI CODE DETECTED! Developer mode activated")
+                    #if DEBUG
+                    SecureLogger.debug("KONAMI CODE DETECTED! Developer mode activated")
+                    #endif
                 } else {
-                    print("🔒 KONAMI CODE DETECTED! Developer mode deactivated")
+                    #if DEBUG
+                    SecureLogger.debug("KONAMI CODE DETECTED! Developer mode deactivated")
+                    #endif
                 }
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 swipeSequence = [] // Reset sequence

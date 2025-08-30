@@ -154,7 +154,7 @@ struct NotificationSettingsView: View {
             try viewContext.save()
             cardsToDisable.removeAll()
         } catch {
-            print("Error disabling notifications: \(error)")
+            SecureLogger.error("Error disabling notifications: \(error.localizedDescription)")
         }
     }
     
@@ -167,7 +167,7 @@ struct NotificationSettingsView: View {
                     notificationPermissionRequested = true
                 }
             } catch {
-                print("Error requesting notification permission: \(error)")
+                SecureLogger.error("Error requesting notification permission: \(error.localizedDescription)")
             }
         }
     }

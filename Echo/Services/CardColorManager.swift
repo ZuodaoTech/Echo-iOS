@@ -23,7 +23,9 @@ class CardColorManager {
     ]
     
     private init() {
-        print("🎨 CardColorManager initialized - colors will be randomized for this session")
+        #if DEBUG
+        SecureLogger.debug("CardColorManager initialized")
+        #endif
     }
     
     /// Get a color for a specific script ID
@@ -37,7 +39,9 @@ class CardColorManager {
         let randomColor = selectRandomColor(avoiding: Array(colorMap.values.suffix(3)))
         colorMap[scriptId] = randomColor
         
-        print("🎨 Assigned color for script \(scriptId): \(String(describing: randomColor))")
+        #if DEBUG
+        SecureLogger.debug("Assigned color for script")
+        #endif
         return randomColor
     }
     
@@ -59,7 +63,9 @@ class CardColorManager {
     
     /// Refresh all colors (useful for manual shuffle)
     func refreshColors() {
-        print("🔄 Refreshing all card colors")
+        #if DEBUG
+        SecureLogger.debug("Refreshing all card colors")
+        #endif
         colorMap.removeAll()
     }
     

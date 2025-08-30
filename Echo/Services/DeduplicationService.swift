@@ -13,7 +13,9 @@ class DeduplicationService {
     /// Check and remove duplicate scripts based on content
     /// This handles cases where iCloud sync creates duplicates
     static func deduplicateScripts(in context: NSManagedObjectContext) async {
-        print("🔍 Starting deduplication check...")
+        #if DEBUG
+        SecureLogger.debug("Starting deduplication check")
+        #endif
         
         // Fetch all scripts
         let request = SelftalkScript.fetchRequest()
@@ -36,7 +38,9 @@ class DeduplicationService {
             // Process each group that has duplicates
             var duplicatesRemoved = 0
             for (key, scripts) in scriptGroups where scripts.count > 1 {
-                print("  Found \(scripts.count) scripts with identical content: \(key.prefix(50))...")
+                #if DEBUG
+                SecureLogger.debug("Found \(scripts.count) scripts with identical content")
+                #endif
                 
                 // Keep the oldest script (first created) or the one with audio
                 let scriptsToKeep = selectScriptsToKeep(from: scripts)
@@ -49,7 +53,9 @@ class DeduplicationService {
                 
                 // Delete duplicates
                 for script in scriptsToRemove {
-                    print("    ❌ Removing duplicate: ID \(script.id)")
+                    #if DEBUG
+                    SecureLogger.debug("Removing duplicate script")
+                    #endif
                     context.delete(script)
                     duplicatesRemoved += 1
                 }
@@ -57,13 +63,17 @@ class DeduplicationService {
             
             if duplicatesRemoved > 0 {
                 try context.save()
-                print("✅ Deduplication complete: removed \(duplicatesRemoved) duplicates")
+                #if DEBUG
+                SecureLogger.debug("Deduplication complete: removed \(duplicatesRemoved) duplicates")
+                #endif
             } else {
-                print("✅ No duplicates found")
+                #if DEBUG
+                SecureLogger.debug("No duplicates found")
+                #endif
             }
             
         } catch {
-            print("❌ Deduplication failed: \(error)")
+            SecureLogger.error("Deduplication failed: \(error.localizedDescription)")
         }
     }
     

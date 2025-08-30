@@ -43,12 +43,12 @@ class NotificationManager: NSObject, ObservableObject {
                 self.permissionCheckTask = nil
                 
                 if !granted {
-                    print("NotificationManager: Permission denied by user")
+                    SecureLogger.warning("Notification permission denied by user")
                 }
                 
                 return granted
             } catch {
-                print("NotificationManager: Permission request error: \(error)")
+                SecureLogger.error("Notification permission request error: \(error.localizedDescription)")
                 self.permissionCheckTask = nil
                 return false
             }
@@ -138,7 +138,7 @@ class NotificationManager: NSObject, ObservableObject {
         
         // Only schedule if we have permission
         guard hasPermission else {
-            print("NotificationManager: Cannot schedule notifications - permission denied")
+            SecureLogger.warning("Cannot schedule notifications - permission denied")
             return
         }
         
@@ -162,7 +162,11 @@ class NotificationManager: NSObject, ObservableObject {
                 
                 let content = UNMutableNotificationContent()
                 content.title = NSLocalizedString("notifications.reminder_title", comment: "Time for Self-Talk")
-                content.body = script.scriptText // Show full script text
+                
+                // Truncate script text to 50 characters for privacy
+                let truncatedText = String(script.scriptText.prefix(50))
+                let previewText = script.scriptText.count > 50 ? truncatedText + "..." : truncatedText
+                content.body = previewText
                 content.sound = .default
                 content.categoryIdentifier = "SELFTALK_REMINDER"
                 content.userInfo = [
@@ -186,7 +190,7 @@ class NotificationManager: NSObject, ObservableObject {
                 do {
                     try await UNUserNotificationCenter.current().add(request)
                 } catch {
-                    print("Failed to schedule notification: \(error)")
+                    SecureLogger.error("Failed to schedule notification: \(error.localizedDescription)")
                 }
             }
         }
@@ -205,7 +209,9 @@ class NotificationManager: NSObject, ObservableObject {
         
         if !identifiersToRemove.isEmpty {
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiersToRemove)
-            print("Cancelled \(identifiersToRemove.count) notifications for script")
+            #if DEBUG
+            SecureLogger.debug("Cancelled \(identifiersToRemove.count) notifications for script")
+            #endif
         }
     }
     
@@ -330,13 +336,15 @@ class NotificationManager: NSObject, ObservableObject {
                     script.notificationEnabled = false
                     script.notificationEnabledAt = nil
                     cancelNotifications(for: script)
-                    print("Disabled notifications for script due to limit: \(script.scriptText.prefix(20))...")
+                    #if DEBUG
+                    SecureLogger.debug("Disabled notifications for script due to limit")
+                    #endif
                 }
                 
                 try context.save()
             }
         } catch {
-            print("Failed to enforce notification limit: \(error)")
+            SecureLogger.error("Failed to enforce notification limit: \(error.localizedDescription)")
         }
     }
 }
@@ -362,7 +370,9 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             playScriptAudio(scriptId: scriptId)
         case "MARK_DONE":
             // Just dismiss, could track completion if needed
-            print("User marked script as done: \(scriptId)")
+            #if DEBUG
+            SecureLogger.debug("User marked script as done")
+            #endif
         case UNNotificationDefaultActionIdentifier:
             // User tapped on notification itself - open the script
             openScript(scriptId: scriptId)
@@ -392,7 +402,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
                 }
             }
         } catch {
-            print("Failed to fetch or play script audio: \(error)")
+            SecureLogger.error("Failed to fetch or play script audio: \(error.localizedDescription)")
         }
     }
     

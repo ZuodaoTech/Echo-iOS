@@ -21,6 +21,7 @@ enum AudioServiceError: LocalizedError {
     case fileMoveFailed(String)
     case fileDeleteFailed(String)
     case invalidState(String)
+    case invalidPath(String)
     
     var errorDescription: String? {
         switch self {
@@ -55,6 +56,8 @@ enum AudioServiceError: LocalizedError {
             return String(format: NSLocalizedString("error.file_delete_failed", comment: "Failed to delete file: %@"), reason)
         case .invalidState(let message):
             return String(format: NSLocalizedString("error.invalid_state", comment: "Invalid audio state: %@"), message)
+        case .invalidPath(let message):
+            return String(format: NSLocalizedString("error.invalid_path", comment: "Invalid file path: %@"), message)
         }
     }
     

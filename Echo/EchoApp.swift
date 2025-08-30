@@ -59,7 +59,9 @@ struct EchoApp: App {
                 queue: .main
             ) { notification in
                 if let enabled = notification.userInfo?["enabled"] as? Bool {
-                    print("iCloud sync toggled: \(enabled)")
+                    #if DEBUG
+                    SecureLogger.debug("iCloud sync toggled: \(enabled)")
+                    #endif
                 }
             }
         }
@@ -72,7 +74,7 @@ struct EchoApp: App {
                                         mode: .default,
                                         options: [.defaultToSpeaker, .allowBluetooth])
         } catch {
-            print("Audio session configuration failed: \(error)")
+            SecureLogger.error("Audio session configuration failed: \(error.localizedDescription)")
         }
     }
     

@@ -193,7 +193,7 @@ struct CardSettingsView: View {
             try viewContext.save()
             cardsToDisable.removeAll()
         } catch {
-            print("Error disabling notifications: \(error)")
+            SecureLogger.error("Error disabling notifications: \(error.localizedDescription)")
         }
     }
 }

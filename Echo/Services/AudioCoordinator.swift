@@ -152,32 +152,42 @@ final class AudioCoordinator: ObservableObject {
                 // After processing, transcribe the ORIGINAL audio with selected language
                 // The original audio maintains AAC format that Speech Recognition can read
                 let languageCode = script.transcriptionLanguage ?? "en-US"
-                print("Starting transcription with language: \(languageCode)")
+                #if DEBUG
+                SecureLogger.debug("Starting transcription with language")
+                #endif
                 self.processingService.transcribeRecording(for: scriptId, languageCode: languageCode) { transcription in
                     DispatchQueue.main.async {
                         // Get actual duration from file after processing
                         if let fileDuration = self.fileManager.getAudioDuration(for: scriptId) {
                             script.audioDuration = fileDuration
-                            print("Recording processed - Duration: \(fileDuration)s, Success: \(success)")
+                            #if DEBUG
+                            SecureLogger.debug("Recording processed - Duration: \(String(format: "%.2f", fileDuration))s, Success: \(success)")
+                            #endif
                         } else {
                             // Fallback to recorder's duration
                             script.audioDuration = duration
-                            print("Recording completed - Using recorder duration: \(duration)s")
+                            #if DEBUG
+                            SecureLogger.debug("Recording completed - Using recorder duration: \(String(format: "%.2f", duration))s")
+                            #endif
                         }
                         
                         // Save transcription if available
                         if let transcription = transcription {
                             script.transcribedText = transcription
-                            print("Transcription saved: \(transcription.prefix(50))...")
+                            #if DEBUG
+                            SecureLogger.debug("Transcription saved successfully")
+                            #endif
                             // Force Core Data save
                             do {
                                 try script.managedObjectContext?.save()
-                                print("Core Data saved with transcript")
+                                #if DEBUG
+                                SecureLogger.debug("Core Data saved with transcript")
+                                #endif
                             } catch {
-                                print("Failed to save transcript to Core Data: \(error)")
+                                SecureLogger.error("Failed to save transcript to Core Data: \(error.localizedDescription)")
                             }
                         } else {
-                            print("No transcription received")
+                            SecureLogger.warning("No transcription received")
                         }
                         
                         DispatchQueue.main.async { [weak self] in
@@ -198,19 +208,23 @@ final class AudioCoordinator: ObservableObject {
     
     func play(script: SelftalkScript) throws {
         ensureInitialized()
-        print("\n🎤 AudioCoordinator.play() called for script \(script.id)")
+        #if DEBUG
+        SecureLogger.debug("AudioCoordinator.play() called for script")
+        #endif
         
         // DEFENSIVE: Check script validity
         guard !script.isDeleted,
               !script.isFault,
               script.managedObjectContext != nil else {
-            print("   ❌ Invalid script (deleted/fault/no context)")
+            SecureLogger.error("Invalid script (deleted/fault/no context)")
             throw AudioServiceError.invalidScript
         }
         
         // Stop any recording first
         if isRecording {
-            print("   🔴 Stopping active recording first")
+            #if DEBUG
+            SecureLogger.debug("Stopping active recording first")
+            #endif
             stopRecording()
         }
         

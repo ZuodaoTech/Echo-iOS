@@ -226,81 +226,102 @@ struct ScriptCard: View {
     }
     
     private func handleTap() {
-        print("\n👆 TAP: ScriptCard tapped for script \(script.id)")
-        print("   Script text: \(script.scriptText.prefix(30))...")
+        #if DEBUG
+        SecureLogger.debug("ScriptCard tapped for script")
+        #endif
         
         // DEFENSIVE: Check script validity first
         guard isScriptValid else {
-            print("   ⛔ Script invalid or deleted")
+            #if DEBUG
+            SecureLogger.debug("Script invalid or deleted")
+            #endif
             return
         }
         
         // Check if audio is still being processed
         if isProcessing || audioService.isProcessingRecording || audioService.processingScriptIds.contains(script.id) {
-            print("   ⏳ Audio is still being processed")
-            print("   isProcessing: \(isProcessing)")
-            print("   audioService.isProcessingRecording: \(audioService.isProcessingRecording)")
-            print("   Script in processing list: \(audioService.processingScriptIds.contains(script.id))")
+            #if DEBUG
+            SecureLogger.debug("Audio is still being processed")
+            SecureLogger.debug("isProcessing: \(isProcessing)")
+            SecureLogger.debug("audioService.isProcessingRecording: \(audioService.isProcessingRecording)")
+            #endif
             // Could show a toast or visual indicator here
             return
         }
         
         // Check if recording exists
         guard script.hasRecording else {
-            print("   📦 No recording found for this script")
+            #if DEBUG
+            SecureLogger.debug("No recording found for this script")
+            #endif
             showingNoRecordingAlert = true
             return 
         }
         
         // Double-check the audio file actually exists on disk
         if !audioService.hasRecording(for: script) {
-            print("   ⚠️ Script thinks it has recording but file doesn't exist!")
-            print("   audioFilePath: \(script.audioFilePath ?? "nil")")
-            print("   audioDuration: \(script.audioDuration)")
+            SecureLogger.warning("Script metadata inconsistent - file doesn't exist")
+            #if DEBUG
+            SecureLogger.debug("audioDuration: \(script.audioDuration)")
+            #endif
             showingNoRecordingAlert = true
             return
         }
         
         // Check if this script is in a playback session (including intervals)
         let isThisScriptInSession = audioService.isInPlaybackSession && audioService.currentPlayingScriptId == script.id
-        print("   Is in session: \(isThisScriptInSession)")
-        print("   Audio session state: \(audioService.audioSessionState)")
+        #if DEBUG
+        SecureLogger.debug("Is in session: \(isThisScriptInSession)")
+        SecureLogger.debug("Audio session state: \(audioService.audioSessionState)")
+        #endif
         
         if isThisScriptInSession {
             // We're in a playback session for this script
             if audioService.isPaused {
-                print("   ▶️ Resuming paused playback")
+                #if DEBUG
+                SecureLogger.debug("Resuming paused playback")
+                #endif
                 audioService.resumePlayback()
             } else {
-                print("   ⏸ Pausing playback")
+                #if DEBUG
+                SecureLogger.debug("Pausing playback")
+                #endif
                 audioService.pausePlayback()
             }
         } else {
             // Start new playback
-            print("   🎵 Starting new playback")
+            #if DEBUG
+            SecureLogger.debug("Starting new playback")
+            #endif
             do {
                 try audioService.play(script: script)
-                print("   ✅ Playback started successfully")
+                #if DEBUG
+                SecureLogger.debug("Playback started successfully")
+                #endif
             } catch AudioServiceError.privateModeActive {
                 showingPrivateAlert = true
             } catch {
-                print("⚠️ ScriptCard: Initial playback failed: \(error)")
+                SecureLogger.warning("Initial playback failed: \(error.localizedDescription)")
                 
                 // For simulator error -50 or state issues, retry with a brief delay
                 let shouldRetry = (error as NSError).code == -50 || 
                                  error.localizedDescription.contains("Preparing to Play")
                 
                 if shouldRetry {
-                    print("   Retrying playback after delay...")
+                    #if DEBUG
+                    SecureLogger.debug("Retrying playback after delay")
+                    #endif
                     // Give audio session more time to reset on real device
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                         do {
                             try audioService.play(script: script)
-                            print("✅ ScriptCard: Retry successful")
+                            #if DEBUG
+                            SecureLogger.debug("Retry successful")
+                            #endif
                         } catch AudioServiceError.privateModeActive {
                             showingPrivateAlert = true
                         } catch {
-                            print("🔴 ScriptCard: Retry failed: \(error)")
+                            SecureLogger.error("Retry failed: \(error.localizedDescription)")
                             // Only show error for non-simulator issues
                             if (error as NSError).code != -50 {
                                 errorMessage = "Unable to play audio. Please try again."

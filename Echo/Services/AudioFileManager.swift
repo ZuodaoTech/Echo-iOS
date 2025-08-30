@@ -8,6 +8,15 @@ final class AudioFileManager {
     
     private let recordingsDirectory: URL
     
+    // MARK: - Security Constants
+    
+    private enum SecurityConstants {
+        static let maxPathLength = 255
+        static let allowedFileExtensions: Set<String> = ["m4a", "wav", "aac"]
+        static let forbiddenPathComponents: Set<String> = ["..", "~", "/", "\\", ":", "*", "?", "\"", "<", ">", "|"]
+        static let maxFilenameLength = 100
+    }
+    
     // MARK: - Initialization
     
     init() {
@@ -16,20 +25,102 @@ final class AudioFileManager {
         do {
             try createRecordingsDirectory()
         } catch {
-            print("AudioFileManager: Failed to create recordings directory: \(error)")
+            SecureLogger.error("AudioFileManager: Failed to create recordings directory: \(error.localizedDescription)")
+        }
+    }
+    
+    // MARK: - Path Validation
+    
+    /// Validates a file path for security vulnerabilities
+    private func validatePath(_ path: String) throws {
+        // Check path length
+        guard path.count <= SecurityConstants.maxPathLength else {
+            throw AudioServiceError.invalidPath("Path too long")
+        }
+        
+        // Check for forbidden components
+        for forbidden in SecurityConstants.forbiddenPathComponents {
+            if path.contains(forbidden) {
+                throw AudioServiceError.invalidPath("Path contains forbidden characters: \(forbidden)")
+            }
+        }
+        
+        // Check for path traversal attempts
+        let normalizedPath = (path as NSString).standardizingPath
+        if normalizedPath.contains("..") || normalizedPath.hasPrefix("/") {
+            throw AudioServiceError.invalidPath("Path traversal detected")
+        }
+    }
+    
+    /// Validates a UUID and returns sanitized filename
+    private func validateAndSanitizeFilename(for scriptId: UUID, extension fileExtension: String) throws -> String {
+        let uuidString = scriptId.uuidString
+        
+        // Validate UUID format (additional safety)
+        let uuidRegex = try NSRegularExpression(pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$")
+        let range = NSRange(location: 0, length: uuidString.count)
+        guard uuidRegex.firstMatch(in: uuidString, options: [], range: range) != nil else {
+            throw AudioServiceError.invalidPath("Invalid UUID format")
+        }
+        
+        // Validate file extension
+        guard SecurityConstants.allowedFileExtensions.contains(fileExtension.lowercased()) else {
+            throw AudioServiceError.invalidPath("Unsupported file extension: \(fileExtension)")
+        }
+        
+        let filename = "\(uuidString).\(fileExtension)"
+        
+        // Final length check
+        guard filename.count <= SecurityConstants.maxFilenameLength else {
+            throw AudioServiceError.invalidPath("Filename too long")
+        }
+        
+        return filename
+    }
+    
+    /// Validates that a URL is within the allowed recordings directory
+    private func validateURLIsInRecordingsDirectory(_ url: URL) throws {
+        let recordingsPath = recordingsDirectory.standardizedFileURL.path
+        let filePath = url.standardizedFileURL.path
+        
+        guard filePath.hasPrefix(recordingsPath + "/") || filePath == recordingsPath else {
+            throw AudioServiceError.invalidPath("File path outside allowed directory")
         }
     }
     
     // MARK: - Public Methods
     
-    /// Get the audio file URL for a script
+    /// Get the audio file URL for a script with path validation
     func audioURL(for scriptId: UUID) -> URL {
-        recordingsDirectory.appendingPathComponent("\(scriptId.uuidString).m4a")
+        do {
+            let filename = try validateAndSanitizeFilename(for: scriptId, extension: "m4a")
+            let url = recordingsDirectory.appendingPathComponent(filename)
+            try validateURLIsInRecordingsDirectory(url)
+            return url
+        } catch {
+            // Log security issue and return safe fallback
+            SecureLogger.security("Path validation failed for audio file: \(error.localizedDescription)")
+            // Return a safe, sanitized path as fallback
+            let safeFilename = "audio_\(abs(scriptId.hashValue)).m4a"
+            return recordingsDirectory.appendingPathComponent(safeFilename)
+        }
     }
     
-    /// Get the URL for the original unprocessed recording (for transcription)
+    /// Get the URL for the original unprocessed recording (for transcription) with path validation
     func originalAudioURL(for scriptId: UUID) -> URL {
-        recordingsDirectory.appendingPathComponent("\(scriptId.uuidString)_original.m4a")
+        do {
+            let filename = try validateAndSanitizeFilename(for: scriptId, extension: "m4a")
+            let originalFilename = filename.replacingOccurrences(of: ".m4a", with: "_original.m4a")
+            let url = recordingsDirectory.appendingPathComponent(originalFilename)
+            try validateURLIsInRecordingsDirectory(url)
+            return url
+        } catch {
+            // Log security issue and return safe fallback
+            SecureLogger.security("Path validation failed for original audio file: \(error.localizedDescription)")
+            // Return a safe, sanitized path as fallback
+            let safeFilename = "audio_\(abs(scriptId.hashValue))_original.m4a"
+            return recordingsDirectory.appendingPathComponent(safeFilename)
+        }
     }
     
     /// Check if audio file exists for a script
@@ -42,7 +133,7 @@ final class AudioFileManager {
             if let attributes = try? FileManager.default.attributesOfItem(atPath: url.path),
                let fileSize = attributes[.size] as? Int64 {
                 if fileSize == 0 {
-                    print("⚠️ AudioFileManager: Audio file exists but has zero size: \(url.lastPathComponent)")
+                    SecureLogger.warning("AudioFileManager: Audio file exists but has zero size")
                     return false
                 }
             }
@@ -65,7 +156,7 @@ final class AudioFileManager {
         do {
             try FileOperationHelper.deleteFile(at: url)
         } catch {
-            print("AudioFileManager: Warning - Failed to delete processed audio: \(error)")
+            SecureLogger.warning("AudioFileManager: Failed to delete processed audio: \(error.localizedDescription)")
             // Continue to try deleting original file even if processed file fails
         }
         
@@ -74,7 +165,7 @@ final class AudioFileManager {
         do {
             try FileOperationHelper.deleteFile(at: originalUrl)
         } catch {
-            print("AudioFileManager: Warning - Failed to delete original audio: \(error)")
+            SecureLogger.warning("AudioFileManager: Failed to delete original audio: \(error.localizedDescription)")
             // Don't throw here as the files might already be deleted
         }
     }
@@ -86,7 +177,7 @@ final class AudioFileManager {
         do {
             try await FileOperationHelper.deleteFileAsync(at: url)
         } catch {
-            print("AudioFileManager: Warning - Failed to delete processed audio: \(error)")
+            SecureLogger.warning("AudioFileManager: Failed to delete processed audio: \(error.localizedDescription)")
         }
         
         // Delete the original audio file
@@ -94,7 +185,7 @@ final class AudioFileManager {
         do {
             try await FileOperationHelper.deleteFileAsync(at: originalUrl)
         } catch {
-            print("AudioFileManager: Warning - Failed to delete original audio: \(error)")
+            SecureLogger.warning("AudioFileManager: Failed to delete original audio: \(error.localizedDescription)")
         }
     }
     
@@ -119,7 +210,7 @@ final class AudioFileManager {
                 return duration
             }
         } catch {
-            print("Failed to get duration with AVAudioPlayer: \(error)")
+            SecureLogger.debug("Failed to get duration with AVAudioPlayer: \(error.localizedDescription)")
         }
         
         // If both methods fail, return nil
@@ -146,7 +237,7 @@ final class AudioFileManager {
             )
             return urls.filter { $0.pathExtension == "m4a" }
         } catch {
-            print("AudioFileManager: Failed to get recording URLs: \(error)")
+            SecureLogger.error("AudioFileManager: Failed to get recording URLs: \(error.localizedDescription)")
             return []
         }
     }

@@ -149,7 +149,9 @@ final class AudioSessionManager: ObservableObject {
                 }
             }
             
-            print("🎤 Recording mode: Maximum noise reduction (measurement mode)")
+            #if DEBUG
+            SecureLogger.debug("Recording mode: Maximum noise reduction")
+            #endif
             // Only activate if not already active
             if !audioSession.isOtherAudioPlaying {
                 try audioSession.setActive(true)
@@ -158,7 +160,9 @@ final class AudioSessionManager: ObservableObject {
             // On simulator, some configurations may fail - that's OK
             #if targetEnvironment(simulator)
             // Silently ignore on simulator but still log it
-            print("⚠️ Audio configuration warning (error -50 is normal on simulator): \(error)")
+            #if DEBUG
+            SecureLogger.debug("Audio configuration warning (error -50 is normal on simulator): \(error.localizedDescription)")
+            #endif
             #else
             // On real device, transition to error state and rethrow
             transitionTo(.error)
@@ -334,7 +338,7 @@ final class AudioSessionManager: ObservableObject {
             
             try audioSession.setActive(true)
         } catch {
-            print("Failed to setup audio session: \(error)")
+            SecureLogger.error("Failed to setup audio session: \(error.localizedDescription)")
         }
     }
     
@@ -398,15 +402,21 @@ final class AudioSessionManager: ObservableObject {
         // Check if transition is valid
         guard oldState.canTransition(to: newState) else {
             logger.warning("🔴 Invalid state transition from \(oldState.rawValue) to \(newState.rawValue)")
-            print("🔴 BLOCKED: Invalid transition \(oldState.rawValue) → \(newState.rawValue)")
+            #if DEBUG
+            SecureLogger.debug("BLOCKED: Invalid transition \(oldState.rawValue) → \(newState.rawValue)")
+            #endif
             // Print stack trace to see where this is coming from
-            print("   Called from: \(Thread.callStackSymbols[1...3].joined(separator: "\n   "))")
+            #if DEBUG
+            SecureLogger.debug("Called from: \(Thread.callStackSymbols[1...3].joined(separator: "\n   "))")
+            #endif
             return false
         }
         
         // Perform the transition
         logger.info("🟢 State transition: \(oldState.rawValue) → \(newState.rawValue)")
-        print("🟢 STATE: \(oldState.rawValue) → \(newState.rawValue)")
+        #if DEBUG
+        SecureLogger.debug("STATE: \(oldState.rawValue) → \(newState.rawValue)")
+        #endif
         
         DispatchQueue.main.async { [weak self] in
             self?.currentState = newState

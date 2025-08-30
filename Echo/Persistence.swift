@@ -18,7 +18,12 @@ class PersistenceController: ObservableObject {
         if _shared == nil {
             _shared = PersistenceController()
         }
-        return _shared!
+        guard let shared = _shared else {
+            SecureLogger.error("Critical: PersistenceController shared instance is nil after initialization")
+            _shared = PersistenceController()
+            return _shared!
+        }
+        return shared
     }
     
     // Check if shared exists without creating it
@@ -68,7 +73,7 @@ class PersistenceController: ObservableObject {
             try viewContext.save()
         } catch {
             let nsError = error as NSError
-            print("Preview data error: \(nsError), \(nsError.userInfo)")
+            SecureLogger.error("Preview data error: \(nsError.localizedDescription)")
         }
         #endif
         
@@ -102,7 +107,11 @@ class PersistenceController: ObservableObject {
     init(inMemory: Bool = false) {
         // Prevent multiple Core Data stacks
         if !inMemory && Self.hasInitialized {
-            fatalError("PersistenceController should only be initialized once. Use .shared instance.")
+            SecureLogger.error("Critical: Attempting to initialize PersistenceController multiple times. Using existing shared instance.")
+            // Instead of crashing, return early or use assertion in debug builds
+            #if DEBUG
+            assertionFailure("PersistenceController should only be initialized once. Use .shared instance.")
+            #endif
         }
         if !inMemory {
             Self.hasInitialized = true
@@ -131,9 +140,16 @@ class PersistenceController: ObservableObject {
                                           forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
                 
                 if iCloudEnabled {
+                    // Get CloudKit container identifier from Info.plist for security
+                    guard let containerID = Bundle.main.object(forInfoDictionaryKey: "CloudKitContainerIdentifier") as? String else {
+                        SecureLogger.error("CloudKit: Container identifier not found in Info.plist, disabling CloudKit")
+                        storeDescription.cloudKitContainerOptions = nil
+                        return
+                    }
+                    
                     // Set CloudKit container options
                     storeDescription.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(
-                        containerIdentifier: "iCloud.xiaolai.Echo"
+                        containerIdentifier: containerID
                     )
                     
                     // Allow public database for sharing (future feature)
@@ -150,11 +166,11 @@ class PersistenceController: ObservableObject {
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                print("Core Data error: \(error), \(error.userInfo)")
+                SecureLogger.error("Core Data error: \(error.localizedDescription)")
                 
                 // If CloudKit fails or store fails to load, try local storage only
                 if error.domain == CKErrorDomain || error.code == 134060 || error.code == 134110 {
-                    print("CloudKit/Store error detected, attempting fallback to local storage")
+                    SecureLogger.warning("CloudKit/Store error detected, attempting fallback to local storage")
                     
                     // Don't automatically disable iCloud sync preference - let user control it
                     // The error is due to Core Data model constraints, not user preference
@@ -173,21 +189,31 @@ class PersistenceController: ObservableObject {
                     // Try loading stores again without CloudKit
                     self.container.loadPersistentStores { (retryDescription, retryError) in
                         if let retryError = retryError as NSError? {
-                            // If still failing, this is a critical error
-                            fatalError("Unable to load persistent stores: \(retryError), \(retryError.userInfo)")
+                            // If still failing, log critical error but don't crash
+                            SecureLogger.error("Critical: Unable to load persistent stores after retry: \(retryError.localizedDescription)")
+                            
+                            #if DEBUG
+                            assertionFailure("Unable to load persistent stores: \(retryError), \(retryError.userInfo)")
+                            #endif
+                            
+                            // Mark as ready with error state so app can still function
+                            DispatchQueue.main.async {
+                                self.isReady = true
+                                self.dataLoadingState = .coreDataReady
+                            }
                         } else {
-                            print("Successfully loaded local persistent store after CloudKit failure")
+                            SecureLogger.info("Successfully loaded local persistent store after CloudKit failure")
                         }
                     }
                 } else {
                     // For other errors, still try to continue but log the issue
-                    print("Core Data warning: Store loaded with error, app may have limited functionality")
+                    SecureLogger.warning("Core Data warning: Store loaded with error, app may have limited functionality")
                 }
             } else {
-                print("Core Data: Successfully loaded persistent store")
-                print("Store type: \(storeDescription.type)")
-                print("Store URL: \(storeDescription.url?.absoluteString ?? "nil")")
-                print("CloudKit enabled: \(storeDescription.cloudKitContainerOptions != nil)")
+                SecureLogger.info("Core Data: Successfully loaded persistent store")
+                SecureLogger.debug("Store type: \(storeDescription.type)")
+                SecureLogger.debug("Store URL configured")
+                SecureLogger.debug("CloudKit enabled: \(storeDescription.cloudKitContainerOptions != nil)")
             }
             
             // Mark as ready and check if we need to import samples
@@ -221,9 +247,9 @@ class PersistenceController: ObservableObject {
                             do {
                                 try await Task.sleep(nanoseconds: 2_000_000_000) // Small delay to ensure stability
                                 try self.container.initializeCloudKitSchema()
-                                print("CloudKit schema initialized successfully (after Core Data ready)")
+                                SecureLogger.debug("CloudKit schema initialized successfully (after Core Data ready)")
                             } catch {
-                                print("CloudKit schema initialization error: \(error)")
+                                SecureLogger.error("CloudKit schema initialization error: \(error.localizedDescription)")
                             }
                         }
                     }
@@ -248,7 +274,7 @@ class PersistenceController: ObservableObject {
         guard !isReady else { return } // Already loaded
         
         Task(priority: .background) {
-            print("Core Data: Starting load after view rendered...")
+            SecureLogger.debug("Core Data: Starting load after view rendered...")
             let inMemory = container.persistentStoreDescriptions.first?.url == URL(fileURLWithPath: "/dev/null")
             let iCloudEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? false
             await loadStores(inMemory: inMemory, iCloudEnabled: iCloudEnabled)
@@ -264,7 +290,7 @@ class PersistenceController: ObservableObject {
         
         // Wait a moment for iCloud sync to potentially bring in existing data
         if iCloudSyncEnabled {
-            print("iCloud sync enabled, waiting for potential sync...")
+            SecureLogger.debug("iCloud sync enabled, waiting for potential sync...")
             try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
         }
         
@@ -280,11 +306,11 @@ class PersistenceController: ObservableObject {
         let existingSamples = (try? context.fetch(fetchRequest)) ?? []
         
         if existingSamples.count >= 3 {
-            print("Sample scripts already exist (likely from iCloud sync), skipping import")
+            SecureLogger.debug("Sample scripts already exist (likely from iCloud sync), skipping import")
             return
         }
         
-        print("Importing missing sample scripts...")
+        SecureLogger.debug("Importing missing sample scripts...")
         
         // Get static samples
         let samples = StaticSampleProvider.shared.getSamples()
@@ -307,7 +333,7 @@ class PersistenceController: ObservableObject {
             }
             
             guard existing == nil else {
-                print("Sample '\(sample.category)' already exists, skipping")
+                SecureLogger.debug("Sample category already exists, skipping")
                 continue
             }
             
@@ -330,18 +356,18 @@ class PersistenceController: ObservableObject {
             script.intervalSeconds = sample.intervalSeconds
             script.addToTags(tag)
             
-            print("Created sample script: \(sample.category)")
+            SecureLogger.debug("Created sample script category")
         }
         
         // Save the context
         do {
             try context.save()
-            print("Successfully imported \(samples.count) sample scripts")
+            SecureLogger.info("Successfully imported \(samples.count) sample scripts")
             
             // Mark that we've launched before (to coordinate with other first-launch checks)
             UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
         } catch {
-            print("Failed to save sample scripts: \(error)")
+            SecureLogger.error("Failed to save sample scripts: \(error.localizedDescription)")
         }
     }
 }

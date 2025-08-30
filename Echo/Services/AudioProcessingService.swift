@@ -66,16 +66,20 @@ final class AudioProcessingService {
         // Auto-trim is always enabled now
         // Check if we have trim timestamps from real-time voice detection
         if let timestamps = trimTimestamps {
-            print("AudioProcessing: Using real-time voice detection timestamps")
-            print("AudioProcessing: Will trim from \(timestamps.start)s to \(timestamps.end)s")
+            #if DEBUG
+            SecureLogger.debug("Using real-time voice detection timestamps")
+            SecureLogger.debug("Will trim from \(timestamps.start)s to \(timestamps.end)s")
+            #endif
             
             // Use the timestamp-based trimming (much simpler!)
             trimAudioWithTimestamps(scriptId: scriptId, startTime: timestamps.start, endTime: timestamps.end, completion: completion)
             return
         }
         
-        print("AudioProcessing: Starting buffer-based silence trimming (fallback method)")
-        print("AudioProcessing: Using optimized settings for noise filtering")
+        #if DEBUG
+        SecureLogger.debug("Starting buffer-based silence trimming (fallback method)")
+        SecureLogger.debug("Using optimized settings for noise filtering")
+        #endif
         
         let audioURL = fileManager.audioURL(for: scriptId)
         let originalURL = fileManager.originalAudioURL(for: scriptId)
@@ -93,13 +97,15 @@ final class AudioProcessingService {
                     try FileManager.default.removeItem(at: originalURL)
                 }
                 try FileManager.default.copyItem(at: audioURL, to: originalURL)
-                print("AudioProcessing: Saved original copy for transcription")
+                #if DEBUG
+                SecureLogger.debug("Saved original copy for transcription")
+                #endif
             } catch {
-                print("AudioProcessing: Failed to save original copy: \(error)")
+                SecureLogger.warning("Failed to save original copy: \(error.localizedDescription)")
             }
             
             guard FileManager.default.fileExists(atPath: audioURL.path) else {
-                print("AudioProcessing: File doesn't exist")
+                SecureLogger.error("Audio file doesn't exist for processing")
                 DispatchQueue.main.async {
                     completion(false)
                 }
@@ -115,7 +121,9 @@ final class AudioProcessingService {
                 // Don't process very short recordings
                 let duration = Double(frameCount) / format.sampleRate
                 if duration < Constants.minimumAudioDuration {
-                    print("AudioProcessing: Recording too short to process (\(duration)s)")
+                    #if DEBUG
+                    SecureLogger.debug("Recording too short to process (\(String(format: "%.2f", duration))s)")
+                    #endif
                     DispatchQueue.main.async {
                         completion(true)
                     }
@@ -124,7 +132,7 @@ final class AudioProcessingService {
                 
                 // Read audio data
                 guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount) else {
-                    print("AudioProcessing: Failed to create buffer")
+                    SecureLogger.error("Failed to create audio buffer for processing")
                     DispatchQueue.main.async {
                         completion(false)
                     }
@@ -137,12 +145,16 @@ final class AudioProcessingService {
                 // Find trim points
                 let (startFrame, endFrame) = self.findTrimPoints(in: buffer)
                 
-                print("AudioProcessing: Trim points found - Start: \(startFrame)/\(frameCount), End: \(endFrame)/\(frameCount)")
-                print("AudioProcessing: Will trim \(Double(startFrame)/format.sampleRate)s from start, \(Double(Int64(frameCount) - endFrame)/format.sampleRate)s from end")
+                #if DEBUG
+                SecureLogger.debug("Trim points found - Start: \(startFrame)/\(frameCount), End: \(endFrame)/\(frameCount)")
+                SecureLogger.debug("Will trim \(String(format: "%.2f", Double(startFrame)/format.sampleRate))s from start, \(String(format: "%.2f", Double(Int64(frameCount) - endFrame)/format.sampleRate))s from end")
+                #endif
                 
                 // Check if trimming is needed
                 if startFrame == 0 && endFrame == frameCount {
-                    print("AudioProcessing: No trimming needed (audio starts and ends with sound)")
+                    #if DEBUG
+                    SecureLogger.debug("No trimming needed (audio starts and ends with sound)")
+                    #endif
                     DispatchQueue.main.async {
                         completion(true)
                     }
@@ -152,7 +164,7 @@ final class AudioProcessingService {
                 // Create trimmed audio
                 let trimmedLength = endFrame - startFrame
                 guard trimmedLength > 0 else {
-                    print("AudioProcessing: Audio is all silence")
+                    SecureLogger.warning("Audio is all silence - no speech detected")
                     DispatchQueue.main.async {
                         completion(false)
                     }
@@ -169,14 +181,16 @@ final class AudioProcessingService {
                 )
                 
                 let trimmedDuration = Double(trimmedLength) / format.sampleRate
-                print("AudioProcessing: Trimmed from \(String(format: "%.2f", duration))s to \(String(format: "%.2f", trimmedDuration))s")
+                #if DEBUG
+                SecureLogger.debug("Trimmed from \(String(format: "%.2f", duration))s to \(String(format: "%.2f", trimmedDuration))s")
+                #endif
                 
                 DispatchQueue.main.async {
                     completion(success)
                 }
                 
             } catch {
-                print("AudioProcessing error: \(error)")
+                SecureLogger.error("Audio processing error: \(error.localizedDescription)")
                 DispatchQueue.main.async {
                     completion(false)
                 }
@@ -194,14 +208,14 @@ final class AudioProcessingService {
                     if status == .authorized {
                         self.transcribeRecording(for: scriptId, languageCode: languageCode, completion: completion)
                     } else {
-                        print("Speech recognition not authorized")
+                        SecureLogger.warning("Speech recognition not authorized")
                         DispatchQueue.main.async {
                             completion(nil)
                         }
                     }
                 }
             } else {
-                print("Speech recognition not available")
+                SecureLogger.warning("Speech recognition not available")
                 DispatchQueue.main.async {
                     completion(nil)
                 }
@@ -214,7 +228,7 @@ final class AudioProcessingService {
         let audioURL = fileManager.originalAudioURL(for: scriptId)
         
         guard FileManager.default.fileExists(atPath: audioURL.path) else {
-            print("Transcription: Audio file doesn't exist")
+            SecureLogger.error("Audio file doesn't exist for transcription")
             DispatchQueue.main.async {
                 completion(nil)
             }
@@ -228,7 +242,9 @@ final class AudioProcessingService {
             // Use specified language
             recognizer = SFSpeechRecognizer(locale: Locale(identifier: languageCode))
             if recognizer == nil {
-                print("Speech recognizer not available for \(languageCode), trying en-US as fallback")
+                #if DEBUG
+                SecureLogger.debug("Speech recognizer not available for language, trying en-US as fallback")
+                #endif
                 recognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
             }
         } else {
@@ -237,7 +253,7 @@ final class AudioProcessingService {
         }
         
         guard let recognizer = recognizer else {
-            print("Speech recognizer not available")
+            SecureLogger.error("Speech recognizer not available")
             DispatchQueue.main.async {
                 completion(nil)
             }
@@ -246,7 +262,7 @@ final class AudioProcessingService {
         
         // Check if recognizer is available
         guard recognizer.isAvailable else {
-            print("Speech recognizer is not available at this time")
+            SecureLogger.warning("Speech recognizer is not available at this time")
             DispatchQueue.main.async {
                 completion(nil)
             }
@@ -257,9 +273,11 @@ final class AudioProcessingService {
         do {
             // Try to create an AVAudioFile to verify format compatibility
             let audioFile = try AVAudioFile(forReading: audioURL)
-            print("Audio file validated: format=\(audioFile.fileFormat), duration=\(Double(audioFile.length) / audioFile.fileFormat.sampleRate)s")
+            #if DEBUG
+            SecureLogger.debug("Audio file validated: format available, duration=\(String(format: "%.2f", Double(audioFile.length) / audioFile.fileFormat.sampleRate))s")
+            #endif
         } catch {
-            print("Audio file validation failed - cannot open for transcription: \(error)")
+            SecureLogger.error("Audio file validation failed - cannot open for transcription: \(error.localizedDescription)")
             // This is likely error -11829 "Cannot Open"
             DispatchQueue.main.async {
                 completion(nil)
@@ -287,10 +305,14 @@ final class AudioProcessingService {
             if recognizer.supportsOnDeviceRecognition {
                 // Try on-device first, but don't require it
                 request.requiresOnDeviceRecognition = false  // Set to true if you want to force on-device only
-                print("Speech recognition: On-device recognition available")
+                #if DEBUG
+                SecureLogger.debug("Speech recognition: On-device recognition available")
+                #endif
             } else {
                 request.requiresOnDeviceRecognition = false
-                print("Speech recognition: Using network-based recognition (on-device not available)")
+                #if DEBUG
+                SecureLogger.debug("Speech recognition: Using network-based recognition")
+                #endif
             }
         }
         
@@ -305,7 +327,7 @@ final class AudioProcessingService {
         timeoutWorkItem = DispatchWorkItem { [weak self] in
             self?.currentRecognitionTask?.cancel()
             self?.currentRecognitionTask = nil
-            print("Transcription timeout - cancelling task")
+            SecureLogger.warning("Transcription timeout - cancelling task")
             DispatchQueue.main.async {
                 completion(nil)
             }
@@ -323,22 +345,29 @@ final class AudioProcessingService {
                 let errorCode = (error as NSError).code
                 let errorDomain = (error as NSError).domain
                 
-                // Log the specific error for debugging
-                print("Speech recognition error - Domain: \(errorDomain), Code: \(errorCode)")
+                #if DEBUG
+                SecureLogger.debug("Speech recognition error - Domain: \(errorDomain), Code: \(errorCode)")
+                #endif
                 
                 // Handle specific error codes
                 switch errorCode {
                 case 1101:
                     // Local recognition not available - this is expected when dictation isn't downloaded
-                    print("Note: Local speech recognition not available (Error 1101). Using network-based recognition.")
+                    #if DEBUG
+                    SecureLogger.debug("Local speech recognition not available. Using network-based recognition.")
+                    #endif
                 case 1107:
                     // Another common transient error
-                    print("Transient recognition error 1107 - may still have results")
+                    #if DEBUG
+                    SecureLogger.debug("Transient recognition error - may still have results")
+                    #endif
                 case 209, 203:
                     // Network or service errors
-                    print("Network/service error \(errorCode) - checking for partial results")
+                    #if DEBUG
+                    SecureLogger.debug("Network/service error - checking for partial results")
+                    #endif
                 default:
-                    print("Speech recognition error: \(error.localizedDescription)")
+                    SecureLogger.warning("Speech recognition error: \(error.localizedDescription)")
                 }
                 
                 // Check if we got any results despite the error
@@ -348,7 +377,9 @@ final class AudioProcessingService {
                         // Apply punctuation even to partial results
                         let languageUsed = languageCode ?? "en-US"
                         transcription = self?.ensureProperPunctuation(to: transcription, languageCode: languageUsed) ?? transcription
-                        print("Transcription completed despite error: \(transcription.prefix(50))...")
+                        #if DEBUG
+                        SecureLogger.debug("Transcription completed despite error")
+                        #endif
                         DispatchQueue.main.async {
                             completion(transcription)
                         }
@@ -356,7 +387,7 @@ final class AudioProcessingService {
                     }
                 }
                 
-                print("Transcription error (code: \(errorCode)): \(error.localizedDescription)")
+                SecureLogger.error("Transcription error (code: \(errorCode)): \(error.localizedDescription)")
                 self?.currentRecognitionTask = nil
                 DispatchQueue.main.async {
                     completion(nil)
@@ -372,7 +403,9 @@ final class AudioProcessingService {
                 let languageUsed = languageCode ?? "en-US"
                 transcription = self?.ensureProperPunctuation(to: transcription, languageCode: languageUsed) ?? transcription
                 
-                print("Transcription successful: \(transcription.prefix(50))...")
+                #if DEBUG
+                SecureLogger.debug("Transcription successful")
+                #endif
                 self?.currentRecognitionTask = nil
                 DispatchQueue.main.async {
                     completion(transcription)
@@ -395,12 +428,14 @@ final class AudioProcessingService {
             
             // Copy file with retry logic
             try FileOperationHelper.copyFile(from: audioURL, to: originalURL)
-            print("AudioProcessing: Saved original copy for transcription")
+            #if DEBUG
+            SecureLogger.debug("Saved original copy for transcription")
+            #endif
         } catch let error as AudioServiceError {
-            print("AudioProcessing: Failed to save original - \(error.errorDescription ?? "")")
+            SecureLogger.warning("Failed to save original - \(error.errorDescription ?? "Unknown error")")
             // Continue processing even if original copy fails
         } catch {
-            print("AudioProcessing: Failed to save original: \(error)")
+            SecureLogger.warning("Failed to save original: \(error.localizedDescription)")
         }
         
         // Use AVAsset for time-based trimming
@@ -408,7 +443,7 @@ final class AudioProcessingService {
         let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
         
         guard let session = exportSession else {
-            print("AudioProcessing: Failed to create export session")
+            SecureLogger.error("Failed to create export session")
             completion(false)
             return
         }
@@ -443,13 +478,15 @@ final class AudioProcessingService {
                     
                     let duration = CMTimeGetSeconds(asset.duration)
                     let trimmedDuration = endTime - startTime
-                    print("AudioProcessing: Successfully trimmed from \(duration)s to \(trimmedDuration)s")
+                    #if DEBUG
+                    SecureLogger.debug("Successfully trimmed from \(String(format: "%.2f", duration))s to \(String(format: "%.2f", trimmedDuration))s")
+                    #endif
                     
                     DispatchQueue.main.async {
                         completion(true)
                     }
                 } catch let error as AudioServiceError {
-                    print("AudioProcessing: File operation failed - \(error.errorDescription ?? "")")
+                    SecureLogger.error("File operation failed - \(error.errorDescription ?? "Unknown error")")
                     
                     // Try to recover by keeping the original file
                     if FileManager.default.fileExists(atPath: tempURL.path) {
@@ -460,20 +497,22 @@ final class AudioProcessingService {
                         completion(false)
                     }
                 } catch {
-                    print("AudioProcessing: Failed to replace file: \(error)")
+                    SecureLogger.error("Failed to replace file: \(error.localizedDescription)")
                     DispatchQueue.main.async {
                         completion(false)
                     }
                 }
                 
             case .failed:
-                print("AudioProcessing: Export failed: \(session.error?.localizedDescription ?? "Unknown error")")
+                SecureLogger.error("Export failed: \(session.error?.localizedDescription ?? "Unknown error")")
                 DispatchQueue.main.async {
                     completion(false)
                 }
                 
             default:
-                print("AudioProcessing: Export status: \(session.status)")
+                #if DEBUG
+                SecureLogger.debug("Export status: \(session.status)")
+                #endif
                 DispatchQueue.main.async {
                     completion(false)
                 }
@@ -573,7 +612,9 @@ final class AudioProcessingService {
         
         let frameLength = Int(buffer.frameLength)
         let threshold = Constants.getThreshold()
-        print("AudioProcessing: Using threshold: \(threshold) for noise filtering")
+        #if DEBUG
+        SecureLogger.debug("Using threshold: \(threshold) for noise filtering")
+        #endif
         
         // Analyze first channel for simplicity
         let samples = channelData[0]
@@ -666,7 +707,9 @@ final class AudioProcessingService {
             // Verify the temp file was created properly
             if FileManager.default.fileExists(atPath: tempURL.path) {
                 let tempFileSize = (try? FileManager.default.attributesOfItem(atPath: tempURL.path)[.size] as? Int64) ?? 0
-                print("AudioProcessing: Temp file size: \(tempFileSize) bytes")
+                #if DEBUG
+                SecureLogger.debug("Temp file size: \(tempFileSize) bytes")
+                #endif
                 
                 // Replace original with trimmed version
                 try? FileManager.default.removeItem(at: url)
@@ -674,16 +717,18 @@ final class AudioProcessingService {
                 
                 // Verify final file
                 let finalFileSize = (try? FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int64) ?? 0
-                print("AudioProcessing: Final file size: \(finalFileSize) bytes")
+                #if DEBUG
+                SecureLogger.debug("Final file size: \(finalFileSize) bytes")
+                #endif
                 
                 return finalFileSize > 0
             } else {
-                print("AudioProcessing: Temp file was not created")
+                SecureLogger.error("Temp file was not created")
                 return false
             }
             
         } catch {
-            print("Failed to save trimmed audio: \(error)")
+            SecureLogger.error("Failed to save trimmed audio: \(error.localizedDescription)")
             // Clean up temp file if it exists
             try? FileManager.default.removeItem(at: tempURL)
         }
