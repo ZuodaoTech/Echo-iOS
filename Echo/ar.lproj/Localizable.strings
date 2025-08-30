@@ -253,10 +253,6 @@
 "dev.clear_icloud" = "مسح بيانات iCloud";
 "dev.clear_icloud.confirm" = "مسح بيانات iCloud؟";
 "dev.clear_icloud.message" = "سيؤدي هذا إلى إزالة جميع بيانات Echo من iCloud. ستبقى البيانات المحلية سليمة.";
-"dev.clear_local" = "مسح جميع البيانات المحلية";
-"dev.clear_local.confirm" = "مسح جميع البيانات المحلية؟";
-"dev.clear_local.message" = "سيؤدي هذا إلى حذف جميع النصوص والتسجيلات والعلامات. لا يمكن التراجع عن هذا!";
-"dev.clear_local.button" = "حذف كل شيء";
 "dev.remove_duplicates" = "إزالة العلامات والبطاقات المكررة";
 "dev.remove_duplicates.confirm" = "إزالة المكررات؟";
 "dev.remove_duplicates.message" = "سيؤدي هذا إلى دمج العلامات المكررة وإزالة النصوص المكررة بنفس المحتوى.";
@@ -345,3 +341,23 @@
 "alert.cancel" = "إلغاء";
 "alert.add" = "إضافة";
 "alert.ok" = "موافق";
+
+// MARK: - Privacy & Notifications (New Keys)
+"notifications.privacy_mode" = "وضع الخصوصية";
+"notifications.privacy_mode_description" = "إخفاء محتوى النص في الإشعارات";
+"notifications.privacy_settings" = "إعدادات الخصوصية";
+"notifications.privacy_enabled_footer" = "ستُظهر الإشعارات رسائل عامة بدلاً من نص السكريبت";
+"notifications.privacy_disabled_footer" = "ستُظهر الإشعارات أول 50 حرفاً من نص السكريبت";
+"notifications.privacy_message" = "تذكير جديد جاهز";
+"settings.on_device_recognition" = "التعرف على الجهاز";
+"settings.on_device_recognition.desc" = "معالجة الكلام محلياً لخصوصية أفضل";
+
+// MARK: - Error Messages (New Keys)
+"error.invalid_path" = "مسار ملف غير صالح: %@";
+"error.transcription_failed" = "فشل في النسخ";
+"error.transcription_unavailable" = "خدمة النسخ غير متاحة";
+
+// MARK: - Transcription Status (New Keys)
+"transcription.failed" = "فشل في النسخ";
+"transcription.unavailable" = "التعرف على الصوت غير متاح";
+"transcription.processing" = "معالجة الكلام...";

@@ -253,10 +253,6 @@
 "dev.clear_icloud" = "Slet iCloud-data";
 "dev.clear_icloud.confirm" = "Slette iCloud-data?";
 "dev.clear_icloud.message" = "Dette vil fjerne alle Echo-data fra iCloud. Lokale data forbliver intakte.";
-"dev.clear_local" = "Slet alle lokale data";
-"dev.clear_local.confirm" = "Slette alle lokale data?";
-"dev.clear_local.message" = "Dette vil slette ALLE scripts, optagelser og tags. Dette kan ikke fortrydes!";
-"dev.clear_local.button" = "Slet alt";
 "dev.remove_duplicates" = "Fjern duplikerede tags og kort";
 "dev.remove_duplicates.confirm" = "Fjerne duplikater?";
 "dev.remove_duplicates.message" = "Dette vil flette duplikerede tags og fjerne duplikerede scripts med samme indhold.";

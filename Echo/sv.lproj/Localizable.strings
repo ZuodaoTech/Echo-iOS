@@ -253,10 +253,6 @@
 "dev.clear_icloud" = "Rensa iCloud-data";
 "dev.clear_icloud.confirm" = "Rensa iCloud-data?";
 "dev.clear_icloud.message" = "Detta tar bort all Echo-data från iCloud. Lokal data förblir intakt.";
-"dev.clear_local" = "Rensa all lokal data";
-"dev.clear_local.confirm" = "Rensa all lokal data?";
-"dev.clear_local.message" = "Detta raderar ALLA skript, inspelningar och taggar. Detta kan inte ångras!";
-"dev.clear_local.button" = "Radera allt";
 "dev.remove_duplicates" = "Ta bort dubbla taggar och kort";
 "dev.remove_duplicates.confirm" = "Ta bort dubbletter?";
 "dev.remove_duplicates.message" = "Detta slår samman dubbla taggar och tar bort dubbla skript med samma innehåll.";

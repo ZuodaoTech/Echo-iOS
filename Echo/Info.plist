@@ -12,5 +12,9 @@
 	<string>Echo needs access to record your voice.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Echo needs speech recognition to transcribe recordings.</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>microphone</string>
+	</array>
 </dict>
 </plist>

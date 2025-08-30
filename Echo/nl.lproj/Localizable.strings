@@ -253,10 +253,6 @@
 "dev.clear_icloud" = "iCloud-gegevens wissen";
 "dev.clear_icloud.confirm" = "iCloud-gegevens wissen?";
 "dev.clear_icloud.message" = "Dit verwijdert alle Echo-gegevens uit iCloud. Lokale gegevens blijven behouden.";
-"dev.clear_local" = "Alle lokale gegevens wissen";
-"dev.clear_local.confirm" = "Alle lokale gegevens wissen?";
-"dev.clear_local.message" = "Dit verwijdert ALLE scripts, opnames en tags. Dit kan niet ongedaan worden gemaakt!";
-"dev.clear_local.button" = "Alles verwijderen";
 "dev.remove_duplicates" = "Dubbele tags en kaarten verwijderen";
 "dev.remove_duplicates.confirm" = "Duplicaten verwijderen?";
 "dev.remove_duplicates.message" = "Dit voegt dubbele tags samen en verwijdert dubbele scripts met dezelfde inhoud.";

@@ -181,8 +181,11 @@ final class FileOperationHelper {
         // Try to read the file header to ensure it's a valid audio file
         do {
             let fileHandle = try FileHandle(forReadingFrom: url)
+            defer {
+                // Modern approach: use defer and try to close safely
+                try? fileHandle.close()
+            }
             let headerData = fileHandle.readData(ofLength: 4)
-            fileHandle.closeFile()
             
             if headerData.count < 4 {
                 throw AudioServiceError.fileCorrupted(url.lastPathComponent)

@@ -312,10 +312,6 @@
 "dev.clear_icloud" = "清除 iCloud 資料";
 "dev.clear_icloud.confirm" = "清除 iCloud 資料？";
 "dev.clear_icloud.message" = "這將從 iCloud 中刪除所有 Echo 資料。本機資料將保持完整。";
-"dev.clear_local" = "清除所有本機資料";
-"dev.clear_local.confirm" = "清除所有本機資料？";
-"dev.clear_local.message" = "這將刪除所有腳本、錄音和標籤。此動作無法復原！";
-"dev.clear_local.button" = "刪除全部";
 "dev.remove_duplicates" = "刪除重複標籤和卡片";
 "dev.remove_duplicates.confirm" = "刪除重複項目？";
 "dev.remove_duplicates.message" = "這將合併重複標籤並刪除內容相同的重複腳本。";
@@ -340,3 +336,23 @@
 // MARK: - Search & Input Placeholders
 "tag.search.placeholder" = "搜尋標籤...";
 "tag.name.placeholder" = "標籤名稱";
+
+// MARK: - Privacy & Notifications (New Keys)
+"notifications.privacy_mode" = "隱私模式";
+"notifications.privacy_mode_description" = "在通知中隱藏腳本內容";
+"notifications.privacy_settings" = "隱私設定";
+"notifications.privacy_enabled_footer" = "通知將顯示通用訊息而非腳本文字";
+"notifications.privacy_disabled_footer" = "通知將顯示腳本文字的前50個字元";
+"notifications.privacy_message" = "新提醒已準備就緒";
+"settings.on_device_recognition" = "裝置本機識別";
+"settings.on_device_recognition.desc" = "在本機處理語音，保護隱私";
+
+// MARK: - Error Messages (New Keys)
+"error.invalid_path" = "無效的檔案路徑：%@";
+"error.transcription_failed" = "轉錄失敗";
+"error.transcription_unavailable" = "轉錄服務無法使用";
+
+// MARK: - Transcription Status (New Keys)
+"transcription.failed" = "轉錄失敗";
+"transcription.unavailable" = "語音識別無法使用";
+"transcription.processing" = "正在處理語音...";

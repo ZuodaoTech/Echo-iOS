@@ -253,10 +253,6 @@
 "dev.clear_icloud" = "Wyczyść dane iCloud";
 "dev.clear_icloud.confirm" = "Wyczyścić dane iCloud?";
 "dev.clear_icloud.message" = "To usunie wszystkie dane Echo z iCloud. Dane lokalne pozostaną nienaruszone.";
-"dev.clear_local" = "Wyczyść wszystkie dane lokalne";
-"dev.clear_local.confirm" = "Wyczyścić wszystkie dane lokalne?";
-"dev.clear_local.message" = "To usunie WSZYSTKIE skrypty, nagrania i tagi. Tego nie można cofnąć!";
-"dev.clear_local.button" = "Usuń wszystko";
 "dev.remove_duplicates" = "Usuń zduplikowane tagi i karty";
 "dev.remove_duplicates.confirm" = "Usunąć duplikaty?";
 "dev.remove_duplicates.message" = "To połączy zduplikowane tagi i usunie zduplikowane skrypty o tej samej treści.";

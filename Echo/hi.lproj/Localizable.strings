@@ -312,10 +312,6 @@
 "dev.clear_icloud" = "iCloud डेटा साफ़ करें";
 "dev.clear_icloud.confirm" = "iCloud डेटा साफ़ करें?";
 "dev.clear_icloud.message" = "यह iCloud से सभी Echo डेटा हटा देगा। स्थानीय डेटा बरकरार रहेगा।";
-"dev.clear_local" = "सभी स्थानीय डेटा साफ़ करें";
-"dev.clear_local.confirm" = "सभी स्थानीय डेटा साफ़ करें?";
-"dev.clear_local.message" = "यह सभी स्क्रिप्ट, रिकॉर्डिंग और टैग हटा देगा। यह पूर्ववत नहीं हो सकता!";
-"dev.clear_local.button" = "सब कुछ हटाएं";
 "dev.remove_duplicates" = "डुप्लिकेट टैग और कार्ड हटाएं";
 "dev.remove_duplicates.confirm" = "डुप्लिकेट हटाएं?";
 "dev.remove_duplicates.message" = "यह डुप्लिकेट टैग को मर्ज करेगा और समान सामग्री वाली डुप्लिकेट स्क्रिप्ट को हटाएगा।";
@@ -340,3 +336,23 @@
 // MARK: - Search & Input Placeholders
 "tag.search.placeholder" = "टैग खोजें...";
 "tag.name.placeholder" = "टैग का नाम";
+
+// MARK: - Privacy & Notifications (New Keys)
+"notifications.privacy_mode" = "गोपनीयता मोड";
+"notifications.privacy_mode_description" = "अधिसूचनाओं में स्क्रिप्ट सामग्री छुपाएं";
+"notifications.privacy_settings" = "गोपनीयता सेटिंग्स";
+"notifications.privacy_enabled_footer" = "अधिसूचनाएं स्क्रिप्ट टेक्स्ट के बजाय सामान्य संदेश दिखाएंगी";
+"notifications.privacy_disabled_footer" = "अधिसूचनाएं स्क्रिप्ट टेक्स्ट के पहले 50 अक्षर दिखाएंगी";
+"notifications.privacy_message" = "नई रिमाइंडर तैयार है";
+"settings.on_device_recognition" = "डिवाइस पर पहचान";
+"settings.on_device_recognition.desc" = "बेहतर गोपनीयता के लिए स्थानीय रूप से वाणी संसाधित करें";
+
+// MARK: - Error Messages (New Keys)
+"error.invalid_path" = "अमान्य फ़ाइल पथ: %@";
+"error.transcription_failed" = "ट्रांसक्रिप्शन विफल";
+"error.transcription_unavailable" = "ट्रांसक्रिप्शन सेवा अनुपलब्ध";
+
+// MARK: - Transcription Status (New Keys)
+"transcription.failed" = "ट्रांसक्रिप्शन विफल";
+"transcription.unavailable" = "वाक् पहचान अनुपलब्ध";
+"transcription.processing" = "वाणी संसाधित की जा रही है...";

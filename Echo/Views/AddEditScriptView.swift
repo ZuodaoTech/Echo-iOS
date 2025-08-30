@@ -52,6 +52,7 @@ struct AddEditScriptView: View {
     @State private var hasSavedOnDismiss = false
     @State private var showingValidationAlert = false
     @State private var validationMessage = ""
+    @State private var currentToast: Toast? = nil
     
     // Character guidance
     @AppStorage("characterGuidanceEnabled") private var characterGuidanceEnabled = true
@@ -85,7 +86,9 @@ struct AddEditScriptView: View {
     
     var body: some View {
         NavigationView {
-            Form {
+            VStack {
+                
+                Form {
                 Section(NSLocalizedString("script.label", comment: "")) {
                     VStack(alignment: .leading, spacing: 8) {
                         ZStack(alignment: .topLeading) {
@@ -107,6 +110,7 @@ struct AddEditScriptView: View {
                             
                             TextEditor(text: $scriptText)
                                 .frame(minHeight: 120, maxHeight: max(120, min(textEditorHeight, 240)))
+                                .accessibilityIdentifier("scriptTextEditor")
                                 .overlay(
                                     Group {
                                         if scriptText.isEmpty {
@@ -218,7 +222,7 @@ struct AddEditScriptView: View {
                             isRecording: $isRecording,
                             hasRecording: hasRecording,
                             isProcessing: isProcessingAudio || audioService.isProcessingRecording,
-                            recordingDuration: script?.formattedDuration ?? "",
+                            recordingDuration: isRecording ? formatDuration(audioService.recordingDuration) : (script?.formattedDuration ?? ""),
                             isPlaying: isPlaying,
                             isPaused: isPaused,
                             voiceActivityLevel: audioService.voiceActivityLevel,
@@ -453,6 +457,8 @@ struct AddEditScriptView: View {
                     }
                 }
             }
+            }
+            .toast($currentToast)
             .navigationTitle(isEditing ? NSLocalizedString("navigation.edit_script", comment: "") : NSLocalizedString("navigation.new_script", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -467,6 +473,7 @@ struct AddEditScriptView: View {
                     }
                     .font(.body.weight(.medium))
                     .disabled(isProcessingAudio || audioService.isProcessingRecording)
+                    .accessibilityIdentifier("saveButton")
                 }
             }
             .interactiveDismissDisabled(false)
@@ -792,6 +799,17 @@ struct AddEditScriptView: View {
                         script.transcribedText = transcription
                         do {
                             try self.viewContext.save()
+                            
+                            // Trigger success haptic feedback
+                            let notificationFeedback = UINotificationFeedbackGenerator()
+                            notificationFeedback.notificationOccurred(.success)
+                            
+                            // Show success toast briefly
+                            self.currentToast = .success(
+                                title: NSLocalizedString("transcription.completed", comment: "Transcription Complete"),
+                                autoDismissAfter: 2.0
+                            )
+                            
                             #if DEBUG
                             SecureLogger.debug("Re-transcription completed with new language")
                             #endif
@@ -800,6 +818,23 @@ struct AddEditScriptView: View {
                         }
                     } else {
                         SecureLogger.warning("Re-transcription failed for selected language")
+                        
+                        // Trigger haptic feedback for error
+                        let notificationFeedback = UINotificationFeedbackGenerator()
+                        notificationFeedback.notificationOccurred(.error)
+                        
+                        // Show enhanced error toast with retry functionality
+                        self.currentToast = .error(
+                            title: NSLocalizedString("transcription.failed", comment: "Transcription Failed"),
+                            message: NSLocalizedString("transcription.failed.message", comment: "Unable to transcribe your recording. Please try again."),
+                            action: .init(
+                                title: NSLocalizedString("action.retry", comment: "Retry")
+                            ) {
+                                // Retry transcription with current language
+                                self.retranscribeWithNewLanguage(script: script, language: self.transcriptionLanguage)
+                            },
+                            autoDismissAfter: 6.0  // Longer duration for error with action
+                        )
                     }
                     self.isRetranscribing = false
                 }
@@ -826,8 +861,22 @@ struct AddEditScriptView: View {
                         try audioService.startRecording(for: script)
                         isRecording = true
                     } catch {
-                        errorMessage = "Failed to start recording. Please check microphone permissions."
-                        showingErrorAlert = true
+                        // Trigger haptic feedback for error
+                        let notificationFeedback = UINotificationFeedbackGenerator()
+                        notificationFeedback.notificationOccurred(.error)
+                        
+                        // Show enhanced error toast for recording failure
+                        currentToast = .error(
+                            title: NSLocalizedString("recording.failed", comment: "Recording Failed"),
+                            message: NSLocalizedString("recording.failed.message", comment: "Failed to start recording. Please check microphone permissions."),
+                            action: .init(
+                                title: NSLocalizedString("action.retry", comment: "Retry")
+                            ) {
+                                // Retry recording
+                                self.handleRecording()
+                            },
+                            autoDismissAfter: 5.0
+                        )
                     }
                 } else {
                     showingMicPermissionAlert = true
@@ -982,6 +1031,12 @@ struct AddEditScriptView: View {
     private func cancelNotifications(for script: SelftalkScript) {
         NotificationManager.shared.cancelNotifications(for: script)
     }
+    
+    private func formatDuration(_ duration: TimeInterval) -> String {
+        let minutes = Int(duration) / 60
+        let seconds = Int(duration) % 60
+        return String(format: "%d:%02d", minutes, seconds)
+    }
 }
 
 struct RecordingButton: View {
@@ -1094,9 +1149,18 @@ struct RecordingButton: View {
             }
             .buttonStyle(PlainButtonStyle())
             .disabled(isProcessing)
+            .accessibilityIdentifier(isRecording ? "stopRecordingButton" : "startRecordingButton")
             
             if isRecording {
-                let duration = Int(audioService.recordingDuration)
+                // Extract duration from the formatted string (e.g., "0:05" -> 5 seconds)
+                let durationComponents = recordingDuration.split(separator: ":")
+                let duration = if durationComponents.count == 2,
+                              let minutes = Int(durationComponents[0]),
+                              let seconds = Int(durationComponents[1]) {
+                    minutes * 60 + seconds
+                } else {
+                    0
+                }
                 let remainingTime = max(0, 60 - duration)
                 
                 VStack(spacing: 8) {

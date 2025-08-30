@@ -63,6 +63,11 @@ struct EchoApp: App {
                     #if DEBUG
                     SecureLogger.debug("iCloud sync toggled: \(enabled)")
                     #endif
+                    
+                    // Restart Core Data with new iCloud configuration
+                    Task {
+                        await PersistenceController.shared.restartForICloudToggle()
+                    }
                 }
             }
         }
@@ -71,9 +76,10 @@ struct EchoApp: App {
     private static func configureAudioSessionAsync() async {
         do {
             let audioSession = AVAudioSession.sharedInstance()
+            // Initial setup with defaultToSpeaker for playback, removed during recording
             try audioSession.setCategory(.playAndRecord,
                                         mode: .default,
-                                        options: [.defaultToSpeaker, .allowBluetooth])
+                                        options: [.defaultToSpeaker, .allowBluetooth, .allowBluetoothA2DP])
         } catch {
             SecureLogger.error("Audio session configuration failed: \(error.localizedDescription)")
         }

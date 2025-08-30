@@ -193,6 +193,9 @@ struct ScriptCard: View {
         .onTapGesture {
             handleTap()
         }
+        .accessibilityIdentifier("scriptCard_\(script.id.uuidString)")
+        .accessibilityLabel("Play or pause script: \(script.scriptText.prefix(50))")
+        .accessibilityHint("Tap to play, long press to edit")
         .onLongPressGesture(
             minimumDuration: 0.5,
             maximumDistance: .infinity,

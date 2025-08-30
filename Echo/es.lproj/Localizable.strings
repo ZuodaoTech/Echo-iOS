@@ -312,10 +312,6 @@
 "dev.clear_icloud" = "Limpiar Datos de iCloud";
 "dev.clear_icloud.confirm" = "¿Limpiar Datos de iCloud?";
 "dev.clear_icloud.message" = "Esto eliminará todos los datos de Echo de iCloud. Los datos locales permanecerán intactos.";
-"dev.clear_local" = "Limpiar Todos los Datos Locales";
-"dev.clear_local.confirm" = "¿Limpiar Todos los Datos Locales?";
-"dev.clear_local.message" = "Esto eliminará TODOS los scripts, grabaciones y etiquetas. ¡Esto no se puede deshacer!";
-"dev.clear_local.button" = "Eliminar Todo";
 "dev.remove_duplicates" = "Remover Etiquetas y Tarjetas Duplicadas";
 "dev.remove_duplicates.confirm" = "¿Remover Duplicados?";
 "dev.remove_duplicates.message" = "Esto combinará etiquetas duplicadas y removerá scripts duplicados con el mismo contenido.";
@@ -340,3 +336,23 @@
 // MARK: - Search & Input Placeholders
 "tag.search.placeholder" = "Buscar etiquetas...";
 "tag.name.placeholder" = "Nombre de etiqueta";
+
+// MARK: - Privacy & Notifications (New Keys)
+"notifications.privacy_mode" = "Modo Privado";
+"notifications.privacy_mode_description" = "Ocultar contenido del script en notificaciones";
+"notifications.privacy_settings" = "Configuración de Privacidad";
+"notifications.privacy_enabled_footer" = "Las notificaciones mostrarán mensajes genéricos en lugar del texto del script";
+"notifications.privacy_disabled_footer" = "Las notificaciones mostrarán los primeros 50 caracteres del texto del script";
+"notifications.privacy_message" = "Nuevo recordatorio listo";
+"settings.on_device_recognition" = "Reconocimiento en Dispositivo";
+"settings.on_device_recognition.desc" = "Procesar voz localmente para mejor privacidad";
+
+// MARK: - Error Messages (New Keys)
+"error.invalid_path" = "Ruta de archivo inválida: %@";
+"error.transcription_failed" = "Error en la transcripción";
+"error.transcription_unavailable" = "Servicio de transcripción no disponible";
+
+// MARK: - Transcription Status (New Keys)
+"transcription.failed" = "Error en la transcripción";
+"transcription.unavailable" = "Reconocimiento de voz no disponible";
+"transcription.processing" = "Procesando voz...";

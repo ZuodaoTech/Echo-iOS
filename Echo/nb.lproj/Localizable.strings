@@ -253,10 +253,6 @@
 "dev.clear_icloud" = "Slett iCloud-data";
 "dev.clear_icloud.confirm" = "Slette iCloud-data?";
 "dev.clear_icloud.message" = "Dette vil fjerne alle Echo-data fra iCloud. Lokale data forblir intakte.";
-"dev.clear_local" = "Slett alle lokale data";
-"dev.clear_local.confirm" = "Slette alle lokale data?";
-"dev.clear_local.message" = "Dette vil slette ALLE skript, opptak og merkelapper. Dette kan ikke angres!";
-"dev.clear_local.button" = "Slett alt";
 "dev.remove_duplicates" = "Fjern dupliserte merkelapper og kort";
 "dev.remove_duplicates.confirm" = "Fjerne duplikater?";
 "dev.remove_duplicates.message" = "Dette vil slå sammen dupliserte merkelapper og fjerne dupliserte skript med samme innhold.";

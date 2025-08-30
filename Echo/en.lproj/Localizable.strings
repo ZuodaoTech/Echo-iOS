@@ -84,6 +84,8 @@
 "settings.auto_trim_silence" = "Auto-Trim Silence";
 "settings.auto_trim_silence.desc" = "Remove silence at start and end";
 "settings.trim_sensitivity" = "Trim Sensitivity";
+"settings.on_device_recognition" = "On-Device Recognition";
+"settings.on_device_recognition.desc" = "Process speech locally for better privacy";
 
 "settings.icloud_sync" = "iCloud Sync";
 "settings.icloud_sync.desc" = "Sync cards across your devices";
@@ -143,8 +145,14 @@
 "notifications.select_to_disable" = "Select %d cards to disable notifications";
 "notifications.select_cards" = "Select Cards";
 "notifications.reminder_title" = "Time for Self-Talk";
+"notifications.privacy_message" = "New reminder ready";
 "notifications.action_play" = "Play Audio";
 "notifications.action_done" = "Mark as Done";
+"notifications.privacy_mode" = "Privacy Mode";
+"notifications.privacy_mode_description" = "Hide script content in notifications";
+"notifications.privacy_settings" = "Privacy Settings";
+"notifications.privacy_enabled_footer" = "Notifications will show generic messages instead of script text";
+"notifications.privacy_disabled_footer" = "Notifications will show the first 50 characters of script text";
 
 // MARK: - Common Actions
 "chars" = "chars";
@@ -183,6 +191,9 @@
 "error.file_move_failed" = "Failed to move file: %@";
 "error.file_delete_failed" = "Failed to delete file: %@";
 "error.invalid_state" = "Invalid audio state: %@";
+"error.invalid_path" = "Invalid file path: %@";
+"error.transcription_failed" = "Transcription failed";
+"error.transcription_unavailable" = "Transcription service unavailable";
 
 // MARK: - Error Suggestions
 "error.suggestion.free_space" = "Delete some recordings or other files to free up space.";
@@ -311,10 +322,6 @@
 "dev.clear_icloud" = "Clear iCloud Data";
 "dev.clear_icloud.confirm" = "Clear iCloud Data?";
 "dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
 "dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
 "dev.remove_duplicates.confirm" = "Remove Duplicates?";
 "dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
@@ -339,3 +346,8 @@
 "alert.add" = "Add";
 "alert.remove" = "Remove";
 "alert.ok" = "OK";
+
+// MARK: - Transcription Status
+"transcription.failed" = "Transcription failed";
+"transcription.unavailable" = "Speech recognition unavailable";
+"transcription.processing" = "Processing speech...";

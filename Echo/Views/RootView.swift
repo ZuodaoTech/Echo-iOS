@@ -79,6 +79,8 @@ struct RootView: View {
                 case .ready(let controller):
                     // Full app with Core Data ready
                     ContentView()
+                        // Force view rebuild when Core Data container instance changes (e.g., iCloud toggle)
+                        .id(ObjectIdentifier(controller.container))
                         .environment(\.managedObjectContext, controller.container.viewContext)
                         .environmentObject(controller)
                         .transition(.opacity)
@@ -106,15 +108,15 @@ struct RootView: View {
         SecureLogger.debug("Starting Core Data initialization")
         #endif
         
-        // Do ALL heavy lifting in background
+        // Do ALL heavy lifting in background using the shared controller to keep UI and observers in sync
         let controller = await Task.detached(priority: .background) {
             // Apply simulator warning fixes
             #if DEBUG
             SimulatorWarningFixes.configure()
             #endif
             
-            // Create persistence controller
-            let pc = PersistenceController()
+            // Use shared persistence controller so iCloud restarts affect the live UI
+            let pc = PersistenceController.shared
             
             // Load stores
             let inMemory = false

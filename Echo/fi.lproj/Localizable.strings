@@ -253,10 +253,6 @@
 "dev.clear_icloud" = "Tyhjennä iCloud-tiedot";
 "dev.clear_icloud.confirm" = "Tyhjennä iCloud-tiedot?";
 "dev.clear_icloud.message" = "Tämä poistaa kaikki Echo-tiedot iCloudista. Paikalliset tiedot säilyvät ennallaan.";
-"dev.clear_local" = "Tyhjennä kaikki paikalliset tiedot";
-"dev.clear_local.confirm" = "Tyhjennä kaikki paikalliset tiedot?";
-"dev.clear_local.message" = "Tämä poistaa KAIKKI skriptit, tallenteet ja tagit. Tätä ei voi perua!";
-"dev.clear_local.button" = "Poista kaikki";
 "dev.remove_duplicates" = "Poista kaksoistagit ja -kortit";
 "dev.remove_duplicates.confirm" = "Poista kaksoiskappalet?";
 "dev.remove_duplicates.message" = "Tämä yhdistää kaksoistagit ja poistaa samansisältöiset kaksoisskriptit.";

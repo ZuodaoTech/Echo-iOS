@@ -312,10 +312,6 @@
 "dev.clear_icloud" = "清除 iCloud 数据";
 "dev.clear_icloud.confirm" = "清除 iCloud 数据？";
 "dev.clear_icloud.message" = "这将从 iCloud 中删除所有 Echo 数据。本地数据将保持完整。";
-"dev.clear_local" = "清除所有本地数据";
-"dev.clear_local.confirm" = "清除所有本地数据？";
-"dev.clear_local.message" = "这将删除所有脚本、录音和标签。此操作无法撤销！";
-"dev.clear_local.button" = "删除所有";
 "dev.remove_duplicates" = "删除重复标签和卡片";
 "dev.remove_duplicates.confirm" = "删除重复项？";
 "dev.remove_duplicates.message" = "这将合并重复标签并删除内容相同的重复脚本。";
@@ -340,3 +336,23 @@
 // MARK: - Search & Input Placeholders
 "tag.search.placeholder" = "搜索标签...";
 "tag.name.placeholder" = "标签名称";
+
+// MARK: - Privacy & Notifications (New Keys)
+"notifications.privacy_mode" = "隐私模式";
+"notifications.privacy_mode_description" = "在通知中隐藏脚本内容";
+"notifications.privacy_settings" = "隐私设置";
+"notifications.privacy_enabled_footer" = "通知将显示通用消息而非脚本文本";
+"notifications.privacy_disabled_footer" = "通知将显示脚本文本的前50个字符";
+"notifications.privacy_message" = "新提醒已准备就绪";
+"settings.on_device_recognition" = "设备本地识别";
+"settings.on_device_recognition.desc" = "在本地处理语音，保护隐私";
+
+// MARK: - Error Messages (New Keys)
+"error.invalid_path" = "无效的文件路径：%@";
+"error.transcription_failed" = "转录失败";
+"error.transcription_unavailable" = "转录服务不可用";
+
+// MARK: - Transcription Status (New Keys)
+"transcription.failed" = "转录失败";
+"transcription.unavailable" = "语音识别不可用";
+"transcription.processing" = "正在处理语音...";

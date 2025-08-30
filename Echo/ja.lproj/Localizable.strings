@@ -312,10 +312,6 @@
 "dev.clear_icloud" = "iCloudデータをクリア";
 "dev.clear_icloud.confirm" = "iCloudデータをクリアしますか？";
 "dev.clear_icloud.message" = "これによりiCloudからすべてのEchoデータが削除されます。ローカルデータは残ります。";
-"dev.clear_local" = "すべてのローカルデータをクリア";
-"dev.clear_local.confirm" = "すべてのローカルデータをクリアしますか？";
-"dev.clear_local.message" = "これによりすべてのスクリプト、録音、タグが削除されます。この操作は元に戻せません！";
-"dev.clear_local.button" = "すべて削除";
 "dev.remove_duplicates" = "重複するタグとカードを削除";
 "dev.remove_duplicates.confirm" = "重複を削除しますか？";
 "dev.remove_duplicates.message" = "重複するタグを統合し、同じ内容の重複スクリプトを削除します。";
@@ -340,3 +336,23 @@
 // MARK: - Search & Input Placeholders
 "tag.search.placeholder" = "タグを検索...";
 "tag.name.placeholder" = "タグ名";
+
+// MARK: - Privacy & Notifications (New Keys)
+"notifications.privacy_mode" = "プライバシーモード";
+"notifications.privacy_mode_description" = "通知でスクリプト内容を非表示";
+"notifications.privacy_settings" = "プライバシー設定";
+"notifications.privacy_enabled_footer" = "通知はスクリプトテキストの代わりに汎用メッセージを表示します";
+"notifications.privacy_disabled_footer" = "通知はスクリプトテキストの最初の50文字を表示します";
+"notifications.privacy_message" = "新しいリマインダーが準備完了";
+"settings.on_device_recognition" = "デバイス内認識";
+"settings.on_device_recognition.desc" = "プライバシー向上のため音声をローカルで処理";
+
+// MARK: - Error Messages (New Keys)
+"error.invalid_path" = "無効なファイルパス: %@";
+"error.transcription_failed" = "転写に失敗しました";
+"error.transcription_unavailable" = "転写サービスが利用できません";
+
+// MARK: - Transcription Status (New Keys)
+"transcription.failed" = "転写に失敗しました";
+"transcription.unavailable" = "音声認識が利用できません";
+"transcription.processing" = "音声を処理中...";

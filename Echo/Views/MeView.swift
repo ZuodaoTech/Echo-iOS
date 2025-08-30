@@ -27,6 +27,9 @@ struct MeView: View {
     // Sync Settings
     @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = true
     
+    // Speech Recognition Settings
+    @AppStorage("preferOnDeviceRecognition") private var preferOnDeviceRecognition = false
+    
     // State for pickers
     @State private var showingUILanguagePicker = false
     @State private var showingTranscriptionLanguagePicker = false
@@ -40,7 +43,6 @@ struct MeView: View {
     @State private var swipeSequence: [SwipeDirection] = []
     @State private var lastSwipeTime = Date()
     @State private var showingClearICloudAlert = false
-    @State private var showingClearLocalDataAlert = false
     @State private var showingRemoveDuplicatesAlert = false
     @State private var devActionMessage = ""
     @State private var showingDevActionResult = false
@@ -87,6 +89,22 @@ struct MeView: View {
                         }
                     }
                     .foregroundColor(.primary)
+                    
+                    // On-Device Speech Recognition
+                    Toggle(isOn: $preferOnDeviceRecognition) {
+                        HStack {
+                            Image(systemName: "brain.head.profile")
+                                .font(.system(size: 20))
+                                .foregroundColor(.primary)
+                                .frame(width: 25)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(NSLocalizedString("settings.on_device_recognition", comment: ""))
+                                Text(NSLocalizedString("settings.on_device_recognition.desc", comment: ""))
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
                     
                     // Private Mode
                     Toggle(isOn: $privateModeDefault) {
@@ -174,6 +192,21 @@ struct MeView: View {
                         }
                         .labelsHidden()
                     }
+                    
+                    NavigationLink(destination: NotificationSettingsView()) {
+                        HStack {
+                            Image(systemName: "bell.circle")
+                                .font(.system(size: 20))
+                                .foregroundColor(.primary)
+                                .frame(width: 25)
+                            Text(NSLocalizedString("notifications.settings_title", comment: ""))
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .foregroundColor(.primary)
                     
                     if notificationEnabledScripts.count > 0 {
                         Text(String(format: NSLocalizedString("settings.notification_cards_count", comment: ""), notificationEnabledScripts.count))
@@ -386,21 +419,6 @@ struct MeView: View {
                             }
                         }
                         
-                        // Clear Local Data
-                        Button {
-                            showingClearLocalDataAlert = true
-                        } label: {
-                            HStack {
-                                Image(systemName: "trash.fill")
-                                    .font(.system(size: 20))
-                                    .foregroundColor(.red)
-                                    .frame(width: 25)
-                                Text(NSLocalizedString("dev.clear_local", comment: "Clear All Local Data"))
-                                    .foregroundColor(.red)
-                                Spacer()
-                            }
-                        }
-                        
                         // Remove Duplicates
                         Button {
                             showingRemoveDuplicatesAlert = true
@@ -457,14 +475,6 @@ struct MeView: View {
                 }
             } message: {
                 Text(NSLocalizedString("dev.clear_icloud.message", comment: "This will remove all Echo data from iCloud. Local data will remain intact."))
-            }
-            .alert(NSLocalizedString("dev.clear_local.confirm", comment: "Clear All Local Data?"), isPresented: $showingClearLocalDataAlert) {
-                Button(NSLocalizedString("action.cancel", comment: "Cancel"), role: .cancel) { }
-                Button(NSLocalizedString("dev.clear_local.button", comment: "Delete Everything"), role: .destructive) {
-                    clearAllLocalData()
-                }
-            } message: {
-                Text(NSLocalizedString("dev.clear_local.message", comment: "This will delete ALL scripts, recordings, and tags. This cannot be undone!"))
             }
             .alert(NSLocalizedString("dev.remove_duplicates.confirm", comment: "Remove Duplicates?"), isPresented: $showingRemoveDuplicatesAlert) {
                 Button(NSLocalizedString("action.cancel", comment: "Cancel"), role: .cancel) { }
@@ -663,52 +673,6 @@ struct MeView: View {
         }
     }
     
-    private func clearAllLocalData() {
-        // First, fetch all scripts to delete audio files
-        let scriptRequest: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
-        
-        do {
-            let scripts = try viewContext.fetch(scriptRequest)
-            
-            // Delete all audio files
-            for script in scripts {
-                if let audioPath = script.audioFilePath {
-                    guard let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-                        SecureLogger.error("Unable to access documents directory for audio file deletion")
-                        continue
-                    }
-                    let fileURL = documentsURL
-                        .appendingPathComponent("Recordings")
-                        .appendingPathComponent(audioPath)
-                    try? FileManager.default.removeItem(at: fileURL)
-                }
-                viewContext.delete(script)
-            }
-            
-            // Delete all tags
-            let tagRequest: NSFetchRequest<Tag> = Tag.fetchRequest()
-            let tags = try viewContext.fetch(tagRequest)
-            for tag in tags {
-                viewContext.delete(tag)
-            }
-            
-            // Save context
-            try viewContext.save()
-            
-            // Clear all UserDefaults
-            if let bundleId = Bundle.main.bundleIdentifier {
-                UserDefaults.standard.removePersistentDomain(forName: bundleId)
-                UserDefaults.standard.synchronize()
-            }
-            
-            devActionMessage = "Successfully deleted \(scripts.count) scripts and \(tags.count) tags."
-            showingDevActionResult = true
-            
-        } catch {
-            devActionMessage = "Failed to clear data: \(error.localizedDescription)"
-            showingDevActionResult = true
-        }
-    }
     
     private func removeDuplicates() async {
         // First clean up duplicate tags

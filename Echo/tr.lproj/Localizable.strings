@@ -253,10 +253,6 @@
 "dev.clear_icloud" = "iCloud verilerini temizle";
 "dev.clear_icloud.confirm" = "iCloud verileri temizlensin mi?";
 "dev.clear_icloud.message" = "Bu, tüm Echo verilerini iCloud'dan kaldıracaktır. Yerel veriler korunacaktır.";
-"dev.clear_local" = "Tüm yerel verileri temizle";
-"dev.clear_local.confirm" = "Tüm yerel veriler temizlensin mi?";
-"dev.clear_local.message" = "Bu TÜM betikleri, kayıtları ve etiketleri silecektir. Bu geri alınamaz!";
-"dev.clear_local.button" = "Her şeyi sil";
 "dev.remove_duplicates" = "Yinelenen etiketleri ve kartları kaldır";
 "dev.remove_duplicates.confirm" = "Yinelenenler kaldırılsın mı?";
 "dev.remove_duplicates.message" = "Bu, yinelenen etiketleri birleştirecek ve aynı içeriğe sahip yinelenen betikleri kaldıracaktır.";
@@ -345,3 +341,23 @@
 "alert.cancel" = "İptal";
 "alert.add" = "Ekle";
 "alert.ok" = "Tamam";
+
+// MARK: - Privacy & Notifications (New Keys)
+"notifications.privacy_mode" = "Gizlilik Modu";
+"notifications.privacy_mode_description" = "Bildirimlerde betik içeriğini gizle";
+"notifications.privacy_settings" = "Gizlilik Ayarları";
+"notifications.privacy_enabled_footer" = "Bildirimler betik metni yerine genel mesajlar gösterecek";
+"notifications.privacy_disabled_footer" = "Bildirimler betik metninin ilk 50 karakterini gösterecek";
+"notifications.privacy_message" = "Yeni hatırlatıcı hazır";
+"settings.on_device_recognition" = "Cihaz İçi Tanıma";
+"settings.on_device_recognition.desc" = "Daha iyi gizlilik için konuşmayı yerel olarak işle";
+
+// MARK: - Error Messages (New Keys)
+"error.invalid_path" = "Geçersiz dosya yolu: %@";
+"error.transcription_failed" = "Transkripsiyon başarısız";
+"error.transcription_unavailable" = "Transkripsiyon hizmeti kullanılamıyor";
+
+// MARK: - Transcription Status (New Keys)
+"transcription.failed" = "Transkripsiyon başarısız";
+"transcription.unavailable" = "Ses tanıma kullanılamıyor";
+"transcription.processing" = "Konuşma işleniyor...";

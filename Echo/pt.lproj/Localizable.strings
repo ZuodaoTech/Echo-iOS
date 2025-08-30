@@ -312,10 +312,6 @@
 "dev.clear_icloud" = "Limpar Dados do iCloud";
 "dev.clear_icloud.confirm" = "Limpar Dados do iCloud?";
 "dev.clear_icloud.message" = "Isso removerá todos os dados do Echo do iCloud. Os dados locais permanecerão intactos.";
-"dev.clear_local" = "Limpar Todos os Dados Locais";
-"dev.clear_local.confirm" = "Limpar Todos os Dados Locais?";
-"dev.clear_local.message" = "Isso excluirá TODOS os scripts, gravações e etiquetas. Isso não pode ser desfeito!";
-"dev.clear_local.button" = "Excluir Tudo";
 "dev.remove_duplicates" = "Remover Etiquetas e Cartões Duplicados";
 "dev.remove_duplicates.confirm" = "Remover Duplicados?";
 "dev.remove_duplicates.message" = "Isso mesclará etiquetas duplicadas e removerá scripts duplicados com o mesmo conteúdo.";
@@ -340,3 +336,23 @@
 // MARK: - Search & Input Placeholders
 "tag.search.placeholder" = "Pesquisar tags...";
 "tag.name.placeholder" = "Nome da tag";
+
+// MARK: - Privacy & Notifications (New Keys)
+"notifications.privacy_mode" = "Modo Privado";
+"notifications.privacy_mode_description" = "Ocultar conteúdo do script nas notificações";
+"notifications.privacy_settings" = "Configurações de Privacidade";
+"notifications.privacy_enabled_footer" = "As notificações mostrarão mensagens genéricas ao invés do texto do script";
+"notifications.privacy_disabled_footer" = "As notificações mostrarão os primeiros 50 caracteres do texto do script";
+"notifications.privacy_message" = "Novo lembrete pronto";
+"settings.on_device_recognition" = "Reconhecimento no Dispositivo";
+"settings.on_device_recognition.desc" = "Processar fala localmente para melhor privacidade";
+
+// MARK: - Error Messages (New Keys)
+"error.invalid_path" = "Caminho de arquivo inválido: %@";
+"error.transcription_failed" = "Transcrição falhou";
+"error.transcription_unavailable" = "Serviço de transcrição indisponível";
+
+// MARK: - Transcription Status (New Keys)
+"transcription.failed" = "Transcrição falhou";
+"transcription.unavailable" = "Reconhecimento de voz indisponível";
+"transcription.processing" = "Processando fala...";

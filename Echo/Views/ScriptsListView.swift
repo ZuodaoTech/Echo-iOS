@@ -77,6 +77,8 @@ struct ScriptsListView: View {
                     } label: {
                         Image(systemName: "line.3.horizontal.decrease.circle")
                     }
+                    .accessibilityIdentifier("filterButton")
+                    .accessibilityLabel("Filter by tags")
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -86,6 +88,8 @@ struct ScriptsListView: View {
                     } label: {
                         Image(systemName: "plus")
                     }
+                    .accessibilityIdentifier("addScriptButton")
+                    .accessibilityLabel("Add new script")
                 }
             }
             .sheet(isPresented: $showingAddScript) {

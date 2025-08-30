@@ -1,0 +1,353 @@
+/* 
+  Localizable.strings (Indonesian)
+  Echo
+  
+  Lokalisasi bahasa Indonesia untuk aplikasi Echo
+*/
+
+// MARK: - Navigation & Titles
+"navigation.cards" = "Kartu";
+"navigation.me" = "Saya";
+"navigation.new_script" = "Kartu Baru";
+"navigation.edit_script" = "Edit Kartu";
+
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Selamat Datang di Echo";
+"welcome.page1.subtitle" = "Evolusi subliminal yang didorong oleh suara Anda sendiri";
+"welcome.page1.description" = "Hidup Anda harus selalu dalam kendali Anda";
+"welcome.page2.title" = "Cara Kerjanya";
+"welcome.page2.subtitle" = "Tiga Langkah Sederhana";
+"welcome.page2.description" = "• Tulis naskah dengan kata-kata Anda sendiri\n• Rekam dengan suara Anda sendiri\n• Dengarkan berulang untuk membuatnya subliminal";
+"welcome.page3.title" = "ANDA adalah KUNCINYA";
+"welcome.page3.subtitle" = "Otak Anda paling menyukai diri Anda sendiri";
+"welcome.page3.description" = "Keakraban adalah kuncinya: kata-kata dan suara Anda sendiri lebih mudah diterjemahkan menjadi tindakan Anda";
+"welcome.button.continue" = "Lanjutkan";
+"welcome.button.getStarted" = "Mulai";
+"welcome.button.skip" = "Lewati";
+
+
+// MARK: - Tags
+"tag.untagged" = "Tanpa Tag";
+"tag.edit" = "Edit Tag";
+"tag.delete.confirm.title" = "Hapus Tag";
+"tag.delete.confirm.message" = "Tag ini digunakan oleh %d naskah. Menghapusnya akan menghapus tag dari naskah-naskah tersebut.";
+"tag.delete.confirm.empty" = "Tag ini tidak digunakan oleh naskah manapun. Apakah Anda yakin ingin menghapusnya?";
+"tag.auto_cleanup" = "Hapus Tag yang Tidak Digunakan Secara Otomatis";
+"tag.select" = "Pilih Tag";
+"tag.new" = "Tag Baru";
+"tag.label" = "Tag";
+"tag.none" = "Tidak Ada";
+"tag.count_selected" = "%d dipilih";
+"tag.breaking_bad_habits" = "Memutus Kebiasaan Buruk";
+"tag.building_good_habits" = "Membangun Kebiasaan Baik";
+"tag.appropriate_positivity" = "Positivitas yang Tepat";
+
+// MARK: - Script Card
+"script.play_count" = "%d kali putar";
+"script.transcript" = "Transkrip";
+"script.recording" = "Rekaman";
+"script.no_recording" = "Tidak ada rekaman";
+"script.repetitions" = "Pengulangan";
+"script.interval" = "Interval";
+"script.private_mode" = "Mode Pribadi";
+"script.delete" = "Hapus Kartu";
+"script.delete.confirm.title" = "Hapus Kartu";
+"script.delete.confirm.message" = "Apakah Anda yakin ingin menghapus naskah ini? Tindakan ini tidak dapat dibatalkan.";
+
+// MARK: - Settings
+"settings.app_language" = "Bahasa Aplikasi";
+"settings.display_language" = "Bahasa Tampilan";
+"settings.restart_to_apply" = "Mulai ulang aplikasi untuk menerapkan perubahan bahasa";
+"settings.default_settings" = "Pengaturan Default";
+"settings.script_preferences" = "Preferensi Kartu";
+"settings.transcription" = "Transkripsi";
+"settings.recording" = "Perekaman";
+"settings.backup_sync" = "Cadangan & Sinkronisasi";
+"settings.about" = "Tentang";
+"settings.support" = "Dukungan";
+
+"settings.private_mode.title" = "Mode Pribadi";
+"settings.private_mode.info" = "Audio hanya diputar melalui earphone";
+"settings.private_mode.alert.title" = "Mode Pribadi";
+"settings.private_mode.alert.message" = "Ketika Mode Pribadi diaktifkan, rekaman audio hanya akan diputar melalui earphone atau headphone yang terhubung. Ini mencegah pemutaran tidak sengaja melalui speaker di tempat umum.";
+
+"settings.character_guidance" = "Panduan Karakter";
+"settings.recommended_length" = "Panjang yang direkomendasikan";
+"settings.when_exceeded" = "Ketika terlampaui";
+"settings.just_warn" = "Beri peringatan saja";
+"settings.show_tip_only" = "Tampilkan tip saja";
+"settings.character_guidance.info" = "Naskah yang lebih pendek lebih mudah diingat dan lebih berpengaruh";
+
+"settings.default_language" = "Bahasa Default";
+"settings.voice_enhancement" = "Peningkatan Suara";
+"settings.voice_enhancement.desc" = "Mengurangi kebisingan latar belakang dan gema";
+"settings.auto_trim_silence" = "Potong Keheningan Otomatis";
+"settings.auto_trim_silence.desc" = "Hapus keheningan di awal dan akhir";
+"settings.trim_sensitivity" = "Sensitivitas Pemotongan";
+"settings.on_device_recognition" = "Pengenalan di Perangkat";
+"settings.on_device_recognition.desc" = "Proses ucapan secara lokal untuk privasi yang lebih baik";
+
+"settings.icloud_sync" = "Sinkronisasi iCloud";
+"settings.icloud_sync.desc" = "Sinkronkan kartu di seluruh perangkat Anda";
+"settings.icloud_sync.info" = "Teks dan pengaturan disinkronkan secara otomatis. File audio tetap lokal.";
+"settings.export_scripts" = "Ekspor Kartu";
+"settings.import_scripts" = "Impor Kartu";
+
+"settings.version" = "Versi";
+"settings.build" = "Build";
+"settings.rate_github" = "Beri Rating di GitHub";
+"settings.contact_support" = "Hubungi Dukungan";
+
+// MARK: - Recording
+"recording.start" = "Mulai Merekam";
+"recording.stop" = "Berhenti Merekam";
+"recording.re_record" = "Rekam Ulang";
+"recording.saved" = "Rekaman tersimpan";
+"recording.delete" = "Hapus";
+"recording.preview" = "Pratinjau";
+"recording.playing_preview" = "Memutar pratinjau...";
+"recording.preview_paused" = "Pratinjau dijeda";
+"recording.plays_once" = "(diputar sekali)";
+"recording.processing" = "Memproses audio...";
+"recording.listening" = "Mendengarkan...";
+"recording.speaking" = "Berbicara...";
+"recording.transcribing" = "Mentranskripsi...";
+"recording.re_transcribing" = "Mentranskripsi ulang...";
+"recording.microphone_access" = "Akses Mikrofon";
+"recording.microphone_access.message" = "Silakan berikan akses mikrofon di Pengaturan untuk merekam audio";
+
+// MARK: - Processing Messages  
+"processing.stopping_recording" = "Menghentikan perekaman...";
+"processing.trimming_silence" = "Memotong keheningan...";
+"processing.transcribing" = "Mentranskripsi audio...";
+
+// MARK: - Character Guidance
+"guidance.trim_characters" = "Pertimbangkan untuk memotong %d karakter agar lebih mudah diingat";
+"guidance.script_over" = "Naskah melebihi %d karakter. Coba lebih ringkas";
+"guidance.script_long" = "Naskah cukup panjang.";
+"guidance.enter_script" = "Masukkan naskah percakapan diri Anda di sini...";
+
+// MARK: - Notifications
+"notifications.enable" = "Aktifkan Notifikasi";
+"notifications.frequency" = "Frekuensi";
+"notifications.frequency.high" = "Tinggi (1-2 kali/jam)";
+"notifications.frequency.medium" = "Sedang (setiap 2 jam)";
+"notifications.frequency.low" = "Rendah (1-2 kali/hari)";
+"notifications.daytime_only" = "Notifikasi hanya di siang hari (8 pagi - 9 malam)";
+"notifications.settings_title" = "Pengaturan Notifikasi";
+"notifications.max_cards" = "Maksimal kartu dengan notifikasi";
+"notifications.burden_warning" = "Terlalu banyak notifikasi dapat menjadi beban dan mengurangi efektivitasnya";
+"notifications.global_settings" = "Pengaturan Global";
+"notifications.max_cards_footer" = "Batasi berapa banyak kartu yang dapat mengirim notifikasi secara bersamaan";
+"notifications.no_cards_enabled" = "Tidak ada kartu yang mengaktifkan notifikasi";
+"notifications.enabled_cards" = "Kartu Diaktifkan (%d)";
+"notifications.request_permission" = "Aktifkan Notifikasi";
+"notifications.select_to_disable" = "Pilih %d kartu untuk menonaktifkan notifikasi";
+"notifications.select_cards" = "Pilih Kartu";
+"notifications.reminder_title" = "Saatnya Percakapan Diri";
+"notifications.privacy_message" = "Pengingat baru siap";
+"notifications.action_play" = "Putar Audio";
+"notifications.action_done" = "Tandai Selesai";
+"notifications.privacy_mode" = "Mode Privasi";
+"notifications.privacy_mode_description" = "Sembunyikan konten naskah dalam notifikasi";
+"notifications.privacy_settings" = "Pengaturan Privasi";
+"notifications.privacy_enabled_footer" = "Notifikasi akan menampilkan pesan umum alih-alih teks naskah";
+"notifications.privacy_disabled_footer" = "Notifikasi akan menampilkan 50 karakter pertama dari teks naskah";
+
+// MARK: - Common Actions
+"chars" = "karakter";
+"action.done" = "Selesai";
+"action.cancel" = "Batal";
+"action.delete" = "Hapus";
+"action.add" = "Tambah";
+"action.save" = "Simpan";
+"action.ok" = "OK";
+"action.got_it" = "Mengerti";
+"action.copy" = "Salin";
+"action.use_as_script" = "Gunakan sebagai Naskah";
+"action.share" = "Bagikan";
+"action.edit" = "Edit";
+
+// MARK: - Errors
+"error.title" = "Kesalahan";
+"error.save" = "Gagal menyimpan kartu";
+"error.database" = "Kesalahan database";
+"error.restart_app" = "Silakan mulai ulang aplikasi";
+"error.try_again" = "Silakan coba lagi";
+"error.import" = "Impor gagal";
+"error.export" = "Ekspor gagal";
+"error.private_mode" = "Silakan sambungkan earphone untuk memutar audio";
+"error.recording_failed" = "Gagal merekam audio";
+"error.playback_failed" = "Gagal memutar audio";
+"error.no_recording" = "Tidak ada rekaman tersedia";
+"error.permission_denied" = "Izin mikrofon ditolak";
+"error.invalid_script" = "Naskah tidak lagi tersedia";
+"error.file_not_found" = "File tidak ditemukan: %@";
+"error.insufficient_disk_space" = "Ruang penyimpanan tidak cukup. Silakan kosongkan ruang dan coba lagi.";
+"error.file_permission_denied" = "Izin ditolak. Tidak dapat mengakses file.";
+"error.file_corrupted" = "File rusak: %@";
+"error.directory_creation_failed" = "Gagal membuat direktori rekaman";
+"error.file_copy_failed" = "Gagal menyalin file: %@";
+"error.file_move_failed" = "Gagal memindahkan file: %@";
+"error.file_delete_failed" = "Gagal menghapus file: %@";
+"error.invalid_state" = "Status audio tidak valid: %@";
+"error.invalid_path" = "Path file tidak valid: %@";
+"error.transcription_failed" = "Transkripsi gagal";
+"error.transcription_unavailable" = "Layanan transkripsi tidak tersedia";
+
+// MARK: - Error Suggestions
+"error.suggestion.free_space" = "Hapus beberapa rekaman atau file lain untuk mengosongkan ruang.";
+"error.suggestion.restart_app" = "Coba mulai ulang aplikasi.";
+"error.suggestion.rerecord" = "Coba rekam lagi.";
+
+// MARK: - Validation Messages
+"validation.title" = "Kesalahan Validasi";
+"validation.empty_script" = "Silakan masukkan naskah sebelum menyimpan";
+"validation.script_too_short" = "Naskah harus minimal 5 karakter";
+"validation.script_too_long" = "Naskah melebihi panjang maksimal 500 karakter";
+"validation.exceeds_character_limit" = "Naskah melebihi batas karakter %d";
+"validation.audio_too_short" = "Rekaman harus minimal 1 detik";
+"validation.audio_too_long" = "Rekaman melebihi durasi maksimal 60 detik";
+"validation.audio_processing" = "Audio masih diproses, silakan tunggu";
+"validation.recording_in_progress" = "Perekaman sedang berlangsung, silakan hentikan terlebih dahulu";
+
+// MARK: - Time Units
+"time.seconds" = "%@ detik";
+"time.times_per_hour" = "1-2 kali/jam";
+"time.every_hours" = "setiap 2 jam";
+"time.times_per_day" = "1-2 kali/hari";
+
+// MARK: - Sensitivity Levels
+"sensitivity.low" = "Rendah";
+"sensitivity.medium" = "Sedang";
+"sensitivity.high" = "Tinggi";
+"sensitivity.low.desc" = "Butuh suara lebih keras • Buffer 0,5 detik";
+"sensitivity.medium.desc" = "Deteksi seimbang • Buffer 0,3 detik";
+"sensitivity.high.desc" = "Mendeteksi bisikan • Buffer 0,15 detik";
+
+// MARK: - Sample Scripts
+"sample.smoking" = "Saya tidak pernah merokok, karena berbau tidak sedap, dan saya benci dikendalikan.";
+"sample.bedtime" = "Saya selalu tidur sebelum jam 10 malam, karena lebih sehat, dan saya suka bangun dengan energi yang luar biasa.";
+"sample.mistakes" = "Saya membuat beberapa kesalahan, tetapi saya juga melakukan beberapa hal dengan baik. Kesalahan adalah bagian normal dari pembelajaran, dan saya dapat menggunakannya sebagai kesempatan untuk berkembang.";
+// MARK: - Languages
+"language.english" = "Bahasa Inggris";
+"language.chinese_simplified" = "Bahasa Tionghoa (Disederhanakan)";
+"language.chinese_traditional" = "Bahasa Tionghoa (Tradisional)";
+"language.spanish" = "Bahasa Spanyol";
+"language.french" = "Bahasa Prancis";
+"language.german" = "Bahasa Jerman";
+"language.japanese" = "Bahasa Jepang";
+"language.korean" = "Bahasa Korea";
+"language.portuguese" = "Bahasa Portugis";
+"language.russian" = "Bahasa Rusia";
+"language.italian" = "Bahasa Italia";
+"language.dutch" = "Bahasa Belanda";
+"language.swedish" = "Bahasa Swedia";
+"language.norwegian" = "Bahasa Norwegia";
+"language.danish" = "Bahasa Denmark";
+"language.polish" = "Bahasa Polandia";
+"language.turkish" = "Bahasa Turki";
+"language.arabic" = "Bahasa Arab";
+"language.hindi" = "Bahasa Hindi";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Bundel Echo";
+"export.format.text" = "Teks Biasa";
+"export.format.json" = "JSON";
+"export.include_audio" = "Sertakan File Audio";
+"export.format_label" = "Format";
+"export.audio_size_warning" = "File audio akan meningkatkan ukuran ekspor";
+"export.options" = "Opsi Ekspor";
+"export.select_scripts" = "Pilih Kartu";
+"export.scripts_selected" = "Kartu (%d dipilih)";
+"export.error_title" = "Kesalahan Ekspor";
+"export.error_unknown" = "Terjadi kesalahan yang tidak diketahui";
+"import.complete_title" = "Impor Selesai";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Tip: Ucapkan 'titik', 'koma', atau 'tanda tanya' untuk tanda baca";
+"recording.no_recording_message" = "Silakan tekan lama untuk edit dan rekam audio terlebih dahulu";
+"recording.time_warning" = "%d detik tersisa";
+"recording.max_duration_reached" = "Durasi maksimal tercapai";
+
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Sinkronkan kartu di seluruh perangkat Anda";
+
+// MARK: - Empty State
+"empty.no_cards" = "Belum Ada Kartu";
+"empty.tap_to_create" = "Ketuk tombol + untuk membuat kartu percakapan diri pertama Anda";
+
+// MARK: - Filter
+"filter.title" = "Filter berdasarkan Tag";
+"filter.all_cards" = "Semua Kartu";
+"filter.tags_section" = "Tag";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Sensitivitas";
+"picker.select_language" = "Pilih Bahasa";
+"picker.display_language" = "Bahasa Tampilan";
+"settings.language_settings" = "Pengaturan Bahasa";
+"language.system_default" = "Default Sistem";
+"settings.card_settings" = "Pengaturan Kartu";
+"settings.card_defaults" = "Default Kartu";
+"settings.about_support" = "Tentang & Dukungan";
+"settings.sync" = "Sinkronisasi";
+"settings.backup" = "Cadangan";
+"script.label" = "Naskah";
+
+// MARK: - Consolidated Me Page Settings
+"settings.language" = "Bahasa";
+"settings.card_preferences" = "Preferensi Kartu";
+"settings.character_limit" = "Batas Karakter";
+"settings.limit_behavior" = "Perilaku Melebihi Batas";
+"settings.limit_behavior.warn" = "Peringatan";
+"settings.limit_behavior.strict" = "Ketat";
+"settings.notifications" = "Notifikasi";
+"settings.max_notification_cards" = "Maksimal Kartu Notifikasi";
+"settings.notification_cards_count" = "%d kartu memiliki notifikasi yang diaktifkan";
+"settings.notification_cards.footer" = "Batasi berapa banyak kartu yang dapat mengirim notifikasi secara bersamaan";
+"settings.tags" = "Tag";
+"settings.auto_cleanup_tags" = "Pembersihan Otomatis Tag yang Tidak Digunakan";
+"settings.tags.footer" = "Kontrol bagaimana tag dikelola dalam koleksi Anda";
+"settings.notification_selection.message" = "Pilih hingga %d kartu untuk tetap mengaktifkan notifikasi";
+"settings.notification_selection.count" = "%d dari %d kartu dipilih";
+"settings.select_notification_cards" = "Pilih Kartu Notifikasi";
+
+// MARK: - Developer Tools
+"dev.title" = "🛠️ Alat Pengembang";
+"dev.warning" = "⚠️ Bahasa Tampilan memerlukan restart aplikasi untuk berlaku.";
+"dev.destructive_actions" = "⚠️ Tindakan Destruktif";
+"dev.destructive_warning" = "Tindakan ini bersifat destruktif dan tidak dapat dibatalkan.";
+"dev.clear_icloud" = "Hapus Data iCloud";
+"dev.clear_icloud.confirm" = "Hapus Data iCloud?";
+"dev.clear_icloud.message" = "Ini akan menghapus semua data Echo dari iCloud. Data lokal akan tetap utuh.";
+"dev.remove_duplicates" = "Hapus Tag & Kartu Duplikat";
+"dev.remove_duplicates.confirm" = "Hapus Duplikat?";
+"dev.remove_duplicates.message" = "Ini akan menggabungkan tag duplikat dan menghapus naskah duplikat dengan konten yang sama.";
+"dev.remove_duplicates.button" = "Hapus";
+"dev.operation_complete" = "Operasi Selesai";
+"dev.clear" = "Hapus";
+
+// MARK: - Search & Input Placeholders
+"tag.search.placeholder" = "Cari tag...";
+"tag.name.placeholder" = "Nama tag";
+
+// MARK: - Formatting
+"format.seconds_of_60" = "%d detik / 60 detik";
+"format.repetitions" = "%dx";
+"format.progress" = "%d/%d";
+"format.plus_count" = "+%d";
+"format.interval_seconds" = "%.1f detik";
+
+// MARK: - Alerts
+"alert.new_tag" = "Tag Baru";
+"alert.cancel" = "Batal";
+"alert.add" = "Tambah";
+"alert.remove" = "Hapus";
+"alert.ok" = "OK";
+
+// MARK: - Transcription Status
+"transcription.failed" = "Transkripsi gagal";
+"transcription.unavailable" = "Pengenalan suara tidak tersedia";
+"transcription.processing" = "Memproses suara...";

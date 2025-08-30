@@ -253,10 +253,6 @@
 "dev.clear_icloud" = "Очистить данные iCloud";
 "dev.clear_icloud.confirm" = "Очистить данные iCloud?";
 "dev.clear_icloud.message" = "Это удалит все данные Echo из iCloud. Локальные данные останутся нетронутыми.";
-"dev.clear_local" = "Очистить все локальные данные";
-"dev.clear_local.confirm" = "Очистить все локальные данные?";
-"dev.clear_local.message" = "Это удалит ВСЕ скрипты, записи и теги. Это действие нельзя отменить!";
-"dev.clear_local.button" = "Удалить всё";
 "dev.remove_duplicates" = "Удалить дубликаты тегов и карточек";
 "dev.remove_duplicates.confirm" = "Удалить дубликаты?";
 "dev.remove_duplicates.message" = "Это объединит дублирующиеся теги и удалит дублирующиеся скрипты с одинаковым содержимым.";
@@ -345,3 +341,23 @@
 "alert.cancel" = "Отмена";
 "alert.add" = "Добавить";
 "alert.ok" = "OK";
+
+// MARK: - Privacy & Notifications (New Keys)
+"notifications.privacy_mode" = "Приватный режим";
+"notifications.privacy_mode_description" = "Скрыть содержимое скрипта в уведомлениях";
+"notifications.privacy_settings" = "Настройки конфиденциальности";
+"notifications.privacy_enabled_footer" = "Уведомления будут показывать общие сообщения вместо текста скрипта";
+"notifications.privacy_disabled_footer" = "Уведомления будут показывать первые 50 символов текста скрипта";
+"notifications.privacy_message" = "Новое напоминание готово";
+"settings.on_device_recognition" = "Распознавание на устройстве";
+"settings.on_device_recognition.desc" = "Обрабатывать речь локально для лучшей конфиденциальности";
+
+// MARK: - Error Messages (New Keys)
+"error.invalid_path" = "Недопустимый путь к файлу: %@";
+"error.transcription_failed" = "Ошибка транскрипции";
+"error.transcription_unavailable" = "Служба транскрипции недоступна";
+
+// MARK: - Transcription Status (New Keys)
+"transcription.failed" = "Ошибка транскрипции";
+"transcription.unavailable" = "Распознавание речи недоступно";
+"transcription.processing" = "Обработка речи...";

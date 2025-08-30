@@ -312,10 +312,6 @@
 "dev.clear_icloud" = "iCloud Daten Löschen";
 "dev.clear_icloud.confirm" = "iCloud Daten Löschen?";
 "dev.clear_icloud.message" = "Dies entfernt alle Echo Daten aus iCloud. Lokale Daten bleiben erhalten.";
-"dev.clear_local" = "Alle Lokalen Daten Löschen";
-"dev.clear_local.confirm" = "Alle Lokalen Daten Löschen?";
-"dev.clear_local.message" = "Dies löscht ALLE Skripte, Aufnahmen und Tags. Dies kann nicht rückgängig gemacht werden!";
-"dev.clear_local.button" = "Alles Löschen";
 "dev.remove_duplicates" = "Doppelte Tags & Karten Entfernen";
 "dev.remove_duplicates.confirm" = "Duplikate Entfernen?";
 "dev.remove_duplicates.message" = "Dies wird doppelte Tags zusammenfügen und doppelte Skripte mit gleichem Inhalt entfernen.";
@@ -340,3 +336,23 @@
 // MARK: - Search & Input Placeholders
 "tag.search.placeholder" = "Tags suchen...";
 "tag.name.placeholder" = "Tag-Name";
+
+// MARK: - Privacy & Notifications (New Keys)
+"notifications.privacy_mode" = "Privatsphären-Modus";
+"notifications.privacy_mode_description" = "Skript-Inhalte in Benachrichtigungen ausblenden";
+"notifications.privacy_settings" = "Datenschutz-Einstellungen";
+"notifications.privacy_enabled_footer" = "Benachrichtigungen zeigen allgemeine Nachrichten anstelle des Skript-Texts";
+"notifications.privacy_disabled_footer" = "Benachrichtigungen zeigen die ersten 50 Zeichen des Skript-Texts";
+"notifications.privacy_message" = "Neue Erinnerung bereit";
+"settings.on_device_recognition" = "Geräteinterne Erkennung";
+"settings.on_device_recognition.desc" = "Sprache lokal verarbeiten für besseren Datenschutz";
+
+// MARK: - Error Messages (New Keys)
+"error.invalid_path" = "Ungültiger Dateipfad: %@";
+"error.transcription_failed" = "Transkription fehlgeschlagen";
+"error.transcription_unavailable" = "Transkriptionsdienst nicht verfügbar";
+
+// MARK: - Transcription Status (New Keys)
+"transcription.failed" = "Transkription fehlgeschlagen";
+"transcription.unavailable" = "Spracherkennung nicht verfügbar";
+"transcription.processing" = "Sprache wird verarbeitet...";

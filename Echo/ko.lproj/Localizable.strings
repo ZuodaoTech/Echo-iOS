@@ -309,10 +309,6 @@
 "dev.clear_icloud" = "iCloud 데이터 삭제";
 "dev.clear_icloud.confirm" = "iCloud 데이터를 삭제하시겠습니까?";
 "dev.clear_icloud.message" = "iCloud의 모든 Echo 데이터가 삭제됩니다. 로컬 데이터는 유지됩니다.";
-"dev.clear_local" = "모든 로컬 데이터 삭제";
-"dev.clear_local.confirm" = "모든 로컬 데이터를 삭제하시겠습니까?";
-"dev.clear_local.message" = "모든 스크립트, 녹음, 태그가 삭제됩니다. 되돌릴 수 없습니다!";
-"dev.clear_local.button" = "모두 삭제";
 "dev.remove_duplicates" = "중복 태그 및 카드 제거";
 "dev.remove_duplicates.confirm" = "중복을 제거하시겠습니까?";
 "dev.remove_duplicates.message" = "중복 태그를 병합하고 같은 내용의 중복 스크립트를 제거합니다.";
@@ -337,3 +333,23 @@
 // MARK: - Search & Input Placeholders
 "tag.search.placeholder" = "태그 검색...";
 "tag.name.placeholder" = "태그 이름";
+
+// MARK: - Privacy & Notifications (New Keys)
+"notifications.privacy_mode" = "프라이버시 모드";
+"notifications.privacy_mode_description" = "알림에서 스크립트 내용 숨기기";
+"notifications.privacy_settings" = "개인정보 설정";
+"notifications.privacy_enabled_footer" = "알림은 스크립트 텍스트 대신 일반적인 메시지를 표시합니다";
+"notifications.privacy_disabled_footer" = "알림은 스크립트 텍스트의 처음 50자를 표시합니다";
+"notifications.privacy_message" = "새 알림이 준비되었습니다";
+"settings.on_device_recognition" = "기기 내 인식";
+"settings.on_device_recognition.desc" = "더 나은 개인정보 보호를 위해 음성을 로컬에서 처리";
+
+// MARK: - Error Messages (New Keys)
+"error.invalid_path" = "유효하지 않은 파일 경로: %@";
+"error.transcription_failed" = "음성 변환 실패";
+"error.transcription_unavailable" = "음성 변환 서비스를 사용할 수 없음";
+
+// MARK: - Transcription Status (New Keys)
+"transcription.failed" = "음성 변환 실패";
+"transcription.unavailable" = "음성 인식을 사용할 수 없음";
+"transcription.processing" = "음성 처리 중...";

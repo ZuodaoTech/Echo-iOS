@@ -319,6 +319,40 @@ class PersistenceController: ObservableObject {
         }
     }
     
+    // MARK: - iCloud Toggle Handling
+    
+    /// Reconfigure and restart Core Data when iCloud sync is toggled
+    func restartForICloudToggle() async {
+        SecureLogger.info("Restarting Core Data for iCloud toggle...")
+        
+        // Save any pending changes first
+        await MainActor.run {
+            if container.viewContext.hasChanges {
+                try? container.viewContext.save()
+            }
+        }
+        
+        // Reset the loading state
+        await MainActor.run {
+            self.isReady = false
+            self.dataLoadingState = .staticSamples
+        }
+        
+        // Destroy current container
+        _container = nil
+        
+        // Create and configure new container
+        let newContainer = NSPersistentCloudKitContainer(name: "Echo")
+        _container = newContainer
+        configureContainer()
+        
+        // Reload with new configuration
+        let iCloudEnabled = UserDefaults.standard.bool(forKey: "iCloudSyncEnabled")
+        await loadStores(inMemory: false, iCloudEnabled: iCloudEnabled)
+        
+        SecureLogger.info("Core Data restart completed for iCloud toggle")
+    }
+    
     // MARK: - Sample Data Import
     
     /// Import sample cards if this is a fresh install

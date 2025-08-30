@@ -1,0 +1,353 @@
+/* 
+  Localizable.strings (Vietnamese)
+  Echo
+  
+  Bản dịch tiếng Việt cho ứng dụng Echo
+*/
+
+// MARK: - Navigation & Titles
+"navigation.cards" = "Thẻ";
+"navigation.me" = "Tôi";
+"navigation.new_script" = "Thẻ Mới";
+"navigation.edit_script" = "Chỉnh Sửa Thẻ";
+
+// MARK: - Welcome Screen
+"welcome.page1.title" = "Chào mừng đến với Echo";
+"welcome.page1.subtitle" = "Sự tiến hóa tiềm thức được thúc đẩy bởi chính giọng nói của bạn";
+"welcome.page1.description" = "Cuộc sống của bạn phải luôn nằm trong tầm kiểm soát của bạn";
+"welcome.page2.title" = "Cách Thức Hoạt Động";
+"welcome.page2.subtitle" = "Ba Bước Đơn Giản";
+"welcome.page2.description" = "• Viết kịch bản bằng lời nói của riêng bạn\n• Ghi âm bằng giọng nói của riêng bạn\n• Nghe lặp đi lặp lại để biến thành tiềm thức";
+"welcome.page3.title" = "BẠN là CHÌA KHÓA";
+"welcome.page3.subtitle" = "Não bộ của bạn yêu thương bản thân bạn nhất";
+"welcome.page3.description" = "Sự quen thuộc là chìa khóa: lời nói và giọng nói của riêng bạn dễ dàng chuyển hóa thành hành động của bạn hơn";
+"welcome.button.continue" = "Tiếp tục";
+"welcome.button.getStarted" = "Bắt đầu";
+"welcome.button.skip" = "Bỏ qua";
+
+
+// MARK: - Tags
+"tag.untagged" = "Không có thẻ";
+"tag.edit" = "Chỉnh sửa thẻ";
+"tag.delete.confirm.title" = "Xóa thẻ";
+"tag.delete.confirm.message" = "Thẻ này được sử dụng bởi %d kịch bản. Việc xóa sẽ loại bỏ thẻ khỏi các kịch bản đó.";
+"tag.delete.confirm.empty" = "Thẻ này không được sử dụng bởi kịch bản nào. Bạn có chắc chắn muốn xóa không?";
+"tag.auto_cleanup" = "Tự động xóa các thẻ không sử dụng";
+"tag.select" = "Chọn thẻ";
+"tag.new" = "Thẻ mới";
+"tag.label" = "Thẻ";
+"tag.none" = "Không có";
+"tag.count_selected" = "%d được chọn";
+"tag.breaking_bad_habits" = "Phá bỏ thói quen xấu";
+"tag.building_good_habits" = "Xây dựng thói quen tốt";
+"tag.appropriate_positivity" = "Tích cực phù hợp";
+
+// MARK: - Script Card
+"script.play_count" = "%d lần phát";
+"script.transcript" = "Bản ghi âm";
+"script.recording" = "Ghi âm";
+"script.no_recording" = "Không có bản ghi";
+"script.repetitions" = "Lặp lại";
+"script.interval" = "Khoảng cách";
+"script.private_mode" = "Chế độ riêng tư";
+"script.delete" = "Xóa thẻ";
+"script.delete.confirm.title" = "Xóa thẻ";
+"script.delete.confirm.message" = "Bạn có chắc chắn muốn xóa kịch bản này không? Hành động này không thể hoàn tác.";
+
+// MARK: - Settings
+"settings.app_language" = "Ngôn ngữ ứng dụng";
+"settings.display_language" = "Ngôn ngữ hiển thị";
+"settings.restart_to_apply" = "Khởi động lại ứng dụng để áp dụng thay đổi ngôn ngữ";
+"settings.default_settings" = "Cài đặt mặc định";
+"settings.script_preferences" = "Tùy chọn thẻ";
+"settings.transcription" = "Phiên âm";
+"settings.recording" = "Ghi âm";
+"settings.backup_sync" = "Sao lưu & Đồng bộ";
+"settings.about" = "Giới thiệu";
+"settings.support" = "Hỗ trợ";
+
+"settings.private_mode.title" = "Chế độ riêng tư";
+"settings.private_mode.info" = "Âm thanh chỉ phát qua tai nghe";
+"settings.private_mode.alert.title" = "Chế độ riêng tư";
+"settings.private_mode.alert.message" = "Khi bật chế độ riêng tư, các bản ghi âm sẽ chỉ phát qua tai nghe hoặc headphone đã kết nối. Điều này ngăn chặn việc phát âm thanh qua loa một cách vô tình ở nơi công cộng.";
+
+"settings.character_guidance" = "Hướng dẫn ký tự";
+"settings.recommended_length" = "Độ dài khuyến nghị";
+"settings.when_exceeded" = "Khi vượt quá";
+"settings.just_warn" = "Chỉ cảnh báo";
+"settings.show_tip_only" = "Chỉ hiển thị gợi ý";
+"settings.character_guidance.info" = "Kịch bản ngắn hơn dễ nhớ và có tác động mạnh hơn";
+
+"settings.default_language" = "Ngôn ngữ mặc định";
+"settings.voice_enhancement" = "Cải thiện giọng nói";
+"settings.voice_enhancement.desc" = "Giảm tiếng ồn nền và tiếng vọng";
+"settings.auto_trim_silence" = "Tự động cắt khoảng im lặng";
+"settings.auto_trim_silence.desc" = "Loại bỏ khoảng im lặng ở đầu và cuối";
+"settings.trim_sensitivity" = "Độ nhạy cắt";
+"settings.on_device_recognition" = "Nhận dạng trên thiết bị";
+"settings.on_device_recognition.desc" = "Xử lý giọng nói cục bộ để bảo mật tốt hơn";
+
+"settings.icloud_sync" = "Đồng bộ iCloud";
+"settings.icloud_sync.desc" = "Đồng bộ thẻ trên các thiết bị của bạn";
+"settings.icloud_sync.info" = "Văn bản và cài đặt đồng bộ tự động. Tệp âm thanh vẫn lưu cục bộ.";
+"settings.export_scripts" = "Xuất thẻ";
+"settings.import_scripts" = "Nhập thẻ";
+
+"settings.version" = "Phiên bản";
+"settings.build" = "Bản dựng";
+"settings.rate_github" = "Đánh giá trên GitHub";
+"settings.contact_support" = "Liên hệ hỗ trợ";
+
+// MARK: - Recording
+"recording.start" = "Bắt đầu ghi";
+"recording.stop" = "Dừng ghi";
+"recording.re_record" = "Ghi lại";
+"recording.saved" = "Đã lưu bản ghi";
+"recording.delete" = "Xóa";
+"recording.preview" = "Xem trước";
+"recording.playing_preview" = "Đang phát xem trước...";
+"recording.preview_paused" = "Xem trước đã tạm dừng";
+"recording.plays_once" = "(phát một lần)";
+"recording.processing" = "Đang xử lý âm thanh...";
+"recording.listening" = "Đang nghe...";
+"recording.speaking" = "Đang nói...";
+"recording.transcribing" = "Đang phiên âm...";
+"recording.re_transcribing" = "Đang phiên âm lại...";
+"recording.microphone_access" = "Quyền truy cập microphone";
+"recording.microphone_access.message" = "Vui lòng cấp quyền truy cập microphone trong Cài đặt để ghi âm";
+
+// MARK: - Processing Messages  
+"processing.stopping_recording" = "Đang dừng ghi âm...";
+"processing.trimming_silence" = "Đang cắt khoảng im lặng...";
+"processing.transcribing" = "Đang phiên âm...";
+
+// MARK: - Character Guidance
+"guidance.trim_characters" = "Hãy cân nhắc cắt bớt %d ký tự để dễ nhớ hơn";
+"guidance.script_over" = "Kịch bản vượt quá %d ký tự. Hãy thử ngắn gọn hơn";
+"guidance.script_long" = "Kịch bản khá dài.";
+"guidance.enter_script" = "Nhập kịch bản tự nói chuyện với bản thân ở đây...";
+
+// MARK: - Notifications
+"notifications.enable" = "Bật thông báo";
+"notifications.frequency" = "Tần suất";
+"notifications.frequency.high" = "Cao (1-2 lần/giờ)";
+"notifications.frequency.medium" = "Trung bình (mỗi 2 giờ)";
+"notifications.frequency.low" = "Thấp (1-2 lần/ngày)";
+"notifications.daytime_only" = "Thông báo chỉ trong ban ngày (8 sáng - 9 tối)";
+"notifications.settings_title" = "Cài đặt thông báo";
+"notifications.max_cards" = "Số thẻ tối đa có thông báo";
+"notifications.burden_warning" = "Quá nhiều thông báo có thể trở thành gánh nặng và giảm hiệu quả";
+"notifications.global_settings" = "Cài đặt toàn cục";
+"notifications.max_cards_footer" = "Giới hạn số lượng thẻ có thể gửi thông báo cùng lúc";
+"notifications.no_cards_enabled" = "Không có thẻ nào bật thông báo";
+"notifications.enabled_cards" = "Thẻ đã bật (%d)";
+"notifications.request_permission" = "Bật thông báo";
+"notifications.select_to_disable" = "Chọn %d thẻ để tắt thông báo";
+"notifications.select_cards" = "Chọn thẻ";
+"notifications.reminder_title" = "Đến giờ tự nói chuyện";
+"notifications.privacy_message" = "Lời nhắc mới đã sẵn sàng";
+"notifications.action_play" = "Phát âm thanh";
+"notifications.action_done" = "Đánh dấu hoàn thành";
+"notifications.privacy_mode" = "Chế độ riêng tư";
+"notifications.privacy_mode_description" = "Ẩn nội dung kịch bản trong thông báo";
+"notifications.privacy_settings" = "Cài đặt riêng tư";
+"notifications.privacy_enabled_footer" = "Thông báo sẽ hiển thị tin nhắn chung thay vì văn bản kịch bản";
+"notifications.privacy_disabled_footer" = "Thông báo sẽ hiển thị 50 ký tự đầu của văn bản kịch bản";
+
+// MARK: - Common Actions
+"chars" = "ký tự";
+"action.done" = "Hoàn thành";
+"action.cancel" = "Hủy";
+"action.delete" = "Xóa";
+"action.add" = "Thêm";
+"action.save" = "Lưu";
+"action.ok" = "OK";
+"action.got_it" = "Hiểu rồi";
+"action.copy" = "Sao chép";
+"action.use_as_script" = "Dùng làm kịch bản";
+"action.share" = "Chia sẻ";
+"action.edit" = "Chỉnh sửa";
+
+// MARK: - Errors
+"error.title" = "Lỗi";
+"error.save" = "Không thể lưu thẻ";
+"error.database" = "Lỗi cơ sở dữ liệu";
+"error.restart_app" = "Vui lòng khởi động lại ứng dụng";
+"error.try_again" = "Vui lòng thử lại";
+"error.import" = "Nhập thất bại";
+"error.export" = "Xuất thất bại";
+"error.private_mode" = "Vui lòng kết nối tai nghe để phát âm thanh";
+"error.recording_failed" = "Không thể ghi âm";
+"error.playback_failed" = "Không thể phát âm thanh";
+"error.no_recording" = "Không có bản ghi nào";
+"error.permission_denied" = "Quyền truy cập microphone bị từ chối";
+"error.invalid_script" = "Kịch bản không còn khả dụng";
+"error.file_not_found" = "Không tìm thấy tệp: %@";
+"error.insufficient_disk_space" = "Không đủ dung lượng lưu trữ. Vui lòng giải phóng dung lượng và thử lại.";
+"error.file_permission_denied" = "Quyền truy cập bị từ chối. Không thể truy cập tệp.";
+"error.file_corrupted" = "Tệp bị hỏng: %@";
+"error.directory_creation_failed" = "Không thể tạo thư mục ghi âm";
+"error.file_copy_failed" = "Không thể sao chép tệp: %@";
+"error.file_move_failed" = "Không thể di chuyển tệp: %@";
+"error.file_delete_failed" = "Không thể xóa tệp: %@";
+"error.invalid_state" = "Trạng thái âm thanh không hợp lệ: %@";
+"error.invalid_path" = "Đường dẫn tệp không hợp lệ: %@";
+"error.transcription_failed" = "Phiên âm thất bại";
+"error.transcription_unavailable" = "Dịch vụ phiên âm không khả dụng";
+
+// MARK: - Error Suggestions
+"error.suggestion.free_space" = "Xóa một số bản ghi hoặc tệp khác để giải phóng dung lượng.";
+"error.suggestion.restart_app" = "Thử khởi động lại ứng dụng.";
+"error.suggestion.rerecord" = "Thử ghi lại.";
+
+// MARK: - Validation Messages
+"validation.title" = "Lỗi xác thực";
+"validation.empty_script" = "Vui lòng nhập kịch bản trước khi lưu";
+"validation.script_too_short" = "Kịch bản phải có ít nhất 5 ký tự";
+"validation.script_too_long" = "Kịch bản vượt quá độ dài tối đa 500 ký tự";
+"validation.exceeds_character_limit" = "Kịch bản vượt quá giới hạn ký tự %d";
+"validation.audio_too_short" = "Bản ghi phải dài ít nhất 1 giây";
+"validation.audio_too_long" = "Bản ghi vượt quá thời lượng tối đa 60 giây";
+"validation.audio_processing" = "Âm thanh vẫn đang được xử lý, vui lòng đợi";
+"validation.recording_in_progress" = "Đang ghi âm, vui lòng dừng trước";
+
+// MARK: - Time Units
+"time.seconds" = "%@ giây";
+"time.times_per_hour" = "1-2 lần/giờ";
+"time.every_hours" = "mỗi 2 giờ";
+"time.times_per_day" = "1-2 lần/ngày";
+
+// MARK: - Sensitivity Levels
+"sensitivity.low" = "Thấp";
+"sensitivity.medium" = "Trung bình";
+"sensitivity.high" = "Cao";
+"sensitivity.low.desc" = "Cần giọng to hơn • Đệm 0,5 giây";
+"sensitivity.medium.desc" = "Phát hiện cân bằng • Đệm 0,3 giây";
+"sensitivity.high.desc" = "Phát hiện tiếng thầm • Đệm 0,15 giây";
+
+// MARK: - Sample Scripts
+"sample.smoking" = "Tôi không bao giờ hút thuốc, vì nó có mùi hôi, và tôi ghét bị kiểm soát.";
+"sample.bedtime" = "Tôi luôn đi ngủ trước 10 giờ tối, vì điều đó tốt cho sức khỏe, và tôi thích thức dậy với rất nhiều năng lượng.";
+"sample.mistakes" = "Tôi đã mắc một vài lỗi, nhưng tôi cũng đã làm tốt nhiều việc. Lỗi lầm là một phần bình thường của quá trình học hỏi, và tôi có thể sử dụng chúng như một cơ hội để cải thiện.";
+// MARK: - Languages
+"language.english" = "Tiếng Anh";
+"language.chinese_simplified" = "Tiếng Trung (Giản thể)";
+"language.chinese_traditional" = "Tiếng Trung (Phồn thể)";
+"language.spanish" = "Tiếng Tây Ban Nha";
+"language.french" = "Tiếng Pháp";
+"language.german" = "Tiếng Đức";
+"language.japanese" = "Tiếng Nhật";
+"language.korean" = "Tiếng Hàn";
+"language.portuguese" = "Tiếng Bồ Đào Nha";
+"language.russian" = "Tiếng Nga";
+"language.italian" = "Tiếng Ý";
+"language.dutch" = "Tiếng Hà Lan";
+"language.swedish" = "Tiếng Thụy Điển";
+"language.norwegian" = "Tiếng Na Uy";
+"language.danish" = "Tiếng Đan Mạch";
+"language.polish" = "Tiếng Ba Lan";
+"language.turkish" = "Tiếng Thổ Nhĩ Kỳ";
+"language.arabic" = "Tiếng Ả Rập";
+"language.hindi" = "Tiếng Hindi";
+
+// MARK: - Export/Import
+"export.format.bundle" = "Gói Echo";
+"export.format.text" = "Văn bản thuần túy";
+"export.format.json" = "JSON";
+"export.include_audio" = "Bao gồm tệp âm thanh";
+"export.format_label" = "Định dạng";
+"export.audio_size_warning" = "Tệp âm thanh sẽ tăng kích thước xuất";
+"export.options" = "Tùy chọn xuất";
+"export.select_scripts" = "Chọn thẻ";
+"export.scripts_selected" = "Thẻ (%d đã chọn)";
+"export.error_title" = "Lỗi xuất";
+"export.error_unknown" = "Đã xảy ra lỗi không xác định";
+"import.complete_title" = "Nhập hoàn tất";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "Mẹo: Nói 'chấm', 'phẩy', hoặc 'dấu hỏi' để đánh dấu câu";
+"recording.no_recording_message" = "Vui lòng nhấn giữ để chỉnh sửa và ghi âm trước";
+"recording.time_warning" = "Còn %d giây";
+"recording.max_duration_reached" = "Đã đạt thời lượng tối đa";
+
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "Đồng bộ thẻ trên các thiết bị của bạn";
+
+// MARK: - Empty State
+"empty.no_cards" = "Chưa có thẻ nào";
+"empty.tap_to_create" = "Nhấn nút + để tạo thẻ tự nói chuyện đầu tiên của bạn";
+
+// MARK: - Filter
+"filter.title" = "Lọc theo thẻ";
+"filter.all_cards" = "Tất cả thẻ";
+"filter.tags_section" = "Thẻ";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "Độ nhạy";
+"picker.select_language" = "Chọn ngôn ngữ";
+"picker.display_language" = "Ngôn ngữ hiển thị";
+"settings.language_settings" = "Cài đặt ngôn ngữ";
+"language.system_default" = "Mặc định hệ thống";
+"settings.card_settings" = "Cài đặt thẻ";
+"settings.card_defaults" = "Mặc định thẻ";
+"settings.about_support" = "Giới thiệu & Hỗ trợ";
+"settings.sync" = "Đồng bộ";
+"settings.backup" = "Sao lưu";
+"script.label" = "Kịch bản";
+
+// MARK: - Consolidated Me Page Settings
+"settings.language" = "Ngôn ngữ";
+"settings.card_preferences" = "Tùy chọn thẻ";
+"settings.character_limit" = "Giới hạn ký tự";
+"settings.limit_behavior" = "Hành vi vượt giới hạn";
+"settings.limit_behavior.warn" = "Cảnh báo";
+"settings.limit_behavior.strict" = "Nghiêm ngặt";
+"settings.notifications" = "Thông báo";
+"settings.max_notification_cards" = "Số thẻ thông báo tối đa";
+"settings.notification_cards_count" = "%d thẻ đã bật thông báo";
+"settings.notification_cards.footer" = "Giới hạn số lượng thẻ có thể gửi thông báo cùng lúc";
+"settings.tags" = "Thẻ";
+"settings.auto_cleanup_tags" = "Tự động dọn dẹp thẻ không sử dụng";
+"settings.tags.footer" = "Kiểm soát cách quản lý thẻ trong bộ sưu tập của bạn";
+"settings.notification_selection.message" = "Chọn tối đa %d thẻ để giữ thông báo bật";
+"settings.notification_selection.count" = "%d trong %d thẻ được chọn";
+"settings.select_notification_cards" = "Chọn thẻ thông báo";
+
+// MARK: - Developer Tools
+"dev.title" = "🛠️ Công cụ nhà phát triển";
+"dev.warning" = "⚠️ Ngôn ngữ hiển thị cần khởi động lại ứng dụng để có hiệu lực.";
+"dev.destructive_actions" = "⚠️ Hành động phá hủy";
+"dev.destructive_warning" = "Những hành động này có tính phá hủy và không thể hoàn tác.";
+"dev.clear_icloud" = "Xóa dữ liệu iCloud";
+"dev.clear_icloud.confirm" = "Xóa dữ liệu iCloud?";
+"dev.clear_icloud.message" = "Điều này sẽ xóa tất cả dữ liệu Echo khỏi iCloud. Dữ liệu cục bộ sẽ vẫn nguyên vẹn.";
+"dev.remove_duplicates" = "Xóa thẻ & thẻ trùng lặp";
+"dev.remove_duplicates.confirm" = "Xóa trùng lặp?";
+"dev.remove_duplicates.message" = "Điều này sẽ gộp các thẻ trùng lặp và xóa kịch bản trùng lặp có cùng nội dung.";
+"dev.remove_duplicates.button" = "Xóa";
+"dev.operation_complete" = "Hoàn thành thao tác";
+"dev.clear" = "Xóa";
+
+// MARK: - Search & Input Placeholders
+"tag.search.placeholder" = "Tìm kiếm thẻ...";
+"tag.name.placeholder" = "Tên thẻ";
+
+// MARK: - Formatting
+"format.seconds_of_60" = "%d giây / 60 giây";
+"format.repetitions" = "%dx";
+"format.progress" = "%d/%d";
+"format.plus_count" = "+%d";
+"format.interval_seconds" = "%.1f giây";
+
+// MARK: - Alerts
+"alert.new_tag" = "Thẻ mới";
+"alert.cancel" = "Hủy";
+"alert.add" = "Thêm";
+"alert.remove" = "Xóa";
+"alert.ok" = "OK";
+
+// MARK: - Transcription Status
+"transcription.failed" = "Phiên âm thất bại";
+"transcription.unavailable" = "Nhận dạng giọng nói không khả dụng";
+"transcription.processing" = "Đang xử lý giọng nói...";

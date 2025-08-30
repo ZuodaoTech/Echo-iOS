@@ -1,0 +1,353 @@
+/* 
+  Localizable.strings (Thai)
+  Echo
+  
+  การแปลภาษาไทยสำหรับแอปพลิเคชัน Echo
+*/
+
+// MARK: - Navigation & Titles
+"navigation.cards" = "การ์ด";
+"navigation.me" = "ฉัน";
+"navigation.new_script" = "การ์ดใหม่";
+"navigation.edit_script" = "แก้ไขการ์ด";
+
+// MARK: - Welcome Screen
+"welcome.page1.title" = "ยินดีต้อนรับสู่ Echo";
+"welcome.page1.subtitle" = "วิวัฒนาการแบบแฝงที่ขับเคลื่อนด้วยเสียงของคุณเอง";
+"welcome.page1.description" = "ชีวิตของคุณควรอยู่ในการควบคุมของคุณเสมอ";
+"welcome.page2.title" = "วิธีการทำงาน";
+"welcome.page2.subtitle" = "สามขั้นตอนง่าย ๆ";
+"welcome.page2.description" = "• เขียนสคริปต์ด้วยคำพูดของคุณเอง\n• บันทึกด้วยเสียงของคุณเอง\n• ฟังซ้ำ ๆ เพื่อให้เป็นแฝง";
+"welcome.page3.title" = "คุณคือกุนแจสำคัญ";
+"welcome.page3.subtitle" = "สมองของคุณรักตัวคุณเองมากที่สุด";
+"welcome.page3.description" = "ความคุ้นเคยคือกุนแจสำคัญ: คำพูดและเสียงของคุณเองแปลเป็นการกระทำของคุณได้ง่ายกว่า";
+"welcome.button.continue" = "ดำเนินต่อ";
+"welcome.button.getStarted" = "เริ่มต้น";
+"welcome.button.skip" = "ข้าม";
+
+
+// MARK: - Tags
+"tag.untagged" = "ไม่มีแท็ก";
+"tag.edit" = "แก้ไขแท็ก";
+"tag.delete.confirm.title" = "ลบแท็ก";
+"tag.delete.confirm.message" = "แท็กนี้ถูกใช้โดย %d สคริปต์ การลบจะเอาแท็กออกจากสคริปต์เหล่านั้น";
+"tag.delete.confirm.empty" = "แท็กนี้ไม่ได้ถูกใช้โดยสคริปต์ใด ๆ คุณแน่ใจหรือไม่ว่าต้องการลบ?";
+"tag.auto_cleanup" = "ลบแท็กที่ไม่ใช้โดยอัตโนมัติ";
+"tag.select" = "เลือกแท็ก";
+"tag.new" = "แท็กใหม่";
+"tag.label" = "แท็ก";
+"tag.none" = "ไม่มี";
+"tag.count_selected" = "%d ถูกเลือก";
+"tag.breaking_bad_habits" = "เลิกนิสัยเสีย";
+"tag.building_good_habits" = "สร้างนิสัยดี";
+"tag.appropriate_positivity" = "ความคิดบวกที่เหมาะสม";
+
+// MARK: - Script Card
+"script.play_count" = "เล่น %d ครั้ง";
+"script.transcript" = "คำถอดเสียง";
+"script.recording" = "บันทึกเสียง";
+"script.no_recording" = "ไม่มีบันทึกเสียง";
+"script.repetitions" = "การทำซ้ำ";
+"script.interval" = "ช่วงเวลา";
+"script.private_mode" = "โหมดส่วนตัว";
+"script.delete" = "ลบการ์ด";
+"script.delete.confirm.title" = "ลบการ์ด";
+"script.delete.confirm.message" = "คุณแน่ใจหรือไม่ว่าต้องการลบสคริปต์นี้? การกระทำนี้ไม่สามารถย้อนกลับได้";
+
+// MARK: - Settings
+"settings.app_language" = "ภาษาแอป";
+"settings.display_language" = "ภาษาการแสดงผล";
+"settings.restart_to_apply" = "รีสตาร์ทแอปเพื่อใช้การเปลี่ยนแปลงภาษา";
+"settings.default_settings" = "การตั้งค่าเริ่มต้น";
+"settings.script_preferences" = "ความชอบการ์ด";
+"settings.transcription" = "การถอดเสียง";
+"settings.recording" = "การบันทึกเสียง";
+"settings.backup_sync" = "การสำรองและซิงค์";
+"settings.about" = "เกี่ยวกับ";
+"settings.support" = "ฝ่ายสนับสนุน";
+
+"settings.private_mode.title" = "โหมดส่วนตัว";
+"settings.private_mode.info" = "เสียงเล่นผ่านหูฟังเท่านั้น";
+"settings.private_mode.alert.title" = "โหมดส่วนตัว";
+"settings.private_mode.alert.message" = "เมื่อเปิดโหมดส่วนตัว การบันทึกเสียงจะเล่นผ่านหูฟังหรือหูฟังที่เชื่อมต่อเท่านั้น เพื่อป้องกันการเล่นผ่านลำโพงโดยไม่ตั้งใจในที่สาธารณะ";
+
+"settings.character_guidance" = "คำแนะนำอักขระ";
+"settings.recommended_length" = "ความยาวที่แนะนำ";
+"settings.when_exceeded" = "เมื่อเกิน";
+"settings.just_warn" = "เตือนเท่านั้น";
+"settings.show_tip_only" = "แสดงคำแนะนำเท่านั้น";
+"settings.character_guidance.info" = "สคริปต์ที่สั้นกว่าจะจดจำง่ายกว่าและมีผลกระทบมากกว่า";
+
+"settings.default_language" = "ภาษาเริ่มต้น";
+"settings.voice_enhancement" = "การปรับปรุงเสียง";
+"settings.voice_enhancement.desc" = "ลดเสียงรบกวนและเสียงสะท้อน";
+"settings.auto_trim_silence" = "ตัดความเงียบอัตโนมัติ";
+"settings.auto_trim_silence.desc" = "เอาความเงียบที่ต้นและท้ายออก";
+"settings.trim_sensitivity" = "ความไวในการตัด";
+"settings.on_device_recognition" = "การรู้จำบนอุปกรณ์";
+"settings.on_device_recognition.desc" = "ประมวลผลเสียงในเครื่องเพื่อความเป็นส่วนตัวที่ดีกว่า";
+
+"settings.icloud_sync" = "การซิงค์ iCloud";
+"settings.icloud_sync.desc" = "ซิงค์การ์ดข้ามอุปกรณ์ของคุณ";
+"settings.icloud_sync.info" = "ข้อความและการตั้งค่าซิงค์อัตโนมัติ ไฟล์เสียงจะอยู่ในเครื่อง";
+"settings.export_scripts" = "ส่งออกการ์ด";
+"settings.import_scripts" = "นำเข้าการ์ด";
+
+"settings.version" = "เวอร์ชัน";
+"settings.build" = "บิลด์";
+"settings.rate_github" = "ให้คะแนนที่ GitHub";
+"settings.contact_support" = "ติดต่อฝ่ายสนับสนุน";
+
+// MARK: - Recording
+"recording.start" = "เริ่มบันทึก";
+"recording.stop" = "หยุดบันทึก";
+"recording.re_record" = "บันทึกใหม่";
+"recording.saved" = "บันทึกเสียงแล้ว";
+"recording.delete" = "ลบ";
+"recording.preview" = "ดูตัวอย่าง";
+"recording.playing_preview" = "กำลังเล่นตัวอย่าง...";
+"recording.preview_paused" = "ตัวอย่างหยุดชั่วคราว";
+"recording.plays_once" = "(เล่นหนึ่งครั้ง)";
+"recording.processing" = "กำลังประมวลผลเสียง...";
+"recording.listening" = "กำลังฟัง...";
+"recording.speaking" = "กำลังพูด...";
+"recording.transcribing" = "กำลังถอดเสียง...";
+"recording.re_transcribing" = "กำลังถอดเสียงใหม่...";
+"recording.microphone_access" = "การเข้าถึงไมโครโฟน";
+"recording.microphone_access.message" = "กรุณาอนุญาตการเข้าถึงไมโครโฟนในการตั้งค่าเพื่อบันทึกเสียง";
+
+// MARK: - Processing Messages  
+"processing.stopping_recording" = "กำลังหยุดบันทึก...";
+"processing.trimming_silence" = "กำลังตัดความเงียบ...";
+"processing.transcribing" = "กำลังถอดเสียง...";
+
+// MARK: - Character Guidance
+"guidance.trim_characters" = "พิจารณาตัด %d อักขระเพื่อการจดจำที่ดีกว่า";
+"guidance.script_over" = "สคริปต์เกิน %d อักขระ ลองใช้ถ้อยคำที่กระชับกว่า";
+"guidance.script_long" = "สคริปต์ค่อนข้างยาว";
+"guidance.enter_script" = "ป้อนสคริปต์การคุยกับตัวเองของคุณที่นี่...";
+
+// MARK: - Notifications
+"notifications.enable" = "เปิดการแจ้งเตือน";
+"notifications.frequency" = "ความถี่";
+"notifications.frequency.high" = "สูง (1-2 ครั้ง/ชั่วโมง)";
+"notifications.frequency.medium" = "ปานกลาง (ทุก 2 ชั่วโมง)";
+"notifications.frequency.low" = "ต่ำ (1-2 ครั้ง/วัน)";
+"notifications.daytime_only" = "การแจ้งเตือนเฉพาะในเวลากลางวัน (8 โมงเช้า - 9 โมงเย็น)";
+"notifications.settings_title" = "การตั้งค่าการแจ้งเตือน";
+"notifications.max_cards" = "การ์ดสูงสุดที่มีการแจ้งเตือน";
+"notifications.burden_warning" = "การแจ้งเตือนมากเกินไปอาจเป็นภาระและลดประสิทธิภาพ";
+"notifications.global_settings" = "การตั้งค่าทั่วไป";
+"notifications.max_cards_footer" = "จำกัดจำนวนการ์ดที่สามารถส่งการแจ้งเตือนพร้อมกัน";
+"notifications.no_cards_enabled" = "ไม่มีการ์ดที่เปิดการแจ้งเตือน";
+"notifications.enabled_cards" = "การ์ดที่เปิดใช้ (%d)";
+"notifications.request_permission" = "เปิดการแจ้งเตือน";
+"notifications.select_to_disable" = "เลือก %d การ์ดเพื่อปิดการแจ้งเตือน";
+"notifications.select_cards" = "เลือกการ์ด";
+"notifications.reminder_title" = "เวลาคุยกับตัวเอง";
+"notifications.privacy_message" = "การเตือนใหม่พร้อมแล้ว";
+"notifications.action_play" = "เล่นเสียง";
+"notifications.action_done" = "ทำเสร็จแล้ว";
+"notifications.privacy_mode" = "โหมดความเป็นส่วนตัว";
+"notifications.privacy_mode_description" = "ซ่อนเนื้อหาสคริปต์ในการแจ้งเตือน";
+"notifications.privacy_settings" = "การตั้งค่าความเป็นส่วนตัว";
+"notifications.privacy_enabled_footer" = "การแจ้งเตือนจะแสดงข้อความทั่วไปแทนข้อความสคริปต์";
+"notifications.privacy_disabled_footer" = "การแจ้งเตือนจะแสดง 50 อักขระแรกของข้อความสคริปต์";
+
+// MARK: - Common Actions
+"chars" = "อักขระ";
+"action.done" = "เสร็จ";
+"action.cancel" = "ยกเลิก";
+"action.delete" = "ลบ";
+"action.add" = "เพิ่ม";
+"action.save" = "บันทึก";
+"action.ok" = "ตกลง";
+"action.got_it" = "เข้าใจแล้ว";
+"action.copy" = "คัดลอก";
+"action.use_as_script" = "ใช้เป็นสคริปต์";
+"action.share" = "แชร์";
+"action.edit" = "แก้ไข";
+
+// MARK: - Errors
+"error.title" = "ข้อผิดพลาด";
+"error.save" = "ไม่สามารถบันทึกการ์ดได้";
+"error.database" = "ข้อผิดพลาดฐานข้อมูล";
+"error.restart_app" = "กรุณารีสตาร์ทแอป";
+"error.try_again" = "กรุณาลองใหม่";
+"error.import" = "การนำเข้าล้มเหลว";
+"error.export" = "การส่งออกล้มเหลว";
+"error.private_mode" = "กรุณาเชื่อมต่อหูฟังเพื่อเล่นเสียง";
+"error.recording_failed" = "ไม่สามารถบันทึกเสียงได้";
+"error.playback_failed" = "ไม่สามารถเล่นเสียงได้";
+"error.no_recording" = "ไม่มีบันทึกเสียง";
+"error.permission_denied" = "การอนุญาตไมโครโฟนถูกปฏิเสธ";
+"error.invalid_script" = "สคริปต์ไม่มีอยู่อีกต่อไป";
+"error.file_not_found" = "ไม่พบไฟล์: %@";
+"error.insufficient_disk_space" = "พื้นที่จัดเก็บไม่เพียงพอ กรุณาเคลียร์พื้นที่และลองใหม่";
+"error.file_permission_denied" = "การอนุญาตถูกปฏิเสธ ไม่สามารถเข้าถึงไฟล์ได้";
+"error.file_corrupted" = "ไฟล์เสียหาย: %@";
+"error.directory_creation_failed" = "ไม่สามารถสร้างโฟลเดอร์บันทึกได้";
+"error.file_copy_failed" = "ไม่สามารถคัดลอกไฟล์ได้: %@";
+"error.file_move_failed" = "ไม่สามารถย้ายไฟล์ได้: %@";
+"error.file_delete_failed" = "ไม่สามารถลบไฟล์ได้: %@";
+"error.invalid_state" = "สถานะเสียงไม่ถูกต้อง: %@";
+"error.invalid_path" = "เส้นทางไฟล์ไม่ถูกต้อง: %@";
+"error.transcription_failed" = "การถอดเสียงล้มเหลว";
+"error.transcription_unavailable" = "บริการถอดเสียงไม่พร้อมใช้งาน";
+
+// MARK: - Error Suggestions
+"error.suggestion.free_space" = "ลบบันทึกเสียงหรือไฟล์อื่น ๆ เพื่อเคลียร์พื้นที่";
+"error.suggestion.restart_app" = "ลองรีสตาร์ทแอป";
+"error.suggestion.rerecord" = "ลองบันทึกใหม่";
+
+// MARK: - Validation Messages
+"validation.title" = "ข้อผิดพลาดการตรวจสอบ";
+"validation.empty_script" = "กรุณาป้อนสคริปต์ก่อนบันทึก";
+"validation.script_too_short" = "สคริปต์ต้องมีอย่างน้อย 5 อักขระ";
+"validation.script_too_long" = "สคริปต์เกินความยาวสูงสุด 500 อักขระ";
+"validation.exceeds_character_limit" = "สคริปต์เกินขีดจำกัดอักขระ %d";
+"validation.audio_too_short" = "บันทึกเสียงต้องมีอย่างน้อย 1 วินาที";
+"validation.audio_too_long" = "บันทึกเสียงเกินระยะเวลาสูงสุด 60 วินาที";
+"validation.audio_processing" = "เสียงยังกำลังประมวลผล กรุณารอ";
+"validation.recording_in_progress" = "กำลังบันทึกอยู่ กรุณาหยุดก่อน";
+
+// MARK: - Time Units
+"time.seconds" = "%@ วินาที";
+"time.times_per_hour" = "1-2 ครั้ง/ชั่วโมง";
+"time.every_hours" = "ทุก 2 ชั่วโมง";
+"time.times_per_day" = "1-2 ครั้ง/วัน";
+
+// MARK: - Sensitivity Levels
+"sensitivity.low" = "ต่ำ";
+"sensitivity.medium" = "ปานกลาง";
+"sensitivity.high" = "สูง";
+"sensitivity.low.desc" = "ต้องเสียงดังขึ้น • บัฟเฟอร์ 0.5 วินาที";
+"sensitivity.medium.desc" = "การตรวจจับสมดุล • บัฟเฟอร์ 0.3 วินาที";
+"sensitivity.high.desc" = "ตรวจจับเสียงกระซิบ • บัฟเฟอร์ 0.15 วินาที";
+
+// MARK: - Sample Scripts
+"sample.smoking" = "ฉันไม่เคยสูบบุหรี่ เพราะมันเหม็น และฉันเกลียดการถูกควบคุม";
+"sample.bedtime" = "ฉันมักจะเข้านอนก่อน 22.00 น. เสมอ เพราะมันดีต่อสุขภาพ และฉันชอบตื่นขึ้นมาด้วยพลังงานมหาศาล";
+"sample.mistakes" = "ฉันทำผิดพลาดไปบ้าง แต่ฉันก็ทำหลายสิ่งได้ดี ความผิดพลาดเป็นส่วนปกติของการเรียนรู้ และฉันสามารถใช้เป็นโอกาสในการปรับปรุง";
+// MARK: - Languages
+"language.english" = "อังกฤษ";
+"language.chinese_simplified" = "จีน (ประยุกต์)";
+"language.chinese_traditional" = "จีน (ดั้งเดิม)";
+"language.spanish" = "สเปน";
+"language.french" = "ฝรั่งเศส";
+"language.german" = "เยอรมัน";
+"language.japanese" = "ญี่ปุ่น";
+"language.korean" = "เกาหลี";
+"language.portuguese" = "โปรตุเกส";
+"language.russian" = "รัสเซีย";
+"language.italian" = "อิตาลี";
+"language.dutch" = "ดัตช์";
+"language.swedish" = "สวีเดน";
+"language.norwegian" = "นอร์เวย์";
+"language.danish" = "เดนมาร์ก";
+"language.polish" = "โปแลนด์";
+"language.turkish" = "ตุรกี";
+"language.arabic" = "อารบิก";
+"language.hindi" = "ฮินดี";
+
+// MARK: - Export/Import
+"export.format.bundle" = "บันเดิล Echo";
+"export.format.text" = "ข้อความธรรมดา";
+"export.format.json" = "JSON";
+"export.include_audio" = "รวมไฟล์เสียง";
+"export.format_label" = "รูปแบบ";
+"export.audio_size_warning" = "ไฟล์เสียงจะเพิ่มขนาดการส่งออก";
+"export.options" = "ตัวเลือกการส่งออก";
+"export.select_scripts" = "เลือกการ์ด";
+"export.scripts_selected" = "การ์ด (%d เลือกแล้ว)";
+"export.error_title" = "ข้อผิดพลาดการส่งออก";
+"export.error_unknown" = "เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ";
+"import.complete_title" = "นำเข้าเสร็จสิ้น";
+
+// MARK: - Recording Tips
+"recording.punctuation_tip" = "เคล็ดลับ: พูด 'จุด', 'จุลภาค', หรือ 'เครื่องหมายคำถาม' สำหรับเครื่องหมายวรรคตอน";
+"recording.no_recording_message" = "กรุณากดค้างเพื่อแก้ไขและบันทึกเสียงก่อน";
+"recording.time_warning" = "เหลือ %d วินาที";
+"recording.max_duration_reached" = "ถึงระยะเวลาสูงสุดแล้ว";
+
+
+// MARK: - iCloud & Sync
+"settings.icloud_sync_desc" = "ซิงค์การ์ดข้ามอุปกรณ์ของคุณ";
+
+// MARK: - Empty State
+"empty.no_cards" = "ยังไม่มีการ์ด";
+"empty.tap_to_create" = "แตะปุ่ม + เพื่อสร้างการ์ดคุยกับตัวเองแรกของคุณ";
+
+// MARK: - Filter
+"filter.title" = "กรองตามแท็ก";
+"filter.all_cards" = "การ์ดทั้งหมด";
+"filter.tags_section" = "แท็ก";
+
+// MARK: - Picker Labels
+"picker.sensitivity" = "ความไว";
+"picker.select_language" = "เลือกภาษา";
+"picker.display_language" = "ภาษาการแสดงผล";
+"settings.language_settings" = "การตั้งค่าภาษา";
+"language.system_default" = "ค่าเริ่มต้นของระบบ";
+"settings.card_settings" = "การตั้งค่าการ์ด";
+"settings.card_defaults" = "ค่าเริ่มต้นการ์ด";
+"settings.about_support" = "เกี่ยวกับและฝ่ายสนับสนุน";
+"settings.sync" = "ซิงค์";
+"settings.backup" = "สำรอง";
+"script.label" = "สคริปต์";
+
+// MARK: - Consolidated Me Page Settings
+"settings.language" = "ภาษา";
+"settings.card_preferences" = "ความชอบการ์ด";
+"settings.character_limit" = "ขีดจำกัดอักขระ";
+"settings.limit_behavior" = "พฤติกรรมเมื่อเกินขีดจำกัด";
+"settings.limit_behavior.warn" = "เตือน";
+"settings.limit_behavior.strict" = "เข้มงวด";
+"settings.notifications" = "การแจ้งเตือน";
+"settings.max_notification_cards" = "การ์ดการแจ้งเตือนสูงสุด";
+"settings.notification_cards_count" = "%d การ์ดมีการแจ้งเตือนเปิดอยู่";
+"settings.notification_cards.footer" = "จำกัดจำนวนการ์ดที่สามารถส่งการแจ้งเตือนพร้อมกัน";
+"settings.tags" = "แท็ก";
+"settings.auto_cleanup_tags" = "ล้างแท็กที่ไม่ใช้อัตโนมัติ";
+"settings.tags.footer" = "ควบคุมวิธีการจัดการแท็กในคอลเลกชันของคุณ";
+"settings.notification_selection.message" = "เลือกได้สูงสุด %d การ์ดเพื่อเก็บการแจ้งเตือนไว้";
+"settings.notification_selection.count" = "%d จาก %d การ์ดถูกเลือก";
+"settings.select_notification_cards" = "เลือกการ์ดการแจ้งเตือน";
+
+// MARK: - Developer Tools
+"dev.title" = "🛠️ เครื่องมือนักพัฒนา";
+"dev.warning" = "⚠️ ภาษาการแสดงผลต้องรีสตาร์ทแอปเพื่อใช้งาน";
+"dev.destructive_actions" = "⚠️ การกระทำทำลาย";
+"dev.destructive_warning" = "การกระทำเหล่านี้เป็นการทำลายและไม่สามารถย้อนกลับได้";
+"dev.clear_icloud" = "ล้างข้อมูล iCloud";
+"dev.clear_icloud.confirm" = "ล้างข้อมูล iCloud?";
+"dev.clear_icloud.message" = "นี่จะลบข้อมูล Echo ทั้งหมดจาก iCloud ข้อมูลในเครื่องจะยังคงอยู่";
+"dev.remove_duplicates" = "ลบแท็กและการ์ดซ้ำ";
+"dev.remove_duplicates.confirm" = "ลบรายการซ้ำ?";
+"dev.remove_duplicates.message" = "นี่จะรวมแท็กซ้ำและลบสคริปต์ซ้ำที่มีเนื้อหาเดียวกัน";
+"dev.remove_duplicates.button" = "ลบ";
+"dev.operation_complete" = "การดำเนินการเสร็จสิ้น";
+"dev.clear" = "ล้าง";
+
+// MARK: - Search & Input Placeholders
+"tag.search.placeholder" = "ค้นหาแท็ก...";
+"tag.name.placeholder" = "ชื่อแท็ก";
+
+// MARK: - Formatting
+"format.seconds_of_60" = "%d วินาที / 60 วินาที";
+"format.repetitions" = "%dx";
+"format.progress" = "%d/%d";
+"format.plus_count" = "+%d";
+"format.interval_seconds" = "%.1f วินาที";
+
+// MARK: - Alerts
+"alert.new_tag" = "แท็กใหม่";
+"alert.cancel" = "ยกเลิก";
+"alert.add" = "เพิ่ม";
+"alert.remove" = "ลบ";
+"alert.ok" = "ตกลง";
+
+// MARK: - Transcription Status
+"transcription.failed" = "การถอดเสียงล้มเหลว";
+"transcription.unavailable" = "การรู้จำเสียงพูดไม่พร้อมใช้งาน";
+"transcription.processing" = "กำลังประมวลผลเสียงพูด...";

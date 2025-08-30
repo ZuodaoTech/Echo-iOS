@@ -253,10 +253,6 @@
 "dev.clear_icloud" = "Cancella dati iCloud";
 "dev.clear_icloud.confirm" = "Cancellare dati iCloud?";
 "dev.clear_icloud.message" = "Questo rimuoverà tutti i dati di Echo da iCloud. I dati locali rimarranno intatti.";
-"dev.clear_local" = "Cancella tutti i dati locali";
-"dev.clear_local.confirm" = "Cancellare tutti i dati locali?";
-"dev.clear_local.message" = "Questo cancellerà TUTTI gli script, le registrazioni e i tag. Non può essere annullato!";
-"dev.clear_local.button" = "Elimina tutto";
 "dev.remove_duplicates" = "Rimuovi tag e schede duplicate";
 "dev.remove_duplicates.confirm" = "Rimuovere duplicati?";
 "dev.remove_duplicates.message" = "Questo unirà i tag duplicati e rimuoverà gli script duplicati con lo stesso contenuto.";
@@ -345,3 +341,23 @@
 "alert.cancel" = "Annulla";
 "alert.add" = "Aggiungi";
 "alert.ok" = "OK";
+
+// MARK: - Privacy & Notifications (New Keys)
+"notifications.privacy_mode" = "Modalità Privacy";
+"notifications.privacy_mode_description" = "Nascondi il contenuto degli script nelle notifiche";
+"notifications.privacy_settings" = "Impostazioni Privacy";
+"notifications.privacy_enabled_footer" = "Le notifiche mostreranno messaggi generici invece del testo dello script";
+"notifications.privacy_disabled_footer" = "Le notifiche mostreranno i primi 50 caratteri del testo dello script";
+"notifications.privacy_message" = "Nuovo promemoria pronto";
+"settings.on_device_recognition" = "Riconoscimento su Dispositivo";
+"settings.on_device_recognition.desc" = "Elabora la voce localmente per una migliore privacy";
+
+// MARK: - Error Messages (New Keys)
+"error.invalid_path" = "Percorso file non valido: %@";
+"error.transcription_failed" = "Trascrizione fallita";
+"error.transcription_unavailable" = "Servizio di trascrizione non disponibile";
+
+// MARK: - Transcription Status (New Keys)
+"transcription.failed" = "Trascrizione fallita";
+"transcription.unavailable" = "Riconoscimento vocale non disponibile";
+"transcription.processing" = "Elaborazione vocale...";

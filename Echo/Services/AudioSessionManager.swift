@@ -112,20 +112,19 @@ final class AudioSessionManager: ObservableObject {
         }
         
         do {
-            // Use measurement mode for MAXIMUM noise reduction
-            // measurement mode provides the most aggressive audio processing
-            let mode: AVAudioSession.Mode = enhancedProcessing ? .measurement : .default
+            // Use voiceChat mode for optimal noise suppression and echo cancellation
+            // voiceChat mode provides the best balance of processing for recording
+            let mode: AVAudioSession.Mode = enhancedProcessing ? .voiceChat : .default
             
-            // measurement mode enables MAXIMUM:
-            // ✅ Echo cancellation (AEC) - Most aggressive
-            // ✅ Noise suppression - Maximum level
-            // ✅ Automatic gain control (AGC) - Optimized for voice
+            // voiceChat mode enables optimal:
+            // ✅ Echo cancellation (AEC) - Balanced and effective
+            // ✅ Noise suppression - Optimized for voice
+            // ✅ Automatic gain control (AGC) - Voice-optimized
             // ✅ Voice activity detection (VAD) - Enhanced
-            // ✅ Wide-band speech mode - Better frequency response
+            // ✅ Designed specifically for two-way voice communication
             
-            // Additional options for better quality
+            // Recording options - NO defaultToSpeaker to avoid feedback
             var options: AVAudioSession.CategoryOptions = [
-                .defaultToSpeaker,      // Use speaker by default
                 .allowBluetooth,        // Allow Bluetooth devices
                 .interruptSpokenAudioAndMixWithOthers  // Better handling
             ]
@@ -150,7 +149,7 @@ final class AudioSessionManager: ObservableObject {
             }
             
             #if DEBUG
-            SecureLogger.debug("Recording mode: Maximum noise reduction")
+            SecureLogger.debug("Recording mode: voiceChat with noise suppression")
             #endif
             // Only activate if not already active
             if !audioSession.isOtherAudioPlaying {
@@ -173,16 +172,29 @@ final class AudioSessionManager: ObservableObject {
     
     /// Configure audio session for playback
     func configureForPlayback() {
-        // Just try to configure, don't check states or handle errors
-        // iOS will handle it internally
-        
-        // Only change category if needed
-        if audioSession.category != .playback {
-            try? audioSession.setCategory(.playback, mode: .default, options: [.allowBluetooth, .allowBluetoothA2DP])
+        // Configure for playback with speaker output and Bluetooth support
+        do {
+            // Use defaultToSpeaker for playback only (not during recording)
+            var options: AVAudioSession.CategoryOptions = [
+                .defaultToSpeaker,      // Use speaker for playback
+                .allowBluetooth,        // Allow Bluetooth devices
+                .allowBluetoothA2DP     // High quality Bluetooth
+            ]
+            
+            try audioSession.setCategory(.playAndRecord, 
+                                        mode: .default,
+                                        options: options)
+            
+            // Try to activate
+            try audioSession.setActive(true)
+            
+            #if DEBUG
+            SecureLogger.debug("Playback mode: defaultToSpeaker enabled")
+            #endif
+        } catch {
+            // Log error but don't crash
+            SecureLogger.error("Playback configuration failed: \(error.localizedDescription)")
         }
-        
-        // Try to activate
-        try? audioSession.setActive(true)
     }
     
     // MARK: - Microphone Permission Management (Async/Await)

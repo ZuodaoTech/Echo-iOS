@@ -312,10 +312,6 @@
 "dev.clear_icloud" = "Effacer les Données iCloud";
 "dev.clear_icloud.confirm" = "Effacer les Données iCloud ?";
 "dev.clear_icloud.message" = "Cela supprimera toutes les données Echo d'iCloud. Les données locales resteront intactes.";
-"dev.clear_local" = "Effacer Toutes les Données Locales";
-"dev.clear_local.confirm" = "Effacer Toutes les Données Locales ?";
-"dev.clear_local.message" = "Cela supprimera TOUS les scripts, enregistrements et étiquettes. Cela ne peut pas être annulé !";
-"dev.clear_local.button" = "Tout Supprimer";
 "dev.remove_duplicates" = "Supprimer les Étiquettes et Cartes Dupliquées";
 "dev.remove_duplicates.confirm" = "Supprimer les Doublons ?";
 "dev.remove_duplicates.message" = "Cela fusionnera les étiquettes dupliquées et supprimera les scripts dupliqués avec le même contenu.";
@@ -340,3 +336,23 @@
 // MARK: - Search & Input Placeholders
 "tag.search.placeholder" = "Rechercher des tags...";
 "tag.name.placeholder" = "Nom du tag";
+
+// MARK: - Privacy & Notifications (New Keys)
+"notifications.privacy_mode" = "Mode Privé";
+"notifications.privacy_mode_description" = "Masquer le contenu des scripts dans les notifications";
+"notifications.privacy_settings" = "Paramètres de Confidentialité";
+"notifications.privacy_enabled_footer" = "Les notifications afficheront des messages génériques au lieu du texte du script";
+"notifications.privacy_disabled_footer" = "Les notifications afficheront les 50 premiers caractères du texte du script";
+"notifications.privacy_message" = "Nouveau rappel prêt";
+"settings.on_device_recognition" = "Reconnaissance sur Appareil";
+"settings.on_device_recognition.desc" = "Traiter la parole localement pour une meilleure confidentialité";
+
+// MARK: - Error Messages (New Keys)
+"error.invalid_path" = "Chemin de fichier invalide : %@";
+"error.transcription_failed" = "Échec de la transcription";
+"error.transcription_unavailable" = "Service de transcription indisponible";
+
+// MARK: - Transcription Status (New Keys)
+"transcription.failed" = "Échec de la transcription";
+"transcription.unavailable" = "Reconnaissance vocale indisponible";
+"transcription.processing" = "Traitement de la parole...";

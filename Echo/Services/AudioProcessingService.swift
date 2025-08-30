@@ -277,11 +277,11 @@ final class AudioProcessingService {
         
         // Add small delay to ensure file is fully written and accessible
         DispatchQueue.global().asyncAfter(deadline: .now() + 0.2) { [weak self] in
-            self?.performTranscription(audioURL: audioURL, completion: completion)
+            self?.performTranscription(audioURL: audioURL, recognizer: recognizer, completion: completion)
         }
     }
     
-    private func performTranscription(audioURL: URL, completion: @escaping (String?) -> Void) {
+    private func performTranscription(audioURL: URL, recognizer: SFSpeechRecognizer, completion: @escaping (String?) -> Void) {
         
         // Create recognition request
         let request = SFSpeechURLRecognitionRequest(url: audioURL)
@@ -295,18 +295,25 @@ final class AudioProcessingService {
             request.addsPunctuation = true
         }
         
-        // Try to use on-device recognition if available for better privacy and reliability
+        // Configure on-device recognition based on user preference
         if #available(iOS 13, *) {
+            let onDevicePreferred = UserDefaults.standard.bool(forKey: "preferOnDeviceRecognition")
+            
             if recognizer.supportsOnDeviceRecognition {
-                // Try on-device first, but don't require it
-                request.requiresOnDeviceRecognition = false  // Set to true if you want to force on-device only
+                // Set based on user preference
+                request.requiresOnDeviceRecognition = onDevicePreferred
                 #if DEBUG
-                SecureLogger.debug("Speech recognition: On-device recognition available")
+                if onDevicePreferred {
+                    SecureLogger.debug("Speech recognition: Using on-device recognition (user preference)")
+                } else {
+                    SecureLogger.debug("Speech recognition: On-device available but not required (user preference)")
+                }
                 #endif
             } else {
+                // On-device not supported, use network
                 request.requiresOnDeviceRecognition = false
                 #if DEBUG
-                SecureLogger.debug("Speech recognition: Using network-based recognition")
+                SecureLogger.debug("Speech recognition: On-device not supported, using network")
                 #endif
             }
         }
@@ -372,7 +379,7 @@ final class AudioProcessingService {
                     var transcription = result.bestTranscription.formattedString
                     if !transcription.isEmpty {
                         // Apply punctuation even to partial results
-                        let languageUsed = languageCode ?? "en-US"
+                        let languageUsed = recognizer.locale.identifier
                         transcription = self?.ensureProperPunctuation(to: transcription, languageCode: languageUsed) ?? transcription
                         #if DEBUG
                         SecureLogger.debug("Transcription completed despite error")
@@ -397,7 +404,7 @@ final class AudioProcessingService {
                 
                 // Always apply punctuation cleanup regardless of iOS version
                 // iOS 16+ adds some punctuation but may miss end punctuation
-                let languageUsed = languageCode ?? "en-US"
+                let languageUsed = recognizer.locale.identifier
                 transcription = self?.ensureProperPunctuation(to: transcription, languageCode: languageUsed) ?? transcription
                 
                 #if DEBUG
@@ -684,15 +691,8 @@ final class AudioProcessingService {
                 // by setting it to nil in a defer block
             }
             
-            // Ensure all data is flushed to disk by syncing
-            do {
-                // Force file system sync
-                let fileDescriptor = open(tempURL.path, O_RDONLY)
-                if fileDescriptor != -1 {
-                    fsync(fileDescriptor)
-                    close(fileDescriptor)
-                }
-            }
+            // Modern approach: FileManager handles sync automatically
+            // No manual fsync needed with modern iOS file operations
             
             // Verify the temp file was created properly
             if FileManager.default.fileExists(atPath: tempURL.path) {
