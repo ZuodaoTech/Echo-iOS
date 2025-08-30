@@ -20,8 +20,9 @@ class PersistenceController: ObservableObject {
         }
         guard let shared = _shared else {
             SecureLogger.error("Critical: PersistenceController shared instance is nil after initialization")
-            _shared = PersistenceController()
-            return _shared!
+            let fallback = PersistenceController()
+            _shared = fallback
+            return fallback
         }
         return shared
     }
@@ -33,6 +34,9 @@ class PersistenceController: ObservableObject {
     
     // Track if Core Data is ready
     @Published var isReady = false
+    
+    // Track if Core Data failed to initialize (for graceful degradation)
+    @Published var hasCriticalError = false
     
     // Track the current data loading state for UI
     @Published var dataLoadingState: DataLoadingState = .staticSamples
@@ -89,7 +93,23 @@ class PersistenceController: ObservableObject {
             _container = NSPersistentCloudKitContainer(name: "Echo")
             configureContainer()
         }
-        return _container!
+        guard let container = _container else {
+            SecureLogger.error("Critical: Core Data container is nil after initialization")
+            do {
+                let fallbackContainer = NSPersistentCloudKitContainer(name: "Echo")
+                _container = fallbackContainer
+                configureContainer()
+                return fallbackContainer
+            } catch {
+                SecureLogger.error("Fatal: Unable to create Core Data container: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.hasCriticalError = true
+                }
+                // Return a minimal container that might still work
+                return NSPersistentCloudKitContainer(name: "Echo")
+            }
+        }
+        return container
     }
     
     // Track iCloud sync status (default to false for fresh installs)
@@ -108,9 +128,15 @@ class PersistenceController: ObservableObject {
         // Prevent multiple Core Data stacks
         if !inMemory && Self.hasInitialized {
             SecureLogger.error("Critical: Attempting to initialize PersistenceController multiple times. Using existing shared instance.")
-            // Instead of crashing, return early or use assertion in debug builds
+            // Instead of crashing, log error and continue with existing instance
             #if DEBUG
+            // In debug builds, still assert to catch development issues
             assertionFailure("PersistenceController should only be initialized once. Use .shared instance.")
+            #else
+            // In production, gracefully handle multiple initialization attempts
+            SecureLogger.warning("Production: Multiple PersistenceController initialization prevented. Using existing instance.")
+            // Early return to avoid duplicate initialization
+            return
             #endif
         }
         if !inMemory {
@@ -193,13 +219,25 @@ class PersistenceController: ObservableObject {
                             SecureLogger.error("Critical: Unable to load persistent stores after retry: \(retryError.localizedDescription)")
                             
                             #if DEBUG
+                            // In debug, still assert to catch development issues
                             assertionFailure("Unable to load persistent stores: \(retryError), \(retryError.userInfo)")
+                            #else
+                            // In production, log critical error but continue
+                            SecureLogger.error("Production: Critical Core Data failure. App will continue with limited functionality.")
                             #endif
                             
                             // Mark as ready with error state so app can still function
                             DispatchQueue.main.async {
+                                self.hasCriticalError = true
                                 self.isReady = true
                                 self.dataLoadingState = .coreDataReady
+                                
+                                // Notify user of degraded functionality
+                                NotificationCenter.default.post(
+                                    name: NSNotification.Name("CoreDataCriticalError"),
+                                    object: nil,
+                                    userInfo: ["error": retryError.localizedDescription]
+                                )
                             }
                         } else {
                             SecureLogger.info("Successfully loaded local persistent store after CloudKit failure")

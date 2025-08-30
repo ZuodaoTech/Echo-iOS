@@ -57,7 +57,9 @@ struct RootView: View {
                         // Track UI ready
                         AppLaunchOptimizer.LaunchMetrics.uiReady = Date()
                         #if DEBUG
-                        SecureLogger.debug("First frame rendered - UI Ready at \(String(format: "%.2f", AppLaunchOptimizer.LaunchMetrics.uiReady!.timeIntervalSince(AppLaunchOptimizer.LaunchMetrics.appInitStart)))s")
+                        if let uiReadyTime = AppLaunchOptimizer.LaunchMetrics.uiReady {
+                            SecureLogger.debug("First frame rendered - UI Ready at \(String(format: "%.2f", uiReadyTime.timeIntervalSince(AppLaunchOptimizer.LaunchMetrics.appInitStart)))s")
+                        }
                         #endif
                         
                         // Check if we should show welcome
@@ -122,7 +124,9 @@ struct RootView: View {
             // Track Core Data ready
             AppLaunchOptimizer.LaunchMetrics.coreDataReady = Date()
             #if DEBUG
-            SecureLogger.debug("Core Data ready at \(String(format: "%.2f", AppLaunchOptimizer.LaunchMetrics.coreDataReady!.timeIntervalSince(AppLaunchOptimizer.LaunchMetrics.appInitStart)))s")
+            if let coreDataReadyTime = AppLaunchOptimizer.LaunchMetrics.coreDataReady {
+                SecureLogger.debug("Core Data ready at \(String(format: "%.2f", coreDataReadyTime.timeIntervalSince(AppLaunchOptimizer.LaunchMetrics.appInitStart)))s")
+            }
             #endif
             
             return pc

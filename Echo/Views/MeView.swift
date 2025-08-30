@@ -673,7 +673,11 @@ struct MeView: View {
             // Delete all audio files
             for script in scripts {
                 if let audioPath = script.audioFilePath {
-                    let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                    guard let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+                        SecureLogger.error("Unable to access documents directory for audio file deletion")
+                        continue
+                    }
+                    let fileURL = documentsURL
                         .appendingPathComponent("Recordings")
                         .appendingPathComponent(audioPath)
                     try? FileManager.default.removeItem(at: fileURL)

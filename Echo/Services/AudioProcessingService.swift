@@ -333,7 +333,9 @@ final class AudioProcessingService {
             }
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 30, execute: timeoutWorkItem!)
+        if let timeoutItem = timeoutWorkItem {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 30, execute: timeoutItem)
+        }
         
         // Perform recognition
         currentRecognitionTask = recognizer.recognitionTask(with: request) { [weak self] result, error in

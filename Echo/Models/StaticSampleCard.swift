@@ -16,9 +16,29 @@ struct StaticSampleCard: Identifiable {
     let intervalSeconds: Double
     
     /// Fixed UUIDs for sample cards to enable deduplication
-    static let smokingSampleID = UUID(uuidString: "00000000-0000-0000-0000-000000000001")!
-    static let bedtimeSampleID = UUID(uuidString: "00000000-0000-0000-0000-000000000002")!
-    static let mistakesSampleID = UUID(uuidString: "00000000-0000-0000-0000-000000000003")!
+    static let smokingSampleID: UUID = {
+        guard let uuid = UUID(uuidString: "00000000-0000-0000-0000-000000000001") else {
+            SecureLogger.error("Failed to create smoking sample UUID, using random UUID")
+            return UUID()
+        }
+        return uuid
+    }()
+    
+    static let bedtimeSampleID: UUID = {
+        guard let uuid = UUID(uuidString: "00000000-0000-0000-0000-000000000002") else {
+            SecureLogger.error("Failed to create bedtime sample UUID, using random UUID")
+            return UUID()
+        }
+        return uuid
+    }()
+    
+    static let mistakesSampleID: UUID = {
+        guard let uuid = UUID(uuidString: "00000000-0000-0000-0000-000000000003") else {
+            SecureLogger.error("Failed to create mistakes sample UUID, using random UUID")
+            return UUID()
+        }
+        return uuid
+    }()
 }
 
 /// Provider for static sample cards

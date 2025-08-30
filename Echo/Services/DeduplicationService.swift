@@ -139,9 +139,14 @@ class DeduplicationService {
             keeper.playCount += duplicate.playCount
             
             // Keep the most recent play date
-            if let duplicatePlayDate = duplicate.lastPlayedAt,
-               keeper.lastPlayedAt == nil || duplicatePlayDate > keeper.lastPlayedAt! {
-                keeper.lastPlayedAt = duplicatePlayDate
+            if let duplicatePlayDate = duplicate.lastPlayedAt {
+                if let keeperPlayDate = keeper.lastPlayedAt {
+                    if duplicatePlayDate > keeperPlayDate {
+                        keeper.lastPlayedAt = duplicatePlayDate
+                    }
+                } else {
+                    keeper.lastPlayedAt = duplicatePlayDate
+                }
             }
             
             // Keep audio recording if keeper doesn't have one
