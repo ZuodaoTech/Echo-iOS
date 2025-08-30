@@ -8,5 +8,9 @@
 	</array>
 	<key>CloudKitContainerIdentifier</key>
 	<string>iCloud.xiaolai.Echo</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Echo needs access to record your voice.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Echo needs speech recognition to transcribe recordings.</string>
 </dict>
 </plist>

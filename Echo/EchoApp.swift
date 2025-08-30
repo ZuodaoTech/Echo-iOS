@@ -19,6 +19,7 @@ struct EchoApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()  // Root view handles initialization and welcome
+                .environmentObject(AudioCoordinator.shared)  // Inject as environment object
         }
     }
     

@@ -8,6 +8,8 @@ struct NotificationSettingsView: View {
     @AppStorage("maxNotificationCards") private var maxNotificationCards = 1
     @AppStorage("notificationPermissionRequested") private var notificationPermissionRequested = false
     
+    @StateObject private var notificationManager = NotificationManager.shared
+    
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \SelftalkScript.createdAt, ascending: false)],
         predicate: NSPredicate(format: "notificationEnabled == YES")
@@ -47,6 +49,23 @@ struct NotificationSettingsView: View {
                     Text(NSLocalizedString("notifications.global_settings", comment: "Global Settings"))
                 } footer: {
                     Text(NSLocalizedString("notifications.max_cards_footer", comment: "Limit how many cards can send notifications"))
+                }
+                
+                Section {
+                    Toggle(isOn: $notificationManager.notificationPrivacyEnabled) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(NSLocalizedString("notifications.privacy_mode", comment: "Privacy Mode"))
+                            Text(NSLocalizedString("notifications.privacy_mode_description", comment: "Hide script content in notifications"))
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                } header: {
+                    Text(NSLocalizedString("notifications.privacy_settings", comment: "Privacy Settings"))
+                } footer: {
+                    Text(notificationManager.notificationPrivacyEnabled 
+                         ? NSLocalizedString("notifications.privacy_enabled_footer", comment: "Notifications will show generic messages instead of script text")
+                         : NSLocalizedString("notifications.privacy_disabled_footer", comment: "Notifications will show the first 50 characters of script text"))
                 }
                 
                 Section {

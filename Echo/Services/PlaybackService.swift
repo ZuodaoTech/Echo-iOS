@@ -160,8 +160,11 @@ final class PlaybackService: NSObject, ObservableObject {
             
             audioPlayer?.enableRate = true
             
-            // Add a small delay to ensure file is ready
-            Thread.sleep(forTimeInterval: 0.1)
+            // Check if player is properly prepared
+            if !prepared {
+                // Try again if first attempt failed
+                _ = audioPlayer?.prepareToPlay()
+            }
             
             let playerDuration = audioPlayer?.duration ?? 0
             #if DEBUG
@@ -200,8 +203,10 @@ final class PlaybackService: NSObject, ObservableObject {
                 #endif
                 
                 // Try once more after re-preparing
-                audioPlayer?.prepareToPlay()
-                Thread.sleep(forTimeInterval: 0.2)
+                let recoveryPrepared = audioPlayer?.prepareToPlay() ?? false
+                #if DEBUG
+                SecureLogger.debug("Recovery prepare result: \(recoveryPrepared)")
+                #endif
                 
                 let recoveryPlayStarted = audioPlayer?.play() ?? false
                 #if DEBUG

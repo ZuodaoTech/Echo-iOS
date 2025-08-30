@@ -48,7 +48,7 @@ final class SecureLogger {
     static func warning(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
         let sanitized = sanitizeMessage(message)
         let location = "\(URL(fileURLWithPath: file).lastPathComponent):\(function):\(line)"
-        os_log("%{public}@ - %{public}@", log: warningLogger, type: .error, location, sanitized)
+        os_log("%{public}@ - %{public}@", log: warningLogger, type: .default, location, sanitized)
     }
     
     /// Log an error message (available in all builds)

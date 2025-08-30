@@ -60,7 +60,7 @@ final class FileOperationHelper {
                 
                 // If not the last attempt, wait and retry
                 if attempt < maxRetries - 1 {
-                    Thread.sleep(forTimeInterval: Constants.retryDelay)
+                    usleep(UInt32(Constants.retryDelay * 1_000_000)) // Convert to microseconds
                 }
             }
         }
@@ -93,7 +93,7 @@ final class FileOperationHelper {
                 
                 // If not the last attempt, wait and retry
                 if attempt < maxRetries - 1 {
-                    Thread.sleep(forTimeInterval: Constants.retryDelay)
+                    usleep(UInt32(Constants.retryDelay * 1_000_000)) // Convert to microseconds
                 }
             }
         }
@@ -122,7 +122,7 @@ final class FileOperationHelper {
                 
                 // If not the last attempt, wait and retry
                 if attempt < maxRetries - 1 {
-                    Thread.sleep(forTimeInterval: Constants.retryDelay)
+                    usleep(UInt32(Constants.retryDelay * 1_000_000)) // Convert to microseconds
                 }
             }
         }
@@ -153,7 +153,7 @@ final class FileOperationHelper {
                 
                 // If not the last attempt, wait and retry
                 if attempt < maxRetries - 1 {
-                    Thread.sleep(forTimeInterval: Constants.retryDelay)
+                    usleep(UInt32(Constants.retryDelay * 1_000_000)) // Convert to microseconds
                 }
             }
         }

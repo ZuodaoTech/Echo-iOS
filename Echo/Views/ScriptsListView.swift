@@ -4,8 +4,8 @@ import CoreData
 struct ScriptsListView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
-    // Lazy initialize AudioCoordinator only when needed
-    @StateObject private var audioService = AudioCoordinator.shared
+    // Use injected AudioCoordinator from environment
+    @EnvironmentObject private var audioService: AudioCoordinator
     
     // FetchRequests - only executed when this view is created (Core Data ready)
     @FetchRequest(
@@ -356,5 +356,6 @@ struct ScriptsListView_Previews: PreviewProvider {
     static var previews: some View {
         ScriptsListView()
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+            .environmentObject(AudioCoordinator.shared)
     }
 }

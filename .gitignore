@@ -115,5 +115,10 @@ Temporary Items
 
 .aider*
 
+# Backup files
+*.backup
+*~
+
 # Claude Code settings
 .claude/*
+AGENTS.md

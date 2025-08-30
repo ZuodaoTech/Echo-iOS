@@ -91,18 +91,8 @@ final class AudioProcessingService {
                 return
             }
             
-            // First, copy the recorded file to original (for transcription) on background thread
-            do {
-                if FileManager.default.fileExists(atPath: originalURL.path) {
-                    try FileManager.default.removeItem(at: originalURL)
-                }
-                try FileManager.default.copyItem(at: audioURL, to: originalURL)
-                #if DEBUG
-                SecureLogger.debug("Saved original copy for transcription")
-                #endif
-            } catch {
-                SecureLogger.warning("Failed to save original copy: \(error.localizedDescription)")
-            }
+            // Note: Original audio copy is already created by RecordingService
+            // using FileOperationHelper which provides proper retry logic and error handling
             
             guard FileManager.default.fileExists(atPath: audioURL.path) else {
                 SecureLogger.error("Audio file doesn't exist for processing")
@@ -286,7 +276,12 @@ final class AudioProcessingService {
         }
         
         // Add small delay to ensure file is fully written and accessible
-        Thread.sleep(forTimeInterval: 0.2)
+        DispatchQueue.global().asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            self?.performTranscription(audioURL: audioURL, completion: completion)
+        }
+    }
+    
+    private func performTranscription(audioURL: URL, completion: @escaping (String?) -> Void) {
         
         // Create recognition request
         let request = SFSpeechURLRecognitionRequest(url: audioURL)
@@ -423,22 +418,8 @@ final class AudioProcessingService {
         let audioURL = fileManager.audioURL(for: scriptId)
         let originalURL = fileManager.originalAudioURL(for: scriptId)
         
-        // Save original for transcription with proper error handling
-        do {
-            // Check disk space before copying
-            try FileOperationHelper.checkAvailableDiskSpace()
-            
-            // Copy file with retry logic
-            try FileOperationHelper.copyFile(from: audioURL, to: originalURL)
-            #if DEBUG
-            SecureLogger.debug("Saved original copy for transcription")
-            #endif
-        } catch let error as AudioServiceError {
-            SecureLogger.warning("Failed to save original - \(error.errorDescription ?? "Unknown error")")
-            // Continue processing even if original copy fails
-        } catch {
-            SecureLogger.warning("Failed to save original: \(error.localizedDescription)")
-        }
+        // Note: Original audio copy is already created by RecordingService
+        // No need to duplicate this operation here
         
         // Use AVAsset for time-based trimming
         let asset = AVAsset(url: audioURL)
@@ -703,8 +684,15 @@ final class AudioProcessingService {
                 // by setting it to nil in a defer block
             }
             
-            // Give the file system time to finish writing
-            Thread.sleep(forTimeInterval: 0.1)
+            // Ensure all data is flushed to disk by syncing
+            do {
+                // Force file system sync
+                let fileDescriptor = open(tempURL.path, O_RDONLY)
+                if fileDescriptor != -1 {
+                    fsync(fileDescriptor)
+                    close(fileDescriptor)
+                }
+            }
             
             // Verify the temp file was created properly
             if FileManager.default.fileExists(atPath: tempURL.path) {

@@ -9,7 +9,17 @@ class NotificationManager: NSObject, ObservableObject {
     @Published private(set) var isNotificationPermissionGranted: Bool = false
     private var permissionCheckTask: Task<Bool, Never>?
     
+    // Privacy mode setting (published for UI binding)
+    @Published var notificationPrivacyEnabled: Bool {
+        didSet {
+            UserDefaults.standard.set(notificationPrivacyEnabled, forKey: "notificationPrivacyEnabled")
+        }
+    }
+    
     private override init() {
+        // Initialize privacy setting from UserDefaults (defaults to false)
+        self.notificationPrivacyEnabled = UserDefaults.standard.bool(forKey: "notificationPrivacyEnabled")
+        
         super.init()
         // Check initial permission state
         Task {
@@ -163,10 +173,18 @@ class NotificationManager: NSObject, ObservableObject {
                 let content = UNMutableNotificationContent()
                 content.title = NSLocalizedString("notifications.reminder_title", comment: "Time for Self-Talk")
                 
-                // Truncate script text to 50 characters for privacy
-                let truncatedText = String(script.scriptText.prefix(50))
-                let previewText = script.scriptText.count > 50 ? truncatedText + "..." : truncatedText
-                content.body = previewText
+                // Check privacy mode setting
+                let notificationPrivacyEnabled = UserDefaults.standard.bool(forKey: "notificationPrivacyEnabled")
+                
+                if notificationPrivacyEnabled {
+                    // Use generic message when privacy mode is ON
+                    content.body = NSLocalizedString("notifications.privacy_message", comment: "New reminder ready")
+                } else {
+                    // Show truncated script text when privacy mode is OFF
+                    let truncatedText = String(script.scriptText.prefix(50))
+                    let previewText = script.scriptText.count > 50 ? truncatedText + "..." : truncatedText
+                    content.body = previewText
+                }
                 content.sound = .default
                 content.categoryIdentifier = "SELFTALK_REMINDER"
                 content.userInfo = [

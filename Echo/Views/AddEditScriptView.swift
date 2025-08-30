@@ -14,7 +14,7 @@ struct ViewHeightKey: PreferenceKey {
 struct AddEditScriptView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject private var audioService = AudioCoordinator.shared
+    @EnvironmentObject private var audioService: AudioCoordinator
     
     let script: SelftalkScript?
     let onDelete: ((UUID) -> Void)?  // Callback with script ID only (safer)
@@ -1096,7 +1096,7 @@ struct RecordingButton: View {
             .disabled(isProcessing)
             
             if isRecording {
-                let duration = Int(AudioCoordinator.shared.recordingDuration)
+                let duration = Int(audioService.recordingDuration)
                 let remainingTime = max(0, 60 - duration)
                 
                 VStack(spacing: 8) {

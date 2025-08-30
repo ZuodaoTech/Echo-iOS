@@ -4,7 +4,7 @@ import UIKit
 
 struct ScriptCard: View {
     @ObservedObject var script: SelftalkScript
-    @StateObject private var audioService = AudioCoordinator.shared
+    @EnvironmentObject private var audioService: AudioCoordinator
     @State private var showingPrivateAlert = false
     @State private var showingNoRecordingAlert = false
     @State private var showingErrorAlert = false
@@ -355,6 +355,7 @@ struct ScriptCard_Previews: PreviewProvider {
             script: script,
             onEdit: { }
         )
+        .environmentObject(AudioCoordinator.shared)
         .padding()
         .previewLayout(.sizeThatFits)
     }
