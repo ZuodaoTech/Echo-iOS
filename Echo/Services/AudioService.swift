@@ -11,6 +11,7 @@ enum AudioServiceError: LocalizedError {
     case noRecording
     case permissionDenied
     case invalidScript
+    case serviceUnavailable
     // File operation errors
     case fileNotFound(String)
     case insufficientDiskSpace
@@ -37,6 +38,8 @@ enum AudioServiceError: LocalizedError {
             return NSLocalizedString("error.permission_denied", comment: "Microphone permission denied")
         case .invalidScript:
             return NSLocalizedString("error.invalid_script", comment: "Script is no longer available")
+        case .serviceUnavailable:
+            return NSLocalizedString("error.service_unavailable", comment: "Audio service is currently unavailable")
         // File operation errors
         case .fileNotFound(let filename):
             return String(format: NSLocalizedString("error.file_not_found", comment: "File not found: %@"), filename)

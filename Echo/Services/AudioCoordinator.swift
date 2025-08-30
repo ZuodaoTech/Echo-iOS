@@ -37,16 +37,20 @@ final class AudioCoordinator: ObservableObject {
     
     // Audio session state (for debugging)
     var audioSessionState: String {
-        sessionManager.currentState.rawValue
+        ensureInitialized()
+        guard let sessionManager = sessionManager else {
+            return "unavailable"
+        }
+        return sessionManager.currentState.rawValue
     }
     
     // MARK: - Services (Lazy initialization for performance)
     
-    private var fileManager: AudioFileManager!
-    private var sessionManager: AudioSessionManager!
-    private var recordingService: RecordingService!
-    private var playbackService: PlaybackService!
-    private var processingService: AudioProcessingService!
+    private var fileManager: AudioFileManager?
+    private var sessionManager: AudioSessionManager?
+    private var recordingService: RecordingService?
+    private var playbackService: PlaybackService?
+    private var processingService: AudioProcessingService?
     
     // MARK: - Private Properties
     
@@ -68,14 +72,69 @@ final class AudioCoordinator: ObservableObject {
         createServices()
         bindPublishedProperties()
     }
+    
+    // MARK: - Service Availability Monitoring
+    
+    /// Computed property to check if all services are ready for use
+    var isServicesReady: Bool {
+        return fileManager != nil &&
+               sessionManager != nil &&
+               recordingService != nil &&
+               playbackService != nil &&
+               processingService != nil
+    }
+    
+    /// Individual service availability checks
+    var isFileManagerReady: Bool { fileManager != nil }
+    var isSessionManagerReady: Bool { sessionManager != nil }
+    var isRecordingServiceReady: Bool { recordingService != nil }
+    var isPlaybackServiceReady: Bool { playbackService != nil }
+    var isProcessingServiceReady: Bool { processingService != nil }
+    
+    /// Provides feedback message when services are unavailable
+    var serviceUnavailableMessage: String? {
+        if !isServicesReady {
+            var missing: [String] = []
+            if !isFileManagerReady { missing.append("FileManager") }
+            if !isSessionManagerReady { missing.append("SessionManager") }
+            if !isRecordingServiceReady { missing.append("RecordingService") }
+            if !isPlaybackServiceReady { missing.append("PlaybackService") }
+            if !isProcessingServiceReady { missing.append("ProcessingService") }
+            return "Audio services unavailable: \(missing.joined(separator: ", "))"
+        }
+        return nil
+    }
+    
+    private func ensureServicesAvailable() -> Bool {
+        ensureInitialized()
+        return isServicesReady
+    }
     // MARK: - Private Methods
     
     private func createServices() {
-        fileManager = AudioFileManager()
-        sessionManager = AudioSessionManager()
-        recordingService = RecordingService(fileManager: fileManager, sessionManager: sessionManager)
-        playbackService = PlaybackService(fileManager: fileManager, sessionManager: sessionManager)
-        processingService = AudioProcessingService(fileManager: fileManager)
+        do {
+            // Initialize core services first
+            let tempFileManager = AudioFileManager()
+            let tempSessionManager = AudioSessionManager()
+            
+            // Initialize dependent services
+            let tempRecordingService = RecordingService(fileManager: tempFileManager, sessionManager: tempSessionManager)
+            let tempPlaybackService = PlaybackService(fileManager: tempFileManager, sessionManager: tempSessionManager)
+            let tempProcessingService = AudioProcessingService(fileManager: tempFileManager)
+            
+            // Only assign if all services created successfully
+            self.fileManager = tempFileManager
+            self.sessionManager = tempSessionManager
+            self.recordingService = tempRecordingService
+            self.playbackService = tempPlaybackService
+            self.processingService = tempProcessingService
+            
+            SecureLogger.info("AudioCoordinator services initialized successfully")
+        } catch {
+            SecureLogger.error("Critical: Failed to initialize AudioCoordinator services: \(error.localizedDescription)")
+            // Leave services as nil - app will gracefully handle unavailable services
+            // This prevents crashes and allows the app to continue functioning with limited capabilities
+        }
     }
 
 
@@ -83,11 +142,33 @@ final class AudioCoordinator: ObservableObject {
     
     func requestMicrophonePermission(completion: @escaping (Bool) -> Void) {
         ensureInitialized()
+        guard let sessionManager = sessionManager else {
+            SecureLogger.error("SessionManager unavailable for microphone permission request")
+            completion(false)
+            return
+        }
         sessionManager.requestMicrophonePermission(completion: completion)
     }
     
     func startRecording(for script: SelftalkScript) throws {
         ensureInitialized()
+        
+        // Ensure all required services are available
+        guard let sessionManager = sessionManager else {
+            SecureLogger.error("SessionManager unavailable for recording")
+            throw AudioServiceError.serviceUnavailable
+        }
+        
+        guard let recordingService = recordingService else {
+            SecureLogger.error("RecordingService unavailable for recording")
+            throw AudioServiceError.serviceUnavailable
+        }
+        
+        guard let fileManager = fileManager else {
+            SecureLogger.error("FileManager unavailable for recording")
+            throw AudioServiceError.serviceUnavailable
+        }
+        
         // Stop any playback first and ensure clean state
         if isPlaying || isPaused || isInPlaybackSession {
             stopPlayback()
@@ -112,8 +193,28 @@ final class AudioCoordinator: ObservableObject {
     
     func stopRecording() {
         guard let script = currentRecordingScript else { 
-            _ = recordingService.stopRecording() // Legacy call
+            // Legacy call with safe unwrapping
+            if let recordingService = recordingService {
+                _ = recordingService.stopRecording()
+            }
             return 
+        }
+        
+        // Ensure required services are available
+        guard let recordingService = recordingService,
+              let processingService = processingService,
+              let fileManager = fileManager else {
+            SecureLogger.error("Required services unavailable for stopping recording")
+            DispatchQueue.main.async { [weak self] in
+                self?.currentRecordingScript = nil
+                self?.isProcessingRecording = false
+                if let scriptId = script.id as UUID? {
+                    self?.processingScriptIds.remove(scriptId)
+                }
+                self?.processingProgress = 0
+                self?.processingMessage = ""
+            }
+            return
         }
         
         // Mark that user has recorded before (for optimizations)
@@ -139,10 +240,23 @@ final class AudioCoordinator: ObservableObject {
             }
             
             // Get voice activity timestamps from recording service
-            let trimTimestamps = self.recordingService.getTrimTimestamps()
+            guard let recordingService = self.recordingService,
+                  let processingService = self.processingService else {
+                SecureLogger.error("Services unavailable during recording processing")
+                DispatchQueue.main.async { [weak self] in
+                    self?.currentRecordingScript = nil
+                    self?.isProcessingRecording = false
+                    self?.processingScriptIds.remove(scriptId)
+                    self?.processingProgress = 0
+                    self?.processingMessage = ""
+                }
+                return
+            }
+            
+            let trimTimestamps = recordingService.getTrimTimestamps()
             
             // Process the recording (trim silence, etc.)
-            self.processingService.processRecording(for: scriptId, trimTimestamps: trimTimestamps) { success in
+            processingService.processRecording(for: scriptId, trimTimestamps: trimTimestamps) { success in
                 // Update progress
                 DispatchQueue.main.async { [weak self] in
                     self?.processingProgress = 0.6
@@ -155,10 +269,25 @@ final class AudioCoordinator: ObservableObject {
                 #if DEBUG
                 SecureLogger.debug("Starting transcription with language")
                 #endif
-                self.processingService.transcribeRecording(for: scriptId, languageCode: languageCode) { transcription in
+                
+                // Safely access processing service for transcription
+                guard let processingService = self.processingService,
+                      let fileManager = self.fileManager else {
+                    SecureLogger.error("Services unavailable for transcription")
+                    DispatchQueue.main.async { [weak self] in
+                        self?.currentRecordingScript = nil
+                        self?.isProcessingRecording = false
+                        self?.processingScriptIds.remove(scriptId)
+                        self?.processingProgress = 0
+                        self?.processingMessage = ""
+                    }
+                    return
+                }
+                
+                processingService.transcribeRecording(for: scriptId, languageCode: languageCode) { transcription in
                     DispatchQueue.main.async {
                         // Get actual duration from file after processing
-                        if let fileDuration = self.fileManager.getAudioDuration(for: scriptId) {
+                        if let fileDuration = fileManager.getAudioDuration(for: scriptId) {
                             script.audioDuration = fileDuration
                             #if DEBUG
                             SecureLogger.debug("Recording processed - Duration: \(String(format: "%.2f", fileDuration))s, Success: \(success)")
@@ -220,6 +349,12 @@ final class AudioCoordinator: ObservableObject {
             throw AudioServiceError.invalidScript
         }
         
+        // Ensure playback service is available
+        guard let playbackService = playbackService else {
+            SecureLogger.error("PlaybackService unavailable for playback")
+            throw AudioServiceError.serviceUnavailable
+        }
+        
         // Stop any recording first
         if isRecording {
             #if DEBUG
@@ -243,21 +378,37 @@ final class AudioCoordinator: ObservableObject {
     
     func pausePlayback() {
         ensureInitialized()
+        guard let playbackService = playbackService else {
+            SecureLogger.error("PlaybackService unavailable for pause")
+            return
+        }
         playbackService.pausePlayback()
     }
     
     func resumePlayback() {
         ensureInitialized()
+        guard let playbackService = playbackService else {
+            SecureLogger.error("PlaybackService unavailable for resume")
+            return
+        }
         playbackService.resumePlayback()
     }
     
     func stopPlayback() {
         ensureInitialized()
+        guard let playbackService = playbackService else {
+            SecureLogger.error("PlaybackService unavailable for stop")
+            return
+        }
         playbackService.stopPlayback()
     }
     
     func setPlaybackSpeed(_ speed: Float) {
         ensureInitialized()
+        guard let playbackService = playbackService else {
+            SecureLogger.error("PlaybackService unavailable for speed adjustment")
+            return
+        }
         playbackService.setPlaybackSpeed(speed)
     }
     
@@ -265,13 +416,18 @@ final class AudioCoordinator: ObservableObject {
     
     func deleteRecording(for script: SelftalkScript) {
         ensureInitialized()
+        
         // Stop playback if playing this script
         if currentPlayingScriptId == script.id {
             stopPlayback()
         }
         
-        // Delete the file
-        try? fileManager.deleteRecording(for: script.id)
+        // Delete the file with safe unwrapping
+        if let fileManager = fileManager {
+            try? fileManager.deleteRecording(for: script.id)
+        } else {
+            SecureLogger.error("FileManager unavailable for deleting recording")
+        }
         
         // Clear script properties including transcript
         script.audioFilePath = nil
@@ -281,55 +437,59 @@ final class AudioCoordinator: ObservableObject {
     
     func checkPrivateMode() {
         ensureInitialized()
+        guard let sessionManager = sessionManager else {
+            SecureLogger.error("SessionManager unavailable for private mode check")
+            return
+        }
         sessionManager.checkPrivateMode()
     }
     
     // MARK: - Private Methods
     
     private func bindPublishedProperties() {
-        // Bind recording properties
-        recordingService.$isRecording
+        // Bind recording properties with safe unwrapping
+        recordingService?.$isRecording
             .assign(to: &$isRecording)
         
-        recordingService.$recordingDuration
+        recordingService?.$recordingDuration
             .assign(to: &$recordingDuration)
         
-        recordingService.$isProcessing
+        recordingService?.$isProcessing
             .assign(to: &$isProcessingRecording)
         
-        recordingService.$voiceActivityLevel
+        recordingService?.$voiceActivityLevel
             .assign(to: &$voiceActivityLevel)
         
-        // Bind playback properties
-        playbackService.$isPlaying
+        // Bind playback properties with safe unwrapping
+        playbackService?.$isPlaying
             .assign(to: &$isPlaying)
         
-        playbackService.$isPaused
+        playbackService?.$isPaused
             .assign(to: &$isPaused)
         
-        playbackService.$isInPlaybackSession
+        playbackService?.$isInPlaybackSession
             .assign(to: &$isInPlaybackSession)
         
-        playbackService.$currentPlayingScriptId
+        playbackService?.$currentPlayingScriptId
             .assign(to: &$currentPlayingScriptId)
         
-        playbackService.$playbackProgress
+        playbackService?.$playbackProgress
             .assign(to: &$playbackProgress)
         
-        playbackService.$currentRepetition
+        playbackService?.$currentRepetition
             .assign(to: &$currentRepetition)
         
-        playbackService.$totalRepetitions
+        playbackService?.$totalRepetitions
             .assign(to: &$totalRepetitions)
         
-        playbackService.$isInInterval
+        playbackService?.$isInInterval
             .assign(to: &$isInInterval)
         
-        playbackService.$intervalProgress
+        playbackService?.$intervalProgress
             .assign(to: &$intervalProgress)
         
-        // Bind session manager properties
-        sessionManager.$privateModeActive
+        // Bind session manager properties with safe unwrapping
+        sessionManager?.$privateModeActive
             .assign(to: &$privateModeActive)
     }
 }
@@ -347,12 +507,20 @@ extension AudioCoordinator {
     
     /// Check if audio file exists for a script (for backward compatibility)
     func hasRecording(for script: SelftalkScript) -> Bool {
-        fileManager.audioFileExists(for: script.id)
+        guard let fileManager = fileManager else {
+            SecureLogger.error("FileManager unavailable for audio file check")
+            return false
+        }
+        return fileManager.audioFileExists(for: script.id)
     }
     
     /// Get audio duration for a script (for backward compatibility)
     func getAudioDuration(for script: SelftalkScript) -> TimeInterval? {
-        fileManager.getAudioDuration(for: script.id)
+        guard let fileManager = fileManager else {
+            SecureLogger.error("FileManager unavailable for audio duration check")
+            return nil
+        }
+        return fileManager.getAudioDuration(for: script.id)
     }
     
     /// Check if a specific script is currently being processed
