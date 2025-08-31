@@ -78,7 +78,7 @@
 "settings.show_tip_only" = "Show tip only";
 "settings.character_guidance.info" = "Shorter scripts are easier to remember and more impactful";
 
-"settings.default_language" = "Default Language";
+"settings.default_language" = "Transcripting Language";
 "settings.voice_enhancement" = "Voice Enhancement";
 "settings.voice_enhancement.desc" = "Reduces background noise and echo";
 "settings.auto_trim_silence" = "Auto-Trim Silence";
