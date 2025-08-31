@@ -112,8 +112,7 @@ struct RootView: View {
             
             // Load stores
             let inMemory = false
-            let iCloudEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? false
-            await pc.loadStores(inMemory: inMemory, iCloudEnabled: iCloudEnabled)
+            await pc.loadStores(inMemory: inMemory)
             
             // Track Core Data ready
             AppLaunchOptimizer.LaunchMetrics.coreDataReady = Date()

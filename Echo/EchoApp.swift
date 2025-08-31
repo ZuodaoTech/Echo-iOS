@@ -51,18 +51,6 @@ struct EchoApp: App {
             }
         }
         
-        // Setup notification observer for iCloud changes
-        Task { @MainActor in
-            NotificationCenter.default.addObserver(
-                forName: Notification.Name("RestartCoreDataForICloud"),
-                object: nil,
-                queue: .main
-            ) { notification in
-                if let enabled = notification.userInfo?["enabled"] as? Bool {
-                    print("iCloud sync toggled: \(enabled)")
-                }
-            }
-        }
     }
     
     private static func configureAudioSessionAsync() async {

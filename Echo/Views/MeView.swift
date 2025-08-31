@@ -1,5 +1,4 @@
 import SwiftUI
-import CloudKit
 import CoreData
 
 struct MeView: View {
@@ -24,8 +23,8 @@ struct MeView: View {
     // Tag Settings
     @AppStorage("autoCleanupUnusedTags") private var autoCleanupUnusedTags = true
     
-    // Sync Settings
-    @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = true
+    // Sync Settings - preserved for UI but non-functional
+    @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = false
     
     // State for pickers
     @State private var showingUILanguagePicker = false
@@ -39,9 +38,6 @@ struct MeView: View {
     @State private var showDevSection = false
     @State private var swipeSequence: [SwipeDirection] = []
     @State private var lastSwipeTime = Date()
-    @State private var showingClearICloudAlert = false
-    @State private var showingRemoveDuplicatesAlert = false
-    @State private var iCloudRecordCount: Int? = nil
     @State private var devActionMessage = ""
     @State private var showingDevActionResult = false
     
@@ -199,20 +195,16 @@ struct MeView: View {
                                     .foregroundColor(.primary)
                                     .frame(width: 25)
                                 Text(NSLocalizedString("settings.icloud_sync", comment: ""))
+                                Text("(Coming Soon)")
+                                    .font(.caption)
+                                    .foregroundColor(.orange)
                             }
                             Text(NSLocalizedString("settings.icloud_sync_desc", comment: ""))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
                     }
-                    .onChange(of: iCloudSyncEnabled) { newValue in
-                        // Restart Core Data container when toggling iCloud
-                        NotificationCenter.default.post(
-                            name: Notification.Name("RestartCoreDataForICloud"),
-                            object: nil,
-                            userInfo: ["enabled": newValue]
-                        )
-                    }
+                    .disabled(true)  // Disabled until iCloud sync is reimplemented
                     
                     if iCloudSyncEnabled {
                         HStack {
@@ -369,66 +361,7 @@ struct MeView: View {
                         Text(NSLocalizedString("settings.card_preferences", comment: ""))
                     }
                     
-                    // MARK: - Destructive Actions Section
-                    Section {
-                        // Clear iCloud Data
-                        Button {
-                            showingClearICloudAlert = true
-                        } label: {
-                            HStack {
-                                Image(systemName: "icloud.slash")
-                                    .font(.system(size: 20))
-                                    .foregroundColor(.red)
-                                    .frame(width: 25)
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(NSLocalizedString("dev.clear_icloud", comment: "Clear iCloud Data"))
-                                        .foregroundColor(.red)
-                                    if let count = iCloudRecordCount {
-                                        Text("\(count) " + NSLocalizedString("dev.cards_in_icloud", comment: "cards in iCloud"))
-                                            .font(.caption)
-                                            .foregroundColor(.secondary)
-                                    } else {
-                                        Text(NSLocalizedString("dev.checking_icloud", comment: "Checking iCloud..."))
-                                            .font(.caption)
-                                            .foregroundColor(.secondary)
-                                    }
-                                }
-                                Spacer()
-                            }
-                        }
-                        .onAppear {
-                            if iCloudSyncEnabled {
-                                fetchICloudRecordCount()
-                            }
-                        }
-                        .onChange(of: iCloudSyncEnabled) { newValue in
-                            if newValue {
-                                fetchICloudRecordCount()
-                            } else {
-                                iCloudRecordCount = nil
-                            }
-                        }
-                        
-                        // Remove Duplicates
-                        Button {
-                            showingRemoveDuplicatesAlert = true
-                        } label: {
-                            HStack {
-                                Image(systemName: "doc.on.doc.fill")
-                                    .font(.system(size: 20))
-                                    .foregroundColor(.orange)
-                                    .frame(width: 25)
-                                Text(NSLocalizedString("dev.remove_duplicates", comment: "Remove Duplicate Tags & Cards"))
-                                    .foregroundColor(.orange)
-                                Spacer()
-                            }
-                        }
-                    } header: {
-                        Text(NSLocalizedString("dev.destructive_actions", comment: "Destructive Actions"))
-                    } footer: {
-                        Text(NSLocalizedString("dev.destructive_warning", comment: "These actions are destructive and cannot be undone."))
-                            .font(.caption)
-                    }
+                    // Developer tools section removed - iCloud operations no longer functional
                     
                     // Empty section for spacing
                     Section {
@@ -457,24 +390,6 @@ struct MeView: View {
                 Button(NSLocalizedString("action.got_it", comment: ""), role: .cancel) { }
             } message: {
                 Text(NSLocalizedString("settings.private_mode.alert.message", comment: ""))
-            }
-            .alert(NSLocalizedString("dev.clear_icloud.confirm", comment: "Clear iCloud Data?"), isPresented: $showingClearICloudAlert) {
-                Button(NSLocalizedString("action.cancel", comment: "Cancel"), role: .cancel) { }
-                Button(NSLocalizedString("dev.clear", comment: "Clear"), role: .destructive) {
-                    clearICloudData()
-                }
-            } message: {
-                Text(NSLocalizedString("dev.clear_icloud.message", comment: "This will remove all Echo data from iCloud. Local data will remain intact."))
-            }
-            .alert(NSLocalizedString("dev.remove_duplicates.confirm", comment: "Remove Duplicates?"), isPresented: $showingRemoveDuplicatesAlert) {
-                Button(NSLocalizedString("action.cancel", comment: "Cancel"), role: .cancel) { }
-                Button(NSLocalizedString("dev.remove_duplicates.button", comment: "Remove"), role: .destructive) {
-                    Task {
-                        await removeDuplicates()
-                    }
-                }
-            } message: {
-                Text(NSLocalizedString("dev.remove_duplicates.message", comment: "This will merge duplicate tags and remove duplicate scripts with the same content."))
             }
             .alert(NSLocalizedString("dev.operation_complete", comment: "Operation Complete"), isPresented: $showingDevActionResult) {
                 Button(NSLocalizedString("action.ok", comment: "OK"), role: .cancel) { }
@@ -606,87 +521,12 @@ struct MeView: View {
     
     // MARK: - Dev Section Functions
     
-    private func clearICloudData() {
-        Task {
-            let container = CKContainer(identifier: "iCloud.xiaolai.Echo")
-            let privateDB = container.privateCloudDatabase
-            
-            // Record types to delete
-            let recordTypes = ["CD_SelftalkScript", "CD_Tag"]
-            
-            var totalDeleted = 0
-            var errors: [String] = []
-            
-            for recordType in recordTypes {
-                // Use CD_createdAt which is the Core Data field synced to CloudKit
-                // This fetches all records created after 1970 (essentially all records)
-                let predicate = NSPredicate(format: "CD_createdAt > %@", NSDate(timeIntervalSince1970: 0))
-                let query = CKQuery(recordType: recordType, predicate: predicate)
-                
-                do {
-                    let records = try await privateDB.records(matching: query)
-                    let recordIds = records.matchResults.compactMap { _, result in
-                        try? result.get().recordID
-                    }
-                    
-                    for recordId in recordIds {
-                        do {
-                            try await privateDB.deleteRecord(withID: recordId)
-                            totalDeleted += 1
-                        } catch {
-                            errors.append(error.localizedDescription)
-                        }
-                    }
-                } catch {
-                    errors.append("\(recordType): \(error.localizedDescription)")
-                }
-            }
-            
-            await MainActor.run {
-                if errors.isEmpty {
-                    devActionMessage = "Successfully deleted \(totalDeleted) records from iCloud."
-                } else {
-                    devActionMessage = "Deleted \(totalDeleted) records. Errors: \(errors.prefix(3).joined(separator: ", "))"
-                }
-                showingDevActionResult = true
-            }
-        }
-    }
-    
-    private func fetchICloudRecordCount() {
-        Task {
-            let container = CKContainer(identifier: "iCloud.xiaolai.Echo")
-            let privateDB = container.privateCloudDatabase
-            
-            // Query for SelftalkScript records
-            let predicate = NSPredicate(format: "CD_createdAt > %@", NSDate(timeIntervalSince1970: 0))
-            let query = CKQuery(recordType: "CD_SelftalkScript", predicate: predicate)
-            
-            do {
-                let records = try await privateDB.records(matching: query)
-                let count = records.matchResults.count
-                
-                await MainActor.run {
-                    self.iCloudRecordCount = count
-                }
-            } catch {
-                print("Failed to fetch iCloud record count: \(error.localizedDescription)")
-                await MainActor.run {
-                    self.iCloudRecordCount = 0
-                }
-            }
-        }
-    }
-    
     private func removeDuplicates() async {
-        // First clean up duplicate tags
+        // Clean up duplicate tags
         Tag.cleanupDuplicateTags(in: viewContext)
         
-        // Then use the comprehensive deduplication service
-        await DeduplicationService.deduplicateScripts(in: viewContext)
-        DeduplicationService.markDeduplicationComplete()
-        
-        devActionMessage = "Duplicate cards have been removed successfully."
+        // Note: Script deduplication removed with iCloud sync removal
+        devActionMessage = "Duplicate tags have been cleaned up."
         showingDevActionResult = true
     }
 }

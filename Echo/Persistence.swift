@@ -6,7 +6,6 @@
 //
 
 import CoreData
-import CloudKit
 import Combine
 import SwiftUI
 
@@ -75,13 +74,13 @@ class PersistenceController: ObservableObject {
         return result
     }()
 
-    private var _container: NSPersistentCloudKitContainer?
+    private var _container: NSPersistentContainer?
     private var isInMemory: Bool = false
     
-    var container: NSPersistentCloudKitContainer {
+    var container: NSPersistentContainer {
         if _container == nil {
             // Lazy create container only when needed
-            _container = NSPersistentCloudKitContainer(name: "Echo")
+            _container = NSPersistentContainer(name: "Echo")
             configureContainer()
         }
         return _container!
@@ -120,74 +119,40 @@ class PersistenceController: ObservableObject {
                 firstDescription.url = URL(fileURLWithPath: "/dev/null")
             }
         } else {
-            // Configure for CloudKit if enabled (default to false for fresh installs)
-            let iCloudEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? false
-            
+            // Configure for local storage only
             container.persistentStoreDescriptions.forEach { storeDescription in
-                // Always enable history tracking to avoid read-only mode
+                // Enable history tracking for potential future features
                 storeDescription.setOption(true as NSNumber, 
                                           forKey: NSPersistentHistoryTrackingKey)
                 storeDescription.setOption(true as NSNumber, 
                                           forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-                
-                if iCloudEnabled {
-                    // Set CloudKit container options
-                    storeDescription.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(
-                        containerIdentifier: "iCloud.xiaolai.Echo"
-                    )
-                    
-                    // Allow public database for sharing (future feature)
-                    storeDescription.cloudKitContainerOptions?.databaseScope = .private
-                } else {
-                    // Disable CloudKit but keep history tracking
-                    storeDescription.cloudKitContainerOptions = nil
-                }
             }
         }
     }
     
-    func loadStores(inMemory: Bool, iCloudEnabled: Bool) async {
+    func loadStores(inMemory: Bool) async {
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 print("Core Data error: \(error), \(error.userInfo)")
                 
-                // If CloudKit fails or store fails to load, try local storage only
-                if error.domain == CKErrorDomain || error.code == 134060 || error.code == 134110 {
-                    print("CloudKit/Store error detected, attempting fallback to local storage")
-                    
-                    // Don't automatically disable iCloud sync preference - let user control it
-                    // The error is due to Core Data model constraints, not user preference
-                    // UserDefaults.standard.set(false, forKey: "iCloudSyncEnabled")
-                    
-                    // Reconfigure for local storage only but keep history tracking
-                    for description in self.container.persistentStoreDescriptions {
-                        description.cloudKitContainerOptions = nil
-                        // Ensure history tracking remains enabled
-                        description.setOption(true as NSNumber, 
-                                             forKey: NSPersistentHistoryTrackingKey)
-                        description.setOption(true as NSNumber, 
-                                             forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-                    }
-                    
-                    // Try loading stores again without CloudKit
-                    self.container.loadPersistentStores { (retryDescription, retryError) in
-                        if let retryError = retryError as NSError? {
-                            // If still failing, this is a critical error
-                            fatalError("Unable to load persistent stores: \(retryError), \(retryError.userInfo)")
-                        } else {
-                            print("Successfully loaded local persistent store after CloudKit failure")
-                        }
-                    }
+                // Try to handle common errors gracefully
+                if error.code == 134110 { // Model version mismatch
+                    print("Core Data model version mismatch - attempting migration")
+                    // In production, you might want to attempt lightweight migration
+                    // For now, we'll log and continue with limited functionality
+                    print("WARNING: App may have limited functionality due to Core Data error")
+                } else if error.code == 134060 { // Store file issue
+                    print("Core Data store file issue - app will continue with limited functionality")
                 } else {
-                    // For other errors, still try to continue but log the issue
-                    print("Core Data warning: Store loaded with error, app may have limited functionality")
+                    // For truly unrecoverable errors, we still need to fail
+                    print("CRITICAL: Unrecoverable Core Data error")
+                    fatalError("Unable to load persistent stores: \(error), \(error.userInfo)")
                 }
             } else {
                 print("Core Data: Successfully loaded persistent store")
                 print("Store type: \(storeDescription.type)")
                 print("Store URL: \(storeDescription.url?.absoluteString ?? "nil")")
-                print("CloudKit enabled: \(storeDescription.cloudKitContainerOptions != nil)")
             }
             
             // Mark as ready and check if we need to import samples
@@ -203,31 +168,10 @@ class PersistenceController: ObservableObject {
                 Task { @MainActor in
                     await self.importSamplesIfNeeded()
                     
-                    // Run deduplication if iCloud is enabled and it's time to check
-                    if iCloudEnabled && DeduplicationService.shouldCheckForDuplicates() {
-                        await DeduplicationService.deduplicateScripts(in: self.container.viewContext)
-                        DeduplicationService.markDeduplicationComplete()
-                    }
-                    
                     // Final transition to ready state
                     withAnimation(.easeInOut(duration: 0.3)) {
                         self.dataLoadingState = .coreDataReady
                     }
-                    
-                    // Initialize CloudKit schema AFTER Core Data is ready
-                    #if DEBUG
-                    if iCloudEnabled && !self.container.persistentStoreCoordinator.persistentStores.isEmpty {
-                        Task(priority: .background) {
-                            do {
-                                try await Task.sleep(nanoseconds: 2_000_000_000) // Small delay to ensure stability
-                                try self.container.initializeCloudKitSchema()
-                                print("CloudKit schema initialized successfully (after Core Data ready)")
-                            } catch {
-                                print("CloudKit schema initialization error: \(error)")
-                            }
-                        }
-                    }
-                    #endif
                 }
             }
             continuation.resume()
@@ -235,9 +179,6 @@ class PersistenceController: ObservableObject {
         }
         
         container.viewContext.automaticallyMergesChangesFromParent = true
-        
-        // CloudKit initialization will happen after Core Data loads
-        // Moved to after isReady = true in loadStores completion
     }
     
     // MARK: - View-Triggered Loading
@@ -250,8 +191,7 @@ class PersistenceController: ObservableObject {
         Task(priority: .background) {
             print("Core Data: Starting load after view rendered...")
             let inMemory = container.persistentStoreDescriptions.first?.url == URL(fileURLWithPath: "/dev/null")
-            let iCloudEnabled = UserDefaults.standard.object(forKey: "iCloudSyncEnabled") as? Bool ?? false
-            await loadStores(inMemory: inMemory, iCloudEnabled: iCloudEnabled)
+            await loadStores(inMemory: inMemory)
         }
     }
     
@@ -262,11 +202,7 @@ class PersistenceController: ObservableObject {
     private func importSamplesIfNeeded() async {
         let context = container.viewContext
         
-        // Wait a moment for iCloud sync to potentially bring in existing data
-        if iCloudSyncEnabled {
-            print("iCloud sync enabled, waiting for potential sync...")
-            try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
-        }
+        // No need to wait for sync anymore
         
         // Check if we already have the sample scripts (by their fixed IDs)
         let sampleIDs = [
@@ -280,7 +216,7 @@ class PersistenceController: ObservableObject {
         let existingSamples = (try? context.fetch(fetchRequest)) ?? []
         
         if existingSamples.count >= 3 {
-            print("Sample scripts already exist (likely from iCloud sync), skipping import")
+            print("Sample scripts already exist, skipping import")
             return
         }
         

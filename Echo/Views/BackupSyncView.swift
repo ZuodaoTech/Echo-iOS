@@ -4,8 +4,8 @@ struct BackupSyncView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.managedObjectContext) private var viewContext
     
-    // Default to true for fresh installs - user preference persists even if CloudKit fails
-    @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = true
+    // iCloud sync toggle - preserved for UI but non-functional
+    @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = false
     
     
     var body: some View {
@@ -14,20 +14,18 @@ struct BackupSyncView: View {
                 Section {
                     Toggle(isOn: $iCloudSyncEnabled) {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(NSLocalizedString("settings.icloud_sync", comment: ""))
+                            HStack {
+                                Text(NSLocalizedString("settings.icloud_sync", comment: ""))
+                                Text("(Coming Soon)")
+                                    .font(.caption)
+                                    .foregroundColor(.orange)
+                            }
                             Text(NSLocalizedString("settings.icloud_sync_desc", comment: ""))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
                     }
-                    .onChange(of: iCloudSyncEnabled) { newValue in
-                        // Restart Core Data container when toggling iCloud
-                        NotificationCenter.default.post(
-                            name: Notification.Name("RestartCoreDataForICloud"),
-                            object: nil,
-                            userInfo: ["enabled": newValue]
-                        )
-                    }
+                    .disabled(true)  // Disabled until iCloud sync is reimplemented
                     
                     if iCloudSyncEnabled {
                         HStack {
