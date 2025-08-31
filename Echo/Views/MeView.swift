@@ -40,8 +40,8 @@ struct MeView: View {
     @State private var swipeSequence: [SwipeDirection] = []
     @State private var lastSwipeTime = Date()
     @State private var showingClearICloudAlert = false
-    @State private var showingClearLocalDataAlert = false
     @State private var showingRemoveDuplicatesAlert = false
+    @State private var iCloudRecordCount: Int? = nil
     @State private var devActionMessage = ""
     @State private var showingDevActionResult = false
     
@@ -380,24 +380,32 @@ struct MeView: View {
                                     .font(.system(size: 20))
                                     .foregroundColor(.red)
                                     .frame(width: 25)
-                                Text(NSLocalizedString("dev.clear_icloud", comment: "Clear iCloud Data"))
-                                    .foregroundColor(.red)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(NSLocalizedString("dev.clear_icloud", comment: "Clear iCloud Data"))
+                                        .foregroundColor(.red)
+                                    if let count = iCloudRecordCount {
+                                        Text("\(count) " + NSLocalizedString("dev.cards_in_icloud", comment: "cards in iCloud"))
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    } else {
+                                        Text(NSLocalizedString("dev.checking_icloud", comment: "Checking iCloud..."))
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                }
                                 Spacer()
                             }
                         }
-                        
-                        // Clear Local Data
-                        Button {
-                            showingClearLocalDataAlert = true
-                        } label: {
-                            HStack {
-                                Image(systemName: "trash.fill")
-                                    .font(.system(size: 20))
-                                    .foregroundColor(.red)
-                                    .frame(width: 25)
-                                Text(NSLocalizedString("dev.clear_local", comment: "Clear All Local Data"))
-                                    .foregroundColor(.red)
-                                Spacer()
+                        .onAppear {
+                            if iCloudSyncEnabled {
+                                fetchICloudRecordCount()
+                            }
+                        }
+                        .onChange(of: iCloudSyncEnabled) { newValue in
+                            if newValue {
+                                fetchICloudRecordCount()
+                            } else {
+                                iCloudRecordCount = nil
                             }
                         }
                         
@@ -457,14 +465,6 @@ struct MeView: View {
                 }
             } message: {
                 Text(NSLocalizedString("dev.clear_icloud.message", comment: "This will remove all Echo data from iCloud. Local data will remain intact."))
-            }
-            .alert(NSLocalizedString("dev.clear_local.confirm", comment: "Clear All Local Data?"), isPresented: $showingClearLocalDataAlert) {
-                Button(NSLocalizedString("action.cancel", comment: "Cancel"), role: .cancel) { }
-                Button(NSLocalizedString("dev.clear_local.button", comment: "Delete Everything"), role: .destructive) {
-                    clearAllLocalData()
-                }
-            } message: {
-                Text(NSLocalizedString("dev.clear_local.message", comment: "This will delete ALL scripts, recordings, and tags. This cannot be undone!"))
             }
             .alert(NSLocalizedString("dev.remove_duplicates.confirm", comment: "Remove Duplicates?"), isPresented: $showingRemoveDuplicatesAlert) {
                 Button(NSLocalizedString("action.cancel", comment: "Cancel"), role: .cancel) { }
@@ -653,46 +653,28 @@ struct MeView: View {
         }
     }
     
-    private func clearAllLocalData() {
-        // First, fetch all scripts to delete audio files
-        let scriptRequest: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
-        
-        do {
-            let scripts = try viewContext.fetch(scriptRequest)
+    private func fetchICloudRecordCount() {
+        Task {
+            let container = CKContainer(identifier: "iCloud.xiaolai.Echo")
+            let privateDB = container.privateCloudDatabase
             
-            // Delete all audio files
-            for script in scripts {
-                if let audioPath = script.audioFilePath {
-                    let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-                        .appendingPathComponent("Recordings")
-                        .appendingPathComponent(audioPath)
-                    try? FileManager.default.removeItem(at: fileURL)
+            // Query for SelftalkScript records
+            let predicate = NSPredicate(format: "CD_createdAt > %@", NSDate(timeIntervalSince1970: 0))
+            let query = CKQuery(recordType: "CD_SelftalkScript", predicate: predicate)
+            
+            do {
+                let records = try await privateDB.records(matching: query)
+                let count = records.matchResults.count
+                
+                await MainActor.run {
+                    self.iCloudRecordCount = count
                 }
-                viewContext.delete(script)
+            } catch {
+                print("Failed to fetch iCloud record count: \(error.localizedDescription)")
+                await MainActor.run {
+                    self.iCloudRecordCount = 0
+                }
             }
-            
-            // Delete all tags
-            let tagRequest: NSFetchRequest<Tag> = Tag.fetchRequest()
-            let tags = try viewContext.fetch(tagRequest)
-            for tag in tags {
-                viewContext.delete(tag)
-            }
-            
-            // Save context
-            try viewContext.save()
-            
-            // Clear all UserDefaults
-            if let bundleId = Bundle.main.bundleIdentifier {
-                UserDefaults.standard.removePersistentDomain(forName: bundleId)
-                UserDefaults.standard.synchronize()
-            }
-            
-            devActionMessage = "Successfully deleted \(scripts.count) scripts and \(tags.count) tags."
-            showingDevActionResult = true
-            
-        } catch {
-            devActionMessage = "Failed to clear data: \(error.localizedDescription)"
-            showingDevActionResult = true
         }
     }
     

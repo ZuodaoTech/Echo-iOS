@@ -311,10 +311,8 @@
 "dev.clear_icloud" = "Clear iCloud Data";
 "dev.clear_icloud.confirm" = "Clear iCloud Data?";
 "dev.clear_icloud.message" = "This will remove all Echo data from iCloud. Local data will remain intact.";
-"dev.clear_local" = "Clear All Local Data";
-"dev.clear_local.confirm" = "Clear All Local Data?";
-"dev.clear_local.message" = "This will delete ALL scripts, recordings, and tags. This cannot be undone!";
-"dev.clear_local.button" = "Delete Everything";
+"dev.cards_in_icloud" = "cards in iCloud";
+"dev.checking_icloud" = "Checking iCloud...";
 "dev.remove_duplicates" = "Remove Duplicate Tags & Cards";
 "dev.remove_duplicates.confirm" = "Remove Duplicates?";
 "dev.remove_duplicates.message" = "This will merge duplicate tags and remove duplicate scripts with the same content.";
