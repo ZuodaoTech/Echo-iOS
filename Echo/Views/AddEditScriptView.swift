@@ -52,6 +52,17 @@ struct AddEditScriptView: View {
     @State private var hasSavedOnDismiss = false
     @State private var showingValidationAlert = false
     @State private var validationMessage = ""
+    @State private var showingDiscardAlert = false
+    
+    // Track initial values for change detection
+    @State private var initialScriptText = ""
+    @State private var initialRepetitions: Int16 = 3
+    @State private var initialInterval: Double = 2.0
+    @State private var initialPrivateMode = true
+    @State private var initialTags: Set<Tag> = []
+    @State private var initialHasRecording = false
+    @State private var initialNotificationEnabled = false
+    @State private var initialNotificationFrequency = "medium"
     
     // Character guidance
     @AppStorage("characterGuidanceEnabled") private var characterGuidanceEnabled = true
@@ -81,6 +92,28 @@ struct AddEditScriptView: View {
     
     private var isPaused: Bool {
         audioService.isPaused && audioService.currentPlayingScriptId == script?.id
+    }
+    
+    private var hasUnsavedChanges: Bool {
+        // Check text changes
+        let currentText = scriptText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let originalText = initialScriptText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if currentText != originalText { return true }
+        
+        // Check settings changes
+        if repetitions != initialRepetitions { return true }
+        if intervalSeconds != initialInterval { return true }
+        if privateModeEnabled != initialPrivateMode { return true }
+        if selectedTags != initialTags { return true }
+        
+        // Check notification settings
+        if notificationEnabled != initialNotificationEnabled { return true }
+        if notificationFrequency != initialNotificationFrequency { return true }
+        
+        // Check recording changes
+        if hasRecording != initialHasRecording { return true }
+        
+        return false
     }
     
     var body: some View {
@@ -456,9 +489,16 @@ struct AddEditScriptView: View {
             .navigationTitle(isEditing ? NSLocalizedString("navigation.edit_script", comment: "") : NSLocalizedString("navigation.new_script", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(NSLocalizedString("action.cancel", comment: "")) {
+                        handleCancel()
+                    }
+                    .font(.body)
+                }
+                
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(NSLocalizedString("action.done", comment: "")) {
-                        print("💾 AddEditScriptView: Done pressed")
+                    Button(NSLocalizedString("action.save", comment: "")) {
+                        print("💾 AddEditScriptView: Save pressed")
                         print("   Audio session state: \(audioService.audioSessionState)")
                         print("   Is processing: \(audioService.isProcessingRecording)")
                         handleDone()
@@ -499,6 +539,19 @@ struct AddEditScriptView: View {
                 Button(NSLocalizedString("action.ok", comment: "OK"), role: .cancel) { }
             } message: {
                 Text(validationMessage)
+            }
+            .alert(NSLocalizedString("discard.changes.title", comment: "Discard Changes?"), isPresented: $showingDiscardAlert) {
+                Button(NSLocalizedString("action.cancel", comment: "Cancel"), role: .cancel) { }
+                Button(NSLocalizedString("action.discard", comment: "Discard"), role: .destructive) {
+                    hasSavedOnDismiss = true // Prevent auto-save
+                    dismiss()
+                }
+            } message: {
+                if hasRecording && !initialHasRecording {
+                    Text(NSLocalizedString("discard.changes.with.recording", comment: "You have unsaved changes and a new recording. Are you sure you want to discard them?"))
+                } else {
+                    Text(NSLocalizedString("discard.changes.message", comment: "You have unsaved changes. Are you sure you want to discard them?"))
+                }
             }
         }
         .onAppear {
@@ -571,13 +624,53 @@ struct AddEditScriptView: View {
             privateModeEnabled = privateModeDefault
             transcriptionLanguage = defaultTranscriptionLanguage
         }
+        
+        // Capture initial values AFTER setting current values
+        // This ensures we capture the actual loaded values, not defaults
+        captureInitialState()
+    }
+    
+    private func captureInitialState() {
+        // Capture the current state as initial state for change detection
+        initialScriptText = scriptText
+        initialTags = selectedTags
+        initialRepetitions = repetitions
+        initialInterval = intervalSeconds
+        initialPrivateMode = privateModeEnabled
+        initialHasRecording = hasRecording
+        initialNotificationEnabled = notificationEnabled
+        initialNotificationFrequency = notificationFrequency
     }
     
     
     private func handleDone() {
+        // Clean up any timers before dismissing
+        transcriptCheckTimer?.invalidate()
+        transcriptCheckTimer = nil
+        
         // Save and dismiss
         if saveScript() {
             hasSavedOnDismiss = true
+            dismiss()
+        }
+    }
+    
+    private func handleCancel() {
+        // Stop any ongoing recording
+        if isRecording {
+            audioService.stopRecording()
+            isRecording = false
+        }
+        
+        // Clean up any timers
+        transcriptCheckTimer?.invalidate()
+        transcriptCheckTimer = nil
+        
+        // Check for unsaved changes
+        if hasUnsavedChanges {
+            showingDiscardAlert = true
+        } else {
+            hasSavedOnDismiss = true // Prevent auto-save
             dismiss()
         }
     }
@@ -759,14 +852,17 @@ struct AddEditScriptView: View {
     private func retranscribeWithNewLanguage(script: SelftalkScript, language: String) {
         guard script.hasRecording else { return }
         
-        // Prevent multiple concurrent re-transcriptions
+        // Thread-safe check to prevent multiple concurrent re-transcriptions
+        objc_sync_enter(self)
         guard !isRetranscribing else { 
             print("Re-transcription already in progress, skipping")
+            objc_sync_exit(self)
             return 
         }
-        
-        // Clear existing transcript and start re-transcription
         isRetranscribing = true
+        objc_sync_exit(self)
+        
+        // Clear existing transcript
         script.transcribedText = nil
         
         // Add a small delay to let the file system settle

@@ -151,6 +151,7 @@
 "action.done" = "Done";
 "action.cancel" = "Cancel";
 "action.delete" = "Delete";
+"action.discard" = "Discard";
 "action.add" = "Add";
 "action.save" = "Save";
 "action.ok" = "OK";
@@ -159,6 +160,11 @@
 "action.use_as_script" = "Use as Script";
 "action.share" = "Share";
 "action.edit" = "Edit";
+
+// MARK: - Discard Changes Dialog
+"discard.changes.title" = "Discard Changes?";
+"discard.changes.message" = "You have unsaved changes. Are you sure you want to discard them?";
+"discard.changes.with.recording" = "You have unsaved changes and a new recording. Are you sure you want to discard them?";
 
 // MARK: - Errors
 "error.title" = "Error";

@@ -152,6 +152,7 @@
 "action.done" = "完成";
 "action.cancel" = "取消";
 "action.delete" = "删除";
+"action.discard" = "放弃";
 "action.add" = "添加";
 "action.save" = "保存";
 "action.ok" = "确定";
@@ -160,6 +161,11 @@
 "action.use_as_script" = "用作脚本";
 "action.share" = "分享";
 "action.edit" = "编辑";
+
+// MARK: - Discard Changes Dialog
+"discard.changes.title" = "放弃更改？";
+"discard.changes.message" = "您有未保存的更改。确定要放弃吗？";
+"discard.changes.with.recording" = "您有未保存的更改和新录音。确定要放弃吗？";
 
 // MARK: - Errors
 "error.title" = "错误";
