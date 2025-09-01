@@ -117,3 +117,4 @@ Temporary Items
 # Project-specific Claude configuration should be ignored
 .claude/
 CLAUDE.md
+log/
