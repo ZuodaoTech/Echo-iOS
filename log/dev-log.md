@@ -1,9 +1,10 @@
 # Echo iOS Development Log
 
 ## 2025-09-01
-**Added**: Claude AI agents (Dylon for code review, Wayne for UX design), devlog command
-**Decision**: Agents have no write permissions - review and guide only
-**Result**: Clear separation between implementation, review, and design roles
+**Focus**: Claude Code workflow setup - no Echo iOS app changes today
+**Added**: AI agents (Dylon, Wayne), devlog command, dev-log.md for concise history
+**Decision**: Agents have no write permissions, Nancy checks dev log daily
+**Result**: Improved development workflow for future efficiency
 
 ## 2025-08-31
 **Changed**: Localization from "Default Language" to "Transcripting Language"
