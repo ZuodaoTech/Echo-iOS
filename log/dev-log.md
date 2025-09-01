@@ -3,8 +3,8 @@
 ## 2025-09-01
 **Focus**: Claude Code workflow setup - no Echo iOS app changes today
 **Added**: AI agents (Dylon, Wayne), devlog command, dev-log.md for concise history
-**Decision**: Agents have no write permissions, Nancy checks dev log daily
-**Result**: Improved development workflow for future efficiency
+**Decision**: Agents have no write permissions, Nancy checks dev log daily, end-of-day routine
+**Result**: Complete development workflow with automated logging and commits
 
 ## 2025-08-31
 **Changed**: Localization from "Default Language" to "Transcripting Language"
