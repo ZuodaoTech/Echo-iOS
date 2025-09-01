@@ -1,10 +1,11 @@
 # Echo iOS Development Log
 
 ## 2025-09-01
-**Focus**: Claude Code workflow setup - no Echo iOS app changes today
-**Added**: AI agents (Dylon, Wayne), devlog command, dev-log.md for concise history
-**Decision**: Agents have no write permissions, Nancy checks dev log daily, end-of-day routine
-**Result**: Complete development workflow with automated logging and commits
+**Added**: Cancel button with unsaved changes detection, AI agents (Dylon, Wayne)
+**Fixed**: Timer memory leaks, state initialization race, thread safety issues
+**Changed**: "Done" to "Save" button, added comprehensive change detection
+**Decision**: Explicit Cancel over silent dismissal, agents for code review only
+**Result**: Production-ready AddEditScriptView, caught critical issues via AI review
 
 ## 2025-08-31
 **Changed**: Localization from "Default Language" to "Transcripting Language"
