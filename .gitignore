@@ -114,5 +114,6 @@ Temporary Items
 .apdisk
 
 # Claude Code
-.claude/
-CLAUDE.md
+# Since this is a private repo, we're tracking Claude configuration
+# .claude/
+# CLAUDE.md
