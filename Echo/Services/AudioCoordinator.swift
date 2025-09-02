@@ -154,6 +154,9 @@ final class AudioCoordinator: ObservableObject {
     private var playbackService: PlaybackService!
     private var processingService: AudioProcessingService!
     
+    // Service lifecycle management
+    private var lifecycleManager: ServiceLifecycleManager!
+    
     // MARK: - Private Properties
     
     private var currentRecordingScript: SelftalkScript?
@@ -181,9 +184,28 @@ final class AudioCoordinator: ObservableObject {
     // MARK: - Initialization
     
     private init() {
+        // Initialize lifecycle manager
+        lifecycleManager = ServiceLifecycleManager(coordinator: self)
+        
+        // Start analytics session
+        InterruptionAnalytics.shared.startSession()
+        
         // Services are now lazy-initialized, nothing to do here
         // Property binding is also deferred to first actual use
         setupInterruptionHandling()
+    }
+    
+    deinit {
+        // End analytics session
+        InterruptionAnalytics.shared.endSession()
+        
+        // Clean up lifecycle manager which will clean up all registered services
+        lifecycleManager?.cleanupAll()
+        
+        // Clean up notification observers
+        NotificationCenter.default.removeObserver(self)
+        
+        print("✅ AudioCoordinator: Deinitialized with proper cleanup")
     }
     
     // MARK: - Interruption Handling
@@ -212,6 +234,17 @@ final class AudioCoordinator: ObservableObject {
         let currentStateSnapshot = stateQueue.sync { internalState }
         
         print("🔇 AudioCoordinator: Interruption began - PhoneCall: \(isPhoneCall), State: \(currentStateSnapshot)")
+        
+        // Track interruption analytics
+        if currentStateSnapshot == .recording {
+            let recordingDuration = recordingService?.currentTime ?? 0
+            InterruptionAnalytics.shared.trackInterruption(
+                type: isPhoneCall ? .phoneCall : .unknown,
+                duration: 0, // Duration will be updated when interruption ends
+                recordingDuration: recordingDuration,
+                isPhoneCall: isPhoneCall
+            )
+        }
         
         // CRITICAL: Save recording immediately for privacy
         if currentStateSnapshot == .recording {
@@ -566,6 +599,15 @@ final class AudioCoordinator: ObservableObject {
         recordingService = RecordingService(fileManager: fileManager, sessionManager: sessionManager)
         playbackService = PlaybackService(fileManager: fileManager, sessionManager: sessionManager)
         processingService = AudioProcessingService(fileManager: fileManager)
+        
+        // Register services with lifecycle manager for proper cleanup
+        lifecycleManager.register(recordingService)
+        lifecycleManager.register(playbackService)
+        
+        // Start validation timer for development builds only
+        #if DEBUG
+        lifecycleManager.startValidation(interval: 10.0) // Validate every 10 seconds in debug
+        #endif
     }
 
 
@@ -891,6 +933,149 @@ final class AudioCoordinator: ObservableObject {
         // Bind session manager properties (still uses Combine)
         sessionManager.$privateModeActive
             .assign(to: &$privateModeActive)
+    }
+    
+    // MARK: - Optimistic UI Updates
+    
+    /// Immediately update UI state optimistically, then perform actual operation
+    private func optimisticTransition(to targetState: UserFacingState, operation: @escaping () async throws -> Void) {
+        let originalState = userFacingState
+        
+        // Immediately update UI state for perceived performance
+        DispatchQueue.main.async {
+            self.userFacingState = targetState
+        }
+        
+        // Perform actual operation with small delay to allow UI to update
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            Task {
+                do {
+                    try await operation()
+                    // Operation succeeded - actual state will be set by the real state machine
+                } catch {
+                    // Operation failed - revert to original state
+                    print("⚠️ Optimistic operation failed, reverting UI state: \(error)")
+                    DispatchQueue.main.async {
+                        self.userFacingState = originalState
+                    }
+                }
+            }
+        }
+    }
+    
+    /// Optimistic recording start - UI updates immediately
+    func startRecordingOptimistic(for script: SelftalkScript) {
+        optimisticTransition(to: .recording) {
+            await self.startRecording(for: script)
+        }
+    }
+    
+    /// Optimistic playback start - UI updates immediately  
+    func startPlaybackOptimistic(for script: SelftalkScript) {
+        optimisticTransition(to: .playing) {
+            await self.startPlayback(for: script)
+        }
+    }
+    
+    /// Optimistic stop - UI updates immediately
+    func stopOptimistic() {
+        // Stop operations don't throw, so we can use a simpler approach
+        let originalState = userFacingState
+        
+        DispatchQueue.main.async {
+            self.userFacingState = .ready
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            self.stopCurrentOperation()
+            // Actual state will be set by the real state machine
+        }
+    }
+    
+    /// Optimistic pause/resume - UI updates immediately
+    func togglePlaybackOptimistic() {
+        let originalState = userFacingState
+        let newState: UserFacingState = playbackService.isPaused ? .playing : .paused
+        
+        DispatchQueue.main.async {
+            self.userFacingState = newState
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            self.togglePlayback()
+            // Actual state will be set by the real state machine
+        }
+    }
+    
+    // MARK: - State Validation & Recovery
+    
+    /// Validate all services and fix any inconsistencies
+    func validateAndRecover() {
+        ensureServicesExist()
+        
+        // Use the lifecycle manager to validate all services
+        // This will automatically call recoverIfNeeded() for any failed validations
+        // The lifecycle manager handles this internally
+        
+        // Additional coordinator-level validation
+        validateCoordinatorState()
+    }
+    
+    private func validateCoordinatorState() {
+        let currentState = stateQueue.sync { internalState }
+        let userState = getUserFacingState()
+        
+        // Validate state consistency
+        switch currentState {
+        case .recording:
+            if !recordingService.isRecording {
+                print("⚠️ AudioCoordinator: State mismatch - coordinator thinks recording but service doesn't")
+                // Force state sync
+                let actuallyRecording = recordingService.isRecording
+                if !actuallyRecording {
+                    print("🔧 AudioCoordinator: Recovering - syncing to idle state")
+                    transitionTo(.idle)
+                }
+            }
+            
+        case .playing:
+            if !playbackService.isPlaying {
+                print("⚠️ AudioCoordinator: State mismatch - coordinator thinks playing but service doesn't")
+                let actuallyPlaying = playbackService.isPlaying
+                if !actuallyPlaying {
+                    print("🔧 AudioCoordinator: Recovering - syncing to idle state")
+                    transitionTo(.idle)
+                }
+            }
+            
+        case .processing:
+            // Processing state is harder to validate, but we can check if no scripts are being processed
+            if processingScriptIds.isEmpty {
+                print("⚠️ AudioCoordinator: State mismatch - processing state but no scripts in queue")
+                print("🔧 AudioCoordinator: Recovering - syncing to idle state")
+                transitionTo(.idle)
+            }
+            
+        case .idle:
+            // In idle, no services should be active
+            if recordingService.isRecording || playbackService.isPlaying {
+                print("⚠️ AudioCoordinator: State mismatch - idle but services are active")
+                // Don't force stop, just sync state to match reality
+                if recordingService.isRecording {
+                    transitionTo(.recording)
+                } else if playbackService.isPlaying {
+                    transitionTo(.playing)
+                }
+            }
+            
+        case .interrupted:
+            // Interrupted state should have recovery data
+            if recoveryData == nil {
+                print("⚠️ AudioCoordinator: Interrupted state but no recovery data")
+                print("🔧 AudioCoordinator: Recovering - clearing interrupted state")
+                transitionTo(.idle)
+            }
+        }
     }
 }
 

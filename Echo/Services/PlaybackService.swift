@@ -627,3 +627,99 @@ extension PlaybackService: AVAudioPlayerDelegate {
         handlePlaybackCompletion()
     }
 }
+
+// MARK: - ServiceLifecycle
+
+extension PlaybackService: ServiceLifecycle {
+    func prepareForDeallocation() {
+        // Nil out all callbacks to break retain cycles
+        onPlaybackStateChange = nil
+        onCurrentScriptChange = nil
+        onCurrentRepetitionChange = nil
+        onProgressUpdate = nil
+        onCompletionCountUpdate = nil
+        onPlaybackModeChange = nil
+        
+        // Stop and clean up timers
+        repetitionTimer?.invalidate()
+        repetitionTimer = nil
+        completionTimer?.invalidate()
+        completionTimer = nil
+        
+        // Cancel any pending work
+        nextRepetitionWorkItem?.cancel()
+        nextRepetitionWorkItem = nil
+        
+        // Stop and release audio player
+        if let player = audioPlayer {
+            player.stop()
+            audioPlayer = nil
+        }
+        
+        // Clear state
+        isPlaying = false
+        isPaused = false
+        currentPlayingScriptId = nil
+        currentRepetition = 0
+        playbackProgress = 0.0
+        totalCompletedPlaybacks = 0
+        playbackSessionID = nil
+        
+        print("✅ PlaybackService: Cleaned up all resources")
+    }
+    
+    func validateState() -> Bool {
+        // Check for inconsistent states
+        if isPlaying && audioPlayer == nil {
+            print("⚠️ PlaybackService: isPlaying=true but no audioPlayer")
+            return false
+        }
+        
+        if isPlaying && audioPlayer?.isPlaying == false && !isPaused {
+            print("⚠️ PlaybackService: State mismatch - marked as playing but player is not")
+            return false
+        }
+        
+        if currentPlayingScriptId != nil && !isPlaying && !isPaused {
+            print("⚠️ PlaybackService: Script ID set but not playing or paused")
+            return false
+        }
+        
+        if repetitionTimer != nil && !isPlaying {
+            print("⚠️ PlaybackService: Timer active but not playing")
+            return false
+        }
+        
+        return true
+    }
+    
+    func recoverIfNeeded() {
+        // Fix state mismatches
+        if isPlaying && audioPlayer == nil {
+            print("🔧 PlaybackService: Recovering - clearing playing state")
+            isPlaying = false
+            isPaused = false
+            currentPlayingScriptId = nil
+            currentRepetition = 0
+            stopAllTimers()
+        }
+        
+        if isPlaying && audioPlayer?.isPlaying == false && !isPaused {
+            print("🔧 PlaybackService: Recovering - syncing playing state")
+            isPlaying = false
+            stopAllTimers()
+        }
+        
+        if currentPlayingScriptId != nil && !isPlaying && !isPaused {
+            print("🔧 PlaybackService: Recovering - clearing orphaned script ID")
+            currentPlayingScriptId = nil
+            currentRepetition = 0
+        }
+        
+        if repetitionTimer != nil && !isPlaying {
+            print("🔧 PlaybackService: Recovering - cleaning up orphaned timer")
+            repetitionTimer?.invalidate()
+            repetitionTimer = nil
+        }
+    }
+}
