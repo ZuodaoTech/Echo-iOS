@@ -48,6 +48,10 @@ struct MeView: View {
     @AppStorage("compressionThreshold") private var compressionThreshold: Double = 0.5  // 0.3-0.8
     @AppStorage("compressionRatio") private var compressionRatio: Double = 0.3  // 0.1-0.5 (inverse of ratio)
     @AppStorage("highPassCutoff") private var highPassCutoff: Double = 0.95  // 0.90-0.98
+    
+    // Noise reduction parameters (Dev Tools)
+    @AppStorage("noiseGateThreshold") private var noiseGateThreshold: Double = 0.02  // 0.01-0.05
+    @AppStorage("noiseReductionStrength") private var noiseReductionStrength: Double = 0.8  // 0.5-1.0
     @State private var lastSwipeTime = Date()
     @State private var devActionMessage = ""
     @State private var showingDevActionResult = false
@@ -554,6 +558,54 @@ struct MeView: View {
                                     .padding(.leading, 35)
                             }
                             .padding(.vertical, 4)
+                            
+                            // Noise Gate Threshold
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    Image(systemName: "speaker.slash")
+                                        .font(.system(size: 20))
+                                        .foregroundColor(.primary)
+                                        .frame(width: 25)
+                                    Text("Noise Floor Detection")
+                                    Spacer()
+                                    Text(String(format: "%.3f", noiseGateThreshold))
+                                        .foregroundColor(.secondary)
+                                        .font(.system(.body, design: .monospaced))
+                                }
+                                
+                                Slider(value: $noiseGateThreshold, in: 0.01...0.05, step: 0.005)
+                                    .padding(.horizontal, 35)
+                                
+                                Text("Minimum threshold for noise detection\nLower = more sensitive, Higher = less sensitive")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .padding(.leading, 35)
+                            }
+                            .padding(.vertical, 4)
+                            
+                            // Noise Reduction Strength
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    Image(systemName: "waveform.badge.minus")
+                                        .font(.system(size: 20))
+                                        .foregroundColor(.primary)
+                                        .frame(width: 25)
+                                    Text("Noise Reduction Strength")
+                                    Spacer()
+                                    Text(String(format: "%.0f%%", noiseReductionStrength * 100))
+                                        .foregroundColor(.secondary)
+                                        .font(.system(.body, design: .monospaced))
+                                }
+                                
+                                Slider(value: $noiseReductionStrength, in: 0.5...1.0, step: 0.05)
+                                    .padding(.horizontal, 35)
+                                
+                                Text("How much to reduce detected background noise\n80% = balanced, 100% = aggressive")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .padding(.leading, 35)
+                            }
+                            .padding(.vertical, 4)
                         }
                         
                         // Reset voice enhancement to defaults
@@ -563,6 +615,8 @@ struct MeView: View {
                                 compressionThreshold = 0.5
                                 compressionRatio = 0.3
                                 highPassCutoff = 0.95
+                                noiseGateThreshold = 0.02
+                                noiseReductionStrength = 0.8
                             } label: {
                                 HStack {
                                     Image(systemName: "arrow.counterclockwise")
@@ -577,7 +631,7 @@ struct MeView: View {
                         Text("Voice Enhancement")
                     } footer: {
                         if voiceEnhancementEnabled {
-                            Text("Processing: Normalize→Compress→Filter\nApplied after trimming, before transcription")
+                            Text("Processing: Noise Reduction→Filter→Compress→Normalize\nAdaptive noise floor detection + configurable reduction\nApplied after trimming, before transcription")
                                 .font(.caption)
                         }
                     }
