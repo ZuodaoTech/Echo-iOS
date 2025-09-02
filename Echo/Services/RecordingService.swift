@@ -46,13 +46,15 @@ final class RecordingService: NSObject {
     private var firstSpeakingTime: TimeInterval?
     private var lastSpeakingTime: TimeInterval?
     
-    // Optimized for noisy environments with tight trimming
+    // Configurable trim parameters from Dev Tools (with defaults)
     private var voiceDetectionThreshold: Float {
-        return 0.15  // Low sensitivity - filters background noise better
+        return Float(UserDefaults.standard.double(forKey: "voiceDetectionThreshold").isZero ? 
+                    0.15 : UserDefaults.standard.double(forKey: "voiceDetectionThreshold"))
     }
     
     private var trimBufferTime: TimeInterval {
-        return 0.15  // Short buffer - tighter trimming
+        return UserDefaults.standard.double(forKey: "trimBufferTime").isZero ? 
+               0.15 : UserDefaults.standard.double(forKey: "trimBufferTime")
     }
     
     // MARK: - Constants

@@ -37,6 +37,10 @@ struct MeView: View {
     // Dev section state
     @State private var showDevSection = false
     @State private var swipeSequence: [SwipeDirection] = []
+    
+    // Audio trim parameters (Dev Tools)
+    @AppStorage("voiceDetectionThreshold") private var voiceDetectionThreshold: Double = 0.15
+    @AppStorage("trimBufferTime") private var trimBufferTime: Double = 0.15
     @State private var lastSwipeTime = Date()
     @State private var devActionMessage = ""
     @State private var showingDevActionResult = false
@@ -359,6 +363,78 @@ struct MeView: View {
                         }
                     } header: {
                         Text(NSLocalizedString("settings.card_preferences", comment: ""))
+                    }
+                    
+                    // MARK: - Audio Processing Parameters (Dev Only)
+                    Section {
+                        // Voice Detection Threshold
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Image(systemName: "waveform.badge.mic")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.primary)
+                                    .frame(width: 25)
+                                Text("Voice Detection Threshold")
+                                    .foregroundColor(.primary)
+                                Spacer()
+                                Text(String(format: "%.2f", voiceDetectionThreshold))
+                                    .foregroundColor(.secondary)
+                                    .font(.system(.body, design: .monospaced))
+                            }
+                            
+                            Slider(value: $voiceDetectionThreshold, in: 0.05...0.50, step: 0.01)
+                                .padding(.horizontal, 35)
+                            
+                            Text("Lower = more sensitive (picks up quiet sounds)\nHigher = less sensitive (filters background noise)")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                                .padding(.leading, 35)
+                        }
+                        .padding(.vertical, 4)
+                        
+                        // Trim Buffer Time
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Image(systemName: "timer")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.primary)
+                                    .frame(width: 25)
+                                Text("Trim Buffer Time")
+                                    .foregroundColor(.primary)
+                                Spacer()
+                                Text(String(format: "%.2fs", trimBufferTime))
+                                    .foregroundColor(.secondary)
+                                    .font(.system(.body, design: .monospaced))
+                            }
+                            
+                            Slider(value: $trimBufferTime, in: 0.05...0.50, step: 0.05)
+                                .padding(.horizontal, 35)
+                            
+                            Text("Buffer time before/after detected speech\nShorter = tighter trimming, Longer = safer margins")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                                .padding(.leading, 35)
+                        }
+                        .padding(.vertical, 4)
+                        
+                        // Reset to defaults button
+                        Button {
+                            voiceDetectionThreshold = 0.15
+                            trimBufferTime = 0.15
+                        } label: {
+                            HStack {
+                                Image(systemName: "arrow.counterclockwise")
+                                    .font(.system(size: 20))
+                                    .frame(width: 25)
+                                Text("Reset to Defaults")
+                            }
+                            .foregroundColor(.blue)
+                        }
+                    } header: {
+                        Text("Audio Processing")
+                    } footer: {
+                        Text("Current settings: Threshold=\(String(format: "%.2f", voiceDetectionThreshold)), Buffer=\(String(format: "%.2fs", trimBufferTime))\nDefaults: Threshold=0.15, Buffer=0.15s")
+                            .font(.caption)
                     }
                     
                     // Developer tools section removed - iCloud operations no longer functional
