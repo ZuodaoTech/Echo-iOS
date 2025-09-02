@@ -24,6 +24,9 @@ struct EchoApp: App {
     
     // These methods will be called from RootView after Core Data is ready
     static func performDeferredAppSetup() {
+        // Track app session started
+        HabitMetrics.sessionStarted()
+        
         // Apply language preference if changed from system default
         if let appLanguage = UserDefaults.standard.string(forKey: "appLanguage"), appLanguage != "system" {
             UserDefaults.standard.set([appLanguage], forKey: "AppleLanguages")

@@ -758,6 +758,9 @@ struct AddEditScriptView: View {
                 newScript.addToTags(tag)
             }
             newScript.transcriptionLanguage = transcriptionLanguage
+            
+            // Track script creation metrics
+            HabitMetrics.scriptCreated(scriptId: newScript.id, textLength: trimmedText.count)
         }
         
         do {
@@ -892,6 +895,9 @@ struct AddEditScriptView: View {
                 newScript.addToTags(tag)
             }
             newScript.transcriptionLanguage = transcriptionLanguage
+            
+            // Track script creation metrics
+            HabitMetrics.scriptCreated(scriptId: newScript.id, textLength: trimmedText.count)
         }
         
         do {

@@ -52,7 +52,6 @@ struct InterruptionRecoveryView: View {
             Image(systemName: isPhoneCall ? "phone.circle.fill" : "pause.circle.fill")
                 .font(.system(size: 60))
                 .foregroundColor(isPhoneCall ? .orange : .blue)
-                .symbolEffect(.pulse, isActive: animateIn)
                 .padding(.bottom, 20)
             
             // Main message
@@ -163,9 +162,7 @@ struct InterruptionRecoverySheet: ViewModifier {
                         onAction(action)
                     }
                 )
-                .presentationDetents([.medium])
-                .presentationDragIndicator(.visible)
-                .interactiveDismissDisabled() // Force user to make a choice
+                // iOS 16+ features are removed for compatibility
             }
     }
 }
