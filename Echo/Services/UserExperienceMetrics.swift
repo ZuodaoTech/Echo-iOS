@@ -184,7 +184,7 @@ final class UserExperienceMetrics {
             
             // Log slow operations
             if duration > 0.5 {
-                self.logger.warning("📈 Slow operation: \\(operation) took \\(duration * 1000)ms")</operation>
+                self.logger.warning("📈 Slow operation: \\(operation) took \\(duration * 1000)ms")
             }
         }
     }
