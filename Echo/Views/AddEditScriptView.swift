@@ -1241,32 +1241,56 @@ struct RecordingButton: View {
                 }
             }
             
-            Button {
-                onRecord()
-            } label: {
-                HStack {
-                    if isProcessing {
-                        ProgressView()
-                            .scaleEffect(0.8)
-                            .frame(width: 20, height: 20)
-                    } else {
-                        Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
+            // Show Preview button when has recording, Record button otherwise
+            if hasRecording && !isRecording {
+                Button {
+                    onPlay()
+                } label: {
+                    HStack {
+                        Image(systemName: "play.circle.fill")
                             .font(.title2)
-                            .foregroundColor(isRecording ? .red : .blue)
+                            .foregroundColor(.blue)
+                        
+                        Text(NSLocalizedString("recording.preview", comment: "Preview"))
+                            .fontWeight(.medium)
                     }
-                    
-                    Text(isProcessing ? NSLocalizedString("recording.processing", comment: "Processing...") : (isRecording ? NSLocalizedString("recording.stop", comment: "") : (hasRecording ? NSLocalizedString("recording.re_record", comment: "") : NSLocalizedString("recording.start", comment: ""))))
-                        .fontWeight(.medium)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.blue.opacity(0.1))
+                    )
                 }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(isRecording ? Color.red.opacity(0.1) : Color.blue.opacity(0.1))
-                )
+                .buttonStyle(PlainButtonStyle())
+                .disabled(isProcessing)
+            } else {
+                Button {
+                    onRecord()
+                } label: {
+                    HStack {
+                        if isProcessing {
+                            ProgressView()
+                                .scaleEffect(0.8)
+                                .frame(width: 20, height: 20)
+                        } else {
+                            Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
+                                .font(.title2)
+                                .foregroundColor(isRecording ? .red : .blue)
+                        }
+                        
+                        Text(isProcessing ? NSLocalizedString("recording.processing", comment: "Processing...") : (isRecording ? NSLocalizedString("recording.stop", comment: "") : NSLocalizedString("recording.start", comment: "")))
+                            .fontWeight(.medium)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(isRecording ? Color.red.opacity(0.1) : Color.blue.opacity(0.1))
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+                .disabled(isProcessing)
             }
-            .buttonStyle(PlainButtonStyle())
-            .disabled(isProcessing)
             
             if isRecording {
                 let duration = Int(AudioCoordinator.shared.recordingDuration)
