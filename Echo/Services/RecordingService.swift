@@ -97,8 +97,17 @@ final class RecordingService: NSObject {
     
     /// Start recording for a script
     func startRecording(for scriptId: UUID) throws {
-        guard sessionManager.isMicrophonePermissionGranted else {
+        // Check actual permission status, not cached value
+        let actualPermission = AVAudioSession.sharedInstance().recordPermission
+        guard actualPermission == .granted else {
+            print("RecordingService: Permission denied - actual status: \(actualPermission.rawValue)")
             throw AudioServiceError.permissionDenied
+        }
+        
+        // Update cached value if it was wrong
+        if !sessionManager.isMicrophonePermissionGranted && actualPermission == .granted {
+            print("RecordingService: Updating cached permission state")
+            sessionManager.isMicrophonePermissionGranted = true
         }
         
         // Check available disk space before recording

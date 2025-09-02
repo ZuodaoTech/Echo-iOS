@@ -999,9 +999,15 @@ struct AddEditScriptView: View {
                     do {
                         try audioService.startRecording(for: script)
                         isRecording = true
-                    } catch {
-                        errorMessage = "Failed to start recording. Please check microphone permissions."
+                    } catch let error as AudioServiceError {
+                        // Show specific error message
+                        errorMessage = error.errorDescription ?? "Failed to start recording"
                         showingErrorAlert = true
+                        print("Recording error: \(error)")
+                    } catch {
+                        errorMessage = "Failed to start recording: \(error.localizedDescription)"
+                        showingErrorAlert = true
+                        print("Recording error: \(error)")
                     }
                 } else {
                     showingMicPermissionAlert = true
