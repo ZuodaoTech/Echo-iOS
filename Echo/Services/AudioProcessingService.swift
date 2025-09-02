@@ -445,8 +445,23 @@ final class AudioProcessingService {
                     let trimmedDuration = endTime - startTime
                     print("AudioProcessing: Successfully trimmed from \(duration)s to \(trimmedDuration)s")
                     
-                    DispatchQueue.main.async {
-                        completion(true)
+                    // Apply voice enhancement if enabled
+                    if UserDefaults.standard.bool(forKey: "voiceEnhancementEnabled") {
+                        print("AudioProcessing: Applying voice enhancement...")
+                        self.applyVoiceEnhancement(to: audioURL) { enhanced in
+                            if enhanced {
+                                print("AudioProcessing: Voice enhancement completed")
+                            } else {
+                                print("AudioProcessing: Voice enhancement failed, keeping trimmed audio")
+                            }
+                            DispatchQueue.main.async {
+                                completion(true)
+                            }
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            completion(true)
+                        }
                     }
                 } catch let error as AudioServiceError {
                     print("AudioProcessing: File operation failed - \(error.errorDescription ?? "")")
@@ -689,5 +704,143 @@ final class AudioProcessingService {
         }
         
         return false
+    }
+    
+    // MARK: - Voice Enhancement
+    
+    /// Apply voice enhancement processing to audio file
+    private func applyVoiceEnhancement(to audioURL: URL, completion: @escaping (Bool) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                // Load audio file
+                let audioFile = try AVAudioFile(forReading: audioURL)
+                let format = audioFile.processingFormat
+                let frameCount = AVAudioFrameCount(audioFile.length)
+                
+                // Create buffer for entire audio
+                guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount) else {
+                    print("VoiceEnhancement: Failed to create buffer")
+                    completion(false)
+                    return
+                }
+                
+                try audioFile.read(into: buffer)
+                buffer.frameLength = frameCount
+                
+                // Apply enhancement to each channel
+                if let floatChannelData = buffer.floatChannelData {
+                    for channel in 0..<Int(format.channelCount) {
+                        let samples = floatChannelData[channel]
+                        let sampleCount = Int(frameCount)
+                        
+                        // Get configurable parameters
+                        let normalizationLevel = Float(UserDefaults.standard.double(forKey: "normalizationLevel").isZero ? 
+                                                      0.9 : UserDefaults.standard.double(forKey: "normalizationLevel"))
+                        let compressionThreshold = Float(UserDefaults.standard.double(forKey: "compressionThreshold").isZero ? 
+                                                        0.5 : UserDefaults.standard.double(forKey: "compressionThreshold"))
+                        let compressionRatio = Float(UserDefaults.standard.double(forKey: "compressionRatio").isZero ? 
+                                                    0.3 : UserDefaults.standard.double(forKey: "compressionRatio"))
+                        let highPassCutoff = Float(UserDefaults.standard.double(forKey: "highPassCutoff").isZero ? 
+                                                  0.95 : UserDefaults.standard.double(forKey: "highPassCutoff"))
+                        
+                        print("VoiceEnhancement: Norm=\(normalizationLevel), Thresh=\(compressionThreshold), Ratio=\(compressionRatio), HPF=\(highPassCutoff)")
+                        
+                        // Step 1: High-pass filter to remove rumble
+                        self.applyHighPassFilter(samples: samples, 
+                                               frameCount: sampleCount, 
+                                               cutoff: highPassCutoff)
+                        
+                        // Step 2: Dynamic range compression
+                        self.applyCompression(samples: samples, 
+                                            frameCount: sampleCount,
+                                            threshold: compressionThreshold,
+                                            ratio: compressionRatio)
+                        
+                        // Step 3: Normalize volume
+                        self.normalizeAudio(samples: samples, 
+                                          frameCount: sampleCount,
+                                          targetLevel: normalizationLevel)
+                    }
+                }
+                
+                // Save enhanced audio
+                let tempURL = audioURL.appendingPathExtension("enhanced")
+                try? FileManager.default.removeItem(at: tempURL)
+                
+                let outputFile = try AVAudioFile(forWriting: tempURL, 
+                                                settings: audioFile.fileFormat.settings)
+                try outputFile.write(from: buffer)
+                
+                // Replace original with enhanced version
+                try FileManager.default.removeItem(at: audioURL)
+                try FileManager.default.moveItem(at: tempURL, to: audioURL)
+                
+                print("VoiceEnhancement: Successfully applied enhancement")
+                completion(true)
+                
+            } catch {
+                print("VoiceEnhancement: Failed - \(error)")
+                completion(false)
+            }
+        }
+    }
+    
+    /// Apply high-pass filter to remove low-frequency rumble
+    private func applyHighPassFilter(samples: UnsafeMutablePointer<Float>, 
+                                    frameCount: Int, 
+                                    cutoff: Float) {
+        // Simple first-order high-pass filter
+        // y[n] = α * (y[n-1] + x[n] - x[n-1])
+        // where α = cutoff coefficient (0.90-0.98)
+        
+        var previousInput: Float = 0
+        var previousOutput: Float = 0
+        
+        for i in 0..<frameCount {
+            let currentInput = samples[i]
+            let currentOutput = cutoff * (previousOutput + currentInput - previousInput)
+            samples[i] = currentOutput
+            
+            previousInput = currentInput
+            previousOutput = currentOutput
+        }
+    }
+    
+    /// Apply dynamic range compression
+    private func applyCompression(samples: UnsafeMutablePointer<Float>, 
+                                 frameCount: Int,
+                                 threshold: Float,
+                                 ratio: Float) {
+        // ratio is actually the inverse (0.3 means 3.3:1 compression)
+        
+        for i in 0..<frameCount {
+            let sample = samples[i]
+            let absSample = abs(sample)
+            
+            if absSample > threshold {
+                // Apply compression to parts above threshold
+                let excess = absSample - threshold
+                let compressedExcess = excess * ratio
+                let newMagnitude = threshold + compressedExcess
+                
+                // Preserve sign
+                samples[i] = sample > 0 ? newMagnitude : -newMagnitude
+            }
+        }
+    }
+    
+    /// Normalize audio to target level
+    private func normalizeAudio(samples: UnsafeMutablePointer<Float>, 
+                               frameCount: Int,
+                               targetLevel: Float) {
+        // Find peak value
+        var maxValue: Float = 0
+        vDSP_maxmgv(samples, 1, &maxValue, vDSP_Length(frameCount))
+        
+        // Only normalize if not already at target level
+        if maxValue > 0 && maxValue < targetLevel {
+            var scale = targetLevel / maxValue
+            vDSP_vsmul(samples, 1, &scale, samples, 1, vDSP_Length(frameCount))
+        }
     }
 }

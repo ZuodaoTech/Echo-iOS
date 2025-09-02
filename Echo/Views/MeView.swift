@@ -41,6 +41,13 @@ struct MeView: View {
     // Audio trim parameters (Dev Tools)
     @AppStorage("voiceDetectionThreshold") private var voiceDetectionThreshold: Double = 0.15
     @AppStorage("trimBufferTime") private var trimBufferTime: Double = 0.15
+    
+    // Voice enhancement parameters (Dev Tools)
+    @AppStorage("voiceEnhancementEnabled") private var voiceEnhancementEnabled: Bool = true
+    @AppStorage("normalizationLevel") private var normalizationLevel: Double = 0.9  // 0.5-1.0
+    @AppStorage("compressionThreshold") private var compressionThreshold: Double = 0.5  // 0.3-0.8
+    @AppStorage("compressionRatio") private var compressionRatio: Double = 0.3  // 0.1-0.5 (inverse of ratio)
+    @AppStorage("highPassCutoff") private var highPassCutoff: Double = 0.95  // 0.90-0.98
     @State private var lastSwipeTime = Date()
     @State private var devActionMessage = ""
     @State private var showingDevActionResult = false
@@ -435,6 +442,144 @@ struct MeView: View {
                     } footer: {
                         Text("Current settings: Threshold=\(String(format: "%.2f", voiceDetectionThreshold)), Buffer=\(String(format: "%.2fs", trimBufferTime))\nDefaults: Threshold=0.15, Buffer=0.15s")
                             .font(.caption)
+                    }
+                    
+                    // MARK: - Voice Enhancement Parameters (Dev Only)
+                    Section {
+                        // Enhancement Toggle
+                        Toggle(isOn: $voiceEnhancementEnabled) {
+                            HStack {
+                                Image(systemName: "waveform.and.magnifyingglass")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.primary)
+                                    .frame(width: 25)
+                                Text("Voice Enhancement")
+                                    .foregroundColor(.primary)
+                            }
+                        }
+                        
+                        if voiceEnhancementEnabled {
+                            // Normalization Level
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    Image(systemName: "speaker.wave.3")
+                                        .font(.system(size: 20))
+                                        .foregroundColor(.primary)
+                                        .frame(width: 25)
+                                    Text("Normalization Level")
+                                    Spacer()
+                                    Text(String(format: "%.0f%%", normalizationLevel * 100))
+                                        .foregroundColor(.secondary)
+                                        .font(.system(.body, design: .monospaced))
+                                }
+                                
+                                Slider(value: $normalizationLevel, in: 0.5...1.0, step: 0.05)
+                                    .padding(.horizontal, 35)
+                                
+                                Text("Target volume level (90% = balanced, 100% = maximum)")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .padding(.leading, 35)
+                            }
+                            .padding(.vertical, 4)
+                            
+                            // Compression Threshold
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    Image(systemName: "arrow.up.and.down.righttriangle.up.righttriangle.down")
+                                        .font(.system(size: 20))
+                                        .foregroundColor(.primary)
+                                        .frame(width: 25)
+                                    Text("Compression Threshold")
+                                    Spacer()
+                                    Text(String(format: "%.0f%%", compressionThreshold * 100))
+                                        .foregroundColor(.secondary)
+                                        .font(.system(.body, design: .monospaced))
+                                }
+                                
+                                Slider(value: $compressionThreshold, in: 0.3...0.8, step: 0.05)
+                                    .padding(.horizontal, 35)
+                                
+                                Text("Volume level where compression starts\nLower = more compression, Higher = less compression")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .padding(.leading, 35)
+                            }
+                            .padding(.vertical, 4)
+                            
+                            // Compression Ratio
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    Image(systemName: "slider.horizontal.below.square.filled.and.square")
+                                        .font(.system(size: 20))
+                                        .foregroundColor(.primary)
+                                        .frame(width: 25)
+                                    Text("Compression Strength")
+                                    Spacer()
+                                    Text(String(format: "%.0f:1", 1.0/compressionRatio))
+                                        .foregroundColor(.secondary)
+                                        .font(.system(.body, design: .monospaced))
+                                }
+                                
+                                Slider(value: $compressionRatio, in: 0.1...0.5, step: 0.05)
+                                    .padding(.horizontal, 35)
+                                
+                                Text("How much to reduce loud parts\n10:1 = heavy, 3:1 = gentle, 2:1 = light")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .padding(.leading, 35)
+                            }
+                            .padding(.vertical, 4)
+                            
+                            // High-Pass Filter
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    Image(systemName: "wind")
+                                        .font(.system(size: 20))
+                                        .foregroundColor(.primary)
+                                        .frame(width: 25)
+                                    Text("Rumble Filter")
+                                    Spacer()
+                                    Text(String(format: "%.0fHz", (1.0 - highPassCutoff) * 1000))
+                                        .foregroundColor(.secondary)
+                                        .font(.system(.body, design: .monospaced))
+                                }
+                                
+                                Slider(value: $highPassCutoff, in: 0.90...0.98, step: 0.01)
+                                    .padding(.horizontal, 35)
+                                
+                                Text("Remove low-frequency noise (AC hum, rumble)\n50Hz = aggressive, 100Hz = moderate")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .padding(.leading, 35)
+                            }
+                            .padding(.vertical, 4)
+                        }
+                        
+                        // Reset voice enhancement to defaults
+                        if voiceEnhancementEnabled {
+                            Button {
+                                normalizationLevel = 0.9
+                                compressionThreshold = 0.5
+                                compressionRatio = 0.3
+                                highPassCutoff = 0.95
+                            } label: {
+                                HStack {
+                                    Image(systemName: "arrow.counterclockwise")
+                                        .font(.system(size: 20))
+                                        .frame(width: 25)
+                                    Text("Reset Enhancement to Defaults")
+                                }
+                                .foregroundColor(.blue)
+                            }
+                        }
+                    } header: {
+                        Text("Voice Enhancement")
+                    } footer: {
+                        if voiceEnhancementEnabled {
+                            Text("Processing: Normalize→Compress→Filter\nApplied after trimming, before transcription")
+                                .font(.caption)
+                        }
                     }
                     
                     // Developer tools section removed - iCloud operations no longer functional
