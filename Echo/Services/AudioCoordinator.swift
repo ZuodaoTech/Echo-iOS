@@ -26,7 +26,7 @@ final class AudioCoordinator: ObservableObject {
         
         var canPlay: Bool {
             switch self {
-            case .idle: return true
+            case .idle, .processingRecording: return true  // Allow preview during processing
             default: return false
             }
         }
@@ -687,6 +687,9 @@ final class AudioCoordinator: ObservableObject {
             
             // Get voice activity timestamps from recording service
             let trimTimestamps = self.recordingService.getTrimTimestamps()
+            
+            // Transition to processing state
+            self.transitionTo(.processingRecording)
             
             // Process the recording (trim silence, etc.)
             self.processingService.processRecording(for: scriptId, trimTimestamps: trimTimestamps) { success in
