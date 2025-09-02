@@ -1197,16 +1197,21 @@ struct RecordingButton: View {
                                 .foregroundColor(.red)
                         }
                     }
-                    
-                    // Play/Pause preview button - separate and prominent
+                }
+            }
+            
+            // Show Preview button when has recording, Record button otherwise
+            if hasRecording && !isRecording {
+                VStack(spacing: 12) {
                     Button {
                         onPlay()
                     } label: {
                         HStack {
                             Image(systemName: isPlaying ? "pause.circle.fill" : (isPaused ? "play.circle.fill" : "play.circle.fill"))
-                                .font(.title2)  // Standardized size
+                                .font(.title2)
+                                .foregroundColor(.blue)
                             
-                            Text(NSLocalizedString("recording.preview", comment: ""))
+                            Text(NSLocalizedString("recording.preview", comment: "Preview"))
                                 .fontWeight(.medium)
                         }
                         .frame(maxWidth: .infinity)
@@ -1218,6 +1223,7 @@ struct RecordingButton: View {
                         .foregroundColor(.blue)
                     }
                     .buttonStyle(PlainButtonStyle())
+                    .disabled(isProcessing)
                     
                     // Show progress bar when playing
                     if isPlaying || isPaused {
@@ -1239,30 +1245,6 @@ struct RecordingButton: View {
                         }
                     }
                 }
-            }
-            
-            // Show Preview button when has recording, Record button otherwise
-            if hasRecording && !isRecording {
-                Button {
-                    onPlay()
-                } label: {
-                    HStack {
-                        Image(systemName: "play.circle.fill")
-                            .font(.title2)
-                            .foregroundColor(.blue)
-                        
-                        Text(NSLocalizedString("recording.preview", comment: "Preview"))
-                            .fontWeight(.medium)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.blue.opacity(0.1))
-                    )
-                }
-                .buttonStyle(PlainButtonStyle())
-                .disabled(isProcessing)
             } else {
                 Button {
                     onRecord()
