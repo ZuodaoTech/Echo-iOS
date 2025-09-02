@@ -648,6 +648,14 @@ struct AddEditScriptView: View {
         transcriptCheckTimer?.invalidate()
         transcriptCheckTimer = nil
         
+        // For new scripts with empty content, silently dismiss (following iOS patterns)
+        let trimmedText = scriptText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if script == nil && trimmedText.isEmpty {
+            hasSavedOnDismiss = true
+            dismiss()
+            return
+        }
+        
         // Save and dismiss
         if saveScript() {
             hasSavedOnDismiss = true
@@ -684,8 +692,82 @@ struct AddEditScriptView: View {
         
         // Only save if we haven't already saved via Done button
         if !hasSavedOnDismiss {
-            // Silently save changes if valid
-            _ = saveScript()
+            // Silently save changes if valid (no alerts)
+            _ = saveScriptSilently()
+        }
+    }
+    
+    private func saveScriptSilently() -> Bool {
+        // Silent save - no validation alerts
+        // Only save if there's actual content
+        let trimmedText = scriptText.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // For new scripts with no content, just skip saving
+        if script == nil && trimmedText.isEmpty {
+            return true // Pretend success, but don't actually save
+        }
+        
+        // Don't save while audio is being processed
+        if isProcessingAudio || audioService.isProcessingRecording {
+            return false
+        }
+        
+        // If recording is in progress, stop it first
+        if isRecording {
+            audioService.stopRecording()
+            isRecording = false
+            return false
+        }
+        
+        // Only validate critical things silently
+        if trimmedText.isEmpty && script != nil {
+            // For existing scripts, keep the existing text if current is empty
+            return true
+        }
+        
+        // Proceed with saving without showing alerts
+        if let existingScript = script {
+            // Update existing script
+            existingScript.scriptText = trimmedText.isEmpty ? existingScript.scriptText : trimmedText
+            // Update tags
+            if let currentTags = existingScript.tags as? Set<Tag> {
+                for tag in currentTags {
+                    existingScript.removeFromTags(tag)
+                }
+            }
+            for tag in selectedTags {
+                existingScript.addToTags(tag)
+            }
+            existingScript.repetitions = repetitions
+            existingScript.intervalSeconds = intervalSeconds
+            existingScript.privateModeEnabled = privateModeEnabled
+            existingScript.transcriptionLanguage = transcriptionLanguage
+            existingScript.updatedAt = Date()
+        } else if !trimmedText.isEmpty {
+            // Only create new script if there's content
+            let newScript = SelftalkScript.create(
+                scriptText: trimmedText,
+                repetitions: repetitions,
+                intervalSeconds: intervalSeconds,
+                privateMode: privateModeEnabled,
+                in: viewContext
+            )
+            // Add selected tags
+            for tag in selectedTags {
+                newScript.addToTags(tag)
+            }
+            newScript.transcriptionLanguage = transcriptionLanguage
+        }
+        
+        do {
+            if viewContext.hasChanges {
+                try viewContext.save()
+            }
+            return true
+        } catch {
+            // Silent failure - no alerts
+            print("Silent save failed: \(error)")
+            return false
         }
     }
     
