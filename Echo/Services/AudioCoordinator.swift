@@ -15,10 +15,11 @@ final class AudioCoordinator: ObservableObject {
         case playing = "playing"
         case paused = "paused"
         case inInterval = "inInterval"
+        case interrupted = "interrupted" // New state for interruptions
         
         var canRecord: Bool {
             switch self {
-            case .idle: return true
+            case .idle, .interrupted: return true
             default: return false
             }
         }
@@ -39,15 +40,70 @@ final class AudioCoordinator: ObservableObject {
         
         var canResume: Bool {
             switch self {
-            case .paused: return true
+            case .paused, .interrupted: return true
             default: return false
             }
         }
         
         var canStop: Bool {
             switch self {
-            case .recording, .playing, .paused, .inInterval: return true
+            case .recording, .playing, .paused, .inInterval, .interrupted: return true
             default: return false
+            }
+        }
+    }
+    
+    // MARK: - User-Facing State
+    
+    enum UserFacingState: String {
+        case initializing = "Getting ready..."
+        case ready = "Ready to record"
+        case recording = "Recording"
+        case processing = "Saving your words..."
+        case transcribing = "Converting to text..."
+        case playing = "Playing"
+        case paused = "Paused"
+        case interrupted = "Paused for privacy"
+        case recovering = "Resuming..."
+        case saved = "Saved successfully"
+        
+        var emoji: String {
+            switch self {
+            case .initializing: return "⏳"
+            case .ready: return "✅"
+            case .recording: return "🎙️"
+            case .processing: return "💾"
+            case .transcribing: return "📝"
+            case .playing: return "▶️"
+            case .paused: return "⏸️"
+            case .interrupted: return "🤫"
+            case .recovering: return "🔄"
+            case .saved: return "✓"
+            }
+        }
+        
+        var encouragingMessage: String {
+            switch self {
+            case .initializing:
+                return "Preparing your space..."
+            case .ready:
+                return "Take a breath. Begin when ready."
+            case .recording:
+                return "You're doing great!"
+            case .processing:
+                return "Saving your powerful words..."
+            case .transcribing:
+                return "Converting your voice to text..."
+            case .playing:
+                return "Listen to your affirmations"
+            case .paused:
+                return "Take your time"
+            case .interrupted:
+                return "Your recording is safe"
+            case .recovering:
+                return "Welcome back. Let's continue."
+            case .saved:
+                return "Your words have been captured"
             }
         }
     }
@@ -60,6 +116,7 @@ final class AudioCoordinator: ObservableObject {
     
     // Core state machine
     @Published private(set) var currentState: AudioState = .idle
+    @Published private(set) var userFacingState: UserFacingState = .ready
     
     // Recording state
     @Published private(set) var isRecording = false
@@ -110,6 +167,17 @@ final class AudioCoordinator: ObservableObject {
     private let stateQueue = DispatchQueue(label: "com.echo.audiostate") // Serial queue for state
     private var internalState: AudioState = .idle // Internal state managed on serial queue
     
+    // Recovery checkpoint for interrupted recordings
+    private var recordingCheckpoint: RecordingCheckpoint?
+    
+    struct RecordingCheckpoint {
+        let scriptId: UUID
+        let startTime: Date
+        let lastSavedDuration: TimeInterval
+        let wasInterrupted: Bool
+        let interruptionReason: InterruptionReason?
+    }
+    
     // MARK: - Initialization
     
     private init() {
@@ -152,8 +220,8 @@ final class AudioCoordinator: ObservableObject {
                 savePartialRecording(for: script, reason: isPhoneCall ? .phoneCall : .otherInterruption)
             }
             
-            // Transition to a special interrupted state (we'll add this)
-            transitionTo(.idle) // For now, go to idle
+            // Transition to interrupted state
+            transitionTo(.interrupted)
             
             // Show appropriate message to user
             DispatchQueue.main.async { [weak self] in
@@ -198,6 +266,16 @@ final class AudioCoordinator: ObservableObject {
     }
     
     private func savePartialRecording(for script: SelftalkScript, reason: InterruptionReason) {
+        // Create checkpoint before stopping
+        let checkpoint = RecordingCheckpoint(
+            scriptId: script.id,
+            startTime: Date().addingTimeInterval(-recordingDuration),
+            lastSavedDuration: recordingDuration,
+            wasInterrupted: true,
+            interruptionReason: reason
+        )
+        recordingCheckpoint = checkpoint
+        
         // Stop recording but save what we have
         recordingService.stopRecording { [weak self] scriptId, duration in
             guard let self = self else { return }
@@ -218,6 +296,7 @@ final class AudioCoordinator: ObservableObject {
             do {
                 try script.managedObjectContext?.save()
                 print("✅ Partial recording saved successfully - Duration: \(duration)s")
+                print("📌 Checkpoint created for recovery")
             } catch {
                 print("❌ Failed to save partial recording: \(error)")
             }
@@ -225,18 +304,104 @@ final class AudioCoordinator: ObservableObject {
     }
     
     private func attemptRecordingResume() {
-        // Implementation for auto-resume
-        print("Attempting to auto-resume recording...")
+        guard let checkpoint = recordingCheckpoint,
+              let script = currentRecordingScript else {
+            print("⚠️ No checkpoint available for resume")
+            return
+        }
+        
+        // Check if checkpoint is still valid (within 5 minutes)
+        let timeSinceInterruption = Date().timeIntervalSince(checkpoint.startTime.addingTimeInterval(checkpoint.lastSavedDuration))
+        guard timeSinceInterruption < 300 else { // 5 minutes
+            print("⏰ Checkpoint expired, cannot auto-resume")
+            completePartialRecording()
+            return
+        }
+        
+        print("✅ Auto-resuming recording from checkpoint")
+        
+        // Transition back to recording state
+        transitionTo(.recording)
+        
+        // Attempt to resume recording
+        do {
+            try recordingService.startRecording(for: script.id)
+            
+            // Update UI to show resumed state
+            DispatchQueue.main.async { [weak self] in
+                self?.processingMessage = NSLocalizedString("recording.resumed", 
+                                                            comment: "Recording resumed")
+                self?.userFacingState = .recording
+            }
+        } catch {
+            print("❌ Failed to resume recording: \(error)")
+            transitionTo(.idle)
+        }
     }
     
     private func showRecoveryOptions() {
-        // Implementation for showing recovery UI
-        print("Showing recovery options to user...")
+        // Post notification to show recovery UI in the active view
+        NotificationCenter.default.post(
+            name: Notification.Name("ShowInterruptionRecovery"),
+            object: nil,
+            userInfo: [
+                "checkpoint": recordingCheckpoint as Any,
+                "duration": recordingCheckpoint?.lastSavedDuration ?? 0
+            ]
+        )
+        
+        print("📱 Showing recovery options to user")
     }
     
     private func completePartialRecording() {
-        // Implementation for completing partial recording
-        print("Completing partial recording...")
+        guard let checkpoint = recordingCheckpoint else {
+            print("⚠️ No checkpoint to complete")
+            return
+        }
+        
+        print("💾 Completing partial recording from checkpoint")
+        
+        // Clear checkpoint
+        recordingCheckpoint = nil
+        
+        // Transition to idle
+        transitionTo(.idle)
+        
+        // Update UI
+        DispatchQueue.main.async { [weak self] in
+            self?.processingMessage = NSLocalizedString("recording.partial_saved", 
+                                                        comment: "Partial recording saved")
+            self?.userFacingState = .saved
+            
+            // Clear the saved message after 2 seconds
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self?.userFacingState = .ready
+                self?.processingMessage = ""
+            }
+        }
+    }
+    
+    // MARK: - Public Recovery Methods
+    
+    func handleRecoveryAction(_ action: RecoveryAction) {
+        switch action {
+        case .continueRecording:
+            attemptRecordingResume()
+            
+        case .savePartial:
+            completePartialRecording()
+            
+        case .startOver:
+            // Clear checkpoint and current recording
+            recordingCheckpoint = nil
+            if let script = currentRecordingScript {
+                deleteRecording(for: script)
+            }
+            transitionTo(.idle)
+            
+        case .dismiss:
+            completePartialRecording()
+        }
     }
     
     // MARK: - State Management
@@ -252,15 +417,20 @@ final class AudioCoordinator: ObservableObject {
                  (.idle, .playing),
                  (.recording, .processingRecording),
                  (.recording, .idle),
+                 (.recording, .interrupted),  // Recording can be interrupted
                  (.processingRecording, .idle),
                  (.playing, .paused),
                  (.playing, .inInterval),
                  (.playing, .idle),
+                 (.playing, .interrupted),  // Playback can be interrupted
                  (.paused, .playing),
                  (.paused, .idle),
                  (.inInterval, .playing),
                  (.inInterval, .paused),
-                 (.inInterval, .idle):
+                 (.inInterval, .idle),
+                 (.interrupted, .idle),  // Can go back to idle from interrupted
+                 (.interrupted, .recording),  // Can resume recording
+                 (.interrupted, .playing):  // Can resume playback
                 // Valid transitions - update internal state
                 self.internalState = newState
                 print("🔄 Audio state transition: \(oldState) -> \(newState)")
@@ -285,6 +455,7 @@ final class AudioCoordinator: ObservableObject {
     // Helper struct for atomic state updates
     private struct StateUpdate {
         let state: AudioState
+        let userState: UserFacingState
         let isRecording: Bool
         let isProcessingRecording: Bool
         let isPlaying: Bool
@@ -297,6 +468,7 @@ final class AudioCoordinator: ObservableObject {
         switch state {
         case .idle:
             return StateUpdate(state: state,
+                             userState: .ready,
                              isRecording: false,
                              isProcessingRecording: false,
                              isPlaying: false,
@@ -306,6 +478,7 @@ final class AudioCoordinator: ObservableObject {
             
         case .recording:
             return StateUpdate(state: state,
+                             userState: .recording,
                              isRecording: true,
                              isProcessingRecording: false,
                              isPlaying: false,
@@ -315,6 +488,7 @@ final class AudioCoordinator: ObservableObject {
             
         case .processingRecording:
             return StateUpdate(state: state,
+                             userState: .processing,
                              isRecording: false,
                              isProcessingRecording: true,
                              isPlaying: false,
@@ -324,6 +498,7 @@ final class AudioCoordinator: ObservableObject {
             
         case .playing:
             return StateUpdate(state: state,
+                             userState: .playing,
                              isRecording: false,
                              isProcessingRecording: false,
                              isPlaying: true,
@@ -333,6 +508,7 @@ final class AudioCoordinator: ObservableObject {
             
         case .paused:
             return StateUpdate(state: state,
+                             userState: .paused,
                              isRecording: false,
                              isProcessingRecording: false,
                              isPlaying: false,
@@ -342,17 +518,29 @@ final class AudioCoordinator: ObservableObject {
             
         case .inInterval:
             return StateUpdate(state: state,
+                             userState: .paused,  // Shows as paused during interval
                              isRecording: false,
                              isProcessingRecording: false,
                              isPlaying: false,
                              isPaused: false,
                              isInPlaybackSession: true,
                              isInInterval: true)
+                             
+        case .interrupted:
+            return StateUpdate(state: state,
+                             userState: .interrupted,
+                             isRecording: false,
+                             isProcessingRecording: false,
+                             isPlaying: false,
+                             isPaused: false,
+                             isInPlaybackSession: false,
+                             isInInterval: false)
         }
     }
     
     private func applyStateUpdate(_ update: StateUpdate) {
         self.currentState = update.state
+        self.userFacingState = update.userState
         self.isRecording = update.isRecording
         self.isProcessingRecording = update.isProcessingRecording
         self.isPlaying = update.isPlaying
