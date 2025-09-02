@@ -101,23 +101,150 @@ final class AudioCoordinator: ObservableObject {
     
     private var currentRecordingScript: SelftalkScript?
     private var cancellables = Set<AnyCancellable>()
-    private var hasInitializedServices = false // Track service initialization
-    private let stateQueue = DispatchQueue(label: "com.echo.audiostate", attributes: .concurrent)
+    
+    // Thread-safe initialization
+    private let initQueue = DispatchQueue(label: "com.echo.audio.init")
+    private var servicesInitialized = false
+    
+    // Thread-safe state management
+    private let stateQueue = DispatchQueue(label: "com.echo.audiostate") // Serial queue for state
+    private var internalState: AudioState = .idle // Internal state managed on serial queue
     
     // MARK: - Initialization
     
     private init() {
         // Services are now lazy-initialized, nothing to do here
         // Property binding is also deferred to first actual use
+        setupInterruptionHandling()
+    }
+    
+    // MARK: - Interruption Handling
+    
+    private func setupInterruptionHandling() {
+        // Listen for interruption notifications
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleInterruptionBegan),
+            name: AudioSessionManager.interruptionBeganNotification,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleInterruptionEnded),
+            name: AudioSessionManager.interruptionEndedNotification,
+            object: nil
+        )
+    }
+    
+    @objc private func handleInterruptionBegan(_ notification: Notification) {
+        guard let info = notification.userInfo else { return }
+        
+        let isPhoneCall = info["isPhoneCall"] as? Bool ?? false
+        let currentStateSnapshot = stateQueue.sync { internalState }
+        
+        print("🔇 AudioCoordinator: Interruption began - PhoneCall: \(isPhoneCall), State: \(currentStateSnapshot)")
+        
+        // CRITICAL: Save recording immediately for privacy
+        if currentStateSnapshot == .recording {
+            // Save partial recording immediately
+            if let script = currentRecordingScript {
+                savePartialRecording(for: script, reason: isPhoneCall ? .phoneCall : .otherInterruption)
+            }
+            
+            // Transition to a special interrupted state (we'll add this)
+            transitionTo(.idle) // For now, go to idle
+            
+            // Show appropriate message to user
+            DispatchQueue.main.async { [weak self] in
+                if isPhoneCall {
+                    self?.processingMessage = NSLocalizedString("interruption.phone_call", 
+                                                                comment: "Paused for privacy 🤫")
+                } else {
+                    self?.processingMessage = NSLocalizedString("interruption.paused", 
+                                                                comment: "Recording paused • Your progress is saved")
+                }
+            }
+        }
+    }
+    
+    @objc private func handleInterruptionEnded(_ notification: Notification) {
+        guard let info = notification.userInfo else { return }
+        
+        let shouldResume = info["shouldResume"] as? Bool ?? false
+        let duration = info["duration"] as? TimeInterval ?? 0
+        let previousState = info["previousState"] as? AudioSessionManager.AudioSessionState
+        
+        print("🔊 AudioCoordinator: Interruption ended - Duration: \(duration)s, ShouldResume: \(shouldResume)")
+        
+        // Handle recovery based on duration and previous state
+        if previousState == .recording && duration < 3.0 {
+            // Short interruption - can auto-resume
+            if shouldResume {
+                attemptRecordingResume()
+            }
+        } else if duration < 10.0 {
+            // Medium interruption - prompt user
+            showRecoveryOptions()
+        } else {
+            // Long interruption - save and offer new recording
+            completePartialRecording()
+        }
+    }
+    
+    private enum InterruptionReason {
+        case phoneCall
+        case otherInterruption
+    }
+    
+    private func savePartialRecording(for script: SelftalkScript, reason: InterruptionReason) {
+        // Stop recording but save what we have
+        recordingService.stopRecording { [weak self] scriptId, duration in
+            guard let self = self else { return }
+            
+            // Save the partial recording metadata
+            script.audioDuration = duration
+            script.audioFilePath = self.fileManager.audioURL(for: scriptId).path
+            
+            // Add interruption marker to the transcript if available
+            let interruptionMarker = reason == .phoneCall ? 
+                " [Recording interrupted by phone call]" : " [Recording interrupted]"
+            
+            if let existingTranscript = script.transcribedText {
+                script.transcribedText = existingTranscript + interruptionMarker
+            }
+            
+            // Save to Core Data
+            do {
+                try script.managedObjectContext?.save()
+                print("✅ Partial recording saved successfully - Duration: \(duration)s")
+            } catch {
+                print("❌ Failed to save partial recording: \(error)")
+            }
+        }
+    }
+    
+    private func attemptRecordingResume() {
+        // Implementation for auto-resume
+        print("Attempting to auto-resume recording...")
+    }
+    
+    private func showRecoveryOptions() {
+        // Implementation for showing recovery UI
+        print("Showing recovery options to user...")
+    }
+    
+    private func completePartialRecording() {
+        // Implementation for completing partial recording
+        print("Completing partial recording...")
     }
     
     // MARK: - State Management
     
     private func transitionTo(_ newState: AudioState) {
-        stateQueue.async(flags: .barrier) { [weak self] in
-            guard let self = self else { return }
-            
-            let oldState = self.currentState
+        // Use sync dispatch for atomic state validation and update
+        let stateUpdate = stateQueue.sync { () -> StateUpdate? in
+            let oldState = self.internalState
             
             // Validate transition
             switch (oldState, newState) {
@@ -134,78 +261,114 @@ final class AudioCoordinator: ObservableObject {
                  (.inInterval, .playing),
                  (.inInterval, .paused),
                  (.inInterval, .idle):
-                // Valid transitions
-                break
+                // Valid transitions - update internal state
+                self.internalState = newState
+                print("🔄 Audio state transition: \(oldState) -> \(newState)")
+                
+                // Compute derived states atomically
+                return computeStateUpdate(for: newState)
+                
             default:
                 print("⚠️ Invalid state transition: \(oldState) -> \(newState)")
-                return
+                return nil
             }
-            
-            print("🔄 Audio state transition: \(oldState) -> \(newState)")
-            
-            DispatchQueue.main.async {
-                self.currentState = newState
-                
-                // Update derived states based on new state
-                switch newState {
-                case .idle:
-                    self.isRecording = false
-                    self.isProcessingRecording = false
-                    self.isPlaying = false
-                    self.isPaused = false
-                    self.isInPlaybackSession = false
-                    self.isInInterval = false
-                    
-                case .recording:
-                    self.isRecording = true
-                    self.isProcessingRecording = false
-                    self.isPlaying = false
-                    self.isPaused = false
-                    self.isInPlaybackSession = false
-                    self.isInInterval = false
-                    
-                case .processingRecording:
-                    self.isRecording = false
-                    self.isProcessingRecording = true
-                    self.isPlaying = false
-                    self.isPaused = false
-                    self.isInPlaybackSession = false
-                    self.isInInterval = false
-                    
-                case .playing:
-                    self.isRecording = false
-                    self.isProcessingRecording = false
-                    self.isPlaying = true
-                    self.isPaused = false
-                    self.isInPlaybackSession = true
-                    self.isInInterval = false
-                    
-                case .paused:
-                    self.isRecording = false
-                    self.isProcessingRecording = false
-                    self.isPlaying = false
-                    self.isPaused = true
-                    self.isInPlaybackSession = true
-                    self.isInInterval = false
-                    
-                case .inInterval:
-                    self.isRecording = false
-                    self.isProcessingRecording = false
-                    self.isPlaying = false
-                    self.isPaused = false
-                    self.isInPlaybackSession = true
-                    self.isInInterval = true
-                }
+        }
+        
+        // Apply state update on main thread if valid
+        if let update = stateUpdate {
+            DispatchQueue.main.async { [weak self] in
+                self?.applyStateUpdate(update)
             }
         }
     }
     
+    // Helper struct for atomic state updates
+    private struct StateUpdate {
+        let state: AudioState
+        let isRecording: Bool
+        let isProcessingRecording: Bool
+        let isPlaying: Bool
+        let isPaused: Bool
+        let isInPlaybackSession: Bool
+        let isInInterval: Bool
+    }
+    
+    private func computeStateUpdate(for state: AudioState) -> StateUpdate {
+        switch state {
+        case .idle:
+            return StateUpdate(state: state,
+                             isRecording: false,
+                             isProcessingRecording: false,
+                             isPlaying: false,
+                             isPaused: false,
+                             isInPlaybackSession: false,
+                             isInInterval: false)
+            
+        case .recording:
+            return StateUpdate(state: state,
+                             isRecording: true,
+                             isProcessingRecording: false,
+                             isPlaying: false,
+                             isPaused: false,
+                             isInPlaybackSession: false,
+                             isInInterval: false)
+            
+        case .processingRecording:
+            return StateUpdate(state: state,
+                             isRecording: false,
+                             isProcessingRecording: true,
+                             isPlaying: false,
+                             isPaused: false,
+                             isInPlaybackSession: false,
+                             isInInterval: false)
+            
+        case .playing:
+            return StateUpdate(state: state,
+                             isRecording: false,
+                             isProcessingRecording: false,
+                             isPlaying: true,
+                             isPaused: false,
+                             isInPlaybackSession: true,
+                             isInInterval: false)
+            
+        case .paused:
+            return StateUpdate(state: state,
+                             isRecording: false,
+                             isProcessingRecording: false,
+                             isPlaying: false,
+                             isPaused: true,
+                             isInPlaybackSession: true,
+                             isInInterval: false)
+            
+        case .inInterval:
+            return StateUpdate(state: state,
+                             isRecording: false,
+                             isProcessingRecording: false,
+                             isPlaying: false,
+                             isPaused: false,
+                             isInPlaybackSession: true,
+                             isInInterval: true)
+        }
+    }
+    
+    private func applyStateUpdate(_ update: StateUpdate) {
+        self.currentState = update.state
+        self.isRecording = update.isRecording
+        self.isProcessingRecording = update.isProcessingRecording
+        self.isPlaying = update.isPlaying
+        self.isPaused = update.isPaused
+        self.isInPlaybackSession = update.isInPlaybackSession
+        self.isInInterval = update.isInInterval
+    }
+    
     private func ensureInitialized() {
-        guard !hasInitializedServices else { return }
-        hasInitializedServices = true
-
-        createServices()
-        bindPublishedProperties()
+        initQueue.sync {
+            guard !servicesInitialized else { return }
+            servicesInitialized = true
+            
+            createServices()
+            bindPublishedProperties()
+        }
     }
     // MARK: - Private Methods
     
@@ -228,10 +391,12 @@ final class AudioCoordinator: ObservableObject {
     func startRecording(for script: SelftalkScript) throws {
         ensureInitialized()
         
-        // Check if we can record in current state
-        guard currentState.canRecord else {
-            print("⚠️ Cannot start recording in state: \(currentState)")
-            throw AudioServiceError.invalidState("Cannot record in \(currentState) state")
+        // Check if we can record in current state (thread-safe)
+        let canRecord = stateQueue.sync { internalState.canRecord }
+        guard canRecord else {
+            let state = stateQueue.sync { internalState }
+            print("⚠️ Cannot start recording in state: \(state)")
+            throw AudioServiceError.invalidState("Cannot record in \(state) state")
         }
         
         // Transition to recording state
@@ -255,8 +420,10 @@ final class AudioCoordinator: ObservableObject {
     }
     
     func stopRecording() {
-        guard currentState == .recording else {
-            print("⚠️ Not currently recording, state: \(currentState)")
+        let isRecordingNow = stateQueue.sync { internalState == .recording }
+        guard isRecordingNow else {
+            let state = stateQueue.sync { internalState }
+            print("⚠️ Not currently recording, state: \(state)")
             return
         }
         
@@ -361,10 +528,12 @@ final class AudioCoordinator: ObservableObject {
             throw AudioServiceError.invalidScript
         }
         
-        // Check if we can play in current state
-        guard currentState.canPlay else {
-            print("⚠️ Cannot start playback in state: \(currentState)")
-            throw AudioServiceError.invalidState("Cannot play in \(currentState) state")
+        // Check if we can play in current state (thread-safe)
+        let canPlay = stateQueue.sync { internalState.canPlay }
+        guard canPlay else {
+            let state = stateQueue.sync { internalState }
+            print("⚠️ Cannot start playback in state: \(state)")
+            throw AudioServiceError.invalidState("Cannot play in \(state) state")
         }
         
         // Transition to playing state
@@ -392,8 +561,10 @@ final class AudioCoordinator: ObservableObject {
     func pausePlayback() {
         ensureInitialized()
         
-        guard currentState.canPause else {
-            print("⚠️ Cannot pause in state: \(currentState)")
+        let canPause = stateQueue.sync { internalState.canPause }
+        guard canPause else {
+            let state = stateQueue.sync { internalState }
+            print("⚠️ Cannot pause in state: \(state)")
             return
         }
         
@@ -404,8 +575,10 @@ final class AudioCoordinator: ObservableObject {
     func resumePlayback() {
         ensureInitialized()
         
-        guard currentState.canResume else {
-            print("⚠️ Cannot resume in state: \(currentState)")
+        let canResume = stateQueue.sync { internalState.canResume }
+        guard canResume else {
+            let state = stateQueue.sync { internalState }
+            print("⚠️ Cannot resume in state: \(state)")
             return
         }
         
@@ -416,8 +589,10 @@ final class AudioCoordinator: ObservableObject {
     func stopPlayback() {
         ensureInitialized()
         
-        guard currentState.canStop else {
-            print("⚠️ Cannot stop in state: \(currentState)")
+        let canStop = stateQueue.sync { internalState.canStop }
+        guard canStop else {
+            let state = stateQueue.sync { internalState }
+            print("⚠️ Cannot stop in state: \(state)")
             return
         }
         
@@ -493,13 +668,16 @@ final class AudioCoordinator: ObservableObject {
         }
         
         playbackService.onIntervalStateChange = { [weak self] inInterval in
-            DispatchQueue.main.async {
-                // When service reports interval state, transition appropriately
-                if inInterval {
-                    self?.transitionTo(.inInterval)
-                } else if self?.currentState == .inInterval {
+            guard let self = self else { return }
+            // When service reports interval state, transition appropriately
+            if inInterval {
+                self.transitionTo(.inInterval)
+            } else {
+                // Check if we were in interval state
+                let wasInInterval = self.stateQueue.sync { self.internalState == .inInterval }
+                if wasInInterval {
                     // If we were in interval and now not, go back to playing
-                    self?.transitionTo(.playing)
+                    self.transitionTo(.playing)
                 }
             }
         }
@@ -512,10 +690,12 @@ final class AudioCoordinator: ObservableObject {
         
         // Handle playback completion
         playbackService.onPlaybackSessionChange = { [weak self] inSession in
-            DispatchQueue.main.async {
-                // When session ends, transition to idle
-                if !inSession && self?.currentState != .idle {
-                    self?.transitionTo(.idle)
+            guard let self = self else { return }
+            // When session ends, transition to idle
+            if !inSession {
+                let notIdle = self.stateQueue.sync { self.internalState != .idle }
+                if notIdle {
+                    self.transitionTo(.idle)
                 }
             }
         }

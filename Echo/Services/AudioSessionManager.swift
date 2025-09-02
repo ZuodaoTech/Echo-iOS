@@ -352,6 +352,15 @@ final class AudioSessionManager: ObservableObject {
             .store(in: &cancellables)
     }
     
+    // MARK: - Interruption Handling
+    
+    /// Notification names for interruption events
+    static let interruptionBeganNotification = Notification.Name("AudioSessionInterruptionBegan")
+    static let interruptionEndedNotification = Notification.Name("AudioSessionInterruptionEnded")
+    
+    private var interruptionStartTime: Date?
+    private var preInterruptionState: AudioSessionState?
+    
     private func handleInterruption(_ notification: Notification) {
         guard let info = notification.userInfo,
               let typeValue = info[AVAudioSessionInterruptionTypeKey] as? UInt,
@@ -361,19 +370,69 @@ final class AudioSessionManager: ObservableObject {
         
         switch type {
         case .began:
-            // Interruption began - playback/recording will be paused
-            break
+            handleInterruptionBegan(info: info)
         case .ended:
-            // Interruption ended - can resume if needed
-            if let optionsValue = info[AVAudioSessionInterruptionOptionKey] as? UInt {
-                let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
-                if options.contains(.shouldResume) {
-                    // Can resume playback/recording
-                }
-            }
+            handleInterruptionEnded(info: info)
         @unknown default:
             break
         }
+    }
+    
+    private func handleInterruptionBegan(info: [AnyHashable: Any]) {
+        // Store pre-interruption state
+        preInterruptionState = currentState
+        interruptionStartTime = Date()
+        
+        // Determine interruption reason
+        let reason = (info[AVAudioSessionInterruptionReasonKey] as? UInt)
+            .flatMap { AVAudioSession.InterruptionReason(rawValue: $0) }
+        let wasSuspended = info[AVAudioSessionInterruptionWasSuspendedKey] as? Bool ?? false
+        
+        // CRITICAL: For privacy, especially during phone calls
+        let isPhoneCall = reason == .default
+        
+        logger.info("🔇 Audio interruption began - Reason: \(reason?.rawValue ?? 0), PhoneCall: \(isPhoneCall), Suspended: \(wasSuspended)")
+        
+        // Notify coordinator to save recording immediately if recording
+        if currentState == .recording {
+            NotificationCenter.default.post(
+                name: AudioSessionManager.interruptionBeganNotification,
+                object: nil,
+                userInfo: [
+                    "reason": reason as Any,
+                    "isPhoneCall": isPhoneCall,
+                    "wasSuspended": wasSuspended
+                ]
+            )
+        }
+        
+        // Transition to paused state
+        transitionTo(.paused)
+    }
+    
+    private func handleInterruptionEnded(info: [AnyHashable: Any]) {
+        let shouldResume = (info[AVAudioSessionInterruptionOptionKey] as? UInt)
+            .map { AVAudioSession.InterruptionOptions(rawValue: $0).contains(.shouldResume) } ?? false
+        
+        // Calculate interruption duration
+        let interruptionDuration = interruptionStartTime.map { Date().timeIntervalSince($0) } ?? 0
+        
+        logger.info("🔊 Audio interruption ended - Duration: \(interruptionDuration)s, ShouldResume: \(shouldResume)")
+        
+        // Notify coordinator about interruption end
+        NotificationCenter.default.post(
+            name: AudioSessionManager.interruptionEndedNotification,
+            object: nil,
+            userInfo: [
+                "shouldResume": shouldResume,
+                "duration": interruptionDuration,
+                "previousState": preInterruptionState as Any
+            ]
+        )
+        
+        // Clear interruption tracking
+        interruptionStartTime = nil
+        preInterruptionState = nil
     }
     
     private func checkMicrophonePermission() {
