@@ -255,6 +255,7 @@ struct AddEditScriptView: View {
                             isPlaying: isPlaying,
                             isPaused: isPaused,
                             voiceActivityLevel: audioService.voiceActivityLevel,
+                            playbackProgress: audioService.playbackProgress,
                             onRecord: handleRecording,
                             onDelete: deleteRecording,
                             onPlay: handlePlayPreview
@@ -1151,6 +1152,7 @@ struct RecordingButton: View {
     let isPlaying: Bool
     let isPaused: Bool
     let voiceActivityLevel: Float
+    let playbackProgress: Double
     let onRecord: () -> Void
     let onDelete: () -> Void
     let onPlay: () -> Void
@@ -1208,7 +1210,7 @@ struct RecordingButton: View {
                     // Show progress bar when playing
                     if isPlaying || isPaused {
                         VStack(spacing: 4) {
-                            ProgressView(value: AudioService.shared.playbackProgress)
+                            ProgressView(value: playbackProgress)
                                 .tint(.blue)
                             
                             HStack {

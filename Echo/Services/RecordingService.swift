@@ -2,15 +2,37 @@ import AVFoundation
 import Combine
 
 /// Manages audio recording functionality
-final class RecordingService: NSObject, ObservableObject {
+final class RecordingService: NSObject {
     
-    // MARK: - Published Properties
+    // MARK: - State Change Callbacks
     
-    @Published var isRecording = false
-    @Published var isProcessing = false  // New: indicates post-processing
-    @Published var recordingDuration: TimeInterval = 0
-    @Published var currentRecordingScriptId: UUID?
-    @Published var voiceActivityLevel: Float = 0  // 0.0 to 1.0 for UI visualization
+    var onRecordingStateChange: ((Bool) -> Void)?
+    var onProcessingStateChange: ((Bool) -> Void)?
+    var onDurationUpdate: ((TimeInterval) -> Void)?
+    var onVoiceActivityUpdate: ((Float) -> Void)?
+    var onCurrentScriptIdChange: ((UUID?) -> Void)?
+    
+    // MARK: - Internal State (not published)
+    
+    private(set) var isRecording = false {
+        didSet { onRecordingStateChange?(isRecording) }
+    }
+    
+    private(set) var isProcessing = false {
+        didSet { onProcessingStateChange?(isProcessing) }
+    }
+    
+    private(set) var recordingDuration: TimeInterval = 0 {
+        didSet { onDurationUpdate?(recordingDuration) }
+    }
+    
+    private(set) var currentRecordingScriptId: UUID? {
+        didSet { onCurrentScriptIdChange?(currentRecordingScriptId) }
+    }
+    
+    private(set) var voiceActivityLevel: Float = 0 {
+        didSet { onVoiceActivityUpdate?(voiceActivityLevel) }
+    }
     
     // MARK: - Properties
     

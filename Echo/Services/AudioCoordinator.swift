@@ -6,15 +6,64 @@ import SwiftUI
 /// This replaces the old AudioService singleton
 final class AudioCoordinator: ObservableObject {
     
+    // MARK: - Audio State Machine
+    
+    enum AudioState: String {
+        case idle = "idle"
+        case recording = "recording"
+        case processingRecording = "processingRecording"
+        case playing = "playing"
+        case paused = "paused"
+        case inInterval = "inInterval"
+        
+        var canRecord: Bool {
+            switch self {
+            case .idle: return true
+            default: return false
+            }
+        }
+        
+        var canPlay: Bool {
+            switch self {
+            case .idle: return true
+            default: return false
+            }
+        }
+        
+        var canPause: Bool {
+            switch self {
+            case .playing, .inInterval: return true
+            default: return false
+            }
+        }
+        
+        var canResume: Bool {
+            switch self {
+            case .paused: return true
+            default: return false
+            }
+        }
+        
+        var canStop: Bool {
+            switch self {
+            case .recording, .playing, .paused, .inInterval: return true
+            default: return false
+            }
+        }
+    }
+    
     // MARK: - Singleton
     
     static let shared = AudioCoordinator()
     
-    // MARK: - Published Properties (Combined from all services)
+    // MARK: - Published Properties (Single Source of Truth)
+    
+    // Core state machine
+    @Published private(set) var currentState: AudioState = .idle
     
     // Recording state
-    @Published var isRecording = false
-    @Published var isProcessingRecording = false  // New: shows processing state
+    @Published private(set) var isRecording = false
+    @Published private(set) var isProcessingRecording = false
     @Published var recordingDuration: TimeInterval = 0
     @Published var processingScriptIds = Set<UUID>()  // Track which scripts are being processed
     @Published var voiceActivityLevel: Float = 0  // Voice activity visualization (0.0 to 1.0)
@@ -22,14 +71,14 @@ final class AudioCoordinator: ObservableObject {
     @Published var processingMessage: String = ""  // Current processing step description
     
     // Playback state
-    @Published var isPlaying = false
-    @Published var isPaused = false
-    @Published var isInPlaybackSession = false
+    @Published private(set) var isPlaying = false
+    @Published private(set) var isPaused = false
+    @Published private(set) var isInPlaybackSession = false
     @Published var currentPlayingScriptId: UUID?
     @Published var playbackProgress: Double = 0
     @Published var currentRepetition: Int = 0
     @Published var totalRepetitions: Int = 0
-    @Published var isInInterval = false
+    @Published private(set) var isInInterval = false
     @Published var intervalProgress: Double = 0
     
     // Private mode
@@ -53,12 +102,102 @@ final class AudioCoordinator: ObservableObject {
     private var currentRecordingScript: SelftalkScript?
     private var cancellables = Set<AnyCancellable>()
     private var hasInitializedServices = false // Track service initialization
+    private let stateQueue = DispatchQueue(label: "com.echo.audiostate", attributes: .concurrent)
     
     // MARK: - Initialization
     
     private init() {
         // Services are now lazy-initialized, nothing to do here
         // Property binding is also deferred to first actual use
+    }
+    
+    // MARK: - State Management
+    
+    private func transitionTo(_ newState: AudioState) {
+        stateQueue.async(flags: .barrier) { [weak self] in
+            guard let self = self else { return }
+            
+            let oldState = self.currentState
+            
+            // Validate transition
+            switch (oldState, newState) {
+            case (.idle, .recording),
+                 (.idle, .playing),
+                 (.recording, .processingRecording),
+                 (.recording, .idle),
+                 (.processingRecording, .idle),
+                 (.playing, .paused),
+                 (.playing, .inInterval),
+                 (.playing, .idle),
+                 (.paused, .playing),
+                 (.paused, .idle),
+                 (.inInterval, .playing),
+                 (.inInterval, .paused),
+                 (.inInterval, .idle):
+                // Valid transitions
+                break
+            default:
+                print("⚠️ Invalid state transition: \(oldState) -> \(newState)")
+                return
+            }
+            
+            print("🔄 Audio state transition: \(oldState) -> \(newState)")
+            
+            DispatchQueue.main.async {
+                self.currentState = newState
+                
+                // Update derived states based on new state
+                switch newState {
+                case .idle:
+                    self.isRecording = false
+                    self.isProcessingRecording = false
+                    self.isPlaying = false
+                    self.isPaused = false
+                    self.isInPlaybackSession = false
+                    self.isInInterval = false
+                    
+                case .recording:
+                    self.isRecording = true
+                    self.isProcessingRecording = false
+                    self.isPlaying = false
+                    self.isPaused = false
+                    self.isInPlaybackSession = false
+                    self.isInInterval = false
+                    
+                case .processingRecording:
+                    self.isRecording = false
+                    self.isProcessingRecording = true
+                    self.isPlaying = false
+                    self.isPaused = false
+                    self.isInPlaybackSession = false
+                    self.isInInterval = false
+                    
+                case .playing:
+                    self.isRecording = false
+                    self.isProcessingRecording = false
+                    self.isPlaying = true
+                    self.isPaused = false
+                    self.isInPlaybackSession = true
+                    self.isInInterval = false
+                    
+                case .paused:
+                    self.isRecording = false
+                    self.isProcessingRecording = false
+                    self.isPlaying = false
+                    self.isPaused = true
+                    self.isInPlaybackSession = true
+                    self.isInInterval = false
+                    
+                case .inInterval:
+                    self.isRecording = false
+                    self.isProcessingRecording = false
+                    self.isPlaying = false
+                    self.isPaused = false
+                    self.isInPlaybackSession = true
+                    self.isInInterval = true
+                }
+            }
+        }
     }
     
     private func ensureInitialized() {
@@ -88,33 +227,47 @@ final class AudioCoordinator: ObservableObject {
     
     func startRecording(for script: SelftalkScript) throws {
         ensureInitialized()
-        // Stop any playback first and ensure clean state
-        if isPlaying || isPaused || isInPlaybackSession {
-            stopPlayback()
+        
+        // Check if we can record in current state
+        guard currentState.canRecord else {
+            print("⚠️ Cannot start recording in state: \(currentState)")
+            throw AudioServiceError.invalidState("Cannot record in \(currentState) state")
         }
         
-        // If audio session is in transitioning state, force it to idle
-        // This handles the case where stopPlayback was called but state hasn't settled
-        if sessionManager.currentState == .transitioning {
-            sessionManager.transitionTo(.idle)
-        }
+        // Transition to recording state
+        transitionTo(.recording)
         
-        try recordingService.startRecording(for: script.id)
-        
-        // Update script with audio file path and track current script
-        script.audioFilePath = fileManager.audioURL(for: script.id).path
-        // Clear old transcript when starting new recording
-        script.transcribedText = nil
-        DispatchQueue.main.async { [weak self] in
-            self?.currentRecordingScript = script
+        do {
+            try recordingService.startRecording(for: script.id)
+            
+            // Update script with audio file path and track current script
+            script.audioFilePath = fileManager.audioURL(for: script.id).path
+            // Clear old transcript when starting new recording
+            script.transcribedText = nil
+            DispatchQueue.main.async { [weak self] in
+                self?.currentRecordingScript = script
+            }
+        } catch {
+            // If recording fails, transition back to idle
+            transitionTo(.idle)
+            throw error
         }
     }
     
     func stopRecording() {
+        guard currentState == .recording else {
+            print("⚠️ Not currently recording, state: \(currentState)")
+            return
+        }
+        
         guard let script = currentRecordingScript else { 
             _ = recordingService.stopRecording() // Legacy call
+            transitionTo(.idle)
             return 
         }
+        
+        // Transition to processing state
+        transitionTo(.processingRecording)
         
         // Mark that user has recorded before (for optimizations)
         UserDefaults.standard.set(true, forKey: "hasRecordedBefore")
@@ -122,7 +275,6 @@ final class AudioCoordinator: ObservableObject {
         // Show processing state
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            self.isProcessingRecording = true
             self.processingScriptIds.insert(script.id)
             self.processingProgress = 0.1
             self.processingMessage = NSLocalizedString("processing.stopping_recording", comment: "Stopping recording...")
@@ -183,10 +335,11 @@ final class AudioCoordinator: ObservableObject {
                         DispatchQueue.main.async { [weak self] in
                             guard let self = self else { return }
                             self.currentRecordingScript = nil
-                            self.isProcessingRecording = false
                             self.processingScriptIds.remove(scriptId)
                             self.processingProgress = 0
                             self.processingMessage = ""
+                            // Transition back to idle after processing
+                            self.transitionTo(.idle)
                         }
                     }
                 }
@@ -208,38 +361,68 @@ final class AudioCoordinator: ObservableObject {
             throw AudioServiceError.invalidScript
         }
         
-        // Stop any recording first
-        if isRecording {
-            print("   🔴 Stopping active recording first")
-            stopRecording()
+        // Check if we can play in current state
+        guard currentState.canPlay else {
+            print("⚠️ Cannot start playback in state: \(currentState)")
+            throw AudioServiceError.invalidState("Cannot play in \(currentState) state")
         }
         
-        // Note: PlaybackService will auto-stop any current playback
-        // This ensures only one script plays at a time
-        try playbackService.startPlayback(
-            scriptId: script.id,
-            repetitions: Int(script.repetitions),
-            intervalSeconds: script.intervalSeconds,
-            privateModeEnabled: script.privateModeEnabled
-        )
+        // Transition to playing state
+        transitionTo(.playing)
         
-        // Increment play count
-        script.incrementPlayCount()
+        do {
+            // Note: PlaybackService will auto-stop any current playback
+            // This ensures only one script plays at a time
+            try playbackService.startPlayback(
+                scriptId: script.id,
+                repetitions: Int(script.repetitions),
+                intervalSeconds: script.intervalSeconds,
+                privateModeEnabled: script.privateModeEnabled
+            )
+            
+            // Increment play count
+            script.incrementPlayCount()
+        } catch {
+            // If playback fails, transition back to idle
+            transitionTo(.idle)
+            throw error
+        }
     }
     
     func pausePlayback() {
         ensureInitialized()
+        
+        guard currentState.canPause else {
+            print("⚠️ Cannot pause in state: \(currentState)")
+            return
+        }
+        
         playbackService.pausePlayback()
+        transitionTo(.paused)
     }
     
     func resumePlayback() {
         ensureInitialized()
+        
+        guard currentState.canResume else {
+            print("⚠️ Cannot resume in state: \(currentState)")
+            return
+        }
+        
         playbackService.resumePlayback()
+        transitionTo(.playing)
     }
     
     func stopPlayback() {
         ensureInitialized()
+        
+        guard currentState.canStop else {
+            print("⚠️ Cannot stop in state: \(currentState)")
+            return
+        }
+        
         playbackService.stopPlayback()
+        transitionTo(.idle)
     }
     
     func setPlaybackSpeed(_ speed: Float) {
@@ -273,48 +456,71 @@ final class AudioCoordinator: ObservableObject {
     // MARK: - Private Methods
     
     private func bindPublishedProperties() {
-        // Bind recording properties
-        recordingService.$isRecording
-            .assign(to: &$isRecording)
+        // Register recording service callbacks
+        // Note: State transitions are now managed centrally, 
+        // these callbacks only update auxiliary properties
         
-        recordingService.$recordingDuration
-            .assign(to: &$recordingDuration)
+        recordingService.onDurationUpdate = { [weak self] duration in
+            DispatchQueue.main.async {
+                self?.recordingDuration = duration
+            }
+        }
         
-        recordingService.$isProcessing
-            .assign(to: &$isProcessingRecording)
+        recordingService.onVoiceActivityUpdate = { [weak self] level in
+            DispatchQueue.main.async {
+                self?.voiceActivityLevel = level
+            }
+        }
         
-        recordingService.$voiceActivityLevel
-            .assign(to: &$voiceActivityLevel)
+        // Register playback service callbacks
+        playbackService.onCurrentScriptIdChange = { [weak self] scriptId in
+            DispatchQueue.main.async {
+                self?.currentPlayingScriptId = scriptId
+            }
+        }
         
-        // Bind playback properties
-        playbackService.$isPlaying
-            .assign(to: &$isPlaying)
+        playbackService.onProgressUpdate = { [weak self] progress in
+            DispatchQueue.main.async {
+                self?.playbackProgress = progress
+            }
+        }
         
-        playbackService.$isPaused
-            .assign(to: &$isPaused)
+        playbackService.onRepetitionUpdate = { [weak self] current, total in
+            DispatchQueue.main.async {
+                self?.currentRepetition = current
+                self?.totalRepetitions = total
+            }
+        }
         
-        playbackService.$isInPlaybackSession
-            .assign(to: &$isInPlaybackSession)
+        playbackService.onIntervalStateChange = { [weak self] inInterval in
+            DispatchQueue.main.async {
+                // When service reports interval state, transition appropriately
+                if inInterval {
+                    self?.transitionTo(.inInterval)
+                } else if self?.currentState == .inInterval {
+                    // If we were in interval and now not, go back to playing
+                    self?.transitionTo(.playing)
+                }
+            }
+        }
         
-        playbackService.$currentPlayingScriptId
-            .assign(to: &$currentPlayingScriptId)
+        playbackService.onIntervalProgressUpdate = { [weak self] progress in
+            DispatchQueue.main.async {
+                self?.intervalProgress = progress
+            }
+        }
         
-        playbackService.$playbackProgress
-            .assign(to: &$playbackProgress)
+        // Handle playback completion
+        playbackService.onPlaybackSessionChange = { [weak self] inSession in
+            DispatchQueue.main.async {
+                // When session ends, transition to idle
+                if !inSession && self?.currentState != .idle {
+                    self?.transitionTo(.idle)
+                }
+            }
+        }
         
-        playbackService.$currentRepetition
-            .assign(to: &$currentRepetition)
-        
-        playbackService.$totalRepetitions
-            .assign(to: &$totalRepetitions)
-        
-        playbackService.$isInInterval
-            .assign(to: &$isInInterval)
-        
-        playbackService.$intervalProgress
-            .assign(to: &$intervalProgress)
-        
-        // Bind session manager properties
+        // Bind session manager properties (still uses Combine)
         sessionManager.$privateModeActive
             .assign(to: &$privateModeActive)
     }

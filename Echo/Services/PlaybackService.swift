@@ -2,19 +2,56 @@ import AVFoundation
 import Combine
 
 /// Manages audio playback with repetitions and intervals
-final class PlaybackService: NSObject, ObservableObject {
+final class PlaybackService: NSObject {
     
-    // MARK: - Published Properties
+    // MARK: - State Change Callbacks
     
-    @Published var isPlaying = false
-    @Published var isPaused = false
-    @Published var isInPlaybackSession = false
-    @Published var currentPlayingScriptId: UUID?
-    @Published var playbackProgress: Double = 0
-    @Published var currentRepetition: Int = 0
-    @Published var totalRepetitions: Int = 0
-    @Published var isInInterval = false
-    @Published var intervalProgress: Double = 0
+    var onPlayingStateChange: ((Bool) -> Void)?
+    var onPausedStateChange: ((Bool) -> Void)?
+    var onPlaybackSessionChange: ((Bool) -> Void)?
+    var onCurrentScriptIdChange: ((UUID?) -> Void)?
+    var onProgressUpdate: ((Double) -> Void)?
+    var onRepetitionUpdate: ((Int, Int) -> Void)?  // current, total
+    var onIntervalStateChange: ((Bool) -> Void)?
+    var onIntervalProgressUpdate: ((Double) -> Void)?
+    
+    // MARK: - Internal State (not published)
+    
+    private(set) var isPlaying = false {
+        didSet { onPlayingStateChange?(isPlaying) }
+    }
+    
+    private(set) var isPaused = false {
+        didSet { onPausedStateChange?(isPaused) }
+    }
+    
+    private(set) var isInPlaybackSession = false {
+        didSet { onPlaybackSessionChange?(isInPlaybackSession) }
+    }
+    
+    private(set) var currentPlayingScriptId: UUID? {
+        didSet { onCurrentScriptIdChange?(currentPlayingScriptId) }
+    }
+    
+    private(set) var playbackProgress: Double = 0 {
+        didSet { onProgressUpdate?(playbackProgress) }
+    }
+    
+    private(set) var currentRepetition: Int = 0 {
+        didSet { onRepetitionUpdate?(currentRepetition, totalRepetitions) }
+    }
+    
+    private(set) var totalRepetitions: Int = 0 {
+        didSet { onRepetitionUpdate?(currentRepetition, totalRepetitions) }
+    }
+    
+    private(set) var isInInterval = false {
+        didSet { onIntervalStateChange?(isInInterval) }
+    }
+    
+    private(set) var intervalProgress: Double = 0 {
+        didSet { onIntervalProgressUpdate?(intervalProgress) }
+    }
     
     // MARK: - Properties
     
