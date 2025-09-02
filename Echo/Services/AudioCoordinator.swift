@@ -864,6 +864,13 @@ final class AudioCoordinator: ObservableObject {
         script.audioFilePath = nil
         script.audioDuration = 0
         script.transcribedText = nil  // Clear transcript when audio is deleted
+        
+        // Reset state to idle after deleting recording
+        // This ensures we can record again immediately
+        let currentState = stateQueue.sync { internalState }
+        if currentState == .processingRecording || currentState == .idle {
+            transitionTo(.idle)
+        }
     }
     
     func checkPrivateMode() {
