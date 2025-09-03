@@ -108,11 +108,21 @@ struct ScriptCard: View {
                 }
             }
             
-            // Script Text
-            Text(script.scriptText)
-                .font(.body)
-                .lineLimit(4)
-                .multilineTextAlignment(.leading)
+            // Script Text with recording indicator for placeholder text
+            HStack(alignment: .top, spacing: 8) {
+                // Show microphone icon if this is a recording-only script (placeholder text)
+                if script.scriptText == NSLocalizedString("script.recording_only_placeholder", comment: "") && script.hasRecording {
+                    Image(systemName: "mic.fill")
+                        .foregroundColor(.blue.opacity(0.7))
+                        .font(.footnote)
+                }
+                
+                Text(script.scriptText)
+                    .font(.body)
+                    .lineLimit(4)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(script.scriptText == NSLocalizedString("script.recording_only_placeholder", comment: "") ? .secondary : .primary)
+            }
             
             // Playback Progress (if playing or paused or in interval)
             if isPlaying || isPaused || (audioService.isInInterval && audioService.currentPlayingScriptId == script.id) {

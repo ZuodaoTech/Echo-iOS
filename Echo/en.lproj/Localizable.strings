@@ -50,6 +50,7 @@
 "script.repetitions" = "Repetitions";
 "script.interval" = "Interval";
 "script.private_mode" = "Private Mode";
+"script.recording_only_placeholder" = "Recommend transcribing the recording in edit view...";
 "script.delete" = "Delete Card";
 "script.delete.confirm.title" = "Delete Card";
 "script.delete.confirm.message" = "Are you sure you want to delete this card? This action cannot be undone.";

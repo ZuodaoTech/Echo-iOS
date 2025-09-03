@@ -51,6 +51,7 @@
 "script.repetitions" = "重复次数";
 "script.interval" = "间隔";
 "script.private_mode" = "隐私模式";
+"script.recording_only_placeholder" = "推荐在编辑页面使用录音转录脚本...";
 "script.delete" = "删除卡片";
 "script.delete.confirm.title" = "删除卡片";
 "script.delete.confirm.message" = "确定要删除这个脚本吗？此操作无法撤销。";

@@ -660,9 +660,9 @@ struct AddEditScriptView: View {
         transcriptCheckTimer?.invalidate()
         transcriptCheckTimer = nil
         
-        // For new scripts with empty content, silently dismiss (following iOS patterns)
+        // For new scripts with no content at all (no text AND no recording), silently dismiss
         let trimmedText = scriptText.trimmingCharacters(in: .whitespacesAndNewlines)
-        if script == nil && trimmedText.isEmpty {
+        if script == nil && trimmedText.isEmpty && !hasRecording {
             hasSavedOnDismiss = true
             dismiss()
             return
@@ -791,9 +791,13 @@ struct AddEditScriptView: View {
     private func validateScriptText() -> (isValid: Bool, message: String) {
         let trimmedText = scriptText.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        // Check if empty or whitespace only
+        // Allow empty text if there's a recording
         if trimmedText.isEmpty {
-            return (false, NSLocalizedString("validation.empty_script", comment: "Script cannot be empty"))
+            if hasRecording {
+                return (true, "")  // Valid: recording-only script
+            } else {
+                return (false, NSLocalizedString("validation.empty_script", comment: "Script cannot be empty"))
+            }
         }
         
         // Check minimum length
@@ -894,8 +898,13 @@ struct AddEditScriptView: View {
             existingScript.updatedAt = Date()
         } else {
             // Create new script (already validated)
+            // Use placeholder text for recording-only scripts
+            let scriptTextToSave = trimmedText.isEmpty ? 
+                NSLocalizedString("script.recording_only_placeholder", comment: "") : 
+                trimmedText
+            
             let newScript = SelftalkScript.create(
-                scriptText: trimmedText,
+                scriptText: scriptTextToSave,
                 repetitions: repetitions,
                 intervalSeconds: intervalSeconds,
                 privateMode: privateModeEnabled,
