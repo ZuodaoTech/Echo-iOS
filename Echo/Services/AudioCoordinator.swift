@@ -865,11 +865,14 @@ final class AudioCoordinator: ObservableObject {
         script.audioDuration = 0
         script.transcribedText = nil  // Clear transcript when audio is deleted
         
-        // Reset state to idle after deleting recording
+        // ALWAYS reset state to idle after deleting recording
         // This ensures we can record again immediately
-        let currentState = stateQueue.sync { internalState }
-        if currentState == .processingRecording || currentState == .idle {
-            transitionTo(.idle)
+        // Don't check current state - just force it to idle
+        transitionTo(.idle)
+        
+        // Also reset any processing flags
+        DispatchQueue.main.async { [weak self] in
+            self?.processingScriptIds.remove(script.id)
         }
     }
     
