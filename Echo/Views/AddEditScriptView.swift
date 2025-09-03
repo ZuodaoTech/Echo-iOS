@@ -1323,15 +1323,6 @@ struct RecordingButton: View {
                             .foregroundColor(.red)
                     }
                 }
-            } else if isProcessing {
-                HStack {
-                    ProgressView()
-                        .scaleEffect(0.8)
-                    Text(NSLocalizedString("recording.processing", comment: ""))
-                        .foregroundColor(.secondary)
-                        .padding(.leading, 4)
-                }
-                .padding(.vertical, 8)
             }
         }
     }
