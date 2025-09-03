@@ -276,6 +276,8 @@
 // MARK: - Empty State
 "empty.no_cards" = "暂无卡片";
 "empty.tap_to_create" = "点击+按钮创建您的第一张自我对话卡片";
+"empty.card.title" = "空卡片";
+"empty.card.message" = "此卡片没有文字或录音。您想删除它吗？";
 
 // MARK: - Filter
 "filter.title" = "按标签筛选";

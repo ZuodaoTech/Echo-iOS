@@ -51,6 +51,7 @@ struct AddEditScriptView: View {
     @State private var showingPrivateAlert = false
     @State private var showingDeleteAlert = false
     @State private var showingDeleteRecordingAlert = false
+    @State private var showingEmptyCardAlert = false
     @State private var showingErrorAlert = false
     @State private var errorMessage = ""
     @State private var hasSavedOnDismiss = false
@@ -567,6 +568,14 @@ struct AddEditScriptView: View {
                     Text(NSLocalizedString("discard.changes.message", comment: "You have unsaved changes. Are you sure you want to discard them?"))
                 }
             }
+            .alert(NSLocalizedString("empty.card.title", comment: "Empty Card"), isPresented: $showingEmptyCardAlert) {
+                Button(NSLocalizedString("action.cancel", comment: "Cancel"), role: .cancel) { }
+                Button(NSLocalizedString("action.delete", comment: "Delete"), role: .destructive) {
+                    performDeletion()
+                }
+            } message: {
+                Text(NSLocalizedString("empty.card.message", comment: "This card has no text or recording. Would you like to delete it instead?"))
+            }
         }
         .onAppear {
             setupInitialValues()
@@ -878,6 +887,14 @@ struct AddEditScriptView: View {
             return false
         }
         
+        // Check for empty card in Edit view (no text and no recording)
+        let trimmedText = scriptText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if isEditing && trimmedText.isEmpty && !hasRecording {
+            // Show empty card alert instead of saving
+            showingEmptyCardAlert = true
+            return false
+        }
+        
         // Validate script text first
         let textValidation = validateScriptText()
         if !textValidation.isValid {
@@ -893,8 +910,6 @@ struct AddEditScriptView: View {
             showingValidationAlert = true
             return false
         }
-        
-        let trimmedText = scriptText.trimmingCharacters(in: .whitespacesAndNewlines)
         
         // Use the script or tempRecordingScript
         let scriptToSave = script ?? tempRecordingScript

@@ -275,6 +275,8 @@
 // MARK: - Empty State
 "empty.no_cards" = "No Cards Yet";
 "empty.tap_to_create" = "Tap the + button to create your first self-talk card";
+"empty.card.title" = "Empty Card";
+"empty.card.message" = "This card has no text or recording. Would you like to delete it instead?";
 
 // MARK: - Filter
 "filter.title" = "Filter by Tags";
