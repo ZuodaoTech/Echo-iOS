@@ -446,6 +446,7 @@ final class AudioCoordinator: ObservableObject {
             switch (oldState, newState) {
             case (.idle, .recording),
                  (.idle, .playing),
+                 (.idle, .idle),  // Allow idle to idle for forced reset
                  (.recording, .processingRecording),
                  (.recording, .idle),
                  (.recording, .interrupted),  // Recording can be interrupted
@@ -611,11 +612,18 @@ final class AudioCoordinator: ObservableObject {
         ensureInitialized()
         
         // Check if we can record in current state (thread-safe)
-        let canRecord = stateQueue.sync { internalState.canRecord }
+        let currentState = stateQueue.sync { internalState }
+        let canRecord = currentState.canRecord
+        
+        print("🎤 Recording check - Current state: \(currentState), canRecord: \(canRecord)")
+        print("   Script ID: \(script.id)")
+        print("   Processing IDs: \(processingScriptIds)")
+        
         guard canRecord else {
-            let state = stateQueue.sync { internalState }
-            print("⚠️ Cannot start recording in state: \(state)")
-            throw AudioServiceError.invalidState("Cannot record in \(state) state")
+            print("❌ Cannot start recording in state: \(currentState)")
+            print("   isProcessingRecording: \(isProcessingRecording)")
+            print("   audioSessionState: \(audioSessionState)")
+            throw AudioServiceError.invalidState("Cannot record in \(currentState) state")
         }
         
         // Track metrics: Check if this is first recording for this script
@@ -852,6 +860,12 @@ final class AudioCoordinator: ObservableObject {
     
     func deleteRecording(for script: SelftalkScript) {
         ensureInitialized()
+        
+        let currentState = stateQueue.sync { internalState }
+        print("🗑️ Deleting recording - Current state: \(currentState)")
+        print("   Script ID: \(script.id)")
+        print("   Processing IDs before: \(processingScriptIds)")
+        
         // Stop playback if playing this script
         if currentPlayingScriptId == script.id {
             stopPlayback()
@@ -865,15 +879,17 @@ final class AudioCoordinator: ObservableObject {
         script.audioDuration = 0
         script.transcribedText = nil  // Clear transcript when audio is deleted
         
+        // Remove from processing IDs SYNCHRONOUSLY before state change
+        processingScriptIds.remove(script.id)
+        
         // ALWAYS reset state to idle after deleting recording
         // This ensures we can record again immediately
-        // Don't check current state - just force it to idle
+        print("   Forcing transition to idle...")
         transitionTo(.idle)
         
-        // Also reset any processing flags
-        DispatchQueue.main.async { [weak self] in
-            self?.processingScriptIds.remove(script.id)
-        }
+        let newState = stateQueue.sync { internalState }
+        print("   State after deletion: \(newState)")
+        print("   Processing IDs after: \(processingScriptIds)")
     }
     
     func checkPrivateMode() {
