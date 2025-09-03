@@ -120,6 +120,8 @@ struct AddEditScriptView: View {
         NavigationView {
             Form {
                 Section(NSLocalizedString("script.label", comment: "")) {
+                    // TODO: Replace with ScriptTextEditor component
+                    // ScriptTextEditor(scriptText: scriptText)
                     VStack(alignment: .leading, spacing: 8) {
                         ZStack(alignment: .topLeading) {
                             // Invisible text for height calculation
