@@ -47,6 +47,7 @@ struct AddEditScriptView: View {
     @State private var showingMicPermissionAlert = false
     @State private var showingPrivateAlert = false
     @State private var showingDeleteAlert = false
+    @State private var showingDeleteRecordingAlert = false
     @State private var showingErrorAlert = false
     @State private var errorMessage = ""
     @State private var hasSavedOnDismiss = false
@@ -532,6 +533,14 @@ struct AddEditScriptView: View {
                 }
             } message: {
                 Text(NSLocalizedString("script.delete.confirm.message", comment: ""))
+            }
+            .alert("Delete Recording?", isPresented: $showingDeleteRecordingAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Delete", role: .destructive) {
+                    performRecordingDeletion()
+                }
+            } message: {
+                Text("This will permanently delete your audio recording. This action cannot be undone.")
             }
             .alert(NSLocalizedString("error.title", comment: ""), isPresented: $showingErrorAlert) {
                 Button(NSLocalizedString("action.ok", comment: ""), role: .cancel) { }
@@ -1019,6 +1028,11 @@ struct AddEditScriptView: View {
     }
     
     private func deleteRecording() {
+        // Show confirmation alert instead of deleting immediately
+        showingDeleteRecordingAlert = true
+    }
+    
+    private func performRecordingDeletion() {
         guard let script = script else { return }
         audioService.deleteRecording(for: script)
         hasRecording = false  // Update state to reflect deletion
