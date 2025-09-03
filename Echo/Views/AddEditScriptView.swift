@@ -196,8 +196,8 @@ struct AddEditScriptView: View {
                     }
                 }
                 
-                if isEditing {
-                    Section(NSLocalizedString("script.recording", comment: "")) {
+                // Recording Section - available for both new and existing scripts
+                Section(NSLocalizedString("script.recording", comment: "")) {
                         // Transcription Language Picker
                         VStack(alignment: .leading, spacing: 4) {
                             Picker(NSLocalizedString("settings.transcription", comment: ""), selection: $transcriptionLanguage) {
@@ -331,7 +331,6 @@ struct AddEditScriptView: View {
                             }
                         }
                     }
-                }
                 
                 Section(NSLocalizedString("settings.default_settings", comment: "")) {
                     // Tag Selection
