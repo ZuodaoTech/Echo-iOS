@@ -386,12 +386,11 @@ final class AudioSessionManager: ObservableObject {
         // Determine interruption reason
         let reason = (info[AVAudioSessionInterruptionReasonKey] as? UInt)
             .flatMap { AVAudioSession.InterruptionReason(rawValue: $0) }
-        let wasSuspended = info[AVAudioSessionInterruptionWasSuspendedKey] as? Bool ?? false
         
         // CRITICAL: For privacy, especially during phone calls
         let isPhoneCall = reason == .default
         
-        logger.info("🔇 Audio interruption began - Reason: \(reason?.rawValue ?? 0), PhoneCall: \(isPhoneCall), Suspended: \(wasSuspended)")
+        logger.info("🔇 Audio interruption began - Reason: \(reason?.rawValue ?? 0), PhoneCall: \(isPhoneCall)")
         
         // Notify coordinator to save recording immediately if recording
         if currentState == .recording {
@@ -400,8 +399,7 @@ final class AudioSessionManager: ObservableObject {
                 object: nil,
                 userInfo: [
                     "reason": reason as Any,
-                    "isPhoneCall": isPhoneCall,
-                    "wasSuspended": wasSuspended
+                    "isPhoneCall": isPhoneCall
                 ]
             )
         }
