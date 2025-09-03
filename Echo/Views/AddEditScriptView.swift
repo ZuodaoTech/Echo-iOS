@@ -1022,6 +1022,7 @@ struct AddEditScriptView: View {
         guard let script = script else { return }
         audioService.deleteRecording(for: script)
         hasRecording = false  // Update state to reflect deletion
+        isProcessingAudio = false  // Clear processing flag to allow immediate re-recording
     }
     
     private func performDeletion() {
