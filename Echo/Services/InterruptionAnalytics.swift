@@ -15,14 +15,30 @@ final class InterruptionAnalytics {
     // MARK: - Analytics Data Models
     
     struct InterruptionEvent {
-        let id = UUID()
-        let timestamp = Date()
+        let id: UUID
+        let timestamp: Date
         let type: InterruptionType
         let duration: TimeInterval
         let recordingDuration: TimeInterval
         let isPhoneCall: Bool
         let recoveryAction: RecoveryAction?
         let timeTaken: TimeInterval?
+        
+        init(type: InterruptionType, 
+             duration: TimeInterval, 
+             recordingDuration: TimeInterval, 
+             isPhoneCall: Bool, 
+             recoveryAction: RecoveryAction? = nil, 
+             timeTaken: TimeInterval? = nil) {
+            self.id = UUID()
+            self.timestamp = Date()
+            self.type = type
+            self.duration = duration
+            self.recordingDuration = recordingDuration
+            self.isPhoneCall = isPhoneCall
+            self.recoveryAction = recoveryAction
+            self.timeTaken = timeTaken
+        }
         
         enum InterruptionType: String, CaseIterable {
             case phoneCall = "phone_call"
@@ -97,9 +113,7 @@ final class InterruptionAnalytics {
                 type: type,
                 duration: duration,
                 recordingDuration: recordingDuration,
-                isPhoneCall: isPhoneCall,
-                recoveryAction: nil,
-                timeTaken: nil
+                isPhoneCall: isPhoneCall
             )
             
             self.analytics.append(event)
@@ -122,7 +136,7 @@ final class InterruptionAnalytics {
         analyticsQueue.async {
             // Find and update the interruption event
             if let index = self.analytics.firstIndex(where: { $0.id == interruptionId }) {
-                var event = self.analytics[index]
+                let event = self.analytics[index]
                 let updatedEvent = InterruptionEvent(
                     type: event.type,
                     duration: event.duration,
