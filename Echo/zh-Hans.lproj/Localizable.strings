@@ -103,6 +103,8 @@
 "recording.re_record" = "重新录音";
 "recording.saved" = "录音已保存";
 "recording.delete" = "删除";
+"recording.delete.confirm.title" = "删除录音";
+"recording.delete.confirm.message" = "确定要删除这段录音吗？此操作无法撤销。";
 "recording.preview" = "预览";
 "recording.playing_preview" = "正在播放预览...";
 "recording.preview_paused" = "预览已暂停";

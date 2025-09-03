@@ -52,7 +52,7 @@
 "script.private_mode" = "Private Mode";
 "script.delete" = "Delete Card";
 "script.delete.confirm.title" = "Delete Card";
-"script.delete.confirm.message" = "Are you sure you want to delete this script? This action cannot be undone.";
+"script.delete.confirm.message" = "Are you sure you want to delete this card? This action cannot be undone.";
 
 // MARK: - Settings
 "settings.app_language" = "App Language";
@@ -102,6 +102,8 @@
 "recording.re_record" = "Re-record";
 "recording.saved" = "Recording saved";
 "recording.delete" = "Delete";
+"recording.delete.confirm.title" = "Delete Recording";
+"recording.delete.confirm.message" = "Are you sure you want to delete this recording? This action cannot be undone.";
 "recording.preview" = "Preview";
 "recording.playing_preview" = "Playing preview...";
 "recording.preview_paused" = "Preview paused";

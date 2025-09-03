@@ -534,13 +534,13 @@ struct AddEditScriptView: View {
             } message: {
                 Text(NSLocalizedString("script.delete.confirm.message", comment: ""))
             }
-            .alert("Delete Recording?", isPresented: $showingDeleteRecordingAlert) {
-                Button("Cancel", role: .cancel) { }
-                Button("Delete", role: .destructive) {
+            .alert(NSLocalizedString("recording.delete.confirm.title", comment: ""), isPresented: $showingDeleteRecordingAlert) {
+                Button(NSLocalizedString("action.cancel", comment: ""), role: .cancel) { }
+                Button(NSLocalizedString("action.delete", comment: ""), role: .destructive) {
                     performRecordingDeletion()
                 }
             } message: {
-                Text("This will permanently delete your audio recording. This action cannot be undone.")
+                Text(NSLocalizedString("recording.delete.confirm.message", comment: ""))
             }
             .alert(NSLocalizedString("error.title", comment: ""), isPresented: $showingErrorAlert) {
                 Button(NSLocalizedString("action.ok", comment: ""), role: .cancel) { }
