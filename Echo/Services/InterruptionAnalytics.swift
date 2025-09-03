@@ -119,7 +119,7 @@ final class InterruptionAnalytics {
             self.analytics.append(event)
             self.currentSession?.interruptions.append(event)
             
-            self.logger.info("📊 Interruption tracked: \\(type.rawValue), duration: \\(duration)s, recording: \\(recordingDuration)s")
+            self.logger.info("📊 Interruption tracked: \(type.rawValue), duration: \(duration)s, recording: \(recordingDuration)s")
             
             // Save to disk periodically
             if self.analytics.count % 10 == 0 {
@@ -152,7 +152,7 @@ final class InterruptionAnalytics {
                     self.currentSession?.interruptions[sessionIndex] = updatedEvent
                 }
                 
-                self.logger.info("📊 Recovery action tracked: \\(action.rawValue), time: \\(timeTaken)s")
+                self.logger.info("📊 Recovery action tracked: \(action.rawValue), time: \(timeTaken)s")
             }
         }
     }
@@ -162,7 +162,7 @@ final class InterruptionAnalytics {
             self.currentSession?.successfulRecordings += 1
             self.currentSession?.totalRecordingTime += duration
             
-            self.logger.info("📊 Successful recording: \\(duration)s")
+            self.logger.info("📊 Successful recording: \(duration)s")
         }
     }
     
@@ -170,7 +170,7 @@ final class InterruptionAnalytics {
         analyticsQueue.async {
             self.currentSession?.abandonedRecordings += 1
             
-            self.logger.info("📊 Abandoned recording: \\(reason)")
+            self.logger.info("📊 Abandoned recording: \(reason)")
         }
     }
     
@@ -235,15 +235,15 @@ final class InterruptionAnalytics {
             var insights: [String] = []
             
             if phoneCallCount > total / 2 {
-                insights.append("Phone calls are your main interruption source (\\(phoneCallCount)/\\(total))")
+                insights.append("Phone calls are your main interruption source (\(phoneCallCount)/\(total))")
             }
             
             if avgRecoveryTime > 10 {
-                insights.append("Users take \\(Int(avgRecoveryTime))s on average to decide on recovery")
+                insights.append("Users take \(Int(avgRecoveryTime))s on average to decide on recovery")
             }
             
             if successRate < 0.7 {
-                insights.append("Low recovery success rate (\\(Int(successRate * 100))%) - consider UX improvements")
+                insights.append("Low recovery success rate (\(Int(successRate * 100))%) - consider UX improvements")
             }
             
             if mostCommon == .unknown {
@@ -251,7 +251,7 @@ final class InterruptionAnalytics {
             }
             
             if avgDuration > 30 {
-                insights.append("Long interruptions (avg \\(Int(avgDuration))s) suggest user workflow issues")
+                insights.append("Long interruptions (avg \(Int(avgDuration))s) suggest user workflow issues")
             }
             
             return AnalyticsInsights(
@@ -273,9 +273,9 @@ final class InterruptionAnalytics {
         do {
             let data = try JSONEncoder().encode(analytics)
             try data.write(to: analyticsURL)
-            logger.debug("📊 Analytics saved to disk (\\(analytics.count) events)")
+            logger.debug("📊 Analytics saved to disk (\(self.analytics.count) events)")
         } catch {
-            logger.error("📊 Failed to save analytics: \\(error)")
+            logger.error("📊 Failed to save analytics: \(error)")
         }
     }
     
@@ -285,7 +285,7 @@ final class InterruptionAnalytics {
         do {
             let data = try Data(contentsOf: analyticsURL)
             analytics = try JSONDecoder().decode([InterruptionEvent].self, from: data)
-            logger.debug("📊 Analytics loaded from disk (\\(analytics.count) events)")
+            logger.debug("📊 Analytics loaded from disk (\(self.analytics.count) events)")
         } catch {
             // File doesn't exist yet or is corrupted - start fresh
             analytics = []
@@ -307,11 +307,11 @@ final class InterruptionAnalytics {
         
         logger.info("""
         📊 Session Summary:
-        - Duration: \\(Int(duration))s
-        - Successful recordings: \\(session.successfulRecordings)
-        - Abandoned recordings: \\(session.abandonedRecordings)
-        - Interruptions: \\(session.interruptions.count)
-        - Total recording time: \\(Int(session.totalRecordingTime))s
+        - Duration: \(Int(duration))s
+        - Successful recordings: \(session.successfulRecordings)
+        - Abandoned recordings: \(session.abandonedRecordings)
+        - Interruptions: \(session.interruptions.count)
+        - Total recording time: \(Int(session.totalRecordingTime))s
         """)
     }
     
@@ -324,18 +324,18 @@ final class InterruptionAnalytics {
             
             📊 INTERRUPTION ANALYTICS SUMMARY
             ================================
-            Total Interruptions: \\(insights.totalInterruptions)
-            Most Common Type: \\(insights.mostCommonInterruption.rawValue)
-            Phone Call Frequency: \\(Int(insights.phoneCallFrequency * 100))%
-            Success Rate: \\(Int(insights.successRate * 100))%
-            Avg Recovery Time: \\(Int(insights.averageRecoveryTime))s
-            Preferred Action: \\(insights.preferredRecoveryAction.rawValue)
+            Total Interruptions: \(insights.totalInterruptions)
+            Most Common Type: \(insights.mostCommonInterruption.rawValue)
+            Phone Call Frequency: \(Int(insights.phoneCallFrequency * 100))%
+            Success Rate: \(Int(insights.successRate * 100))%
+            Avg Recovery Time: \(Int(insights.averageRecoveryTime))s
+            Preferred Action: \(insights.preferredRecoveryAction.rawValue)
             
             Key Insights:
             """)
             
             for insight in insights.insights {
-                print("• \\(insight)")
+                print("• \(insight)")
             }
             
             print("================================\n")
