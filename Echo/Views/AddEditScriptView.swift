@@ -889,7 +889,10 @@ struct AddEditScriptView: View {
         
         // Check for empty card in Edit view (no text and no recording)
         let trimmedText = scriptText.trimmingCharacters(in: .whitespacesAndNewlines)
-        if isEditing && trimmedText.isEmpty && !hasRecording && !isProcessingAudio {
+        let placeholderText = NSLocalizedString("script.recording_only_placeholder", comment: "")
+        let isEmptyOrPlaceholder = trimmedText.isEmpty || scriptText == placeholderText
+        
+        if isEditing && isEmptyOrPlaceholder && !hasRecording && !isProcessingAudio {
             // Show empty card alert instead of saving
             showingEmptyCardAlert = true
             return false
