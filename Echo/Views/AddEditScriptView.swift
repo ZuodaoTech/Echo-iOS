@@ -19,6 +19,9 @@ struct AddEditScriptView: View {
     let script: SelftalkScript?
     let onDelete: ((UUID) -> Void)?  // Callback with script ID only (safer)
     
+    // For handling temporary recording in Add view
+    @State private var tempRecordingScript: SelftalkScript?
+    
     // MARK: - Validation Constants
     private enum ValidationConstants {
         static let minimumScriptLength = 1
@@ -573,29 +576,31 @@ struct AddEditScriptView: View {
             }
         }
         .onChange(of: audioService.processingScriptIds) { processingIds in
-            // Check if our script's processing state changed
-            if let script = script {
-                isProcessingAudio = processingIds.contains(script.id)
+            // Check if our script's (or temp script's) processing state changed
+            let scriptToCheck = script ?? tempRecordingScript
+            if let scriptToCheck = scriptToCheck {
+                isProcessingAudio = processingIds.contains(scriptToCheck.id)
                 // If processing just completed for our script
                 if !isProcessingAudio && hasRecording == false {
-                    hasRecording = script.hasRecording
+                    hasRecording = scriptToCheck.hasRecording
                 }
             }
         }
         .onChange(of: audioService.isProcessingRecording) { isProcessing in
             // When processing completes, update hasRecording and start checking for transcript
             if !isProcessing && !audioService.isRecording {
-                if let script = script {
-                    hasRecording = script.hasRecording
+                let scriptToCheck = script ?? tempRecordingScript
+                if let scriptToCheck = scriptToCheck {
+                    hasRecording = scriptToCheck.hasRecording
                     
                     // Start a timer to check for transcript updates
                     transcriptCheckTimer?.invalidate()
                     transcriptCheckTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
                         // Force Core Data to refresh
-                        viewContext.refresh(script, mergeChanges: true)
+                        viewContext.refresh(scriptToCheck, mergeChanges: true)
                         
                         // Stop checking after transcript appears or 10 seconds
-                        if let transcribedText = script.transcribedText, !transcribedText.isEmpty {
+                        if let transcribedText = scriptToCheck.transcribedText, !transcribedText.isEmpty {
                             timer.invalidate()
                             transcriptCheckTimer = nil
                             print("Transcript detected in UI: \(transcribedText.prefix(30))")
@@ -684,6 +689,20 @@ struct AddEditScriptView: View {
         // Clean up any timers
         transcriptCheckTimer?.invalidate()
         transcriptCheckTimer = nil
+        
+        // If we have a temp recording script, delete it
+        if let tempScript = tempRecordingScript {
+            viewContext.delete(tempScript)
+            try? viewContext.save()
+            tempRecordingScript = nil
+            hasSavedOnDismiss = true
+            
+            // If no changes were made, just dismiss
+            if !hasUnsavedChanges {
+                dismiss()
+                return
+            }
+        }
         
         // Check for unsaved changes
         if hasUnsavedChanges {
@@ -877,10 +896,21 @@ struct AddEditScriptView: View {
         
         let trimmedText = scriptText.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        // For existing scripts, update
-        if let existingScript = script {
+        // Use the script or tempRecordingScript
+        let scriptToSave = script ?? tempRecordingScript
+        
+        // For existing scripts (including temp recording scripts), update
+        if let existingScript = scriptToSave {
             // Update existing script
-            existingScript.scriptText = trimmedText.isEmpty ? existingScript.scriptText : trimmedText
+            // If it was a placeholder and now has real text, update it
+            if existingScript.scriptText == NSLocalizedString("script.recording_only_placeholder", comment: "") && !trimmedText.isEmpty {
+                existingScript.scriptText = trimmedText
+            } else if trimmedText.isEmpty && hasRecording {
+                // Keep placeholder for recording-only scripts
+                existingScript.scriptText = NSLocalizedString("script.recording_only_placeholder", comment: "")
+            } else {
+                existingScript.scriptText = trimmedText.isEmpty ? existingScript.scriptText : trimmedText
+            }
             // Update tags
             if let currentTags = existingScript.tags as? Set<Tag> {
                 for tag in currentTags {
@@ -931,6 +961,8 @@ struct AddEditScriptView: View {
             if viewContext.hasChanges {
                 try viewContext.save()
                 print("Successfully saved script to Core Data")
+                // Clear temp recording script after successful save
+                tempRecordingScript = nil
             }
             return true
         } catch {
@@ -1001,8 +1033,6 @@ struct AddEditScriptView: View {
     }
     
     private func handleRecording() {
-        guard let script = script else { return }
-        
         // Don't allow recording if already processing
         if isProcessingAudio {
             return
@@ -1016,7 +1046,22 @@ struct AddEditScriptView: View {
             audioService.requestMicrophonePermission { granted in
                 if granted {
                     do {
-                        try audioService.startRecording(for: script)
+                        // For new scripts, create a temporary script object for recording
+                        if let script = script {
+                            try audioService.startRecording(for: script)
+                        } else {
+                            // Create a temporary script for the recording session
+                            let tempScript = SelftalkScript.create(
+                                scriptText: NSLocalizedString("script.recording_only_placeholder", comment: ""),
+                                repetitions: repetitions,
+                                intervalSeconds: intervalSeconds,
+                                privateMode: privateModeEnabled,
+                                in: viewContext
+                            )
+                            // Store reference to the temp script
+                            self.tempRecordingScript = tempScript
+                            try audioService.startRecording(for: tempScript)
+                        }
                         isRecording = true
                     } catch let error as AudioServiceError {
                         // Show specific error message
