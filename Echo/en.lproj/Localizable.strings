@@ -203,7 +203,7 @@
 "validation.script_too_long" = "Script exceeds maximum length of 500 characters";
 "validation.exceeds_character_limit" = "Script exceeds the character limit of %d";
 "validation.audio_too_short" = "Recording must be at least 1 second";
-"validation.audio_too_long" = "Recording exceeds maximum duration of 30 seconds";
+"validation.audio_too_long" = "Recording exceeds maximum duration of %d seconds";
 "validation.audio_processing" = "Audio is still processing, please wait";
 "validation.recording_in_progress" = "Recording is in progress, please stop it first";
 

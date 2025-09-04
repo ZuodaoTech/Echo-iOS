@@ -27,7 +27,6 @@ struct AddEditScriptView: View {
         static let minimumScriptLength = 1
         static let maximumScriptLength = 500
         static let minimumAudioDuration: TimeInterval = 1.0  // 1 second minimum
-        static let maximumAudioDuration: TimeInterval = 30.0 // 30 seconds maximum
     }
     
     @State private var scriptText = ""
@@ -73,6 +72,7 @@ struct AddEditScriptView: View {
     @AppStorage("characterGuidanceEnabled") private var characterGuidanceEnabled = true
     @AppStorage("characterLimit") private var characterLimit = 280
     @AppStorage("limitBehavior") private var limitBehavior = "warn"
+    @AppStorage("maxRecordingDuration") private var maxRecordingDuration = 30
     @State private var textEditorHeight: CGFloat = 120
     
     @FetchRequest(
@@ -263,6 +263,7 @@ struct AddEditScriptView: View {
                             isPaused: isPaused,
                             voiceActivityLevel: audioService.voiceActivityLevel,
                             playbackProgress: audioService.playbackProgress,
+                            maxRecordingDuration: maxRecordingDuration,
                             onRecord: handleRecording,
                             onDelete: deleteRecording,
                             onPlay: handlePlayPreview
@@ -860,8 +861,8 @@ struct AddEditScriptView: View {
                 return (false, NSLocalizedString("validation.audio_too_short", comment: "Recording is too short. Please record at least 1 second."))
             }
             
-            if duration > ValidationConstants.maximumAudioDuration {
-                return (false, NSLocalizedString("validation.audio_too_long", comment: "Recording is too long. Maximum duration is 30 seconds."))
+            if duration > Double(maxRecordingDuration) {
+                return (false, String(format: NSLocalizedString("validation.audio_too_long", comment: "Recording is too long. Maximum duration is %d seconds."), maxRecordingDuration))
             }
         }
         
@@ -1253,6 +1254,7 @@ struct RecordingButton: View {
     let isPaused: Bool
     let voiceActivityLevel: Float
     let playbackProgress: Double
+    let maxRecordingDuration: Int
     let onRecord: () -> Void
     let onDelete: () -> Void
     let onPlay: () -> Void
@@ -1364,7 +1366,7 @@ struct RecordingButton: View {
             
             if isRecording {
                 let duration = Int(AudioCoordinator.shared.recordingDuration)
-                let remainingTime = max(0, 30 - duration)
+                let remainingTime = max(0, maxRecordingDuration - duration)
                 
                 VStack(spacing: 8) {
                     HStack {
@@ -1376,7 +1378,7 @@ struct RecordingButton: View {
                         Spacer()
                         
                         // Duration display with warning color
-                        Text("\(duration)s / 30s")
+                        Text("\(duration)s / \(maxRecordingDuration)s")
                             .font(.caption)
                             .fontWeight(.medium)
                             .foregroundColor(remainingTime <= 10 ? .orange : (remainingTime <= 5 ? .red : .secondary))

@@ -22,6 +22,7 @@ struct MeView: View {
     @AppStorage("characterGuidanceEnabled") private var characterGuidanceEnabled = true
     @AppStorage("characterLimit") private var characterLimit = 280
     @AppStorage("limitBehavior") private var limitBehavior = "warn"
+    @AppStorage("maxRecordingDuration") private var maxRecordingDuration = 30  // Recording duration limit in seconds
     
     // Notification Settings
     @AppStorage("maxNotificationCards") private var maxNotificationCards = 1
@@ -377,6 +378,24 @@ struct MeView: View {
                                 .pickerStyle(SegmentedPickerStyle())
                                 .frame(width: 180)
                             }
+                        }
+                        
+                        // Recording Duration Limit
+                        HStack {
+                            Image(systemName: "mic.circle")
+                                .font(.system(size: 20))
+                                .foregroundColor(.primary)
+                                .frame(width: 25)
+                            Text("Recording Duration Limit")
+                                .foregroundColor(.primary)
+                            Spacer()
+                            Picker("", selection: $maxRecordingDuration) {
+                                Text("15s").tag(15)
+                                Text("30s").tag(30)
+                                Text("45s").tag(45)
+                            }
+                            .pickerStyle(SegmentedPickerStyle())
+                            .frame(width: 180)
                         }
                     } header: {
                         Text(NSLocalizedString("settings.card_preferences", comment: ""))

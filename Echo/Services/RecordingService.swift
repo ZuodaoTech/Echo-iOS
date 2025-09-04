@@ -57,10 +57,14 @@ final class RecordingService: NSObject {
                0.15 : UserDefaults.standard.double(forKey: "trimBufferTime")
     }
     
+    private var maxRecordingDuration: TimeInterval {
+        let duration = UserDefaults.standard.double(forKey: "maxRecordingDuration")
+        return duration > 0 ? duration : 30.0  // Default to 30 seconds if not set
+    }
+    
     // MARK: - Constants
     
     private enum Constants {
-        static let maxRecordingDuration: TimeInterval = 30.0  // 30 seconds max
         static let recordingSettings: [String: Any] = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
             AVSampleRateKey: 48000,  // Higher sample rate for better quality
@@ -299,8 +303,8 @@ final class RecordingService: NSObject {
                 self.voiceActivityLevel = normalizedPower
                 
                 // Auto-stop at max duration
-                if currentTime >= Constants.maxRecordingDuration {
-                    print("RecordingService: Maximum recording duration reached (30s)")
+                if currentTime >= self.maxRecordingDuration {
+                    print("RecordingService: Maximum recording duration reached (\(Int(self.maxRecordingDuration))s)")
                     self.stopRecording()
                 }
             }
