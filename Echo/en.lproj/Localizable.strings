@@ -160,6 +160,7 @@
 "action.ok" = "OK";
 "action.got_it" = "Got it";
 "action.copy" = "Copy";
+"alert.title" = "Notice";
 "action.use_as_script" = "Use as Script";
 "action.share" = "Share";
 "action.edit" = "Edit";

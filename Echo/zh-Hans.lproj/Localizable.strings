@@ -161,6 +161,7 @@
 "action.ok" = "确定";
 "action.got_it" = "知道了";
 "action.copy" = "复制";
+"alert.title" = "提示";
 "action.use_as_script" = "用作脚本";
 "action.share" = "分享";
 "action.edit" = "编辑";
