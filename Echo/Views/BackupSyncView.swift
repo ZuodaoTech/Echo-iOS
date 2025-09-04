@@ -8,9 +8,16 @@ struct BackupSyncView: View {
     // iCloud sync toggle - preserved for UI but non-functional
     @AppStorage("iCloudSyncEnabled") private var iCloudSyncEnabled = false
     
-    // Export/Import managers
-    @StateObject private var exportManager = ExportManager()
-    @StateObject private var importManager = ImportManager()
+    // Export/Import managers - will be initialized in init
+    @StateObject private var exportManager: ExportManager
+    @StateObject private var importManager: ImportManager
+    
+    init() {
+        // Create managers without accessing PersistenceController.shared
+        // We'll use the viewContext from environment instead
+        _exportManager = StateObject(wrappedValue: ExportManager(context: nil))
+        _importManager = StateObject(wrappedValue: ImportManager(context: nil))
+    }
     
     // UI State
     @State private var showingExportOptions = false
@@ -109,6 +116,11 @@ struct BackupSyncView: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            // Set the context from environment
+            exportManager.setContext(viewContext)
+            importManager.setContext(viewContext)
         }
         .confirmationDialog(
             NSLocalizedString("settings.export_options", comment: "Export Options"),

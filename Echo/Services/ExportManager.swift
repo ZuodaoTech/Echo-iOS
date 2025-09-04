@@ -19,7 +19,7 @@ class ExportManager: ObservableObject {
     
     // MARK: - Private Properties
     
-    private let context: NSManagedObjectContext
+    private var context: NSManagedObjectContext!
     private let fileManager = FileManager.default
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -29,7 +29,11 @@ class ExportManager: ObservableObject {
     
     // MARK: - Initialization
     
-    init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
+    init(context: NSManagedObjectContext? = nil) {
+        self.context = context
+    }
+    
+    func setContext(_ context: NSManagedObjectContext) {
         self.context = context
     }
     
