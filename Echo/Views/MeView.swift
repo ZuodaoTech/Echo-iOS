@@ -663,6 +663,22 @@ struct MeView: View {
                     
                     // MARK: - Data Management (Dev Only)
                     Section {
+                        // Remove Duplicates
+                        Button {
+                            Task {
+                                await removeDuplicates()
+                            }
+                        } label: {
+                            HStack {
+                                Image(systemName: "doc.on.doc")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.orange)
+                                    .frame(width: 25)
+                                Text(NSLocalizedString("dev.remove_duplicates", comment: "Remove Duplicate Tags & Cards"))
+                                    .foregroundColor(.primary)
+                            }
+                        }
+                        
                         // Delete All Local Data
                         Button {
                             showingDeleteAllDataAlert = true
