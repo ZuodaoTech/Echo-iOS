@@ -136,23 +136,19 @@ class ExportManager: ObservableObject {
         // Convert scripts to exportable format
         var exportableScripts: [ExportableScript] = []
         var totalAudioSize: Int64 = 0
-        var audioFileMap: [String: URL] = [:]
         
         for (index, script) in scripts.enumerated() {
-            let exportableScript = ExportableScript(from: script)
+            // Create exportable script with or without embedded audio
+            let exportableScript = includeAudio 
+                ? ExportableScript.createWithAudioData(from: script)
+                : ExportableScript(from: script)
+            
             exportableScripts.append(exportableScript)
             
-            // Track audio files
-            if includeAudio, let audioPath = script.audioFilePath {
-                let audioURL = URL(fileURLWithPath: audioPath)
-                if fileManager.fileExists(atPath: audioPath) {
-                    let filename = "\(script.id.uuidString).m4a"
-                    audioFileMap[filename] = audioURL
-                    
-                    if let attributes = try? fileManager.attributesOfItem(atPath: audioPath),
-                       let fileSize = attributes[.size] as? Int64 {
-                        totalAudioSize += fileSize
-                    }
+            // Track audio stats
+            if let audio = exportableScript.audio {
+                totalAudioSize += Int64(audio.sizeBytes)
+                if audio.audioDataBase64 != nil {
                     metadata.statistics.totalRecordings += 1
                 }
             }
@@ -160,7 +156,7 @@ class ExportManager: ObservableObject {
             metadata.statistics.totalPlayCount += Int(script.playCount)
             
             // Update progress
-            let progress = 0.1 + (0.3 * Double(index + 1) / Double(scripts.count))
+            let progress = 0.1 + (0.4 * Double(index + 1) / Double(scripts.count))
             await updateProgress(progress)
         }
         
@@ -185,30 +181,18 @@ class ExportManager: ObservableObject {
         let metadataURL = tempDir.appendingPathComponent("metadata.json")
         try metadataJSON.write(to: metadataURL)
         
-        await updateProgress(0.5)
+        await updateProgress(0.6)
         
         // Write scripts.json
         let scriptsJSON = try encoder.encode(backupData)
         let scriptsURL = tempDir.appendingPathComponent("scripts.json")
         try scriptsJSON.write(to: scriptsURL)
         
-        await updateProgress(0.6)
+        await updateProgress(0.8)
         
-        // Copy audio files if requested
-        if includeAudio && !audioFileMap.isEmpty {
-            let audioDir = tempDir.appendingPathComponent("audio")
-            try fileManager.createDirectory(at: audioDir, withIntermediateDirectories: true)
-            
-            for (index, (filename, sourceURL)) in audioFileMap.enumerated() {
-                let destURL = audioDir.appendingPathComponent(filename)
-                try fileManager.copyItem(at: sourceURL, to: destURL)
-                
-                let progress = 0.6 + (0.3 * Double(index + 1) / Double(audioFileMap.count))
-                await updateProgress(progress)
-            }
-        }
+        // No need to copy audio files separately since they're embedded in the JSON
         
-        // Create manifest
+        // Create manifest (simplified since audio is embedded)
         let manifest = try createManifest(for: tempDir)
         let manifestJSON = try encoder.encode(manifest)
         let manifestURL = tempDir.appendingPathComponent("manifest.json")

@@ -93,7 +93,7 @@ struct ExportableScript: Codable {
     let updatedAt: Date
     let playCount: Int32
     let lastPlayedAt: Date?
-    let audio: AudioInfo?
+    var audio: AudioInfo?
     let transcription: TranscriptionInfo?
     let tagNames: [String]
     let isSystemSample: Bool
@@ -135,7 +135,8 @@ struct ExportableScript: Codable {
                 filename: url.lastPathComponent,
                 duration: script.audioDuration,
                 sizeBytes: fileSize,
-                checksum: nil // Will be calculated during export
+                checksum: nil, // Will be calculated during export
+                audioDataBase64: nil // Will be filled during export if requested
             )
         } else {
             self.audio = nil
@@ -158,6 +159,31 @@ struct ExportableScript: Codable {
         // Check if it's a system sample
         self.isSystemSample = StaticSampleProvider.isSampleID(script.id)
     }
+    
+    /// Create from Core Data entity with audio data embedded
+    static func createWithAudioData(from script: SelftalkScript) -> ExportableScript {
+        var exportable = ExportableScript(from: script)
+        
+        // Embed audio data if available
+        if let audioPath = script.audioFilePath, 
+           FileManager.default.fileExists(atPath: audioPath) {
+            if let audioData = try? Data(contentsOf: URL(fileURLWithPath: audioPath)) {
+                let url = URL(fileURLWithPath: audioPath)
+                let fileSize = audioData.count
+                
+                // Update audio info with embedded data
+                exportable.audio = AudioInfo(
+                    filename: url.lastPathComponent,
+                    duration: script.audioDuration,
+                    sizeBytes: fileSize,
+                    checksum: nil,
+                    audioDataBase64: audioData.base64EncodedString()
+                )
+            }
+        }
+        
+        return exportable
+    }
 }
 
 /// Audio file information
@@ -166,12 +192,14 @@ struct AudioInfo: Codable {
     let duration: Double
     let sizeBytes: Int
     let checksum: String?
+    let audioDataBase64: String?  // Base64 encoded audio data
     
     enum CodingKeys: String, CodingKey {
         case filename
         case duration
         case sizeBytes = "size_bytes"
         case checksum
+        case audioDataBase64 = "audio_data_base64"
     }
 }
 

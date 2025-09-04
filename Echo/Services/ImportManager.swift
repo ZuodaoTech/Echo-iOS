@@ -480,12 +480,22 @@ class ImportManager: ObservableObject {
         
         // Update audio if present
         if let audioInfo = exportable.audio {
-            let audioURL = directory.appendingPathComponent("audio").appendingPathComponent(audioInfo.filename)
-            if fileManager.fileExists(atPath: audioURL.path) {
-                // Copy audio file to app's audio directory
-                if let newAudioPath = copyAudioFile(from: audioURL, scriptId: script.id) {
-                    script.audioFilePath = newAudioPath
-                    script.audioDuration = audioInfo.duration
+            if let audioDataBase64 = audioInfo.audioDataBase64 {
+                // Decode Base64 audio data and save to file
+                if let audioData = Data(base64Encoded: audioDataBase64) {
+                    if let newAudioPath = saveAudioData(audioData, scriptId: script.id, filename: audioInfo.filename) {
+                        script.audioFilePath = newAudioPath
+                        script.audioDuration = audioInfo.duration
+                    }
+                }
+            } else {
+                // Legacy: Try to copy from audio directory
+                let audioURL = directory.appendingPathComponent("audio").appendingPathComponent(audioInfo.filename)
+                if fileManager.fileExists(atPath: audioURL.path) {
+                    if let newAudioPath = copyAudioFile(from: audioURL, scriptId: script.id) {
+                        script.audioFilePath = newAudioPath
+                        script.audioDuration = audioInfo.duration
+                    }
                 }
             }
         }
@@ -515,11 +525,22 @@ class ImportManager: ObservableObject {
         
         // Import audio if present
         if let audioInfo = exportable.audio {
-            let audioURL = directory.appendingPathComponent("audio").appendingPathComponent(audioInfo.filename)
-            if fileManager.fileExists(atPath: audioURL.path) {
-                if let newAudioPath = copyAudioFile(from: audioURL, scriptId: script.id) {
-                    script.audioFilePath = newAudioPath
-                    script.audioDuration = audioInfo.duration
+            if let audioDataBase64 = audioInfo.audioDataBase64 {
+                // Decode Base64 audio data and save to file
+                if let audioData = Data(base64Encoded: audioDataBase64) {
+                    if let newAudioPath = saveAudioData(audioData, scriptId: script.id, filename: audioInfo.filename) {
+                        script.audioFilePath = newAudioPath
+                        script.audioDuration = audioInfo.duration
+                    }
+                }
+            } else {
+                // Legacy: Try to copy from audio directory
+                let audioURL = directory.appendingPathComponent("audio").appendingPathComponent(audioInfo.filename)
+                if fileManager.fileExists(atPath: audioURL.path) {
+                    if let newAudioPath = copyAudioFile(from: audioURL, scriptId: script.id) {
+                        script.audioFilePath = newAudioPath
+                        script.audioDuration = audioInfo.duration
+                    }
                 }
             }
         }
@@ -539,6 +560,35 @@ class ImportManager: ObservableObject {
             if let tag = try? context.fetch(fetchRequest).first {
                 script.addToTags(tag)
             }
+        }
+    }
+    
+    private func saveAudioData(_ data: Data, scriptId: UUID, filename: String) -> String? {
+        // Get app's audio directory
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        let recordingsDir = "\(documentsPath)/Recordings"
+        
+        // Ensure directory exists
+        if !fileManager.fileExists(atPath: recordingsDir) {
+            try? fileManager.createDirectory(atPath: recordingsDir, withIntermediateDirectories: true)
+        }
+        
+        // Use original extension if available, otherwise default to m4a
+        let fileExtension = URL(fileURLWithPath: filename).pathExtension.isEmpty ? "m4a" : URL(fileURLWithPath: filename).pathExtension
+        let destinationPath = "\(recordingsDir)/\(scriptId).\(fileExtension)"
+        
+        do {
+            // Remove existing file if it exists
+            if fileManager.fileExists(atPath: destinationPath) {
+                try fileManager.removeItem(atPath: destinationPath)
+            }
+            
+            // Write data to file
+            try data.write(to: URL(fileURLWithPath: destinationPath))
+            return destinationPath
+        } catch {
+            print("Failed to save audio data: \(error)")
+            return nil
         }
     }
     
