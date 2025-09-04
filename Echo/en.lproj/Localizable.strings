@@ -413,6 +413,10 @@
 "dev.remove_duplicates.button" = "Remove";
 "dev.operation_complete" = "Operation Complete";
 "dev.clear" = "Clear";
+"dev.clear_local" = "Clear All Local Data";
+"dev.clear_local.confirm" = "Clear All Local Data?";
+"dev.clear_local.message" = "This will delete all scripts, recordings, and tags. This action cannot be undone!";
+"dev.clear_local.button" = "Delete All";
 
 // MARK: - Search & Input Placeholders
 "tag.search.placeholder" = "Search tags...";
