@@ -119,7 +119,7 @@ class ImportManager: ObservableObject {
     /// Perform the actual import
     func performImport(
         from url: URL,
-        resolution: ImportConflictResolution = .smartMerge
+        resolution: ImportConflictResolution = .keepExisting
     ) async throws -> ImportResult {
         await MainActor.run {
             isImporting = true
@@ -432,25 +432,10 @@ class ImportManager: ObservableObject {
                     case .replaceExisting:
                         updateScript(existingScript, from: exportableScript, directory: directory)
                         updated += 1
-                        
-                    case .mergeDuplicate:
-                        createNewScript(from: exportableScript, directory: directory, withSuffix: true)
-                        imported += 1
-                        
-                    case .smartMerge:
-                        if exportableScript.updatedAt > existingScript.updatedAt {
-                            updateScript(existingScript, from: exportableScript, directory: directory)
-                            // Merge play counts
-                            existingScript.playCount += exportableScript.playCount
-                        } else {
-                            // Keep existing but update play count
-                            existingScript.playCount += exportableScript.playCount
-                        }
-                        updated += 1
                     }
                 } else {
                     // No conflict, create new script
-                    createNewScript(from: exportableScript, directory: directory, withSuffix: false)
+                    createNewScript(from: exportableScript, directory: directory)
                     imported += 1
                 }
                 
@@ -509,12 +494,11 @@ class ImportManager: ObservableObject {
     
     private func createNewScript(
         from exportable: ExportableScript,
-        directory: URL,
-        withSuffix: Bool
+        directory: URL
     ) {
         let script = SelftalkScript(context: context)
-        script.id = withSuffix ? UUID() : exportable.id
-        script.scriptText = exportable.scriptText + (withSuffix ? " (Imported)" : "")
+        script.id = exportable.id
+        script.scriptText = exportable.scriptText
         script.repetitions = exportable.repetitions
         script.intervalSeconds = exportable.intervalSeconds
         script.privateModeEnabled = exportable.privacyMode

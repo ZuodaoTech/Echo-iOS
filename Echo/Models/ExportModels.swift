@@ -276,8 +276,6 @@ enum ImportWarning {
 enum ImportConflictResolution {
     case keepExisting      // Skip if script exists
     case replaceExisting   // Overwrite with imported
-    case mergeDuplicate    // Create new with suffix
-    case smartMerge        // Compare timestamps, keep newer
 }
 
 /// Import preview information

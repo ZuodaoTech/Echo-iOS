@@ -13,7 +13,7 @@ struct ImportPreviewView: View {
     let onCancel: () -> Void
     
     @Environment(\.dismiss) private var dismiss
-    @State private var selectedResolution: ImportConflictResolution = .smartMerge
+    @State private var selectedResolution: ImportConflictResolution = .keepExisting
     
     var body: some View {
         NavigationView {
@@ -83,14 +83,10 @@ struct ImportPreviewView: View {
                 if !preview.conflicts.isEmpty {
                     Section {
                         Picker(NSLocalizedString("import.resolution", comment: "Resolution"), selection: $selectedResolution) {
-                            Text(NSLocalizedString("import.smart_merge", comment: "Smart Merge (Recommended)"))
-                                .tag(ImportConflictResolution.smartMerge)
                             Text(NSLocalizedString("import.keep_existing", comment: "Keep Existing"))
                                 .tag(ImportConflictResolution.keepExisting)
                             Text(NSLocalizedString("import.replace_existing", comment: "Replace Existing"))
                                 .tag(ImportConflictResolution.replaceExisting)
-                            Text(NSLocalizedString("import.duplicate", comment: "Create Duplicates"))
-                                .tag(ImportConflictResolution.mergeDuplicate)
                         }
                         .pickerStyle(MenuPickerStyle())
                         
@@ -150,14 +146,12 @@ struct ImportPreviewView: View {
     
     private var resolutionDescription: String {
         switch selectedResolution {
-        case .smartMerge:
-            return NSLocalizedString("import.smart_merge_desc", comment: "Keeps newer versions and merges play counts")
         case .keepExisting:
             return NSLocalizedString("import.keep_existing_desc", comment: "Skips scripts that already exist")
         case .replaceExisting:
             return NSLocalizedString("import.replace_existing_desc", comment: "Overwrites existing scripts with imported versions")
-        case .mergeDuplicate:
-            return NSLocalizedString("import.duplicate_desc", comment: "Creates new copies with '(Imported)' suffix")
+        default:
+            return ""
         }
     }
 }
