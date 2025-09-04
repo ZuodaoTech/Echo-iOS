@@ -232,6 +232,22 @@ struct MeView: View {
                                 .foregroundColor(.secondary)
                         }
                     }
+                    
+                    // Backup & Restore Navigation
+                    NavigationLink(destination: BackupSyncView()) {
+                        HStack {
+                            Image(systemName: "square.and.arrow.up.on.square")
+                                .font(.system(size: 20))
+                                .foregroundColor(.primary)
+                                .frame(width: 25)
+                            Text(NSLocalizedString("settings.backup_restore", comment: "Backup & Restore"))
+                                .foregroundColor(.primary)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
                 } header: {
                     Text(NSLocalizedString("settings.sync", comment: ""))
                 }

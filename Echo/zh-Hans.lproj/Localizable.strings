@@ -281,6 +281,7 @@
 
 // MARK: - Backup & Sync
 "settings.backup" = "备份";
+"settings.backup_restore" = "备份与恢复";
 "settings.backup_desc" = "导出您的脚本到文件或从之前的备份导入";
 "settings.export_backup" = "导出备份";
 "settings.import_backup" = "导入备份";

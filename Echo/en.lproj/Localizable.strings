@@ -280,6 +280,7 @@
 
 // MARK: - Backup & Sync
 "settings.backup" = "Backup";
+"settings.backup_restore" = "Backup & Restore";
 "settings.backup_desc" = "Export your scripts to a file or import from a previous backup";
 "settings.export_backup" = "Export Backup";
 "settings.import_backup" = "Import Backup";
