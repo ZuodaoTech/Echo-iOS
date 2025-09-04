@@ -150,8 +150,6 @@ struct ImportPreviewView: View {
             return NSLocalizedString("import.keep_existing_desc", comment: "Skips scripts that already exist")
         case .replaceExisting:
             return NSLocalizedString("import.replace_existing_desc", comment: "Overwrites existing scripts with imported versions")
-        default:
-            return ""
         }
     }
 }
