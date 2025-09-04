@@ -26,7 +26,12 @@ final class PlaybackService: NSObject {
     }
     
     private(set) var isInPlaybackSession = false {
-        didSet { onPlaybackSessionChange?(isInPlaybackSession) }
+        didSet { 
+            let value = isInPlaybackSession
+            DispatchQueue.main.async { [weak self] in
+                self?.onPlaybackSessionChange?(value)
+            }
+        }
     }
     
     private(set) var currentPlayingScriptId: UUID? {
@@ -46,7 +51,12 @@ final class PlaybackService: NSObject {
     }
     
     private(set) var isInInterval = false {
-        didSet { onIntervalStateChange?(isInInterval) }
+        didSet { 
+            let value = isInInterval
+            DispatchQueue.main.async { [weak self] in
+                self?.onIntervalStateChange?(value)
+            }
+        }
     }
     
     private(set) var intervalProgress: Double = 0 {
