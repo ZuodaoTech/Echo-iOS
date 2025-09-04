@@ -1083,12 +1083,14 @@ extension AudioCoordinator {
     
     /// Check if audio file exists for a script (for backward compatibility)
     func hasRecording(for script: SelftalkScript) -> Bool {
-        fileManager.audioFileExists(for: script.id)
+        ensureInitialized()
+        return fileManager.audioFileExists(for: script.id)
     }
     
     /// Get audio duration for a script (for backward compatibility)
     func getAudioDuration(for script: SelftalkScript) -> TimeInterval? {
-        fileManager.getAudioDuration(for: script.id)
+        ensureInitialized()
+        return fileManager.getAudioDuration(for: script.id)
     }
     
     /// Check if a specific script is currently being processed
