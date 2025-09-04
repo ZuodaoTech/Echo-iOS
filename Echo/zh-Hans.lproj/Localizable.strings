@@ -352,6 +352,13 @@
 
 // MARK: - Developer Tools
 "dev.title" = "🛠️ 开发者工具";
+"dev.data_management" = "数据管理";
+"dev.delete_all_data" = "删除所有本地数据";
+"dev.delete_all_warning" = "警告：这将永久删除所有脚本和录音";
+"dev.delete_all_title" = "删除所有数据";
+"dev.delete_all_confirm" = "这将永久删除所有脚本、录音和标签。此操作无法撤销。";
+"dev.delete_all_success" = "所有数据已成功删除";
+"dev.delete_all_error" = "删除数据时出错：";
 "dev.warning" = "⚠️ 显示语言需要重启应用才能生效。";
 "dev.destructive_actions" = "⚠️ 危险操作";
 "dev.destructive_warning" = "这些操作是破坏性的且无法撤销。";

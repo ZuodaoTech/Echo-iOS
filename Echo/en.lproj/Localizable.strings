@@ -351,6 +351,13 @@
 
 // MARK: - Developer Tools
 "dev.title" = "🛠️ Developer Tools";
+"dev.data_management" = "Data Management";
+"dev.delete_all_data" = "Delete All Local Data";
+"dev.delete_all_warning" = "Warning: This will permanently delete all scripts and recordings";
+"dev.delete_all_title" = "Delete All Data";
+"dev.delete_all_confirm" = "This will permanently delete all scripts, recordings, and tags. This action cannot be undone.";
+"dev.delete_all_success" = "All data has been deleted successfully";
+"dev.delete_all_error" = "Error deleting data: ";
 "dev.warning" = "⚠️ Display Language requires app restart to take effect.";
 "dev.destructive_actions" = "⚠️ Destructive Actions";
 "dev.destructive_warning" = "These actions are destructive and cannot be undone.";

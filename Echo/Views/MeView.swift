@@ -2,6 +2,8 @@ import SwiftUI
 import CoreData
 
 struct MeView: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    
     // Language Settings
     @AppStorage("appLanguage") private var appLanguage = "system"
     @AppStorage("defaultTranscriptionLanguage") private var defaultTranscriptionLanguage = "en-US"
@@ -55,12 +57,11 @@ struct MeView: View {
     @State private var lastSwipeTime = Date()
     @State private var devActionMessage = ""
     @State private var showingDevActionResult = false
+    @State private var showingDeleteAllDataAlert = false
     
     enum SwipeDirection {
         case up, down, left, right
     }
-    
-    @Environment(\.managedObjectContext) private var viewContext
     
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \SelftalkScript.createdAt, ascending: false)],
@@ -638,6 +639,28 @@ struct MeView: View {
                     
                     // Developer tools section removed - iCloud operations no longer functional
                     
+                    // MARK: - Data Management (Dev Only)
+                    Section {
+                        // Delete All Local Data
+                        Button {
+                            showingDeleteAllDataAlert = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "trash.fill")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.red)
+                                    .frame(width: 25)
+                                Text(NSLocalizedString("dev.delete_all_data", comment: "Delete All Local Data"))
+                                    .foregroundColor(.red)
+                            }
+                        }
+                    } header: {
+                        Text(NSLocalizedString("dev.data_management", comment: "Data Management"))
+                    } footer: {
+                        Text(NSLocalizedString("dev.delete_all_warning", comment: "Warning: This will permanently delete all scripts and recordings"))
+                            .font(.caption)
+                    }
+                    
                     // Empty section for spacing
                     Section {
                         Color.clear
@@ -671,10 +694,50 @@ struct MeView: View {
             } message: {
                 Text(devActionMessage)
             }
+            .alert(NSLocalizedString("dev.delete_all_title", comment: "Delete All Data"), isPresented: $showingDeleteAllDataAlert) {
+                Button(NSLocalizedString("action.cancel", comment: "Cancel"), role: .cancel) { }
+                Button(NSLocalizedString("action.delete", comment: "Delete"), role: .destructive) {
+                    deleteAllLocalData()
+                }
+            } message: {
+                Text(NSLocalizedString("dev.delete_all_confirm", comment: "This will permanently delete all scripts, recordings, and tags. This action cannot be undone."))
+            }
         }
     }
     
     // MARK: - Helper Functions
+    
+    private func deleteAllLocalData() {
+        // Delete all scripts
+        let scriptRequest = SelftalkScript.fetchRequest()
+        if let scripts = try? viewContext.fetch(scriptRequest) {
+            for script in scripts {
+                // Delete audio file if it exists
+                if let audioPath = script.audioFilePath {
+                    try? FileManager.default.removeItem(atPath: audioPath)
+                }
+                viewContext.delete(script)
+            }
+        }
+        
+        // Delete all tags
+        let tagRequest = Tag.fetchRequest()
+        if let tags = try? viewContext.fetch(tagRequest) {
+            for tag in tags {
+                viewContext.delete(tag)
+            }
+        }
+        
+        // Save context
+        do {
+            try viewContext.save()
+            devActionMessage = NSLocalizedString("dev.delete_all_success", comment: "All data has been deleted successfully")
+            showingDevActionResult = true
+        } catch {
+            devActionMessage = NSLocalizedString("dev.delete_all_error", comment: "Error deleting data: ") + error.localizedDescription
+            showingDevActionResult = true
+        }
+    }
     
     private func handleSwipe(value: DragGesture.Value) {
         let verticalMovement = value.translation.height
