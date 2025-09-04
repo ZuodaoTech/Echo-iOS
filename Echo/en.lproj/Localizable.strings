@@ -86,9 +86,6 @@
 "settings.auto_trim_silence.desc" = "Remove silence at start and end";
 "settings.trim_sensitivity" = "Trim Sensitivity";
 
-"settings.icloud_sync" = "iCloud Sync";
-"settings.icloud_sync.desc" = "Sync cards across your devices";
-"settings.icloud_sync.info" = "Text and settings sync automatically. Audio files remain local.";
 "settings.export_scripts" = "Export Cards";
 "settings.import_scripts" = "Import Cards";
 
@@ -278,8 +275,6 @@
 "recording.max_duration_reached" = "Maximum duration reached";
 
 
-// MARK: - iCloud & Sync
-"settings.icloud_sync_desc" = "Sync cards across your devices";
 
 // MARK: - Empty State
 "empty.no_cards" = "No Cards Yet";
@@ -310,17 +305,13 @@
 "import.total_size" = "Total size: %.1f MB";
 "import.conflicts" = "Conflicts";
 "import.resolution" = "Resolution";
-"import.smart_merge" = "Smart Merge (Recommended)";
 "import.keep_existing" = "Keep Existing";
 "import.replace_existing" = "Replace Existing";
-"import.duplicate" = "Create Duplicates";
 "import.conflict_same" = "Same script exists";
 "import.conflict_similar" = "%.0f%% similar";
 "import.more_conflicts" = "And %d more...";
-"import.smart_merge_desc" = "Keeps newer versions and merges play counts";
 "import.keep_existing_desc" = "Skips scripts that already exist";
 "import.replace_existing_desc" = "Overwrites existing scripts with imported versions";
-"import.duplicate_desc" = "Creates new copies with '(Imported)' suffix";
 "action.import" = "Import";
 
 // MARK: - Filter

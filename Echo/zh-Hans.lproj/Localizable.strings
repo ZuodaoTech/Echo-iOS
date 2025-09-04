@@ -87,9 +87,6 @@
 "settings.auto_trim_silence.desc" = "移除开始和结尾的静音";
 "settings.trim_sensitivity" = "修剪灵敏度";
 
-"settings.icloud_sync" = "iCloud 同步";
-"settings.icloud_sync.desc" = "在所有设备间同步卡片";
-"settings.icloud_sync.info" = "文本和设置自动同步。音频文件保持本地存储。";
 "settings.export_scripts" = "导出卡片";
 "settings.import_scripts" = "导入卡片";
 
@@ -279,8 +276,6 @@
 "recording.time_warning" = "剩余%d秒";
 "recording.max_duration_reached" = "已达最大时长";
 
-// MARK: - iCloud & Sync
-"settings.icloud_sync_desc" = "在所有设备间同步卡片";
 
 // MARK: - Empty State
 "empty.no_cards" = "暂无卡片";
@@ -311,17 +306,13 @@
 "import.total_size" = "总大小：%.1f MB";
 "import.conflicts" = "冲突";
 "import.resolution" = "解决方案";
-"import.smart_merge" = "智能合并（推荐）";
 "import.keep_existing" = "保留现有";
 "import.replace_existing" = "替换现有";
-"import.duplicate" = "创建副本";
 "import.conflict_same" = "相同脚本已存在";
 "import.conflict_similar" = "%.0f%% 相似";
 "import.more_conflicts" = "还有 %d 个...";
-"import.smart_merge_desc" = "保留较新版本并合并播放次数";
 "import.keep_existing_desc" = "跳过已存在的脚本";
 "import.replace_existing_desc" = "用导入版本覆盖现有脚本";
-"import.duplicate_desc" = "创建带'（已导入）'后缀的新副本";
 "action.import" = "导入";
 
 // MARK: - Filter
