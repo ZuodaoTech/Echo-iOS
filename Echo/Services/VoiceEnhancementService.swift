@@ -51,7 +51,9 @@ final class VoiceEnhancementService {
     /// Process audio file with voice enhancement
     func processAudioFile(at audioURL: URL, completion: @escaping (Bool) -> Void) {
         guard isEnabled else {
+            #if DEBUG
             print("VoiceEnhancement: Disabled, skipping processing")
+            #endif
             completion(true)
             return
         }
@@ -70,7 +72,9 @@ final class VoiceEnhancementService {
                 
                 // Create buffer for entire audio
                 guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount) else {
+                    #if DEBUG
                     print("VoiceEnhancement: Failed to create buffer")
+                    #endif
                     completion(false)
                     return
                 }
@@ -84,8 +88,12 @@ final class VoiceEnhancementService {
                         let samples = floatChannelData[channel]
                         let sampleCount = Int(frameCount)
                         
+                        #if DEBUG
                         print("VoiceEnhancement: Processing channel \(channel) with \(sampleCount) samples")
+                        #endif
+                        #if DEBUG
                         print("VoiceEnhancement: Settings - Norm=\(self.normalizationLevel), Compress=\(self.compressionThreshold), HPF=\(self.highPassCutoff), NoiseGate=\(self.noiseGateThreshold)")
+                        #endif
                         
                         // Enhancement pipeline:
                         // 1. Adaptive noise reduction (NEW)
@@ -117,11 +125,15 @@ final class VoiceEnhancementService {
                 try FileManager.default.removeItem(at: audioURL)
                 try FileManager.default.moveItem(at: tempURL, to: audioURL)
                 
+                #if DEBUG
                 print("VoiceEnhancement: Successfully applied enhancement")
+                #endif
                 completion(true)
                 
             } catch {
+                #if DEBUG
                 print("VoiceEnhancement: Failed - \(error)")
+                #endif
                 completion(false)
             }
         }
@@ -134,7 +146,9 @@ final class VoiceEnhancementService {
                                             frameCount: Int) {
         // Step 1: Analyze audio to find noise floor
         let noiseFloor = detectNoiseFloor(samples: samples, frameCount: frameCount)
+        #if DEBUG
         print("VoiceEnhancement: Detected noise floor at \(noiseFloor)")
+        #endif
         
         // Step 2: Apply smooth gating based on noise floor
         let gateThreshold = noiseFloor * 1.5  // 50% above noise floor

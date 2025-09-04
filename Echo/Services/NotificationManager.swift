@@ -43,12 +43,16 @@ class NotificationManager: NSObject, ObservableObject {
                 self.permissionCheckTask = nil
                 
                 if !granted {
+                    #if DEBUG
                     print("NotificationManager: Permission denied by user")
+                    #endif
                 }
                 
                 return granted
             } catch {
+                #if DEBUG
                 print("NotificationManager: Permission request error: \(error)")
+                #endif
                 self.permissionCheckTask = nil
                 return false
             }
@@ -138,7 +142,9 @@ class NotificationManager: NSObject, ObservableObject {
         
         // Only schedule if we have permission
         guard hasPermission else {
+            #if DEBUG
             print("NotificationManager: Cannot schedule notifications - permission denied")
+            #endif
             return
         }
         
@@ -186,7 +192,9 @@ class NotificationManager: NSObject, ObservableObject {
                 do {
                     try await UNUserNotificationCenter.current().add(request)
                 } catch {
+                    #if DEBUG
                     print("Failed to schedule notification: \(error)")
+                    #endif
                 }
             }
         }
@@ -205,7 +213,9 @@ class NotificationManager: NSObject, ObservableObject {
         
         if !identifiersToRemove.isEmpty {
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiersToRemove)
+            #if DEBUG
             print("Cancelled \(identifiersToRemove.count) notifications for script")
+            #endif
         }
     }
     
@@ -330,13 +340,17 @@ class NotificationManager: NSObject, ObservableObject {
                     script.notificationEnabled = false
                     script.notificationEnabledAt = nil
                     cancelNotifications(for: script)
+                    #if DEBUG
                     print("Disabled notifications for script due to limit: \(script.scriptText.prefix(20))...")
+                    #endif
                 }
                 
                 try context.save()
             }
         } catch {
+            #if DEBUG
             print("Failed to enforce notification limit: \(error)")
+            #endif
         }
     }
 }
@@ -362,7 +376,9 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             playScriptAudio(scriptId: scriptId)
         case "MARK_DONE":
             // Just dismiss, could track completion if needed
+            #if DEBUG
             print("User marked script as done: \(scriptId)")
+            #endif
         case UNNotificationDefaultActionIdentifier:
             // User tapped on notification itself - open the script
             openScript(scriptId: scriptId)
@@ -392,7 +408,9 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
                 }
             }
         } catch {
+            #if DEBUG
             print("Failed to fetch or play script audio: \(error)")
+            #endif
         }
     }
     

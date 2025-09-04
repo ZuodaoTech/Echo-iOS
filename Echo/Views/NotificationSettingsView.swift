@@ -154,7 +154,9 @@ struct NotificationSettingsView: View {
             try viewContext.save()
             cardsToDisable.removeAll()
         } catch {
+            #if DEBUG
             print("Error disabling notifications: \(error)")
+            #endif
         }
     }
     
@@ -167,7 +169,9 @@ struct NotificationSettingsView: View {
                     notificationPermissionRequested = true
                 }
             } catch {
+                #if DEBUG
                 print("Error requesting notification permission: \(error)")
+                #endif
             }
         }
     }

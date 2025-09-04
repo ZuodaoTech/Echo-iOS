@@ -128,7 +128,9 @@ struct TagSelectionView: View {
             // Add to selection if it's a new tag or user is explicitly adding it
             selectedTags.insert(tag)
         } catch {
+            #if DEBUG
             print("Failed to create/save tag: \(error)")
+            #endif
         }
         
         newTagName = ""

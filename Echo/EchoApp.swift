@@ -63,7 +63,9 @@ struct EchoApp: App {
                                         mode: .default,
                                         options: [.defaultToSpeaker, .allowBluetooth])
         } catch {
+            #if DEBUG
             print("Audio session configuration failed: \(error)")
+            #endif
         }
     }
     

@@ -320,6 +320,7 @@ final class InterruptionAnalytics {
             self.loadAnalyticsIfNeeded()
             let insights = self.generateInsights()
             
+            #if DEBUG
             print("""
             
             📊 INTERRUPTION ANALYTICS SUMMARY
@@ -333,12 +334,17 @@ final class InterruptionAnalytics {
             
             Key Insights:
             """)
+            #endif
             
             for insight in insights.insights {
+                #if DEBUG
                 print("• \(insight)")
+                #endif
             }
             
+            #if DEBUG
             print("================================\n")
+            #endif
         }
     }
     

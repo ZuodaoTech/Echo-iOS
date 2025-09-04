@@ -138,7 +138,9 @@ struct ScriptsListView: View {
     
     private func cleanupAfterDeletion(_ scriptId: UUID) {
         // Clear any lingering references to prevent crashes
+        #if DEBUG
         print("  🧹 Cleaning up references for deleted script...")
+        #endif
         
         // Clear from audio service if it was playing
         if audioService.currentPlayingScriptId == scriptId {
@@ -150,11 +152,15 @@ struct ScriptsListView: View {
     }
     
     private func deleteScript(withId scriptId: UUID) {
+        #if DEBUG
         print("🗑️ ScriptsListView: Starting safe deletion for script ID: \(scriptId)")
+        #endif
         
         // CRITICAL STEP 1: Remove from UI immediately by marking as deleting
         // This causes filteredScripts to exclude it, destroying the ScriptCard
+        #if DEBUG
         print("  🎯 Removing script from UI first...")
+        #endif
         deletingScriptIds.insert(scriptId)
         
         // Clear the edit sheet reference if it's this script
@@ -164,7 +170,9 @@ struct ScriptsListView: View {
         
         // STEP 2: Wait for UI to update and destroy the ScriptCard
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            #if DEBUG
             print("  ⏳ UI updated, proceeding with deletion...")
+            #endif
             
             // Fetch the script fresh from Core Data
             let fetchRequest: NSFetchRequest<SelftalkScript> = SelftalkScript.fetchRequest()
@@ -174,7 +182,9 @@ struct ScriptsListView: View {
             do {
                 let scripts = try self.viewContext.fetch(fetchRequest)
                 guard let script = scripts.first else {
+                    #if DEBUG
                     print("  ❌ Script not found with ID: \(scriptId)")
+                    #endif
                     // Remove from deleting set since it doesn't exist
                     self.deletingScriptIds.remove(scriptId)
                     return
@@ -185,11 +195,15 @@ struct ScriptsListView: View {
                 let hasRecording = script.hasRecording
                 let notificationEnabled = script.notificationEnabled
                 
+                #if DEBUG
                 print("  📝 Deleting script from database: \(scriptText)...")
+                #endif
                 
                 // Step 3: Stop any active audio operations
                 if self.audioService.currentPlayingScriptId == scriptId {
+                    #if DEBUG
                     print("  ⏸️ Stopping playback...")
+                    #endif
                     self.audioService.stopPlayback()
                 }
                 
@@ -197,24 +211,32 @@ struct ScriptsListView: View {
                 
                 // 4a. Cancel notifications if enabled
                 if notificationEnabled {
+                    #if DEBUG
                     print("  🔔 Cancelling notifications...")
+                    #endif
                     NotificationManager.shared.cancelNotifications(for: script)
                 }
                 
                 // 4b. Delete audio files if they exist
                 if hasRecording {
+                    #if DEBUG
                     print("  🎵 Deleting audio files...")
+                    #endif
                     self.audioService.deleteRecording(for: script)
                 }
                 
                 // Step 5: Delete from Core Data
+                #if DEBUG
                 print("  💾 Deleting from database...")
+                #endif
                 self.viewContext.delete(script)
                 
                 // Step 6: Save the context
                 try self.viewContext.save()
                 
+                #if DEBUG
                 print("  ✅ Successfully deleted script: \(scriptText)")
+                #endif
                 
                 // Step 7: Complete cleanup of all references
                 self.cleanupAfterDeletion(scriptId)
@@ -223,10 +245,11 @@ struct ScriptsListView: View {
                 self.deletingScriptIds.remove(scriptId)
                 
             } catch {
+                #if DEBUG
                 print("  ❌ Failed to delete script: \(error.localizedDescription)")
+                #endif
                 // Remove from deleting set to show the script again
                 self.deletingScriptIds.remove(scriptId)
-                // TODO: Show error alert to user
             }
         }
     }

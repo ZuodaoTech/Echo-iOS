@@ -94,7 +94,9 @@ final class RecordingService: NSObject {
         // Clear any pending completion
         stopRecordingCompletion = nil
         
+        #if DEBUG
         print("RecordingService: Deinitialized - all resources cleaned up")
+        #endif
     }
     
     // MARK: - Public Methods
@@ -104,13 +106,17 @@ final class RecordingService: NSObject {
         // Check actual permission status, not cached value
         let actualPermission = AVAudioSession.sharedInstance().recordPermission
         guard actualPermission == .granted else {
+            #if DEBUG
             print("RecordingService: Permission denied - actual status: \(actualPermission.rawValue)")
+            #endif
             throw AudioServiceError.permissionDenied
         }
         
         // Update cached value if it was wrong
         if !sessionManager.isMicrophonePermissionGranted && actualPermission == .granted {
+            #if DEBUG
             print("RecordingService: Updating cached permission state")
+            #endif
             sessionManager.isMicrophonePermissionGranted = true
         }
         
@@ -171,13 +177,21 @@ final class RecordingService: NSObject {
         
         // Log the trim points for debugging
         if let firstTime = firstSpeakingTime, let lastTime = lastSpeakingTime {
+            #if DEBUG
             print("RecordingService: Voice activity from \(firstTime)s to \(lastTime)s")
+            #endif
+            #if DEBUG
             print("RecordingService: Using optimized settings - threshold: \(voiceDetectionThreshold), buffer: \(trimBufferTime)s")
+            #endif
             let trimStart = max(0, firstTime - trimBufferTime)
             let trimEnd = lastTime + trimBufferTime
+            #if DEBUG
             print("RecordingService: Will trim to \(trimStart)s - \(trimEnd)s")
+            #endif
         } else {
+            #if DEBUG
             print("RecordingService: No voice activity detected - no trimming needed")
+            #endif
         }
         
         if let scriptId = currentRecordingScriptId {
@@ -293,7 +307,9 @@ final class RecordingService: NSObject {
                 // Speaking detected
                 if self.firstSpeakingTime == nil {
                     self.firstSpeakingTime = currentTime
+                    #if DEBUG
                     print("RecordingService: First speaking detected at \(currentTime)s (threshold: \(threshold))")
+                    #endif
                 }
                 self.lastSpeakingTime = currentTime
             }
@@ -304,7 +320,9 @@ final class RecordingService: NSObject {
                 
                 // Auto-stop at max duration
                 if currentTime >= self.maxRecordingDuration {
+                    #if DEBUG
                     print("RecordingService: Maximum recording duration reached (\(Int(self.maxRecordingDuration))s)")
+                    #endif
                     self.stopRecording()
                 }
             }
@@ -321,12 +339,16 @@ final class RecordingService: NSObject {
 
 extension RecordingService: AVAudioRecorderDelegate {
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+        #if DEBUG
         print("🎤 Recording finished successfully: \(flag)")
+        #endif
         
         // IMPORTANT: Transition to idle state immediately after recording finishes
         // This ensures the audio session is ready for playback
         sessionManager.transitionTo(.idle)
+        #if DEBUG
         print("🟢 Audio session ready for playback")
+        #endif
         
         // Save a copy of the original audio file for transcription
         if let scriptId = currentRecordingScriptId, flag {
@@ -337,12 +359,18 @@ extension RecordingService: AVAudioRecorderDelegate {
             do {
                 // Use helper with retry logic
                 try FileOperationHelper.copyFile(from: audioURL, to: originalURL)
+                #if DEBUG
                 print("Saved original audio copy for transcription at: \(originalURL.lastPathComponent)")
+                #endif
             } catch let error as AudioServiceError {
+                #if DEBUG
                 print("Failed to save original audio copy: \(error.errorDescription ?? "")")
+                #endif
                 // Continue even if copy fails - the main recording is still valid
             } catch {
+                #if DEBUG
                 print("Failed to save original audio copy: \(error)")
+                #endif
             }
         }
         
@@ -364,7 +392,9 @@ extension RecordingService: AVAudioRecorderDelegate {
     }
     
     func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder, error: Error?) {
+        #if DEBUG
         print("Recording encode error: \(error?.localizedDescription ?? "unknown")")
+        #endif
         stopRecording()
     }
 }

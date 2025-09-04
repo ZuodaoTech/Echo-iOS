@@ -125,7 +125,6 @@ struct AddEditScriptView: View {
         NavigationView {
             Form {
                 Section(NSLocalizedString("script.label", comment: "")) {
-                    // TODO: Replace with ScriptTextEditor component
                     // ScriptTextEditor(scriptText: scriptText)
                     VStack(alignment: .leading, spacing: 8) {
                         ZStack(alignment: .topLeading) {
@@ -239,7 +238,9 @@ struct AddEditScriptView: View {
                                             retranscribeWithNewLanguage(script: script, language: newValue)
                                         }
                                     } catch {
+                                        #if DEBUG
                                         print("Failed to save transcription language: \(error)")
+                                        #endif
                                     }
                                 }
                             }
@@ -319,7 +320,9 @@ struct AddEditScriptView: View {
                                                 do {
                                                     try viewContext.save()
                                                 } catch {
+                                                    #if DEBUG
                                                     print("Failed to update script text: \(error)")
+                                                    #endif
                                                 }
                                             }
                                         } label: {
@@ -373,7 +376,9 @@ struct AddEditScriptView: View {
                             do {
                                 try viewContext.save()
                             } catch {
+                                #if DEBUG
                                 print("Failed to save repetitions change: \(error)")
+                                #endif
                             }
                         }
                     }
@@ -394,7 +399,9 @@ struct AddEditScriptView: View {
                             do {
                                 try viewContext.save()
                             } catch {
+                                #if DEBUG
                                 print("Failed to save interval change: \(error)")
+                                #endif
                             }
                         }
                     }
@@ -420,7 +427,9 @@ struct AddEditScriptView: View {
                             do {
                                 try viewContext.save()
                             } catch {
+                                #if DEBUG
                                 print("Failed to save private mode change: \(error)")
+                                #endif
                             }
                         }
                     }
@@ -445,7 +454,9 @@ struct AddEditScriptView: View {
                                         cancelNotifications(for: script)
                                     }
                                 } catch {
+                                    #if DEBUG
                                     print("Failed to save notification setting: \(error)")
+                                    #endif
                                 }
                             }
                         }
@@ -466,7 +477,9 @@ struct AddEditScriptView: View {
                                         // Reschedule with new frequency
                                         scheduleNotifications(for: script)
                                     } catch {
+                                        #if DEBUG
                                         print("Failed to save notification frequency: \(error)")
+                                        #endif
                                     }
                                 }
                             }
@@ -506,9 +519,15 @@ struct AddEditScriptView: View {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(NSLocalizedString("action.save", comment: "")) {
+                        #if DEBUG
                         print("💾 AddEditScriptView: Save pressed")
+                        #endif
+                        #if DEBUG
                         print("   Audio session state: \(audioService.audioSessionState)")
+                        #endif
+                        #if DEBUG
                         print("   Is processing: \(audioService.isProcessingRecording)")
+                        #endif
                         handleDone()
                     }
                     .font(.body.weight(.medium))
@@ -613,11 +632,15 @@ struct AddEditScriptView: View {
                         if let transcribedText = scriptToCheck.transcribedText, !transcribedText.isEmpty {
                             timer.invalidate()
                             transcriptCheckTimer = nil
+                            #if DEBUG
                             print("Transcript detected in UI: \(transcribedText.prefix(30))")
+                            #endif
                         } else if timer.fireDate.timeIntervalSinceNow < -10 {
                             timer.invalidate()
                             transcriptCheckTimer = nil
+                            #if DEBUG
                             print("Transcript check timeout")
+                            #endif
                         }
                     }
                 }
@@ -809,7 +832,9 @@ struct AddEditScriptView: View {
             return true
         } catch {
             // Silent failure - no alerts
+            #if DEBUG
             print("Silent save failed: \(error)")
+            #endif
             return false
         }
     }
@@ -971,7 +996,9 @@ struct AddEditScriptView: View {
         do {
             // Check if we have persistent stores
             if viewContext.persistentStoreCoordinator?.persistentStores.isEmpty ?? true {
+                #if DEBUG
                 print("Warning: No persistent stores available")
+                #endif
                 errorMessage = "Database not ready. Please restart the app."
                 showingErrorAlert = true
                 return false
@@ -979,14 +1006,20 @@ struct AddEditScriptView: View {
             
             if viewContext.hasChanges {
                 try viewContext.save()
+                #if DEBUG
                 print("Successfully saved script to Core Data")
+                #endif
                 // Clear temp recording script after successful save
                 tempRecordingScript = nil
             }
             return true
         } catch {
+            #if DEBUG
             print("Core Data save error: \(error)")
+            #endif
+            #if DEBUG
             print("Error details: \(error.localizedDescription)")
+            #endif
             
             // Check if it's the persistent store error
             let nsError = error as NSError
@@ -1014,7 +1047,9 @@ struct AddEditScriptView: View {
         // Thread-safe check to prevent multiple concurrent re-transcriptions
         objc_sync_enter(self)
         guard !isRetranscribing else { 
+            #if DEBUG
             print("Re-transcription already in progress, skipping")
+            #endif
             objc_sync_exit(self)
             return 
         }
@@ -1038,12 +1073,18 @@ struct AddEditScriptView: View {
                         script.transcribedText = transcription
                         do {
                             try self.viewContext.save()
+                            #if DEBUG
                             print("Re-transcription completed with new language: \(language)")
+                            #endif
                         } catch {
+                            #if DEBUG
                             print("Failed to save re-transcription: \(error)")
+                            #endif
                         }
                     } else {
+                        #if DEBUG
                         print("Re-transcription failed for language: \(language)")
+                        #endif
                     }
                     self.isRetranscribing = false
                 }
@@ -1086,11 +1127,15 @@ struct AddEditScriptView: View {
                         // Show specific error message
                         errorMessage = error.errorDescription ?? "Failed to start recording"
                         showingErrorAlert = true
+                        #if DEBUG
                         print("Recording error: \(error)")
+                        #endif
                     } catch {
                         errorMessage = "Failed to start recording: \(error.localizedDescription)"
                         showingErrorAlert = true
+                        #if DEBUG
                         print("Recording error: \(error)")
+                        #endif
                     }
                 } else {
                     showingMicPermissionAlert = true
@@ -1118,7 +1163,9 @@ struct AddEditScriptView: View {
         let scriptId = script.id
         let scriptPreview = String(script.scriptText.prefix(50))
         
+        #if DEBUG
         print("🗑️ Starting deletion process for script: \(scriptPreview)...")
+        #endif
         
         // CRITICAL: Dismiss the view FIRST to destroy all UI references
         dismiss()
@@ -1126,11 +1173,15 @@ struct AddEditScriptView: View {
         // Call the deletion callback after a small delay to ensure UI has settled
         if let onDelete = onDelete {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                #if DEBUG
                 print("  📤 Calling deletion callback for script ID: \(scriptId)")
+                #endif
                 onDelete(scriptId)
             }
         } else {
+            #if DEBUG
             print("  ⚠️ No deletion callback provided")
+            #endif
         }
     }
     
@@ -1228,11 +1279,15 @@ struct AddEditScriptView: View {
                     oldestScript.notificationEnabled = false
                     oldestScript.notificationEnabledAt = nil
                     cancelNotifications(for: oldestScript)
+                    #if DEBUG
                     print("Disabled notifications for oldest script: \(oldestScript.scriptText.prefix(20))...")
+                    #endif
                 }
             }
         } catch {
+            #if DEBUG
             print("Failed to check notification limit: \(error)")
+            #endif
         }
     }
     

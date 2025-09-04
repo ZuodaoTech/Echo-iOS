@@ -16,7 +16,9 @@ final class AudioFileManager {
         do {
             try createRecordingsDirectory()
         } catch {
+            #if DEBUG
             print("AudioFileManager: Failed to create recordings directory: \(error)")
+            #endif
         }
     }
     
@@ -42,7 +44,9 @@ final class AudioFileManager {
             if let attributes = try? FileManager.default.attributesOfItem(atPath: url.path),
                let fileSize = attributes[.size] as? Int64 {
                 if fileSize == 0 {
+                    #if DEBUG
                     print("⚠️ AudioFileManager: Audio file exists but has zero size: \(url.lastPathComponent)")
+                    #endif
                     return false
                 }
             }
@@ -65,7 +69,9 @@ final class AudioFileManager {
         do {
             try FileOperationHelper.deleteFile(at: url)
         } catch {
+            #if DEBUG
             print("AudioFileManager: Warning - Failed to delete processed audio: \(error)")
+            #endif
             // Continue to try deleting original file even if processed file fails
         }
         
@@ -74,7 +80,9 @@ final class AudioFileManager {
         do {
             try FileOperationHelper.deleteFile(at: originalUrl)
         } catch {
+            #if DEBUG
             print("AudioFileManager: Warning - Failed to delete original audio: \(error)")
+            #endif
             // Don't throw here as the files might already be deleted
         }
     }
@@ -86,7 +94,9 @@ final class AudioFileManager {
         do {
             try await FileOperationHelper.deleteFileAsync(at: url)
         } catch {
+            #if DEBUG
             print("AudioFileManager: Warning - Failed to delete processed audio: \(error)")
+            #endif
         }
         
         // Delete the original audio file
@@ -94,7 +104,9 @@ final class AudioFileManager {
         do {
             try await FileOperationHelper.deleteFileAsync(at: originalUrl)
         } catch {
+            #if DEBUG
             print("AudioFileManager: Warning - Failed to delete original audio: \(error)")
+            #endif
         }
     }
     
@@ -119,7 +131,9 @@ final class AudioFileManager {
                 return duration
             }
         } catch {
+            #if DEBUG
             print("Failed to get duration with AVAudioPlayer: \(error)")
+            #endif
         }
         
         // If both methods fail, return nil
@@ -146,7 +160,9 @@ final class AudioFileManager {
             )
             return urls.filter { $0.pathExtension == "m4a" }
         } catch {
+            #if DEBUG
             print("AudioFileManager: Failed to get recording URLs: \(error)")
+            #endif
             return []
         }
     }

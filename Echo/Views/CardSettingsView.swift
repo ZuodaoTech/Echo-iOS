@@ -193,7 +193,9 @@ struct CardSettingsView: View {
             try viewContext.save()
             cardsToDisable.removeAll()
         } catch {
+            #if DEBUG
             print("Error disabling notifications: \(error)")
+            #endif
         }
     }
 }

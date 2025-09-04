@@ -67,7 +67,9 @@ class PersistenceController: ObservableObject {
             try viewContext.save()
         } catch {
             let nsError = error as NSError
+            #if DEBUG
             print("Preview data error: \(nsError), \(nsError.userInfo)")
+            #endif
         }
         #endif
         
@@ -134,25 +136,41 @@ class PersistenceController: ObservableObject {
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
+                #if DEBUG
                 print("Core Data error: \(error), \(error.userInfo)")
+                #endif
                 
                 // Try to handle common errors gracefully
                 if error.code == 134110 { // Model version mismatch
+                    #if DEBUG
                     print("Core Data model version mismatch - attempting migration")
+                    #endif
                     // In production, you might want to attempt lightweight migration
                     // For now, we'll log and continue with limited functionality
+                    #if DEBUG
                     print("WARNING: App may have limited functionality due to Core Data error")
+                    #endif
                 } else if error.code == 134060 { // Store file issue
+                    #if DEBUG
                     print("Core Data store file issue - app will continue with limited functionality")
+                    #endif
                 } else {
                     // For truly unrecoverable errors, we still need to fail
+                    #if DEBUG
                     print("CRITICAL: Unrecoverable Core Data error")
+                    #endif
                     fatalError("Unable to load persistent stores: \(error), \(error.userInfo)")
                 }
             } else {
+                #if DEBUG
                 print("Core Data: Successfully loaded persistent store")
+                #endif
+                #if DEBUG
                 print("Store type: \(storeDescription.type)")
+                #endif
+                #if DEBUG
                 print("Store URL: \(storeDescription.url?.absoluteString ?? "nil")")
+                #endif
             }
             
             // Mark as ready and check if we need to import samples
@@ -189,7 +207,9 @@ class PersistenceController: ObservableObject {
         guard !isReady else { return } // Already loaded
         
         Task(priority: .background) {
+            #if DEBUG
             print("Core Data: Starting load after view rendered...")
+            #endif
             let inMemory = container.persistentStoreDescriptions.first?.url == URL(fileURLWithPath: "/dev/null")
             await loadStores(inMemory: inMemory)
         }
@@ -216,11 +236,15 @@ class PersistenceController: ObservableObject {
         let existingSamples = (try? context.fetch(fetchRequest)) ?? []
         
         if existingSamples.count >= 3 {
+            #if DEBUG
             print("Sample scripts already exist, skipping import")
+            #endif
             return
         }
         
+        #if DEBUG
         print("Importing missing sample scripts...")
+        #endif
         
         // Get static samples
         let samples = StaticSampleProvider.shared.getSamples()
@@ -243,7 +267,9 @@ class PersistenceController: ObservableObject {
             }
             
             guard existing == nil else {
+                #if DEBUG
                 print("Sample '\(sample.category)' already exists, skipping")
+                #endif
                 continue
             }
             
@@ -266,18 +292,24 @@ class PersistenceController: ObservableObject {
             script.intervalSeconds = sample.intervalSeconds
             script.addToTags(tag)
             
+            #if DEBUG
             print("Created sample script: \(sample.category)")
+            #endif
         }
         
         // Save the context
         do {
             try context.save()
+            #if DEBUG
             print("Successfully imported \(samples.count) sample scripts")
+            #endif
             
             // Mark that we've launched before (to coordinate with other first-launch checks)
             UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
         } catch {
+            #if DEBUG
             print("Failed to save sample scripts: \(error)")
+            #endif
         }
     }
 }

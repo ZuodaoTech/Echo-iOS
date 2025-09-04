@@ -91,7 +91,9 @@ extension Tag {
         request.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
         
         guard let allTags = try? context.fetch(request) else {
+            #if DEBUG
             print("Failed to fetch tags for cleanup")
+            #endif
             return
         }
         
@@ -110,7 +112,9 @@ extension Tag {
         
         // Merge duplicates
         for (normalizedName, tags) in tagsByNormalizedName where tags.count > 1 {
+            #if DEBUG
             print("Found \(tags.count) duplicate tags for '\(normalizedName)'")
+            #endif
             
             // Keep the first (oldest) tag
             let keepTag = tags[0]
@@ -119,7 +123,9 @@ extension Tag {
             for duplicateTag in tags.dropFirst() {
                 if let scripts = duplicateTag.scripts {
                     keepTag.addToScripts(scripts)
+                    #if DEBUG
                     print("  Merging scripts from '\(duplicateTag.name)' to '\(keepTag.name)'")
+                    #endif
                 }
                 context.delete(duplicateTag)
                 mergeCount += 1
@@ -127,15 +133,23 @@ extension Tag {
         }
         
         if mergeCount > 0 {
+            #if DEBUG
             print("Cleaned up \(mergeCount) duplicate tags")
+            #endif
             do {
                 try context.save()
+                #if DEBUG
                 print("Successfully saved tag cleanup")
+                #endif
             } catch {
+                #if DEBUG
                 print("Failed to save tag cleanup: \(error)")
+                #endif
             }
         } else {
+            #if DEBUG
             print("No duplicate tags found")
+            #endif
         }
     }
     

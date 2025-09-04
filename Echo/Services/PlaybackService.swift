@@ -108,7 +108,9 @@ final class PlaybackService: NSObject {
         audioPlayer?.stop()
         audioPlayer = nil
         
+        #if DEBUG
         print("PlaybackService: Deinitialized - all resources cleaned up")
+        #endif
     }
     
     // MARK: - Public Methods
@@ -120,24 +122,40 @@ final class PlaybackService: NSObject {
         intervalSeconds: TimeInterval,
         privateModeEnabled: Bool
     ) throws {
+        #if DEBUG
         print("\n🎵 PlaybackService.startPlayback() called")
+        #endif
+        #if DEBUG
         print("   Script ID: \(scriptId)")
+        #endif
+        #if DEBUG
         print("   Repetitions: \(repetitions), Interval: \(intervalSeconds)s")
+        #endif
+        #if DEBUG
         print("   Private mode enabled: \(privateModeEnabled), active: \(sessionManager.privateModeActive)")
+        #endif
+        #if DEBUG
         print("   Current audio session state: \(sessionManager.currentState.rawValue)")
+        #endif
         
         // Check private mode
         if privateModeEnabled && sessionManager.privateModeActive {
+            #if DEBUG
             print("PlaybackService: Blocked by private mode")
+            #endif
             throw AudioServiceError.privateModeActive
         }
         
         // Check if file exists
         guard fileManager.audioFileExists(for: scriptId) else {
+            #if DEBUG
             print("PlaybackService: No recording file found")
+            #endif
             throw AudioServiceError.noRecording
         }
+        #if DEBUG
         print("PlaybackService: Audio file exists")
+        #endif
         
         // If paused on same script, resume instead
         if isPaused && currentPlayingScriptId == scriptId {
@@ -148,7 +166,9 @@ final class PlaybackService: NSObject {
         // Auto-stop any current playback (different script or playing state)
         // This ensures only one script plays at a time
         if isPlaying || isPaused || isInPlaybackSession {
+            #if DEBUG
             print("PlaybackService: Auto-stopping previous playback")
+            #endif
             stopPlayback()
         }
         
@@ -158,17 +178,23 @@ final class PlaybackService: NSObject {
         let audioURL = fileManager.audioURL(for: scriptId)
         
         do {
+            #if DEBUG
             print("PlaybackService: Creating AVAudioPlayer with URL: \(audioURL)")
+            #endif
             
             // First, validate the file
             let fileAttributes = try FileManager.default.attributesOfItem(atPath: audioURL.path)
             let fileSize = fileAttributes[.size] as? Int64 ?? 0
+            #if DEBUG
             print("PlaybackService: File size: \(fileSize) bytes")
+            #endif
             
             // Try using AVAsset to get duration first (more reliable)
             let asset = AVAsset(url: audioURL)
             let duration = CMTimeGetSeconds(asset.duration)
+            #if DEBUG
             print("PlaybackService: AVAsset duration: \(duration)s")
+            #endif
             
             // Create the player
             audioPlayer = try AVAudioPlayer(contentsOf: audioURL)
@@ -176,7 +202,9 @@ final class PlaybackService: NSObject {
             
             // Important: Call prepareToPlay and wait a moment for the file to be ready
             let prepared = audioPlayer?.prepareToPlay() ?? false
+            #if DEBUG
             print("PlaybackService: Prepare to play: \(prepared)")
+            #endif
             
             audioPlayer?.enableRate = true
             
@@ -184,11 +212,15 @@ final class PlaybackService: NSObject {
             Thread.sleep(forTimeInterval: 0.1)
             
             let playerDuration = audioPlayer?.duration ?? 0
+            #if DEBUG
             print("PlaybackService: Player created, duration: \(playerDuration)")
+            #endif
             
             // If duration is still 0, the file might be corrupted or incompatible
             if playerDuration <= 0 && duration <= 0 {
+                #if DEBUG
                 print("PlaybackService: Warning - Audio file appears to have no duration")
+                #endif
                 // Try to play anyway, some files might still work
             }
             
@@ -208,20 +240,28 @@ final class PlaybackService: NSObject {
             }
             
             let playStarted = audioPlayer?.play() ?? false
+            #if DEBUG
             print("   AVAudioPlayer.play() returned: \(playStarted)")
+            #endif
             
             if !playStarted {
+                #if DEBUG
                 print("   🔄 Failed to start playback - attempting recovery")
+                #endif
                 
                 // Try once more after re-preparing
                 audioPlayer?.prepareToPlay()
                 Thread.sleep(forTimeInterval: 0.2)
                 
                 let recoveryPlayStarted = audioPlayer?.play() ?? false
+                #if DEBUG
                 print("   Recovery attempt play() returned: \(recoveryPlayStarted)")
+                #endif
                 
                 guard recoveryPlayStarted else {
+                    #if DEBUG
                     print("   ❌ Failed to start playback after recovery attempt")
+                    #endif
                     // Failed to start playback, reset state to idle for future attempts
                     sessionManager.transitionTo(.idle)
                     
@@ -233,15 +273,21 @@ final class PlaybackService: NSObject {
                 }
                 
                 // If we reach here, recovery succeeded
+                #if DEBUG
                 print("   ✅ Playback recovered successfully")
+                #endif
             } else {
+                #if DEBUG
                 print("   ✅ Playback started successfully")
+                #endif
             }
             
             // Successfully started playing
             // Direct transition from Idle to Playing (no preparingToPlay needed)
             sessionManager.transitionTo(.playing)
+            #if DEBUG
             print("   Transitioned to Playing state")
+            #endif
             
             DispatchQueue.main.async {
                 self.isPlaying = true
@@ -254,9 +300,15 @@ final class PlaybackService: NSObject {
             startCompletionMonitor()
             
         } catch {
+            #if DEBUG
             print("   ❌ Error creating audio player: \(error)")
+            #endif
+            #if DEBUG
             print("   Error code: \((error as NSError).code)")
+            #endif
+            #if DEBUG
             print("   Resetting session to idle state")
+            #endif
             // Ensure we're back in idle state after any failure
             sessionManager.transitionTo(.idle)
             

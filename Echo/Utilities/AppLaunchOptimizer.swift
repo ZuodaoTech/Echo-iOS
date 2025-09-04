@@ -62,11 +62,15 @@ struct AppLaunchOptimizer {
     /// Measure and log app launch time
     static func measureLaunchTime(from startTime: Date) {
         let launchTime = Date().timeIntervalSince(startTime)
+        #if DEBUG
         print("App launch completed in \(String(format: "%.2f", launchTime)) seconds")
+        #endif
         
         #if DEBUG
         if launchTime > 1.0 {
+            #if DEBUG
             print("⚠️ Launch time exceeded 1 second threshold")
+            #endif
         }
         #endif
     }
@@ -86,12 +90,20 @@ extension AppLaunchOptimizer {
             guard let coreDataTime = coreDataReady,
                   let uiTime = uiReady else { return }
             
+            #if DEBUG
             print("=== Launch Performance Report ===")
+            #endif
+            #if DEBUG
             print("Core Data: \(coreDataTime.timeIntervalSince(appInitStart))s")
+            #endif
+            #if DEBUG
             print("UI Ready: \(uiTime.timeIntervalSince(appInitStart))s")
+            #endif
             
             if let fullTime = fullyLoaded {
+                #if DEBUG
                 print("Fully Loaded: \(fullTime.timeIntervalSince(appInitStart))s")
+                #endif
             }
         }
     }

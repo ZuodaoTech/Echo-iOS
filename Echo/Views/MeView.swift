@@ -867,12 +867,16 @@ struct MeView: View {
         }
         
         // Log swipe detection
+        #if DEBUG
         print("🎮 Swipe detected: \(direction)")
+        #endif
         
         // Check if it's been more than 2 seconds since last swipe (reset sequence)
         if Date().timeIntervalSince(lastSwipeTime) > 2 {
             if !swipeSequence.isEmpty {
+                #if DEBUG
                 print("⏰ Swipe sequence timeout - resetting")
+                #endif
             }
             swipeSequence = []
         }
@@ -890,7 +894,9 @@ struct MeView: View {
             case .right: return "→"
             }
         }.joined(separator: " ")
+        #if DEBUG
         print("📝 Current sequence: \(sequenceString)")
+        #endif
         
         // Check for the Konami code: left, left, right
         if swipeSequence.count >= 3 {
@@ -899,9 +905,13 @@ struct MeView: View {
                 // Toggle dev section with haptic feedback
                 showDevSection.toggle()
                 if showDevSection {
+                    #if DEBUG
                     print("🎉 KONAMI CODE DETECTED! Developer mode activated")
+                    #endif
                 } else {
+                    #if DEBUG
                     print("🔒 KONAMI CODE DETECTED! Developer mode deactivated")
+                    #endif
                 }
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 swipeSequence = [] // Reset sequence
@@ -916,7 +926,6 @@ struct MeView: View {
     
     private func handleMaxNotificationCardsChange() {
         // Simplified version without card selection dialog
-        // TODO: Add proper notification card management if needed
         previousMaxCards = maxNotificationCards
     }
     
@@ -1120,7 +1129,9 @@ struct DocumentPicker: UIViewControllerRepresentable {
                         parent.onPick(tempURL)
                     } catch {
                         url.stopAccessingSecurityScopedResource()
+                        #if DEBUG
                         print("Error copying file: \(error)")
+                        #endif
                         // Still try to use the original URL
                         parent.onPick(url)
                     }

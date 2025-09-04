@@ -82,7 +82,9 @@ struct TagEditView: View {
             try viewContext.save()
             dismiss()
         } catch {
+            #if DEBUG
             print("Failed to save tag changes: \(error)")
+            #endif
         }
     }
     
@@ -104,7 +106,9 @@ struct TagEditView: View {
             do {
                 try viewContext.save()
             } catch {
+                #if DEBUG
                 print("Failed to delete tag: \(error)")
+                #endif
             }
         }
     }

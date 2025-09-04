@@ -571,7 +571,9 @@ class ImportManager: ObservableObject {
             try data.write(to: URL(fileURLWithPath: destinationPath))
             return destinationPath
         } catch {
+            #if DEBUG
             print("Failed to save audio data: \(error)")
+            #endif
             return nil
         }
     }
@@ -598,7 +600,9 @@ class ImportManager: ObservableObject {
             try fileManager.copyItem(at: sourceURL, to: URL(fileURLWithPath: destinationPath))
             return destinationPath
         } catch {
+            #if DEBUG
             print("Failed to copy audio file: \(error)")
+            #endif
             return nil
         }
     }

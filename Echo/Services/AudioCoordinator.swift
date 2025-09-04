@@ -197,7 +197,9 @@ final class AudioCoordinator: ObservableObject {
         // Clean up notification observers
         NotificationCenter.default.removeObserver(self)
         
+        #if DEBUG
         print("✅ AudioCoordinator: Deinitialized with proper cleanup")
+        #endif
     }
     
     // MARK: - Interruption Handling
@@ -225,7 +227,9 @@ final class AudioCoordinator: ObservableObject {
         let isPhoneCall = info["isPhoneCall"] as? Bool ?? false
         let currentStateSnapshot = stateQueue.sync { internalState }
         
+        #if DEBUG
         print("🔇 AudioCoordinator: Interruption began - PhoneCall: \(isPhoneCall), State: \(currentStateSnapshot)")
+        #endif
         
         // Track interruption analytics
         if currentStateSnapshot == .recording {
@@ -273,7 +277,9 @@ final class AudioCoordinator: ObservableObject {
         let duration = info["duration"] as? TimeInterval ?? 0
         // Previous state tracking removed for now
         
+        #if DEBUG
         print("🔊 AudioCoordinator: Interruption ended - Duration: \(duration)s, ShouldResume: \(shouldResume)")
+        #endif
         
         // Handle recovery based on duration and previous state
         // Auto-resume for short interruptions (simplified for now)
@@ -326,10 +332,16 @@ final class AudioCoordinator: ObservableObject {
             // Save to Core Data
             do {
                 try script.managedObjectContext?.save()
+                #if DEBUG
                 print("✅ Partial recording saved successfully - Duration: \(duration)s")
+                #endif
+                #if DEBUG
                 print("📌 Checkpoint created for recovery")
+                #endif
             } catch {
+                #if DEBUG
                 print("❌ Failed to save partial recording: \(error)")
+                #endif
             }
         }
     }
@@ -337,19 +349,25 @@ final class AudioCoordinator: ObservableObject {
     private func attemptRecordingResume() {
         guard let checkpoint = recordingCheckpoint,
               let script = currentRecordingScript else {
+            #if DEBUG
             print("⚠️ No checkpoint available for resume")
+            #endif
             return
         }
         
         // Check if checkpoint is still valid (within 5 minutes)
         let timeSinceInterruption = Date().timeIntervalSince(checkpoint.startTime.addingTimeInterval(checkpoint.lastSavedDuration))
         guard timeSinceInterruption < 300 else { // 5 minutes
+            #if DEBUG
             print("⏰ Checkpoint expired, cannot auto-resume")
+            #endif
             completePartialRecording()
             return
         }
         
+        #if DEBUG
         print("✅ Auto-resuming recording from checkpoint")
+        #endif
         
         // Transition back to recording state
         transitionTo(.recording)
@@ -365,7 +383,9 @@ final class AudioCoordinator: ObservableObject {
                 self?.userFacingState = .recording
             }
         } catch {
+            #if DEBUG
             print("❌ Failed to resume recording: \(error)")
+            #endif
             transitionTo(.idle)
         }
     }
@@ -381,16 +401,22 @@ final class AudioCoordinator: ObservableObject {
             ]
         )
         
+        #if DEBUG
         print("📱 Showing recovery options to user")
+        #endif
     }
     
     private func completePartialRecording() {
         guard recordingCheckpoint != nil else {
+            #if DEBUG
             print("⚠️ No checkpoint to complete")
+            #endif
             return
         }
         
+        #if DEBUG
         print("💾 Completing partial recording from checkpoint")
+        #endif
         
         // Clear checkpoint
         recordingCheckpoint = nil
@@ -465,13 +491,17 @@ final class AudioCoordinator: ObservableObject {
                  (.interrupted, .playing):  // Can resume playback
                 // Valid transitions - update internal state
                 self.internalState = newState
+                #if DEBUG
                 print("🔄 Audio state transition: \(oldState) -> \(newState)")
+                #endif
                 
                 // Compute derived states atomically
                 return computeStateUpdate(for: newState)
                 
             default:
+                #if DEBUG
                 print("⚠️ Invalid state transition: \(oldState) -> \(newState)")
+                #endif
                 return nil
             }
         }
@@ -615,14 +645,26 @@ final class AudioCoordinator: ObservableObject {
         let currentState = stateQueue.sync { internalState }
         let canRecord = currentState.canRecord
         
+        #if DEBUG
         print("🎤 Recording check - Current state: \(currentState), canRecord: \(canRecord)")
+        #endif
+        #if DEBUG
         print("   Script ID: \(script.id)")
+        #endif
+        #if DEBUG
         print("   Processing IDs: \(processingScriptIds)")
+        #endif
         
         guard canRecord else {
+            #if DEBUG
             print("❌ Cannot start recording in state: \(currentState)")
+            #endif
+            #if DEBUG
             print("   isProcessingRecording: \(isProcessingRecording)")
+            #endif
+            #if DEBUG
             print("   audioSessionState: \(audioSessionState)")
+            #endif
             throw AudioServiceError.invalidState("Cannot record in \(currentState) state")
         }
         
@@ -659,7 +701,9 @@ final class AudioCoordinator: ObservableObject {
         let isRecordingNow = stateQueue.sync { internalState == .recording }
         guard isRecordingNow else {
             let state = stateQueue.sync { internalState }
+            #if DEBUG
             print("⚠️ Not currently recording, state: \(state)")
+            #endif
             return
         }
         
@@ -710,32 +754,46 @@ final class AudioCoordinator: ObservableObject {
                 // After processing, transcribe the ORIGINAL audio with selected language
                 // The original audio maintains AAC format that Speech Recognition can read
                 let languageCode = script.transcriptionLanguage ?? "en-US"
+                #if DEBUG
                 print("Starting transcription with language: \(languageCode)")
+                #endif
                 self.processingService.transcribeRecording(for: scriptId, languageCode: languageCode) { transcription in
                     DispatchQueue.main.async {
                         // Get actual duration from file after processing
                         if let fileDuration = self.fileManager.getAudioDuration(for: scriptId) {
                             script.audioDuration = fileDuration
+                            #if DEBUG
                             print("Recording processed - Duration: \(fileDuration)s, Success: \(success)")
+                            #endif
                         } else {
                             // Fallback to recorder's duration
                             script.audioDuration = duration
+                            #if DEBUG
                             print("Recording completed - Using recorder duration: \(duration)s")
+                            #endif
                         }
                         
                         // Save transcription if available
                         if let transcription = transcription {
                             script.transcribedText = transcription
+                            #if DEBUG
                             print("Transcription saved: \(transcription.prefix(50))...")
+                            #endif
                             // Force Core Data save
                             do {
                                 try script.managedObjectContext?.save()
+                                #if DEBUG
                                 print("Core Data saved with transcript")
+                                #endif
                             } catch {
+                                #if DEBUG
                                 print("Failed to save transcript to Core Data: \(error)")
+                                #endif
                             }
                         } else {
+                            #if DEBUG
                             print("No transcription received")
+                            #endif
                         }
                         
                         // Track recording completion metrics
@@ -762,13 +820,17 @@ final class AudioCoordinator: ObservableObject {
     
     func play(script: SelftalkScript) throws {
         ensureInitialized()
+        #if DEBUG
         print("\n🎤 AudioCoordinator.play() called for script \(script.id)")
+        #endif
         
         // DEFENSIVE: Check script validity
         guard !script.isDeleted,
               !script.isFault,
               script.managedObjectContext != nil else {
+            #if DEBUG
             print("   ❌ Invalid script (deleted/fault/no context)")
+            #endif
             throw AudioServiceError.invalidScript
         }
         
@@ -776,7 +838,9 @@ final class AudioCoordinator: ObservableObject {
         let canPlay = stateQueue.sync { internalState.canPlay }
         guard canPlay else {
             let state = stateQueue.sync { internalState }
+            #if DEBUG
             print("⚠️ Cannot start playback in state: \(state)")
+            #endif
             throw AudioServiceError.invalidState("Cannot play in \(state) state")
         }
         
@@ -815,7 +879,9 @@ final class AudioCoordinator: ObservableObject {
         let canPause = stateQueue.sync { internalState.canPause }
         guard canPause else {
             let state = stateQueue.sync { internalState }
+            #if DEBUG
             print("⚠️ Cannot pause in state: \(state)")
+            #endif
             return
         }
         
@@ -829,7 +895,9 @@ final class AudioCoordinator: ObservableObject {
         let canResume = stateQueue.sync { internalState.canResume }
         guard canResume else {
             let state = stateQueue.sync { internalState }
+            #if DEBUG
             print("⚠️ Cannot resume in state: \(state)")
+            #endif
             return
         }
         
@@ -843,7 +911,9 @@ final class AudioCoordinator: ObservableObject {
         let canStop = stateQueue.sync { internalState.canStop }
         guard canStop else {
             let state = stateQueue.sync { internalState }
+            #if DEBUG
             print("⚠️ Cannot stop in state: \(state)")
+            #endif
             return
         }
         
@@ -862,9 +932,15 @@ final class AudioCoordinator: ObservableObject {
         ensureInitialized()
         
         let currentState = stateQueue.sync { internalState }
+        #if DEBUG
         print("🗑️ Deleting recording - Current state: \(currentState)")
+        #endif
+        #if DEBUG
         print("   Script ID: \(script.id)")
+        #endif
+        #if DEBUG
         print("   Processing IDs before: \(processingScriptIds)")
+        #endif
         
         // Stop playback if playing this script
         if currentPlayingScriptId == script.id {
@@ -884,12 +960,18 @@ final class AudioCoordinator: ObservableObject {
         
         // ALWAYS reset state to idle after deleting recording
         // This ensures we can record again immediately
+        #if DEBUG
         print("   Forcing transition to idle...")
+        #endif
         transitionTo(.idle)
         
         let newState = stateQueue.sync { internalState }
+        #if DEBUG
         print("   State after deletion: \(newState)")
+        #endif
+        #if DEBUG
         print("   Processing IDs after: \(processingScriptIds)")
+        #endif
     }
     
     func checkPrivateMode() {
@@ -982,7 +1064,9 @@ final class AudioCoordinator: ObservableObject {
     /// Validate all services and fix any inconsistencies
     func validateAndRecover() {
         // Simplified validation for build compatibility
+        #if DEBUG
         print("📊 AudioCoordinator: Basic validation passed")
+        #endif
     }
 }
 

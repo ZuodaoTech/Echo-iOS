@@ -56,7 +56,9 @@ struct RootView: View {
                     .onAppear {
                         // Track UI ready
                         AppLaunchOptimizer.LaunchMetrics.uiReady = Date()
+                        #if DEBUG
                         print("✅ First frame rendered - UI Ready at \(AppLaunchOptimizer.LaunchMetrics.uiReady!.timeIntervalSince(AppLaunchOptimizer.LaunchMetrics.appInitStart))s")
+                        #endif
                         
                         // Check if we should show welcome
                         if !hasSeenWelcome && !showingWelcome {
@@ -98,7 +100,9 @@ struct RootView: View {
     
     @MainActor
     private func loadCoreData() async {
+        #if DEBUG
         print("🔄 Starting Core Data initialization...")
+        #endif
         
         // Do ALL heavy lifting in background
         let controller = await Task.detached(priority: .background) {
@@ -116,7 +120,9 @@ struct RootView: View {
             
             // Track Core Data ready
             AppLaunchOptimizer.LaunchMetrics.coreDataReady = Date()
+            #if DEBUG
             print("✅ Core Data ready at \(AppLaunchOptimizer.LaunchMetrics.coreDataReady!.timeIntervalSince(AppLaunchOptimizer.LaunchMetrics.appInitStart))s")
+            #endif
             
             return pc
         }.value

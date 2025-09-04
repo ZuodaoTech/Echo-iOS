@@ -30,7 +30,9 @@ final class FileOperationHelper {
             }
         } catch {
             // If we can't check, continue anyway
+            #if DEBUG
             print("Warning: Could not check disk space: \(error)")
+            #endif
         }
     }
     

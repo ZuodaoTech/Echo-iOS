@@ -228,81 +228,123 @@ struct ScriptCard: View {
     }
     
     private func handleTap() {
+        #if DEBUG
         print("\n👆 TAP: ScriptCard tapped for script \(script.id)")
+        #endif
+        #if DEBUG
         print("   Script text: \(script.scriptText.prefix(30))...")
+        #endif
         
         // DEFENSIVE: Check script validity first
         guard isScriptValid else {
+            #if DEBUG
             print("   ⛔ Script invalid or deleted")
+            #endif
             return
         }
         
         // Check if audio is still being processed
         if isProcessing || audioService.isProcessingRecording || audioService.processingScriptIds.contains(script.id) {
+            #if DEBUG
             print("   ⏳ Audio is still being processed")
+            #endif
+            #if DEBUG
             print("   isProcessing: \(isProcessing)")
+            #endif
+            #if DEBUG
             print("   audioService.isProcessingRecording: \(audioService.isProcessingRecording)")
+            #endif
+            #if DEBUG
             print("   Script in processing list: \(audioService.processingScriptIds.contains(script.id))")
+            #endif
             // Could show a toast or visual indicator here
             return
         }
         
         // Check if recording exists
         guard script.hasRecording else {
+            #if DEBUG
             print("   📦 No recording found for this script")
+            #endif
             showingNoRecordingAlert = true
             return 
         }
         
         // Double-check the audio file actually exists on disk
         if !audioService.hasRecording(for: script) {
+            #if DEBUG
             print("   ⚠️ Script thinks it has recording but file doesn't exist!")
+            #endif
+            #if DEBUG
             print("   audioFilePath: \(script.audioFilePath ?? "nil")")
+            #endif
+            #if DEBUG
             print("   audioDuration: \(script.audioDuration)")
+            #endif
             showingNoRecordingAlert = true
             return
         }
         
         // Check if this script is in a playback session (including intervals)
         let isThisScriptInSession = audioService.isInPlaybackSession && audioService.currentPlayingScriptId == script.id
+        #if DEBUG
         print("   Is in session: \(isThisScriptInSession)")
+        #endif
+        #if DEBUG
         print("   Audio session state: \(audioService.audioSessionState)")
+        #endif
         
         if isThisScriptInSession {
             // We're in a playback session for this script
             if audioService.isPaused {
+                #if DEBUG
                 print("   ▶️ Resuming paused playback")
+                #endif
                 audioService.resumePlayback()
             } else {
+                #if DEBUG
                 print("   ⏸ Pausing playback")
+                #endif
                 audioService.pausePlayback()
             }
         } else {
             // Start new playback
+            #if DEBUG
             print("   🎵 Starting new playback")
+            #endif
             do {
                 try audioService.play(script: script)
+                #if DEBUG
                 print("   ✅ Playback started successfully")
+                #endif
             } catch AudioServiceError.privateModeActive {
                 showingPrivateAlert = true
             } catch {
+                #if DEBUG
                 print("⚠️ ScriptCard: Initial playback failed: \(error)")
+                #endif
                 
                 // For simulator error -50 or state issues, retry with a brief delay
                 let shouldRetry = (error as NSError).code == -50 || 
                                  error.localizedDescription.contains("Preparing to Play")
                 
                 if shouldRetry {
+                    #if DEBUG
                     print("   Retrying playback after delay...")
+                    #endif
                     // Give audio session more time to reset on real device
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                         do {
                             try audioService.play(script: script)
+                            #if DEBUG
                             print("✅ ScriptCard: Retry successful")
+                            #endif
                         } catch AudioServiceError.privateModeActive {
                             showingPrivateAlert = true
                         } catch {
+                            #if DEBUG
                             print("🔴 ScriptCard: Retry failed: \(error)")
+                            #endif
                             // Only show error for non-simulator issues
                             if (error as NSError).code != -50 {
                                 errorMessage = "Unable to play audio. Please try again."

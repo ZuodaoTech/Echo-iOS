@@ -39,7 +39,9 @@ struct StaticSampleCardsView: View {
             // Only trigger Core Data if we're in MainScriptsView context
             if !onlyShowSamples && !hasTriggeredCoreData {
                 hasTriggeredCoreData = true
+                #if DEBUG
                 print("Static samples rendered, triggering Core Data load...")
+                #endif
                 
                 // Small delay to ensure the view has fully rendered
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
