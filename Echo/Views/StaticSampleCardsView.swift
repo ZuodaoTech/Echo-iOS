@@ -30,10 +30,10 @@ struct StaticSampleCardsView: View {
             .padding(.horizontal)
             .padding(.top, 8)
         }
-        .alert("Sample Card", isPresented: $showingSampleAlert) {
-            Button("OK", role: .cancel) { }
+        .alert(NSLocalizedString("sample.card", comment: "Sample Card"), isPresented: $showingSampleAlert) {
+            Button(NSLocalizedString("action.ok", comment: "OK"), role: .cancel) { }
         } message: {
-            Text("This is a sample card. You can create your own cards using the + button.")
+            Text(NSLocalizedString("sample.card.message", comment: "This is a sample card. You can create your own cards using the + button."))
         }
         .onAppear {
             // Only trigger Core Data if we're in MainScriptsView context

@@ -347,7 +347,7 @@ struct ScriptCard: View {
                             #endif
                             // Only show error for non-simulator issues
                             if (error as NSError).code != -50 {
-                                errorMessage = "Unable to play audio. Please try again."
+                                errorMessage = NSLocalizedString("error.playback.unable", comment: "Unable to play audio. Please try again.")
                                 showingErrorAlert = true
                             }
                         }

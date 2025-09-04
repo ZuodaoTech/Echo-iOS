@@ -386,7 +386,7 @@ struct MeView: View {
                                 .font(.system(size: 20))
                                 .foregroundColor(.primary)
                                 .frame(width: 25)
-                            Text("Recording Duration Limit")
+                            Text(NSLocalizedString("dev.recording_duration_limit", comment: "Recording Duration Limit"))
                                 .foregroundColor(.primary)
                             Spacer()
                             Picker("", selection: $maxRecordingDuration) {
@@ -410,7 +410,7 @@ struct MeView: View {
                                     .font(.system(size: 20))
                                     .foregroundColor(.primary)
                                     .frame(width: 25)
-                                Text("Voice Detection Threshold")
+                                Text(NSLocalizedString("dev.voice_detection_threshold", comment: "Voice Detection Threshold"))
                                     .foregroundColor(.primary)
                                 Spacer()
                                 Text(String(format: "%.2f", voiceDetectionThreshold))
@@ -421,7 +421,7 @@ struct MeView: View {
                             Slider(value: $voiceDetectionThreshold, in: 0.05...0.50, step: 0.01)
                                 .padding(.horizontal, 35)
                             
-                            Text("Lower = more sensitive (picks up quiet sounds)\nHigher = less sensitive (filters background noise)")
+                            Text(NSLocalizedString("dev.voice_detection.desc", comment: "Lower = more sensitive (picks up quiet sounds)\nHigher = less sensitive (filters background noise)"))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                                 .padding(.leading, 35)
@@ -435,7 +435,7 @@ struct MeView: View {
                                     .font(.system(size: 20))
                                     .foregroundColor(.primary)
                                     .frame(width: 25)
-                                Text("Trim Buffer Time")
+                                Text(NSLocalizedString("dev.trim_buffer_time", comment: "Trim Buffer Time"))
                                     .foregroundColor(.primary)
                                 Spacer()
                                 Text(String(format: "%.2fs", trimBufferTime))
@@ -446,7 +446,7 @@ struct MeView: View {
                             Slider(value: $trimBufferTime, in: 0.05...0.50, step: 0.05)
                                 .padding(.horizontal, 35)
                             
-                            Text("Buffer time before/after detected speech\nShorter = tighter trimming, Longer = safer margins")
+                            Text(NSLocalizedString("dev.trim_buffer.desc", comment: "Buffer time before/after detected speech\nShorter = tighter trimming, Longer = safer margins"))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                                 .padding(.leading, 35)
@@ -462,12 +462,12 @@ struct MeView: View {
                                 Image(systemName: "arrow.counterclockwise")
                                     .font(.system(size: 20))
                                     .frame(width: 25)
-                                Text("Reset to Defaults")
+                                Text(NSLocalizedString("dev.reset_defaults", comment: "Reset to Defaults"))
                             }
                             .foregroundColor(.blue)
                         }
                     } header: {
-                        Text("Audio Processing")
+                        Text(NSLocalizedString("dev.audio_processing", comment: "Audio Processing"))
                     } footer: {
                         Text("Current settings: Threshold=\(String(format: "%.2f", voiceDetectionThreshold)), Buffer=\(String(format: "%.2fs", trimBufferTime))\nDefaults: Threshold=0.15, Buffer=0.15s")
                             .font(.caption)
@@ -482,7 +482,7 @@ struct MeView: View {
                                     .font(.system(size: 20))
                                     .foregroundColor(.primary)
                                     .frame(width: 25)
-                                Text("Voice Enhancement")
+                                Text(NSLocalizedString("dev.voice_enhancement", comment: "Voice Enhancement"))
                                     .foregroundColor(.primary)
                             }
                         }
@@ -495,7 +495,7 @@ struct MeView: View {
                                         .font(.system(size: 20))
                                         .foregroundColor(.primary)
                                         .frame(width: 25)
-                                    Text("Normalization Level")
+                                    Text(NSLocalizedString("dev.normalization_level", comment: "Normalization Level"))
                                     Spacer()
                                     Text(String(format: "%.0f%%", normalizationLevel * 100))
                                         .foregroundColor(.secondary)
@@ -505,7 +505,7 @@ struct MeView: View {
                                 Slider(value: $normalizationLevel, in: 0.5...1.0, step: 0.05)
                                     .padding(.horizontal, 35)
                                 
-                                Text("Target volume level (90% = balanced, 100% = maximum)")
+                                Text(NSLocalizedString("dev.normalization.desc", comment: "Target volume level (90% = balanced, 100% = maximum)"))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                                     .padding(.leading, 35)
@@ -519,7 +519,7 @@ struct MeView: View {
                                         .font(.system(size: 20))
                                         .foregroundColor(.primary)
                                         .frame(width: 25)
-                                    Text("Compression Threshold")
+                                    Text(NSLocalizedString("dev.compression_threshold", comment: "Compression Threshold"))
                                     Spacer()
                                     Text(String(format: "%.0f%%", compressionThreshold * 100))
                                         .foregroundColor(.secondary)
@@ -529,7 +529,7 @@ struct MeView: View {
                                 Slider(value: $compressionThreshold, in: 0.3...0.8, step: 0.05)
                                     .padding(.horizontal, 35)
                                 
-                                Text("Volume level where compression starts\nLower = more compression, Higher = less compression")
+                                Text(NSLocalizedString("dev.compression_threshold.desc", comment: "Volume level where compression starts\nLower = more compression, Higher = less compression"))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                                     .padding(.leading, 35)
@@ -543,7 +543,7 @@ struct MeView: View {
                                         .font(.system(size: 20))
                                         .foregroundColor(.primary)
                                         .frame(width: 25)
-                                    Text("Compression Strength")
+                                    Text(NSLocalizedString("dev.compression_strength", comment: "Compression Strength"))
                                     Spacer()
                                     Text(String(format: "%.0f:1", 1.0/compressionRatio))
                                         .foregroundColor(.secondary)
@@ -553,7 +553,7 @@ struct MeView: View {
                                 Slider(value: $compressionRatio, in: 0.1...0.5, step: 0.05)
                                     .padding(.horizontal, 35)
                                 
-                                Text("How much to reduce loud parts\n10:1 = heavy, 3:1 = gentle, 2:1 = light")
+                                Text(NSLocalizedString("dev.compression_strength.desc", comment: "How much to reduce loud parts\n10:1 = heavy, 3:1 = gentle, 2:1 = light"))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                                     .padding(.leading, 35)
@@ -567,7 +567,7 @@ struct MeView: View {
                                         .font(.system(size: 20))
                                         .foregroundColor(.primary)
                                         .frame(width: 25)
-                                    Text("Rumble Filter")
+                                    Text(NSLocalizedString("dev.rumble_filter", comment: "Rumble Filter"))
                                     Spacer()
                                     Text(String(format: "%.0fHz", (1.0 - highPassCutoff) * 1000))
                                         .foregroundColor(.secondary)
@@ -577,7 +577,7 @@ struct MeView: View {
                                 Slider(value: $highPassCutoff, in: 0.90...0.98, step: 0.01)
                                     .padding(.horizontal, 35)
                                 
-                                Text("Remove low-frequency noise (AC hum, rumble)\n50Hz = aggressive, 100Hz = moderate")
+                                Text(NSLocalizedString("dev.rumble_filter.desc", comment: "Remove low-frequency noise (AC hum, rumble)\n50Hz = aggressive, 100Hz = moderate"))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                                     .padding(.leading, 35)
@@ -591,7 +591,7 @@ struct MeView: View {
                                         .font(.system(size: 20))
                                         .foregroundColor(.primary)
                                         .frame(width: 25)
-                                    Text("Noise Floor Detection")
+                                    Text(NSLocalizedString("dev.noise_floor", comment: "Noise Floor Detection"))
                                     Spacer()
                                     Text(String(format: "%.3f", noiseGateThreshold))
                                         .foregroundColor(.secondary)
@@ -601,7 +601,7 @@ struct MeView: View {
                                 Slider(value: $noiseGateThreshold, in: 0.01...0.05, step: 0.005)
                                     .padding(.horizontal, 35)
                                 
-                                Text("Minimum threshold for noise detection\nLower = more sensitive, Higher = less sensitive")
+                                Text(NSLocalizedString("dev.noise_floor.desc", comment: "Minimum threshold for noise detection\nLower = more sensitive, Higher = less sensitive"))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                                     .padding(.leading, 35)
@@ -615,7 +615,7 @@ struct MeView: View {
                                         .font(.system(size: 20))
                                         .foregroundColor(.primary)
                                         .frame(width: 25)
-                                    Text("Noise Reduction Strength")
+                                    Text(NSLocalizedString("dev.noise_reduction", comment: "Noise Reduction Strength"))
                                     Spacer()
                                     Text(String(format: "%.0f%%", noiseReductionStrength * 100))
                                         .foregroundColor(.secondary)
@@ -625,7 +625,7 @@ struct MeView: View {
                                 Slider(value: $noiseReductionStrength, in: 0.5...1.0, step: 0.05)
                                     .padding(.horizontal, 35)
                                 
-                                Text("How much to reduce detected background noise\n80% = balanced, 100% = aggressive")
+                                Text(NSLocalizedString("dev.noise_reduction.desc", comment: "How much to reduce detected background noise\n80% = balanced, 100% = aggressive"))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                                     .padding(.leading, 35)
@@ -647,7 +647,7 @@ struct MeView: View {
                                     Image(systemName: "arrow.counterclockwise")
                                         .font(.system(size: 20))
                                         .frame(width: 25)
-                                    Text("Reset Enhancement to Defaults")
+                                    Text(NSLocalizedString("dev.reset_enhancement", comment: "Reset Enhancement to Defaults"))
                                 }
                                 .foregroundColor(.blue)
                             }
@@ -656,7 +656,7 @@ struct MeView: View {
                         Text("Voice Enhancement")
                     } footer: {
                         if voiceEnhancementEnabled {
-                            Text("Processing: Noise Reduction→Filter→Compress→Normalize\nAdaptive noise floor detection + configurable reduction\nApplied after trimming, before transcription")
+                            Text(NSLocalizedString("dev.enhancement_info", comment: "Processing: Noise Reduction→Filter→Compress→Normalize\nAdaptive noise floor detection + configurable reduction\nApplied after trimming, before transcription"))
                                 .font(.caption)
                         }
                     }

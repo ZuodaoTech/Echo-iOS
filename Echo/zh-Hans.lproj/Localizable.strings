@@ -347,6 +347,46 @@
 "settings.tags" = "标签";
 "settings.auto_cleanup_tags" = "自动清理未使用的标签";
 "settings.tags.footer" = "控制收藏中标签的管理方式";
+
+// MARK: - Missing UI Strings
+"loading.cards" = "加载卡片中...";
+"error.load_cards" = "无法加载卡片";
+"action.show_sample_cards" = "显示示例卡片";
+"sample.card" = "示例卡片";
+"sample.card.message" = "这是示例卡片。您可以使用 + 按钮创建自己的卡片。";
+"loading.text" = "加载中...";
+
+// MARK: - Placeholders
+"tag.search.placeholder" = "搜索标签...";
+"tag.name.placeholder" = "标签名称";
+"alert.new_tag" = "新建标签";
+
+// MARK: - Dev Tools (Hidden)
+"dev.recording_duration_limit" = "录音时长限制";
+"dev.voice_detection_threshold" = "语音检测阈值";
+"dev.voice_detection.desc" = "更低 = 更敏感（检测细微声音）\n更高 = 较不敏感（过滤背景噪音）";
+"dev.trim_buffer_time" = "修剪缓冲时间";
+"dev.trim_buffer.desc" = "语音前后的缓冲时间\n更短 = 修剪更紧凑，更长 = 保留更安全";
+"dev.reset_defaults" = "恢复默认设置";
+"dev.audio_processing" = "音频处理";
+"dev.voice_enhancement" = "语音增强";
+"dev.normalization_level" = "标准化级别";
+"dev.normalization.desc" = "目标音量级别（90% = 平衡，100% = 最大）";
+"dev.compression_threshold" = "压缩阈值";
+"dev.compression_threshold.desc" = "开始压缩的音量级别\n更低 = 更多压缩，更高 = 更少压缩";
+"dev.compression_strength" = "压缩强度";
+"dev.compression_strength.desc" = "降低高音部分的程度\n10:1 = 重度，3:1 = 温和，2:1 = 轻度";
+"dev.rumble_filter" = "低频滤波器";
+"dev.rumble_filter.desc" = "移除低频噪音（交流声、隆隆声）\n50Hz = 激进，100Hz = 适中";
+"dev.noise_floor" = "噪声底限检测";
+"dev.noise_floor.desc" = "噪声检测的最小阈值\n更低 = 更敏感，更高 = 较不敏感";
+"dev.noise_reduction" = "降噪强度";
+"dev.noise_reduction.desc" = "降低检测到的背景噪音的程度\n80% = 平衡，100% = 激进";
+"dev.reset_enhancement" = "重置增强设置为默认值";
+"dev.enhancement_info" = "处理流程：降噪→滤波→压缩→标准化\n自适应噪声底限检测 + 可配置降噪\n在修剪后、转录前应用";
+
+// MARK: - Playback Errors
+"error.playback.unable" = "无法播放音频，请重试。";
 "settings.notification_selection.message" = "选择最多%d张卡片保持通知启用";
 "settings.notification_selection.count" = "已选择%d/%d张卡片";
 "settings.select_notification_cards" = "选择通知卡片";

@@ -48,7 +48,7 @@ struct RootView: View {
                             ProgressView()
                                 .scaleEffect(1.2)
                             
-                            Text("Loading...")
+                            Text(NSLocalizedString("loading.text", comment: "Loading..."))
                                 .font(.callout)
                                 .foregroundColor(.secondary)
                         }

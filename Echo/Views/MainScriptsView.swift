@@ -27,7 +27,7 @@ struct MainScriptsView: View {
                     VStack {
                         ProgressView()
                             .scaleEffect(1.2)
-                        Text("Loading your cards...")
+                        Text(NSLocalizedString("loading.cards", comment: "Loading your cards..."))
                             .font(.caption)
                             .foregroundColor(.secondary)
                             .padding(.top, 8)
@@ -47,13 +47,13 @@ struct MainScriptsView: View {
                         Image(systemName: "exclamationmark.triangle")
                             .font(.largeTitle)
                             .foregroundColor(.orange)
-                        Text("Unable to load cards")
+                        Text(NSLocalizedString("error.load_cards", comment: "Unable to load cards"))
                             .font(.headline)
                         Text(message)
                             .font(.caption)
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)
-                        Button("Show Sample Cards") {
+                        Button(NSLocalizedString("action.show_sample_cards", comment: "Show Sample Cards")) {
                             persistenceController.dataLoadingState = .staticSamples
                         }
                         .buttonStyle(.bordered)

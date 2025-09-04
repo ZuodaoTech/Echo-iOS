@@ -346,6 +346,46 @@
 "settings.tags" = "Tags";
 "settings.auto_cleanup_tags" = "Auto-cleanup Unused Tags";
 "settings.tags.footer" = "Control how tags are managed in your collection";
+
+// MARK: - Missing UI Strings
+"loading.cards" = "Loading your cards...";
+"error.load_cards" = "Unable to load cards";
+"action.show_sample_cards" = "Show Sample Cards";
+"sample.card" = "Sample Card";
+"sample.card.message" = "This is a sample card. You can create your own cards using the + button.";
+"loading.text" = "Loading...";
+
+// MARK: - Placeholders
+"tag.search.placeholder" = "Search tags...";
+"tag.name.placeholder" = "Tag name";
+"alert.new_tag" = "New Tag";
+
+// MARK: - Dev Tools (Hidden)
+"dev.recording_duration_limit" = "Recording Duration Limit";
+"dev.voice_detection_threshold" = "Voice Detection Threshold";
+"dev.voice_detection.desc" = "Lower = more sensitive (picks up quiet sounds)\nHigher = less sensitive (filters background noise)";
+"dev.trim_buffer_time" = "Trim Buffer Time";
+"dev.trim_buffer.desc" = "Buffer time before/after detected speech\nShorter = tighter trimming, Longer = safer margins";
+"dev.reset_defaults" = "Reset to Defaults";
+"dev.audio_processing" = "Audio Processing";
+"dev.voice_enhancement" = "Voice Enhancement";
+"dev.normalization_level" = "Normalization Level";
+"dev.normalization.desc" = "Target volume level (90% = balanced, 100% = maximum)";
+"dev.compression_threshold" = "Compression Threshold";
+"dev.compression_threshold.desc" = "Volume level where compression starts\nLower = more compression, Higher = less compression";
+"dev.compression_strength" = "Compression Strength";
+"dev.compression_strength.desc" = "How much to reduce loud parts\n10:1 = heavy, 3:1 = gentle, 2:1 = light";
+"dev.rumble_filter" = "Rumble Filter";
+"dev.rumble_filter.desc" = "Remove low-frequency noise (AC hum, rumble)\n50Hz = aggressive, 100Hz = moderate";
+"dev.noise_floor" = "Noise Floor Detection";
+"dev.noise_floor.desc" = "Minimum threshold for noise detection\nLower = more sensitive, Higher = less sensitive";
+"dev.noise_reduction" = "Noise Reduction Strength";
+"dev.noise_reduction.desc" = "How much to reduce detected background noise\n80% = balanced, 100% = aggressive";
+"dev.reset_enhancement" = "Reset Enhancement to Defaults";
+"dev.enhancement_info" = "Processing: Noise Reduction→Filter→Compress→Normalize\nAdaptive noise floor detection + configurable reduction\nApplied after trimming, before transcription";
+
+// MARK: - Playback Errors
+"error.playback.unable" = "Unable to play audio. Please try again.";
 "settings.notification_selection.message" = "Select up to %d cards to keep notifications enabled";
 "settings.notification_selection.count" = "%d of %d cards selected";
 "settings.select_notification_cards" = "Select Notification Cards";
