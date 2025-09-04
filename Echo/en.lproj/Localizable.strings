@@ -257,6 +257,14 @@
 "export.audio_size_warning" = "Audio files will increase export size";
 "export.options" = "Export Options";
 "export.select_scripts" = "Select Cards";
+"Exporting..." = "Exporting...";
+"Importing..." = "Importing...";
+"No import file selected" = "No import file selected";
+"Import failed" = "Import failed";
+"Imported: %d scripts" = "Imported: %d scripts";
+"Updated: %d scripts" = "Updated: %d scripts";
+"Skipped: %d scripts" = "Skipped: %d scripts";
+"Failed: %d scripts" = "Failed: %d scripts";
 "export.scripts_selected" = "Cards (%d selected)";
 "export.error_title" = "Export Error";
 "export.error_unknown" = "An unknown error occurred";

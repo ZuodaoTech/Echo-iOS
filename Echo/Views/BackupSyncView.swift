@@ -29,6 +29,7 @@ struct BackupSyncView: View {
     @State private var showingShareSheet = false
     @State private var showingAlert = false
     @State private var alertMessage = ""
+    @State private var pendingImportURL: URL?  // Store the URL for finalizing import
     
     enum ExportOption {
         case withAudio
@@ -116,6 +117,42 @@ struct BackupSyncView: View {
                     }
                 }
             }
+            .overlay {
+                // Show progress during import/export
+                if exportManager.isExporting || importManager.isImporting {
+                    ZStack {
+                        Color.black.opacity(0.3)
+                            .ignoresSafeArea()
+                        
+                        VStack(spacing: 20) {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .scaleEffect(1.5)
+                            
+                            Text(exportManager.isExporting ? 
+                                NSLocalizedString("Exporting...", comment: "") : 
+                                NSLocalizedString("Importing...", comment: ""))
+                                .foregroundColor(.white)
+                                .font(.headline)
+                            
+                            if exportManager.isExporting && exportManager.exportProgress > 0 {
+                                ProgressView(value: exportManager.exportProgress)
+                                    .progressViewStyle(LinearProgressViewStyle(tint: .white))
+                                    .frame(width: 200)
+                            } else if importManager.isImporting && importManager.importProgress > 0 {
+                                ProgressView(value: importManager.importProgress)
+                                    .progressViewStyle(LinearProgressViewStyle(tint: .white))
+                                    .frame(width: 200)
+                            }
+                        }
+                        .padding(30)
+                        .background(
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(Color.gray.opacity(0.9))
+                        )
+                    }
+                }
+            }
         }
         .onAppear {
             // Set the context from environment
@@ -198,6 +235,11 @@ struct BackupSyncView: View {
     
     private func performImport(from url: URL) async {
         do {
+            // Store the URL for later use in finalizeImport
+            await MainActor.run {
+                pendingImportURL = url
+            }
+            
             let preview = try await importManager.previewImport(from: url)
             await MainActor.run {
                 showingImportPreview = true
@@ -206,16 +248,61 @@ struct BackupSyncView: View {
             await MainActor.run {
                 alertMessage = error.localizedDescription
                 showingAlert = true
+                pendingImportURL = nil  // Clear on error
             }
         }
     }
     
     private func finalizeImport(with resolution: ImportConflictResolution) async {
-        // Implementation will be added when we have the import URL saved
-        // For now, show a message
-        await MainActor.run {
-            alertMessage = NSLocalizedString("Import completed successfully", comment: "")
-            showingAlert = true
+        guard let url = pendingImportURL else {
+            await MainActor.run {
+                alertMessage = NSLocalizedString("No import file selected", comment: "")
+                showingAlert = true
+            }
+            return
+        }
+        
+        do {
+            // Perform the actual import
+            let result = try await importManager.performImport(from: url, resolution: resolution)
+            
+            // Save Core Data changes
+            try viewContext.save()
+            
+            // Show success message with details
+            await MainActor.run {
+                var message = NSLocalizedString("Import completed successfully", comment: "")
+                message += "\n"
+                if result.imported > 0 {
+                    message += String(format: NSLocalizedString("Imported: %d scripts", comment: ""), result.imported)
+                }
+                if result.updated > 0 {
+                    message += "\n" + String(format: NSLocalizedString("Updated: %d scripts", comment: ""), result.updated)
+                }
+                if result.skipped > 0 {
+                    message += "\n" + String(format: NSLocalizedString("Skipped: %d scripts", comment: ""), result.skipped)
+                }
+                if !result.failed.isEmpty {
+                    message += "\n" + String(format: NSLocalizedString("Failed: %d scripts", comment: ""), result.failed.count)
+                }
+                
+                alertMessage = message
+                showingAlert = true
+                
+                // Clean up
+                pendingImportURL = nil
+                
+                // Clean up temporary file if it exists
+                if url.path.contains("tmp") || url.path.contains("Temp") {
+                    try? FileManager.default.removeItem(at: url)
+                }
+            }
+        } catch {
+            await MainActor.run {
+                alertMessage = NSLocalizedString("Import failed", comment: "") + ": \(error.localizedDescription)"
+                showingAlert = true
+                pendingImportURL = nil
+            }
         }
     }
 }

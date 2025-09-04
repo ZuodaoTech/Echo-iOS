@@ -259,6 +259,14 @@
 "export.audio_size_warning" = "音频文件将增加导出大小";
 "export.options" = "导出选项";
 "export.select_scripts" = "选择卡片";
+"Exporting..." = "正在导出...";
+"Importing..." = "正在导入...";
+"No import file selected" = "未选择导入文件";
+"Import failed" = "导入失败";
+"Imported: %d scripts" = "已导入：%d 个脚本";
+"Updated: %d scripts" = "已更新：%d 个脚本";
+"Skipped: %d scripts" = "已跳过：%d 个脚本";
+"Failed: %d scripts" = "失败：%d 个脚本";
 "export.scripts_selected" = "卡片（已选择%d个）";
 "export.error_title" = "导出错误";
 "export.error_unknown" = "发生未知错误";
