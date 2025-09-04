@@ -71,7 +71,7 @@ struct AddEditScriptView: View {
     
     // Character guidance
     @AppStorage("characterGuidanceEnabled") private var characterGuidanceEnabled = true
-    @AppStorage("characterLimit") private var characterLimit = 140
+    @AppStorage("characterLimit") private var characterLimit = 280
     @AppStorage("limitBehavior") private var limitBehavior = "warn"
     @State private var textEditorHeight: CGFloat = 120
     

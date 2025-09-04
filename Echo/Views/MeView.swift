@@ -20,7 +20,7 @@ struct MeView: View {
     
     // Card Preferences
     @AppStorage("characterGuidanceEnabled") private var characterGuidanceEnabled = true
-    @AppStorage("characterLimit") private var characterLimit = 140
+    @AppStorage("characterLimit") private var characterLimit = 280
     @AppStorage("limitBehavior") private var limitBehavior = "warn"
     
     // Notification Settings
@@ -358,9 +358,9 @@ struct MeView: View {
                                     .foregroundColor(.primary)
                                 Spacer()
                                 Picker("", selection: $characterLimit) {
-                                    Text("70").tag(70)
-                                    Text("140").tag(140)
+                                    Text("160").tag(160)
                                     Text("280").tag(280)
+                                    Text("400").tag(400)
                                 }
                                 .pickerStyle(SegmentedPickerStyle())
                                 .frame(width: 180)
