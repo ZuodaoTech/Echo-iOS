@@ -30,8 +30,8 @@ struct BackupMetadata: Codable {
     let createdAt: Date
     let deviceName: String
     let locale: String
-    let statistics: BackupStatistics
-    let exportOptions: ExportOptions
+    var statistics: BackupStatistics
+    var exportOptions: ExportOptions
     
     enum CodingKeys: String, CodingKey {
         case version
