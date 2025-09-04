@@ -626,10 +626,14 @@ class ImportManager: ObservableObject {
             at: directory,
             includingPropertiesForKeys: [.fileSizeKey]
         ) {
-            for case let fileURL as URL in enumerator {
-                let attributes = try fileURL.resourceValues(forKeys: [.fileSizeKey])
-                if let fileSize = attributes.fileSize {
-                    totalSize += Int64(fileSize)
+            // Convert enumerator to array to avoid async context issues
+            let allItems = enumerator.allObjects
+            for item in allItems {
+                if let fileURL = item as? URL {
+                    let attributes = try fileURL.resourceValues(forKeys: [.fileSizeKey])
+                    if let fileSize = attributes.fileSize {
+                        totalSize += Int64(fileSize)
+                    }
                 }
             }
         }

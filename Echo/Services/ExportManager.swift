@@ -283,14 +283,18 @@ class ExportManager: ObservableObject {
             includingPropertiesForKeys: [.isRegularFileKey],
             options: [.skipsHiddenFiles]
         ) {
-            for case let fileURL as URL in enumerator {
-                let attributes = try fileURL.resourceValues(forKeys: [.isRegularFileKey])
-                if attributes.isRegularFile == true {
-                    let relativePath = fileURL.path.replacingOccurrences(
-                        of: sourceDir.path + "/",
-                        with: ""
-                    )
-                    filesToArchive.append((fileURL, relativePath))
+            // Convert enumerator to array to avoid async context issues
+            let allItems = enumerator.allObjects
+            for item in allItems {
+                if let fileURL = item as? URL {
+                    let attributes = try fileURL.resourceValues(forKeys: [.isRegularFileKey])
+                    if attributes.isRegularFile == true {
+                        let relativePath = fileURL.path.replacingOccurrences(
+                            of: sourceDir.path + "/",
+                            with: ""
+                        )
+                        filesToArchive.append((fileURL, relativePath))
+                    }
                 }
             }
         }

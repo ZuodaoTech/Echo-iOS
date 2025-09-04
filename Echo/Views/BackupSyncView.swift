@@ -25,7 +25,7 @@ struct BackupSyncView: View {
     @State private var showingImportPreview = false
     @State private var showingProgressView = false
     @State private var selectedExportOption: ExportOption = .withAudio
-    @State private var exportedFileURL: URL?
+    @State private var exportedFileURL: IdentifiableURL?
     @State private var showingShareSheet = false
     @State private var showingAlert = false
     @State private var alertMessage = ""
@@ -183,8 +183,8 @@ struct BackupSyncView: View {
                 }
             )
         }
-        .sheet(item: $exportedFileURL) { url in
-            ShareSheet(items: [url])
+        .sheet(item: $exportedFileURL) { identifiableURL in
+            ShareSheet(items: [identifiableURL.url])
         }
         .alert(
             NSLocalizedString("alert.title", comment: ""),
@@ -221,7 +221,7 @@ struct BackupSyncView: View {
                 let url = try await exportManager.exportAllScripts(includeAudio: includeAudio)
                 
                 await MainActor.run {
-                    exportedFileURL = url
+                    exportedFileURL = IdentifiableURL(url: url)
                     showingShareSheet = true
                 }
             } catch {
@@ -240,7 +240,7 @@ struct BackupSyncView: View {
                 pendingImportURL = url
             }
             
-            let preview = try await importManager.previewImport(from: url)
+            _ = try await importManager.previewImport(from: url)
             await MainActor.run {
                 showingImportPreview = true
             }
@@ -375,8 +375,10 @@ struct ShareSheet: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
-extension URL: Identifiable {
-    public var id: String { self.absoluteString }
+// Wrapper to make URL Identifiable without extending Foundation types
+struct IdentifiableURL: Identifiable {
+    let url: URL
+    var id: String { url.absoluteString }
 }
 
 struct BackupSyncView_Previews: PreviewProvider {
