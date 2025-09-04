@@ -121,3 +121,7 @@ log/
 .aider*
 test_export_sample.json
 iOS-Iconset-Generating-Tool/
+
+# Xcode Configuration
+# Local development settings
+Local.xcconfig

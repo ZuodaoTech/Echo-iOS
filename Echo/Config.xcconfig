@@ -1,0 +1,12 @@
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+// Development Team ID
+// To use your own team ID, create a file named "Local.xcconfig" in the same directory
+// and add: DEVELOPMENT_TEAM = YOUR_TEAM_ID
+// Local.xcconfig is gitignored and won't be committed
+
+DEVELOPMENT_TEAM = 
+
+// Include local settings if they exist
+#include? "Local.xcconfig"

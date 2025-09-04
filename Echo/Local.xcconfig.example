@@ -1,0 +1,7 @@
+// Local configuration example
+// Copy this file to Local.xcconfig and add your personal settings
+// DO NOT COMMIT Local.xcconfig
+
+// Your Apple Developer Team ID
+// Find it in Xcode → Preferences → Accounts → Team Details
+DEVELOPMENT_TEAM = YOUR_TEAM_ID_HERE
