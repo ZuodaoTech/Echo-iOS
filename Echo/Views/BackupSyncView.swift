@@ -248,7 +248,31 @@ struct DocumentPicker: UIViewControllerRepresentable {
         
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
             if let url = urls.first {
-                parent.onPick(url)
+                // Access the security-scoped resource
+                if url.startAccessingSecurityScopedResource() {
+                    // Create a temporary copy that we can access
+                    let fileManager = FileManager.default
+                    let tempURL = fileManager.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
+                    
+                    do {
+                        // Remove existing file if any
+                        try? fileManager.removeItem(at: tempURL)
+                        // Copy to temporary location
+                        try fileManager.copyItem(at: url, to: tempURL)
+                        // Stop accessing the original
+                        url.stopAccessingSecurityScopedResource()
+                        // Use the temporary copy
+                        parent.onPick(tempURL)
+                    } catch {
+                        url.stopAccessingSecurityScopedResource()
+                        print("Error copying file: \(error)")
+                        // Still try to use the original URL
+                        parent.onPick(url)
+                    }
+                } else {
+                    // If we can't access as security-scoped, try directly
+                    parent.onPick(url)
+                }
             }
         }
     }
