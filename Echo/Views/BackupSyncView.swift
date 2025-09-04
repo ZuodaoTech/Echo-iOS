@@ -138,7 +138,7 @@ struct BackupSyncView: View {
         }
         .sheet(isPresented: $showingImportPicker) {
             DocumentPicker(
-                types: [UTType(filenameExtension: "zip")!, UTType(filenameExtension: "archive")!],
+                types: [UTType.json, UTType(filenameExtension: "zip")!, UTType(filenameExtension: "archive")!],
                 onPick: { url in
                     Task {
                         await performImport(from: url)

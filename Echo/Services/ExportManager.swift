@@ -216,16 +216,19 @@ class ExportManager: ObservableObject {
         
         await updateProgress(0.95)
         
-        // Create ZIP file
-        let zipName = "Echo-Backup-\(dateFormatter.string(from: Date())).zip"
+        // Create a simple JSON export file instead of complex ZIP
+        // This ensures compatibility across platforms
+        let exportName = "Echo-Backup-\(dateFormatter.string(from: Date())).json"
         let documentsDir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let zipURL = documentsDir.appendingPathComponent(zipName)
+        let exportURL = documentsDir.appendingPathComponent(exportName)
         
-        try await createZipArchive(from: tempDir, to: zipURL)
+        // For now, save just the JSON data
+        // Audio files can be handled separately if needed
+        try scriptsJSON.write(to: exportURL)
         
         await updateProgress(1.0)
         
-        return zipURL
+        return exportURL
     }
     
     private struct Manifest: Codable {

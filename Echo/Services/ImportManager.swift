@@ -183,13 +183,25 @@ class ImportManager: ObservableObject {
         // Read archive data
         let archiveData = try Data(contentsOf: url)
         
-        // Check if it's our custom format or try to extract as standard archive
+        // Check if it's our custom format or JSON
         if let header = String(data: archiveData.prefix(15), encoding: .utf8),
            header == "ECHO_BACKUP_V1\n" {
-            // Extract our custom format
+            // Extract our custom format (legacy support)
             try extractCustomArchive(archiveData, to: tempDir)
+        } else if let _ = try? decoder.decode(BackupData.self, from: archiveData) {
+            // It's a direct JSON file - copy it as scripts.json
+            let scriptsURL = tempDir.appendingPathComponent("scripts.json")
+            try archiveData.write(to: scriptsURL)
+            
+            // Create a minimal metadata file for compatibility
+            let metadata = BackupMetadata()
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            let metadataData = try encoder.encode(metadata)
+            let metadataURL = tempDir.appendingPathComponent("metadata.json")
+            try metadataData.write(to: metadataURL)
         } else {
-            // Assume it's a standard format (for future ZIP support)
+            // Unsupported format
             throw ImportError.invalidFormat("Unsupported backup format")
         }
         
