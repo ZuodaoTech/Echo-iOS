@@ -168,25 +168,6 @@ struct MeView: View {
                     Text(NSLocalizedString("settings.card_defaults", comment: ""))
                 }
                 
-                // MARK: - Tag Settings Section
-                Section {
-                    Toggle(isOn: $autoCleanupUnusedTags) {
-                        HStack {
-                            Image(systemName: "trash.circle")
-                                .font(.system(size: 20))
-                                .foregroundColor(.primary)
-                                .frame(width: 25)
-                            Text(NSLocalizedString("settings.auto_cleanup_tags", comment: ""))
-                                .foregroundColor(.primary)
-                        }
-                    }
-                } header: {
-                    Text(NSLocalizedString("settings.tags", comment: ""))
-                } footer: {
-                    Text(NSLocalizedString("settings.tags.footer", comment: ""))
-                        .font(.caption)
-                }
-                
                 // MARK: - Notification Section
                 Section {
                     HStack {
@@ -661,7 +642,24 @@ struct MeView: View {
                         }
                     }
                     
-                    // Developer tools section removed - iCloud operations no longer functional
+                    // MARK: - Tag Settings (Dev Only)
+                    Section {
+                        Toggle(isOn: $autoCleanupUnusedTags) {
+                            HStack {
+                                Image(systemName: "trash.circle")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.primary)
+                                    .frame(width: 25)
+                                Text(NSLocalizedString("settings.auto_cleanup_tags", comment: ""))
+                                    .foregroundColor(.primary)
+                            }
+                        }
+                    } header: {
+                        Text(NSLocalizedString("settings.tags", comment: ""))
+                    } footer: {
+                        Text(NSLocalizedString("settings.tags.footer", comment: ""))
+                            .font(.caption)
+                    }
                     
                     // MARK: - Data Management (Dev Only)
                     Section {
