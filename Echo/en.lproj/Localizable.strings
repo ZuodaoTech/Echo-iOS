@@ -278,6 +278,41 @@
 "empty.card.title" = "Empty Card";
 "empty.card.message" = "This card has no text or recording. Would you like to delete it instead?";
 
+// MARK: - Backup & Sync
+"settings.backup" = "Backup";
+"settings.backup_desc" = "Export your scripts to a file or import from a previous backup";
+"settings.export_backup" = "Export Backup";
+"settings.import_backup" = "Import Backup";
+"settings.export_options" = "Export Options";
+"settings.export_with_audio" = "With Audio Files";
+"settings.export_text_only" = "Text Only (Smaller File)";
+
+// MARK: - Import Preview
+"import.preview_title" = "Import Preview";
+"import.backup_info" = "Backup Information";
+"import.backup_date" = "Backup Date";
+"import.device" = "Device";
+"import.version" = "Version";
+"import.content" = "Content";
+"import.new_scripts" = "%d new scripts";
+"import.update_scripts" = "%d scripts to update";
+"import.new_tags" = "%d new tags";
+"import.total_size" = "Total size: %.1f MB";
+"import.conflicts" = "Conflicts";
+"import.resolution" = "Resolution";
+"import.smart_merge" = "Smart Merge (Recommended)";
+"import.keep_existing" = "Keep Existing";
+"import.replace_existing" = "Replace Existing";
+"import.duplicate" = "Create Duplicates";
+"import.conflict_same" = "Same script exists";
+"import.conflict_similar" = "%.0f%% similar";
+"import.more_conflicts" = "And %d more...";
+"import.smart_merge_desc" = "Keeps newer versions and merges play counts";
+"import.keep_existing_desc" = "Skips scripts that already exist";
+"import.replace_existing_desc" = "Overwrites existing scripts with imported versions";
+"import.duplicate_desc" = "Creates new copies with '(Imported)' suffix";
+"action.import" = "Import";
+
 // MARK: - Filter
 "filter.title" = "Filter by Tags";
 "filter.all_cards" = "All Cards";

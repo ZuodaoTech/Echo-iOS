@@ -277,7 +277,42 @@
 "empty.no_cards" = "暂无卡片";
 "empty.tap_to_create" = "点击+按钮创建您的第一张自我对话卡片";
 "empty.card.title" = "空卡片";
-"empty.card.message" = "此卡片没有文字或录音。您想删除它吗？";
+"empty.card.message" = "这张卡片没有文字或录音。您想删除它吗？";
+
+// MARK: - Backup & Sync
+"settings.backup" = "备份";
+"settings.backup_desc" = "导出您的脚本到文件或从之前的备份导入";
+"settings.export_backup" = "导出备份";
+"settings.import_backup" = "导入备份";
+"settings.export_options" = "导出选项";
+"settings.export_with_audio" = "包含音频文件";
+"settings.export_text_only" = "仅文本（文件更小）";
+
+// MARK: - Import Preview
+"import.preview_title" = "导入预览";
+"import.backup_info" = "备份信息";
+"import.backup_date" = "备份日期";
+"import.device" = "设备";
+"import.version" = "版本";
+"import.content" = "内容";
+"import.new_scripts" = "%d 个新脚本";
+"import.update_scripts" = "%d 个脚本待更新";
+"import.new_tags" = "%d 个新标签";
+"import.total_size" = "总大小：%.1f MB";
+"import.conflicts" = "冲突";
+"import.resolution" = "解决方案";
+"import.smart_merge" = "智能合并（推荐）";
+"import.keep_existing" = "保留现有";
+"import.replace_existing" = "替换现有";
+"import.duplicate" = "创建副本";
+"import.conflict_same" = "相同脚本已存在";
+"import.conflict_similar" = "%.0f%% 相似";
+"import.more_conflicts" = "还有 %d 个...";
+"import.smart_merge_desc" = "保留较新版本并合并播放次数";
+"import.keep_existing_desc" = "跳过已存在的脚本";
+"import.replace_existing_desc" = "用导入版本覆盖现有脚本";
+"import.duplicate_desc" = "创建带'（已导入）'后缀的新副本";
+"action.import" = "导入";
 
 // MARK: - Filter
 "filter.title" = "按标签筛选";
