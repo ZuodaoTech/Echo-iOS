@@ -269,7 +269,7 @@ struct ImportConflict {
     let existing: SelftalkScript
     let reason: ConflictReason
     
-    enum ConflictReason {
+    enum ConflictReason: Equatable {
         case sameID
         case similarContent(similarity: Double)
     }
