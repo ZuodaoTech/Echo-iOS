@@ -60,7 +60,7 @@ final class RecordingService: NSObject {
     // MARK: - Constants
     
     private enum Constants {
-        static let maxRecordingDuration: TimeInterval = 60.0  // 60 seconds max
+        static let maxRecordingDuration: TimeInterval = 30.0  // 30 seconds max
         static let recordingSettings: [String: Any] = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
             AVSampleRateKey: 48000,  // Higher sample rate for better quality
@@ -300,7 +300,7 @@ final class RecordingService: NSObject {
                 
                 // Auto-stop at max duration
                 if currentTime >= Constants.maxRecordingDuration {
-                    print("RecordingService: Maximum recording duration reached (60s)")
+                    print("RecordingService: Maximum recording duration reached (30s)")
                     self.stopRecording()
                 }
             }

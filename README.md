@@ -32,7 +32,7 @@ Echo is a beautifully crafted iOS app that helps you experience subliminal evolu
 - High-quality audio recording (44.1kHz, AAC format)
 - Automatic silence trimming for clean recordings
 - Advanced noise reduction for crystal-clear audio
-- 60-second recording limit for focused messages
+- 30-second recording limit for focused messages
 
 ### 🔄 **Intelligent Playback**
 - Customizable repetitions (1-10 times per script)

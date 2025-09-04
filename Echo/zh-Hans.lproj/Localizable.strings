@@ -204,7 +204,7 @@
 "validation.script_too_long" = "脚本超过500个字符的最大长度";
 "validation.exceeds_character_limit" = "脚本超过字符限制%d个字符";
 "validation.audio_too_short" = "录音必须至少1秒";
-"validation.audio_too_long" = "录音超过60秒的最大时长";
+"validation.audio_too_long" = "录音超过30秒的最大时长";
 "validation.audio_processing" = "音频仍在处理中，请等待";
 "validation.recording_in_progress" = "录音正在进行中，请先停止";
 
@@ -378,7 +378,7 @@
 "dev.clear" = "清除";
 
 // MARK: - Formatting
-"format.seconds_of_60" = "%d秒 / 60秒";
+"format.seconds_of_30" = "%d秒 / 30秒";
 "format.repetitions" = "%d次";
 "format.progress" = "%d/%d";
 "format.plus_count" = "+%d";

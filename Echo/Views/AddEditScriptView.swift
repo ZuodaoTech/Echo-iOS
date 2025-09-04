@@ -27,7 +27,7 @@ struct AddEditScriptView: View {
         static let minimumScriptLength = 1
         static let maximumScriptLength = 500
         static let minimumAudioDuration: TimeInterval = 1.0  // 1 second minimum
-        static let maximumAudioDuration: TimeInterval = 60.0 // 60 seconds maximum
+        static let maximumAudioDuration: TimeInterval = 30.0 // 30 seconds maximum
     }
     
     @State private var scriptText = ""
@@ -861,7 +861,7 @@ struct AddEditScriptView: View {
             }
             
             if duration > ValidationConstants.maximumAudioDuration {
-                return (false, NSLocalizedString("validation.audio_too_long", comment: "Recording is too long. Maximum duration is 60 seconds."))
+                return (false, NSLocalizedString("validation.audio_too_long", comment: "Recording is too long. Maximum duration is 30 seconds."))
             }
         }
         
@@ -1364,7 +1364,7 @@ struct RecordingButton: View {
             
             if isRecording {
                 let duration = Int(AudioCoordinator.shared.recordingDuration)
-                let remainingTime = max(0, 60 - duration)
+                let remainingTime = max(0, 30 - duration)
                 
                 VStack(spacing: 8) {
                     HStack {
@@ -1376,7 +1376,7 @@ struct RecordingButton: View {
                         Spacer()
                         
                         // Duration display with warning color
-                        Text("\(duration)s / 60s")
+                        Text("\(duration)s / 30s")
                             .font(.caption)
                             .fontWeight(.medium)
                             .foregroundColor(remainingTime <= 10 ? .orange : (remainingTime <= 5 ? .red : .secondary))
